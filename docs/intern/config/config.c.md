@@ -4,6 +4,7 @@ This file opens a configuration: it reads the main file and then the local file.
 
 `config_read` starts an empty `config_t` and takes the main file through `config_take_file`.
 `take_local` looks for `<name>.d/local.toml` beside the main file and adds it when it is present.
+When the local file is not there, `take_local` frees its path.
 The local file sits last and overrides the other files.
 
 ## Functions

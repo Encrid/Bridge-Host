@@ -6,6 +6,7 @@ This file prints one module while the host shows a configuration.
 It prints `not a module: <file>: <reason>` when the file carries no module.
 Otherwise it prints the identity, the backend and the path, then the keys through `config_load` and `state_found`.
 A key that cannot be taken raises the failure count.
+At the end, `show_module` frees the memory of the statement, and the bytes.
 
 ## Functions
 

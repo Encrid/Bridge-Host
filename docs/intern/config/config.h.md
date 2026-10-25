@@ -7,6 +7,7 @@ It defines the structs of the reader, the enums of the checks, and declares the 
 
 `config_t` owns the array of `cfile_t`, the index of the local file, and a count of refusals.
 A `cfile_t` keeps one file: its path, its folder, its whole path, its parsed `toml_t`, and the files that it names.
+A `cfile_t` owns each of them, and `config_free` frees them.
 A `said_t` points at one value together with its file and line.
 A `found_t` holds the chosen value beside a peer that clashes with it.
 
@@ -20,6 +21,7 @@ A `names_t` gathers names without a repeat.
 | Function | Result |
 | --- | --- |
 | `config_read`, `config_add_file`, `config_take_file` | Read the files of a configuration, and add one file. |
+| `config_free`, `config_free_file` | Free a configuration, and free one file. |
 | `config_check`, `config_check_*`, `config_check_value` | Check a statement against the rule of its key. |
 | `config_find`, `config_find_key`, `config_states_key`, `config_states_module` | Resolve a key over the files. |
 | `config_names`, `names_add` | List the names under a key. |

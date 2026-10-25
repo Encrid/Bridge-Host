@@ -7,6 +7,9 @@ This file drives the TOML reader: it reads a file line by line into a `toml_t`.
 `toml_read` skips a leading byte-order mark, then handles each line until the text ends.
 A line that opens with `[` is a table header; another line with content is a pair.
 `read_header` reads the table name, rejects an array of tables, and keeps the table for the pairs below it.
+It frees the array of the table before it, and reads the new name into the cursor.
+At the end, `toml_read` frees the array of the last table.
+
 `end_line` steps past a trailing comment and insists that nothing else sits after a statement.
 `toml_refuse` records the first reason with its line. `toml_skip` moves across spaces and tabs.
 

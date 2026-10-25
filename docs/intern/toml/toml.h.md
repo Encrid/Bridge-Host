@@ -6,6 +6,13 @@ An `entry_t` is one statement: a key of several names, a line, and a value.
 A `toml_t` owns the entries, and keeps the first reason with its line when the reader refuses.
 A `reading_t` is the cursor: the text position, the current table, and the output.
 
+## The memory
+
+A `toml_t` owns its entries. Each entry owns the array of its key, and its value.
+The entries share the names of their keys: the names of a table are in each key under the table.
+Thus a `toml_t` keeps each name one time, in `names`, and `toml_free` frees each name one time.
+The cursor owns the array of the current table, and the reader frees it.
+
 ## Functions
 
 | Function | Result |
@@ -15,3 +22,4 @@ A `reading_t` is the cursor: the text position, the current table, and the outpu
 | `toml_read_pair`, `toml_read_inline`, `toml_read_key`, `toml_read_value`, `toml_read_text`, `toml_read_number` | Read one part of the grammar. |
 | `toml_add`, `toml_has_prefix` | Add a statement, and test a key prefix. |
 | `toml_is_same`, `toml_say` | Compare two values, and print one. |
+| `toml_free`, `toml_free_value` | Free a `toml_t` with its names, and free a value with its texts and items. |

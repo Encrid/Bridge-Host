@@ -5,6 +5,7 @@ This file takes the list keys of a module: `read`, `write` and `losses`.
 `find_names` gathers a grant from the module tables, and stops at the first file that states it.
 `permit_in` descends through a file and the files that it names.
 `take_losses` copies the `losses` list into the config.
+Its array, and the arrays of `read` and `write`, go into the `made_t` of the module.
 `say_names` prints a grant when the host shows a module. `state_take_list` routes a key to `read`, `write`, or `losses`.
 
 ## Functions

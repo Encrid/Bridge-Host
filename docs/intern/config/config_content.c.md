@@ -4,6 +4,7 @@ This file gathers the content paths and reads `content.load`.
 
 `collect` reads `content.paths` or `content.ignore` from every file and merges the lists.
 `add_path` drops a path whose whole form is already present.
+`add_path` frees each path that it does not keep.
 `config_content` fills the path and ignore arrays, and prints `not stated: content.paths` when none exist.
 `config_load` reads `content.load.<identity>`, and falls back to `content.load.all`.
 

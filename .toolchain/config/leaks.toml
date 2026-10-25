@@ -1,2 +1,2 @@
 [leaks]
-with = ["{bridge_os}/leaks.toml"]
+with = ["{bridge_os}/leaks.toml", "{bridge}/leaks.toml"]

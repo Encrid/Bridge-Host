@@ -14,13 +14,31 @@ static bool is_bare(char c)
         || (c >= '0' && c <= '9') || c == '_' || c == '-');
 }
 
+static char *keep_name(reading_t *r, char *name)
+{
+    toml_t *t = r->into;
+    char **more = nullptr;
+
+    if (!name)
+        return (nullptr);
+    more = realloc(t->names, sizeof(*more) * (t->name_count + 1));
+    if (!more) {
+        free(name);
+        toml_refuse(r, "no memory left");
+        return (nullptr);
+    }
+    t->names = more;
+    t->names[t->name_count++] = name;
+    return (name);
+}
+
 static char *read_name(reading_t *r)
 {
     size_t len = 0;
     char *name = nullptr;
 
     if (*r->at == '"' || *r->at == '\'')
-        return (toml_read_text(r));
+        return (keep_name(r, toml_read_text(r)));
     while (is_bare(r->at[len]))
         len++;
     if (len)
@@ -32,7 +50,7 @@ static char *read_name(reading_t *r)
     memcpy(name, r->at, len);
     name[len] = 0;
     r->at += len;
-    return (name);
+    return (keep_name(r, name));
 }
 
 bool toml_read_key(reading_t *r, char ***key, uint32_t *depth)

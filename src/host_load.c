@@ -43,10 +43,11 @@ static bool is_left(const host_t *h, const file_t *f)
     return (same || f->of->who.abi != BRIDGE_ABI || !held);
 }
 
-static bool is_stated(host_t *h, const file_t *f, bridge_artifact_t *a)
+static bool is_stated(host_t *h, const file_t *f, bridge_artifact_t *a,
+    made_t *made)
 {
     char prefix[1200];
-    const stating_t s = { h, f->of, prefix, false };
+    const stating_t s = { h, f->of, prefix, false, made };
     int load = 0;
 
     snprintf(prefix, sizeof(prefix), "not loaded: %s: %s: ", f->path,
@@ -64,16 +65,19 @@ static bool is_stated(host_t *h, const file_t *f, bridge_artifact_t *a)
 void load_found(host_t *h, file_t *f, bool first)
 {
     bridge_artifact_t a;
+    made_t made = {};
     const char *who = f->of->who.identity;
+    bool go = !is_left(h, f) && is_stated(h, f, &a, &made);
 
-    if (is_left(h, f) || !is_stated(h, f, &a))
-        return;
-    if (!first && !may_arrive(f, get_held(h, f->of->who.backend)))
-        return;
-    if (bridge_load(h->w, &a)) {
+    if (go && !first)
+        go = may_arrive(f, get_held(h, f->of->who.backend));
+    if (go && bridge_load(h->w, &a)) {
         printf("not loaded: %s: %s was refused\n", f->path, who);
-        return;
+        go = false;
     }
-    printf("loaded: %s, %s, %s\n", who, a.backend, f->path);
-    f->loaded = true;
+    if (go) {
+        printf("loaded: %s, %s, %s\n", who, a.backend, f->path);
+        f->loaded = true;
+    }
+    state_free(&made);
 }

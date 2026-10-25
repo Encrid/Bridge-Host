@@ -24,6 +24,7 @@ static void try_ok(const char *text)
     toml_t t = {};
 
     ck(toml_read(text, &t), text);
+    toml_free(&t);
 }
 
 static void try_no(const char *text, const char *why)
@@ -33,6 +34,7 @@ static void try_no(const char *text, const char *why)
 
     ck(!taken, text);
     ck(!taken && t.why && strstr(t.why, why), why);
+    toml_free(&t);
 }
 
 static void do_scalars(void)

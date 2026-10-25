@@ -39,9 +39,9 @@ why = "copy_key returns null only when its malloc runs out of memory, which the 
 
 [[branches.exception]]
 path = "src/toml/toml_pair.c"
-line = 27
+line = 45
 col = 9
-side = "true"
+side = "false"
 why = "whole is null only when copy_key's malloc runs out of memory, which the tests do not force."
 
 [[branches.exception]]
@@ -60,7 +60,7 @@ why = "add_item fails only when its realloc runs out of memory, which the tests 
 
 [[branches.exception]]
 path = "src/toml/toml_key.c"
-line = 45
+line = 63
 col = 13
 side = "true"
 why = "The key array's realloc returns null only when memory runs out, which the tests do not force."
@@ -88,7 +88,7 @@ why = "The entries realloc returns null only when memory runs out, which the tes
 
 [[branches.exception]]
 path = "src/toml/toml_add.c"
-line = 60
+line = 61
 col = 32
 side = "false"
 why = "why is null at this point only when the entries realloc ran out of memory, which the tests do not force."
@@ -104,19 +104,12 @@ why = "toml_read_number runs only on a value that starts with a sign or a digit,
 path = "src/config/config.c"
 line = 19
 col = 9
-side = "false"
-why = "take_local's lock path comes from malloc, which returns null only when memory runs out, which the tests do not force."
+side = "true"
+why = "take_local's path comes from malloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config.c"
-line = 21
-col = 13
-side = "false"
-why = "take_local's path is null only when its malloc ran out of memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/config/config.c"
-line = 34
+line = 37
 col = 9
 side = "false"
 why = "config_read copies the name with malloc, which returns null only when memory runs out, which the tests do not force."
@@ -130,28 +123,28 @@ why = "with_suffix allocates with malloc, which returns null only when memory ru
 
 [[branches.exception]]
 path = "src/config/config_backend.c"
-line = 58
+line = 59
 col = 26
 side = "false"
 why = "h->held comes from calloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_backend.c"
-line = 58
+line = 59
 col = 37
 side = "false"
 why = "h->backends comes from calloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_backend.c"
-line = 61
+line = 63
 col = 22
 side = "false"
 why = "h->held is null only when its calloc ran out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_backend.c"
-line = 61
+line = 63
 col = 33
 side = "false"
 why = "h->backends is null only when its calloc ran out of memory, which the tests do not force."
@@ -172,17 +165,10 @@ why = "the path is null only when config_path's malloc ran out of memory, which 
 
 [[branches.exception]]
 path = "src/config/config_content.c"
-line = 28
+line = 30
 col = 21
 side = "false"
 why = "add_path's realloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/config/config_file.c"
-line = 34
-col = 18
-side = "true"
-why = "config_add_file's realloc returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_name.c"
@@ -200,14 +186,14 @@ why = "add_named fails only when its realloc runs out of memory, which the tests
 
 [[branches.exception]]
 path = "src/config/config_name.c"
-line = 62
+line = 70
 col = 19
 side = "false"
 why = "config_take_file's path is null only when an earlier malloc ran out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_name.c"
-line = 74
+line = 80
 col = 10
 side = "false"
 why = "the path is null only when an earlier malloc ran out of memory, which the tests do not force."
@@ -270,21 +256,21 @@ why = "copy_text's buffer is null only when its malloc ran out of memory, which 
 
 [[branches.exception]]
 path = "src/state/state_own.c"
-line = 34
+line = 38
 col = 38
 side = "false"
 why = "read_own's text is null only when copy_text's malloc ran out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/state/state_own.c"
-line = 42
+line = 46
 col = 9
 side = "true"
-why = "state_find_own's own comes from malloc, which returns null only when memory runs out, which the tests do not force."
+why = "state_find_own's own comes from calloc through state_keep_value, which gives null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 56
+line = 59
 col = 9
 side = "false"
 why = "split_names copies with malloc, which returns null only when memory runs out, which the tests do not force."
@@ -298,14 +284,14 @@ why = "state_own_setting's own comes from malloc, which returns null only when m
 
 [[branches.exception]]
 path = "src/host_meet.c"
-line = 65
+line = 78
 col = 9
 side = "false"
 why = "meet allocates f->path with malloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/host_meet.c"
-line = 72
+line = 86
 col = 21
 side = "false"
 why = "f->path is null only when its malloc ran out of memory, which the tests do not force."
@@ -341,7 +327,7 @@ why = "os_path_whole of a stored path returns null only for an unparseable path,
 
 [[branches.exception]]
 path = "src/config/config_file.c"
-line = 52
+line = 63
 col = 13
 side = "false"
 system = "windows"
@@ -349,7 +335,7 @@ why = "config_find_whole's key from os_path_whole is null only for an unparseabl
 
 [[branches.exception]]
 path = "src/config/config_file.c"
-line = 52
+line = 63
 col = 22
 side = "false"
 why = "a stored file's whole path is null only when os_path_whole could not resolve it, which the tests do not force."
@@ -408,7 +394,7 @@ why = "a full read of a regular file returns its whole size; a short read happen
 
 [[branches.exception]]
 path = "src/config/config_backend.c"
-line = 26
+line = 27
 col = 31
 side = "false"
 why = "content.arrive is checked to be ask, load, or leave, so get_arrive always matches before its index reaches four."
@@ -436,7 +422,7 @@ why = "config_states_module always gets three non-null table names: a module's i
 
 [[branches.exception]]
 path = "src/config/config_file.c"
-line = 59
+line = 70
 col = 23
 side = "false"
 why = "config_say_chain stops at the re-included file, which is an ancestor of the including file, so it never reaches the root's -1."
@@ -548,7 +534,7 @@ why = "On this host os_path_whole yields forward-slash separators, so the charac
 
 [[branches.exception]]
 path = "src/host_look.c"
-line = 61
+line = 60
 col = 26
 side = "false"
 why = "bridge_unload fails only when the engine cannot unload a module the host recorded as loaded. The host records a file as loaded after the engine loaded it, so unloading a file that is gone always succeeds."
@@ -576,28 +562,28 @@ why = "config_find sets other only together with at, so other is null whenever a
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 39
+line = 41
 col = 24
 side = "false"
 why = "config_find sets other only together with at, so other is null whenever at is null; the right test runs only when at is null, where other is also null."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 58
+line = 61
 col = 12
 side = "false"
 why = "copy is the result of malloc for the settings string; it is null only when the allocation fails."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 70
+line = 74
 col = 53
 side = "false"
 why = "set is the result of calloc for the settings array; it is null only when the allocation fails."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 76
+line = 80
 col = 26
 side = "false"
 why = "set is the result of calloc for the settings array; it is null only when the allocation fails, and it does not change inside the loop."
@@ -608,3 +594,38 @@ line = 34
 col = 26
 side = "false"
 why = "state_is_path receives a value that points at an entry of the named file, so the scan always finds that entry and returns before the loop ends."
+
+[[branches.exception]]
+path = "src/state/state_made.c"
+line = 12
+col = 9
+side = "true"
+why = "add_one's realloc returns null only when memory runs out, which the tests do not force."
+
+[[branches.exception]]
+path = "src/state/state_made.c"
+line = 23
+col = 18
+side = "true"
+why = "add_one fails only when its realloc runs out of memory, which the tests do not force."
+
+[[branches.exception]]
+path = "src/state/state_made.c"
+line = 34
+col = 9
+side = "false"
+why = "state_keep_value gets null only when calloc runs out of memory, which the tests do not force."
+
+[[branches.exception]]
+path = "src/state/state_made.c"
+line = 34
+col = 14
+side = "true"
+why = "add_one fails only when its realloc runs out of memory, which the tests do not force."
+
+[[branches.exception]]
+path = "src/toml/toml_key.c"
+line = 25
+col = 9
+side = "true"
+why = "keep_name's realloc of the names returns null only when memory runs out, which the tests do not force."

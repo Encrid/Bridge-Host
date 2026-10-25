@@ -16,6 +16,7 @@ static char *with_suffix(char *named)
     whole = malloc(len + end + 1);
     if (whole)
         snprintf(whole, len + end + 1, "%s%s", named, LIBRARY_SUFFIX);
+    free(named);
     return (whole);
 }
 
@@ -58,6 +59,7 @@ bool config_backends(host_t *h)
     for (uint32_t i = 0; h->held && h->backends && i < names.count; i++)
         taken = take_backend(h, names.names[i], i) && taken;
     h->backend_count = names.count;
+    free(names.names);
     return (taken && h->held && h->backends);
 }
 

@@ -50,8 +50,10 @@ static bool read_list(reading_t *r, value_t *v)
     r->at++;
     skip_space(r);
     while (*r->at != ']') {
-        if (!toml_read_value(r, &item) || !add_item(r, v, &item))
+        if (!toml_read_value(r, &item) || !add_item(r, v, &item)) {
+            toml_free_value(&item);
             return (false);
+        }
         skip_space(r);
         if (*r->at != ',' && *r->at != ']')
             return (toml_refuse(r, "a list with no , or ] after a value"));
@@ -66,6 +68,7 @@ bool toml_read_value(reading_t *r, value_t *v)
 {
     char c = *r->at;
 
+    *v = (value_t){};
     if (c == '"' || c == '\'') {
         *v = (value_t){ .kind = VALUE_TEXT, .text = toml_read_text(r) };
         return (v->text != nullptr);

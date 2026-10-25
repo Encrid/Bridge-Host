@@ -29,25 +29,38 @@ static bool keep_old(const file_t *f, const handed_t *now, const char *why)
     return (why || !f->of->who.reloadable);
 }
 
-static void replace(host_t *h, file_t *f, handed_t *now, const char *why)
+static bool is_reloaded(host_t *h, const file_t *f, const handed_t *now)
 {
     char prefix[1200];
-    const stating_t s = { h, now, prefix };
+    made_t made = {};
+    const stating_t s = { h, now, prefix, false, &made };
     bridge_artifact_t a;
+    bool reloaded = false;
 
     snprintf(prefix, sizeof(prefix), "not replaced: %s: %s: ", f->path,
         now->who.identity);
-    if (keep_old(f, now, why))
+    reloaded = now->who.abi == BRIDGE_ABI && make_artifact(&s, f, &a)
+        && !bridge_reload(h->w, &a, 1);
+    state_free(&made);
+    return (reloaded);
+}
+
+static void replace(host_t *h, file_t *f, handed_t *now, const char *why)
+{
+    if (keep_old(f, now, why)) {
+        handed_free(now);
         return;
-    if (now->who.abi != BRIDGE_ABI || !make_artifact(&s, f, &a)
-        || bridge_reload(h->w, &a, 1)) {
+    }
+    if (!is_reloaded(h, f, now)) {
         printf("not replaced: %s: %s was refused\n", f->path,
             now->who.identity);
         h->counts.failed++;
+        handed_free(now);
         return;
     }
     printf("replaced: %s by %s, %s\n", f->of->who.identity,
         now->who.identity, f->path);
+    handed_free(f->of);
     f->of = now;
 }
 
@@ -64,6 +77,7 @@ bool meet(host_t *h, file_t *f, const char *path, handed_t *now)
         f->path = malloc(strlen(path) + 1);
     if (f->path)
         strcpy(f->path, path);
+    handed_free(f->of);
     f->of = now;
     if (why && !now->who.identity[0])
         printf("not a module: %s: %s\n", path, why);

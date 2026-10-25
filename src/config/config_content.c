@@ -25,6 +25,8 @@ static bool add_path(char ***paths, uint32_t *count, char *path)
         *paths = more;
     if (more)
         (*paths)[(*count)++] = path;
+    else
+        free(path);
     return (same || more);
 }
 

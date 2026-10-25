@@ -24,6 +24,16 @@ static char *read_text(const char *path)
     return (text);
 }
 
+static bool take_text(cfile_t *f, char *text)
+{
+    bool taken = toml_read(text, &f->toml);
+
+    free(text);
+    if (!taken)
+        printf("refused: %s:%u: %s\n", f->path, f->toml.line, f->toml.why);
+    return (taken);
+}
+
 int32_t config_add_file(config_t *c, char *path, int32_t by, uint32_t line)
 {
     char *text = read_text(path);
@@ -31,19 +41,20 @@ int32_t config_add_file(config_t *c, char *path, int32_t by, uint32_t line)
         : nullptr;
     cfile_t *f = nullptr;
 
-    if (!text || !more) {
+    if (!more) {
         printf("cannot read '%s'\n", path);
+        free(text);
+        free(path);
         return (-1);
     }
     c->files = more;
     f = &c->files[c->count];
     *f = (cfile_t){ .path = path, .folder = config_get_folder(path),
         .whole = os_path_whole(path), .by = by, .by_line = line };
-    if (!toml_read(text, &f->toml)) {
-        printf("refused: %s:%u: %s\n", path, f->toml.line, f->toml.why);
-        return (-1);
-    }
-    return ((int32_t)c->count++);
+    if (take_text(f, text))
+        return ((int32_t)c->count++);
+    config_free_file(f);
+    return (-1);
 }
 
 int32_t config_find_whole(const config_t *c, const char *whole)

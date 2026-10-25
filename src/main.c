@@ -31,6 +31,7 @@ int main(int argc, char **argv)
     char *named = argc == 2 || show ? argv[argc - 1] : nullptr;
     const char *name = nullptr;
     bool taken = false;
+    int status = 1;
 
     setvbuf(stdout, nullptr, _IONBF, 0);
     if (!named || named[0] == '-')
@@ -40,7 +41,9 @@ int main(int argc, char **argv)
         printf("cannot go into '%s'\n", named);
     taken = name && take_config(&h, name);
     if (show)
-        return (show_config(&h, taken));
-    taken = taken && take_lock(name);
-    return (taken ? run(&h) : 1);
+        status = show_config(&h, taken);
+    else if (taken && take_lock(name))
+        status = run(&h);
+    host_free(&h);
+    return (status);
 }

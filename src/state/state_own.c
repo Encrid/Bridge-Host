@@ -27,16 +27,20 @@ bool read_own(const handed_t *of, const char *key, value_t *v)
     if (!text)
         return (false);
     snprintf(text, size + 8, "v = %.*s\n", (int)size, raw);
-    if (toml_read(text, &t) && t.count == 1)
+    if (toml_read(text, &t) && t.count == 1) {
         *v = t.entries[0].value;
-    else
+        t.entries[0].value = (value_t){};
+    } else {
         *v = (value_t){ .kind = VALUE_TEXT, .text = copy_text(raw, size) };
+    }
+    toml_free(&t);
+    free(text);
     return (v->kind != VALUE_TEXT || v->text);
 }
 
 const value_t *state_find_own(const stating_t *s, const module_rule_t *rule)
 {
-    value_t *own = malloc(sizeof(*own));
+    value_t *own = state_keep_value(s, calloc(1, sizeof(*own)));
     const char *why = nullptr;
 
     if (!own || !read_own(s->of, rule->name, own))

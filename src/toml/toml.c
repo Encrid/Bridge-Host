@@ -3,6 +3,7 @@
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
+#include <stdlib.h>
 #include <string.h>
 
 #include "toml.h"
@@ -39,7 +40,6 @@ static bool end_line(reading_t *r)
 
 static bool read_header(reading_t *r)
 {
-    char **name = nullptr;
     uint32_t depth = 0;
 
     r->start = r->line;
@@ -47,16 +47,17 @@ static bool read_header(reading_t *r)
     if (*r->at == '[')
         return (toml_refuse(r, "an array of tables, which is not taken"));
     toml_skip(r);
-    if (!toml_read_key(r, &name, &depth))
+    free(r->table);
+    r->table = nullptr;
+    r->table_depth = 0;
+    if (!toml_read_key(r, &r->table, &depth))
         return (false);
     toml_skip(r);
     if (*r->at != ']')
         return (toml_refuse(r, "the name of a table with no ] after it"));
     r->at++;
-    r->table_depth = 0;
-    if (!toml_add(r, name, depth, &(value_t){}))
+    if (!toml_add(r, r->table, depth, &(value_t){}))
         return (false);
-    r->table = name;
     r->table_depth = depth;
     return (true);
 }
@@ -77,5 +78,6 @@ bool toml_read(const char *text, toml_t *t)
             taken = toml_read_pair(&r);
         taken = taken && end_line(&r);
     }
+    free(r.table);
     return (taken);
 }

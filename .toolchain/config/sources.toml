@@ -18,7 +18,7 @@ into = "{build}/third_party/bb_native/{target}"
 
 [[source]]
 name = "bb_wasm"
-url = "https://github.com/Encrid/BB-Wasm/releases/download/v0.1.0/BB-Wasm-{target}.zip"
+url = "https://github.com/Encrid/BB-Wasm/releases/download/v0.1.1/BB-Wasm-{target}.zip"
 sha256 = "{bb_wasm_sha256}"
 into = "{build}/third_party/bb_wasm/{target}"
 

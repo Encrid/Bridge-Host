@@ -23,8 +23,7 @@ static void pass_file(host_t *h, look_t *lk, file_t *f, handed_t *now)
         lk->did++;
     }
     h->full = h->full || (now->bytes && !f);
-    free(now->bytes);
-    free(now);
+    handed_free(now);
 }
 
 static void see_file(void *ud, const char *path)
@@ -63,6 +62,7 @@ static void drop_gone(host_t *h, look_t *lk)
                 f->path);
         lk->did += f->loaded;
         free(f->path);
+        handed_free(f->of);
         *f = (file_t){};
     }
 }

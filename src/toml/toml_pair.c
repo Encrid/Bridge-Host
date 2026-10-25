@@ -17,23 +17,37 @@ static char **copy_key(char **key, uint32_t depth)
     return (copy);
 }
 
+static bool read_assigned(reading_t *r, char **key, uint32_t depth,
+    const char *why)
+{
+    value_t v = {};
+
+    toml_skip(r);
+    if (*r->at != '=')
+        return (toml_refuse(r, why));
+    r->at++;
+    toml_skip(r);
+    if (*r->at == '{')
+        return (toml_read_inline(r, key, depth));
+    if (toml_read_value(r, &v) && toml_add(r, key, depth, &v))
+        return (true);
+    toml_free_value(&v);
+    return (false);
+}
+
 static bool read_member(reading_t *r, char **key, uint32_t depth)
 {
     char **whole = copy_key(key, depth);
     uint32_t at = depth;
-    value_t v = {};
+    bool taken = false;
 
     toml_skip(r);
-    if (!whole || !toml_read_key(r, &whole, &at))
-        return (toml_refuse(r, "an inline table with no name in it"));
-    toml_skip(r);
-    if (*r->at != '=')
-        return (toml_refuse(r, "a name with no = after it"));
-    r->at++;
-    toml_skip(r);
-    if (*r->at == '{')
-        return (toml_read_inline(r, whole, at));
-    return (toml_read_value(r, &v) && toml_add(r, whole, at, &v));
+    if (whole && toml_read_key(r, &whole, &at))
+        taken = read_assigned(r, whole, at, "a name with no = after it");
+    else
+        toml_refuse(r, "an inline table with no name in it");
+    free(whole);
+    return (taken);
 }
 
 bool toml_read_inline(reading_t *r, char **key, uint32_t depth)
@@ -58,17 +72,11 @@ bool toml_read_pair(reading_t *r)
 {
     char **key = nullptr;
     uint32_t depth = 0;
-    value_t v = {};
+    bool taken = false;
 
     r->start = r->line;
-    if (!toml_read_key(r, &key, &depth))
-        return (false);
-    toml_skip(r);
-    if (*r->at != '=')
-        return (toml_refuse(r, "a key with no = after it"));
-    r->at++;
-    toml_skip(r);
-    if (*r->at == '{')
-        return (toml_read_inline(r, key, depth));
-    return (toml_read_value(r, &v) && toml_add(r, key, depth, &v));
+    if (toml_read_key(r, &key, &depth))
+        taken = read_assigned(r, key, depth, "a key with no = after it");
+    free(key);
+    return (taken);
 }

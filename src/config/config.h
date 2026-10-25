@@ -129,6 +129,10 @@ void config_say_chain(const config_t *c, int32_t from, int32_t to);
 
 [[nodiscard]] bool config_read(config_t *c, const char *name);
 
+void config_free(config_t *c);
+
+void config_free_file(cfile_t *f);
+
 [[nodiscard]] uint32_t config_check(config_t *c);
 
 [[nodiscard]] const char *config_check_world(const entry_t *e, bool local);

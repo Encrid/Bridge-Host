@@ -39,6 +39,8 @@ typedef struct {
 typedef struct {
     entry_t *entries;
     uint32_t count;
+    char **names;
+    uint32_t name_count;
     uint32_t line;
     const char *why;
 } toml_t;
@@ -80,5 +82,9 @@ void toml_skip(reading_t *r);
 [[nodiscard]] bool toml_is_same(const value_t *a, const value_t *b);
 
 void toml_say(const value_t *v, char *out, size_t size);
+
+void toml_free(toml_t *t);
+
+void toml_free_value(value_t *v);
 
 #endif

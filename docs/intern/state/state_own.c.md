@@ -3,7 +3,8 @@
 This file reads the author values from the manifest and reports the author keys.
 
 `read_own` reads one manifest value as a TOML value, or keeps it as a text.
-`state_find_own` checks that value against the rule of the key.
+It takes the value out of the parsed `toml_t`, then frees the `toml_t` and the text.
+`state_find_own` checks that value against the rule of the key, and keeps it in the `made_t` of the module.
 `state_own_keys` demands `config`, `pinned` and `reloadable`, and prints a missing one.
 `say_own_keys` prints the author keys when the host shows a module.
 

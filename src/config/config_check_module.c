@@ -3,6 +3,7 @@
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
+#include <stdlib.h>
 #include <string.h>
 
 #include "config.h"
@@ -12,16 +13,18 @@ static const char *check_table(const config_t *c, const char *table)
     static const char *const BACKEND[] = { "backend" };
     const keyed_t under = { BACKEND, 1 };
     names_t backends = {};
+    const char *why = "no backend of that name";
 
     if (!strcmp(table, "all") || (strchr(table, ':') && strchr(table, '@')))
         return (nullptr);
     if (strchr(table, ':'))
         return ("a module is named with its version");
     backends = config_names(c, &under);
-    for (uint32_t i = 0; i < backends.count; i++)
+    for (uint32_t i = 0; why && i < backends.count; i++)
         if (!strcmp(backends.names[i], table))
-            return (nullptr);
-    return ("no backend of that name");
+            why = nullptr;
+    free(backends.names);
+    return (why);
 }
 
 static const char *check_rule(const entry_t *e)

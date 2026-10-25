@@ -16,7 +16,7 @@ static bool said;
 static uint32_t rounds;
 #endif
 
-#ifdef WAIT
+#if defined(WAIT) || defined(WAIT_EACH)
 
 static void go_on(void)
 {
@@ -42,6 +42,9 @@ BRIDGE_NATIVE(say)
 #ifdef WAIT
     if (!said)
         go_on();
+#endif
+#ifdef WAIT_EACH
+    go_on();
 #endif
     if (!said)
         bridge_native_log(api, BRIDGE_LOG_INFO, &line);

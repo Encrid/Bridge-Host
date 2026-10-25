@@ -79,10 +79,18 @@ typedef struct {
 } host_t;
 
 typedef struct {
+    void **blocks;
+    uint32_t block_count;
+    void **values;
+    uint32_t value_count;
+} made_t;
+
+typedef struct {
     const host_t *h;
     const handed_t *of;
     const char *prefix;
     bool show;
+    made_t *made;
 } stating_t;
 
 typedef struct {
@@ -153,6 +161,12 @@ void take_checks(host_t *h);
 [[nodiscard]] uint32_t state_undeclared(const stating_t *s,
     const names_t *declared);
 
+[[nodiscard]] void *state_keep(const stating_t *s, void *block);
+
+[[nodiscard]] value_t *state_keep_value(const stating_t *s, value_t *v);
+
+void state_free(made_t *m);
+
 [[nodiscard]] int walk_content(const host_t *h, see_fn *see, void *ud);
 
 [[nodiscard]] int show_config(host_t *h, bool taken);
@@ -160,6 +174,10 @@ void take_checks(host_t *h);
 void show_module(void *ud, const char *path);
 
 [[nodiscard]] bool take_lock(const char *name);
+
+void host_free(host_t *h);
+
+void handed_free(handed_t *of);
 
 [[nodiscard]] int run(host_t *h);
 

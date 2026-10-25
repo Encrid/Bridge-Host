@@ -1,0 +1,137 @@
+[[artifact]]
+name = "bridge-host"
+kind = "program"
+sources = ["src/**/*.c"]
+include = ["{bridge}/include", "src", "src/config", "src/manifest", "src/state", "src/toml", "src/show", "{bridge_os}/include"]
+defines = ['LIBRARY_SUFFIX="{library}"']
+flags = ["{quiet}", "{system_defines}", "{system_libraries}"]
+link = ["{bridge}/bridge.a", "{bridge_os}/os.a"]
+
+[[artifact]]
+name = "host-unit"
+kind = "program"
+test = true
+sources = ["tests/unit/*.c", "src/toml/*.c", "src/config/config_value.c"]
+include = ["{bridge}/include", "src", "src/config", "src/manifest", "src/state", "src/toml", "src/show"]
+flags = ["{quiet}", "{system_defines}", "{system_libraries}"]
+
+[[artifact]]
+name = "hello"
+kind = "host_wasm"
+test = true
+folder = "fixtures"
+sources = ["tests/modules/hello.c"]
+include = ["{bridge}/include", "{bb_wasm}/include", "tests/modules"]
+defines = ['SAY="hello from the host"']
+manifest = ["bridge-host:hello@1.0.0", "{own}"]
+variants = [
+    { name = "plain", unstamped = true },
+    { name = "other", defines = ['SAY="hello from elsewhere"'] },
+    { name = "reacher", defines = ["REACH", 'SAY="reaches"'], manifest = ["bridge-host:reacher@1.0.0", "{own}"] },
+    { name = "debugger", defines = ['SAY="deep"', "SAY_LEVEL=BRIDGE_LOG_DEBUG"], manifest = ["bridge-host:debugger@1.0.0", "{own}"] },
+    { name = "wender", defines = ['SAY="ends"', "END_AT=3"], manifest = ["bridge-host:wender@1.0.0", "{own}"] },
+]
+
+[[artifact]]
+name = "quiet"
+kind = "host_wasm"
+test = true
+folder = "fixtures"
+sources = ["tests/modules/hello.c"]
+include = ["{bridge}/include", "{bb_wasm}/include", "tests/modules"]
+defines = ["ONCE", 'SAY="said once"']
+manifest = ["bridge-host:quiet@1.0.0", "{own}"]
+variants = [
+    { name = "quiet2", defines = ["ONCE", 'SAY="said once, again"'] },
+    { name = "noabi", manifest = ["bridge-host:noabi@1.0.0", "pinned=false", "reloadable=false", "config=none"] },
+    { name = "mute", manifest = ["bridge-host:mute@1.0.0", "abi=1", "reloadable=false", "config=none"] },
+    { name = "swap", defines = ["ONCE", 'SAY="swaps"'], manifest = ["bridge-host:swap@1.0.0", "abi=1", "pinned=false", "reloadable=true", "config=none"] },
+    { name = "swap2", defines = ["ONCE", 'SAY="swapped"'], manifest = ["bridge-host:swap@1.0.0", "abi=1", "pinned=false", "reloadable=true", "config=none"] },
+    { name = "abitwo", manifest = ["bridge-host:abitwo@1.0.0", "abi=2", "pinned=false", "reloadable=false", "config=none"] },
+    { name = "badabi", manifest = ["bridge-host:badabi@1.0.0", "abi=x", "pinned=false", "reloadable=false", "config=none"] },
+    { name = "noconfig", manifest = ["bridge-host:noconfig@1.0.0", "abi=1", "pinned=false", "reloadable=false"] },
+    { name = "noreload", manifest = ["bridge-host:noreload@1.0.0", "abi=1", "pinned=false", "config=none"] },
+    { name = "nocolon", manifest = ["nocolon", "abi=1", "pinned=false", "reloadable=false", "config=none"] },
+    { name = "nocat", manifest = ["has:colon", "abi=1", "pinned=false", "reloadable=false", "config=none"] },
+    { name = "firsteq", manifest = ["x:y@1=v", "abi=1", "pinned=false", "reloadable=false", "config=none"] },
+    { name = "bareword", manifest = ["bw:x@1", "bareword", "abi=1", "pinned=false", "reloadable=false", "config=none"] },
+    { name = "longword", manifest = ["lw:x@1", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"] },
+    { name = "longid", manifest = ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "abi=1"] },
+    { name = "emptyabi", manifest = ["ea:x@1", "abi="] },
+    { name = "longconfig", manifest = ["lc:x@1", "abi=1", "pinned=false", "reloadable=false", "config=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"] },
+    { name = "badflag", manifest = ["bf:x@1", "abi=1", "pinned=maybe", "reloadable=false", "config=none"] },
+    { name = "negabi", manifest = ["ng:x@1", "abi=-5", "pinned=false", "reloadable=false", "config=none"] },
+    { name = "relfirst", manifest = ["rf:x@1", "abi=1", "reloadable=false", "pinned=false", "config=none"] },
+]
+
+[[artifact]]
+name = "word"
+kind = "host_wasm"
+test = true
+folder = "fixtures"
+sources = ["tests/modules/word.c"]
+include = ["{bridge}/include", "{bb_wasm}/include", "tests/modules"]
+manifest = ["bridge-host:word@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=word"]
+variants = [
+    { name = "guest", manifest = ["guest:word@1.0.0", "{own}"] },
+    { name = "owned", manifest = ["bridge-host:owned@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=word", 'config.word="its own"'] },
+    { name = "nocomp", manifest = ["bridge-host:nocomp@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=none", "settings=word"] },
+    { name = "badset", manifest = ["bridge-host:badset@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=word", 'config.word=[1, 2]'] },
+    { name = "multi", manifest = ["bridge-host:multi@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=w x y z"] },
+    { name = "owns", manifest = ["bridge-host:owns@1.0.0", "abi=1", "pinned=true", "reloadable=true", "config=bridge-host:Word", "settings=own", "scratch=100", "log_level=9", "on_error=@", "spans=1\nx=2", ""] },
+]
+
+[[artifact]]
+name = "knock"
+kind = "host_native"
+test = true
+folder = "fixtures"
+sources = ["tests/modules/knock.c"]
+include = ["{bridge}/include", "{bb_native}/include", "tests/modules"]
+manifest = ["bridge-host:knock@1.0.0", "{own}"]
+variants = [
+    { name = "wait", defines = ["WAIT"], manifest = ["bridge-host:wait@1.0.0", "{own}"] },
+    { name = "nender", defines = ["END_AT=3"], manifest = ["bridge-host:nender@1.0.0", "{own}"] },
+    { name = "pe", target = "x86_64-windows-gnu", manifest = ["bridge-host:pe@1.0.0", "{own}"] },
+    { name = "elf", target = "x86_64-linux-gnu", manifest = ["bridge-host:elf@1.0.0", "{own}"] },
+    { name = "macho", target = "aarch64-macos", manifest = ["bridge-host:macho@1.0.0", "{own}"] },
+]
+
+[[artifact]]
+name = "pe_farhdr"
+kind = "madebin"
+test = true
+folder = "fixtures"
+sources = ["tests/modules/mkbin.py"]
+variants = [
+    { name = "pe_edge" },
+    { name = "pe_nosig" },
+    { name = "pe_notbridge" },
+    { name = "pe_shorttab" },
+    { name = "pe_oob" },
+    { name = "pe_bigsize" },
+    { name = "elf_farshoff" },
+    { name = "elf_badcount" },
+    { name = "elf_badstrndx" },
+    { name = "elf_nobridge" },
+    { name = "elf_oob" },
+    { name = "elf_bigsize" },
+    { name = "elf_nameoob" },
+    { name = "elf_nameedge" },
+    { name = "elf_namesoob" },
+    { name = "macho_oob" },
+    { name = "macho_bigsize" },
+    { name = "macho_notext" },
+    { name = "macho_nosec" },
+    { name = "macho_notseg" },
+    { name = "macho_secoob" },
+    { name = "macho_secedge" },
+    { name = "macho_cmd0" },
+    { name = "macho_manycmd" },
+    { name = "wasm_bigsec" },
+    { name = "wasm_badname" },
+    { name = "wasm_longleb" },
+    { name = "wasm_cutleb" },
+    { name = "wasm_emptyman" },
+    { name = "wasm_nulfirst" },
+]

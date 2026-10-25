@@ -27,7 +27,6 @@ manifest = ["bridge-host:hello@1.0.0", "{own}"]
 variants = [
     { name = "plain", unstamped = true },
     { name = "other", defines = ['SAY="hello from elsewhere"'] },
-    { name = "reacher", defines = ["REACH", 'SAY="reaches"'], manifest = ["bridge-host:reacher@1.0.0", "{own}"] },
     { name = "debugger", defines = ['SAY="deep"', "SAY_LEVEL=BRIDGE_LOG_DEBUG"], manifest = ["bridge-host:debugger@1.0.0", "{own}"] },
     { name = "wender", defines = ['SAY="ends"', "END_AT=3"], manifest = ["bridge-host:wender@1.0.0", "{own}"] },
 ]

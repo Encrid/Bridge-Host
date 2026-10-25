@@ -8,8 +8,4 @@
 
     #include "bridge_wasm.h"
 
-    #ifdef REACH
-[[clang::import_module("env"), clang::import_name("open")]] int reach(void);
-    #endif
-
 #endif

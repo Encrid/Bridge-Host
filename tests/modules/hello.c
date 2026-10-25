@@ -13,9 +13,6 @@ static uint32_t calls;
 
 BRIDGE_EXPORT(say) int say(void)
 {
-#ifdef REACH
-    calls += (uint32_t)reach();
-#endif
 #ifdef ONCE
     if (calls)
         return (0);

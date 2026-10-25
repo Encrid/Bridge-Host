@@ -8,6 +8,7 @@ This file appends a finished statement to a `toml_t` and guards its key against 
 `get_clash` weighs the joined key against every earlier entry.
 It rejects a key that is stated twice, and a key that is both a value and a table.
 `toml_add` grows the array of entries and stores the key, its depth, the start line, and the value.
+If `toml_add` refuses, it frees the joined key, and the caller keeps the value.
 
 ## Functions
 

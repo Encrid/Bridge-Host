@@ -11,7 +11,9 @@ Of the run, it keeps `rounds` and `live`, the count `round` of the rounds that r
 A `file_t` records one known file by its path, its hash mark, and the module behind it.
 A `handed_t` keeps the bytes of a file together with the manifest that the host read from them.
 A `held_t` names a backend, its library path, and its arrive rule.
+
 `stating_t`, `look_t` and `seeing_t` carry state while the host states a module or walks the content.
+A `made_t` lists what the host allocates for the config of one module, and a `stating_t` points at it.
 
 ## Functions
 
@@ -23,3 +25,5 @@ A `held_t` names a backend, its library path, and its arrive rule.
 | `find_file`, `meet`, `may_arrive`, `load_found`, `make_artifact` | Track a slot, read a met file, ask to trust it, load it, and build its artifact. |
 | `show_config`, `show_module`, `take_lock` | Show a configuration, show one module, and take the run lock. |
 | `state_*`, `read_own` | State the keys, lists, phases and settings of a module. |
+| `state_keep`, `state_keep_value`, `state_free` | Add a block or a value to the `made_t` of a module, and free the list. |
+| `host_free`, `handed_free` | Free the host, and free one `handed_t`. |

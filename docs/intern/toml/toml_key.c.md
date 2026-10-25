@@ -5,6 +5,8 @@ This file reads a dotted key of one or more names.
 A name is bare or quoted.
 `read_name` reads a quoted name through the text reader, and a bare name as the run of letters, digits, underscore and hyphen.
 `toml_read_key` reads names while a dot joins them, and extends the key array for each name.
+`keep_name` adds each name to `names` of the `toml_t`, which frees it.
+If no memory is left, `keep_name` frees the name and refuses.
 
 ## Functions
 

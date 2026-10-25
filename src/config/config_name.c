@@ -57,18 +57,24 @@ static bool take_named(config_t *c, int32_t at)
     return (got >= 0);
 }
 
+static int32_t refuse_loop(const config_t *c, int32_t by, int32_t at)
+{
+    printf("refused: %s names itself:", c->files[at].path);
+    config_say_chain(c, by, at);
+    printf(" %s\n", c->files[at].path);
+    return (-1);
+}
+
 int32_t config_take_file(config_t *c, char *path, int32_t by, uint32_t line)
 {
     char *whole = path ? os_path_whole(path) : nullptr;
     int32_t at = config_find_whole(c, whole);
 
     free(whole);
-    if (at >= 0 && c->files[at].reading) {
-        printf("refused: %s names itself:", c->files[at].path);
-        config_say_chain(c, by, at);
-        printf(" %s\n", c->files[at].path);
-        return (-1);
-    }
+    if (at >= 0)
+        free(path);
+    if (at >= 0 && c->files[at].reading)
+        return (refuse_loop(c, by, at));
     if (at >= 0)
         return (at);
     at = path ? config_add_file(c, path, by, line) : -1;

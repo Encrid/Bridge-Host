@@ -11,11 +11,13 @@ static void put_setting(const stating_t *s, const said_t *said,
     const value_t *v = said->value;
     bool path = said->file != UINT32_MAX
         && state_is_path(&s->h->config, said);
+    const char *text = v->text;
 
+    if (path)
+        text = state_keep(s, config_path(&s->h->config, said->file, v->text));
     if (v->kind == VALUE_TEXT)
         *set = (bridge_setting_t){ .key = set->key, .kind = BRIDGE_STRING,
-            .v.s = path ? config_path(&s->h->config, said->file, v->text)
-            : v->text };
+            .v.s = text };
     if (v->kind == VALUE_WHOLE)
         *set = (bridge_setting_t){ .key = set->key, .kind = BRIDGE_INT,
             .v.i = v->whole };
@@ -47,9 +49,10 @@ static bool take_setting(const stating_t *s, const char *name,
     return (true);
 }
 
-static names_t split_names(const char *settings)
+static names_t split_names(const stating_t *s)
 {
-    char *copy = malloc(strlen(settings) + 1);
+    const char *settings = s->of->who.settings;
+    char *copy = state_keep(s, malloc(strlen(settings) + 1));
     char *name = nullptr;
     names_t got = {};
 
@@ -65,8 +68,9 @@ static names_t split_names(const char *settings)
 
 bool state_settings(const stating_t *s, bridge_module_config_t *cfg)
 {
-    names_t declared = split_names(s->of->who.settings);
-    bridge_setting_t *set = calloc(declared.count + 1, sizeof(*set));
+    names_t declared = split_names(s);
+    bridge_setting_t *set = state_keep(s, calloc(declared.count + 1,
+        sizeof(*set)));
     bool taken = !state_undeclared(s, &declared) && set;
 
     if (declared.count && !strcmp(s->of->who.config, BRIDGE_NO_CONFIG)) {
@@ -77,5 +81,6 @@ bool state_settings(const stating_t *s, bridge_module_config_t *cfg)
         taken = take_setting(s, declared.names[i], &set[i]) && taken;
     cfg->settings = declared.count ? set : nullptr;
     cfg->setting_count = declared.count;
+    free(declared.names);
     return (taken);
 }

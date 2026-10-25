@@ -45,9 +45,11 @@ bool state_take_phases(const stating_t *s, bridge_module_config_t *cfg)
     add_phase_names(s->h, s->of->who.identity, &names);
     add_phase_names(s->h, s->of->who.backend, &names);
     add_phase_names(s->h, "all", &names);
-    map = names.count ? malloc(sizeof(*map) * names.count) : nullptr;
+    if (names.count)
+        map = state_keep(s, malloc(sizeof(*map) * names.count));
     for (uint32_t i = 0; map && i < names.count; i++)
         taken = take_phase(s, names.names[i], &map[i]) && taken;
+    free(names.names);
     cfg->phases = map;
     cfg->phase_count = map ? names.count : 0;
     return (taken);

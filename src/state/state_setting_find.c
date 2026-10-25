@@ -40,7 +40,7 @@ bool state_is_path(const config_t *c, const said_t *said)
 said_t state_own_setting(const stating_t *s, const char *name)
 {
     char key[160];
-    value_t *own = malloc(sizeof(*own));
+    value_t *own = state_keep_value(s, calloc(1, sizeof(*own)));
     const char *why = nullptr;
 
     snprintf(key, sizeof(key), "config.%s", name);

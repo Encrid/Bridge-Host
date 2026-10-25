@@ -56,8 +56,10 @@ bool toml_add(reading_t *r, char **key, uint32_t depth, const value_t *v)
         why = get_clash(&t->entries[i], whole, all, !v->kind);
     if (!why)
         more = realloc(t->entries, sizeof(*more) * (t->count + 1));
-    if (why || !more)
+    if (why || !more) {
+        free(whole);
         return (toml_refuse(r, why ? why : "no memory left"));
+    }
     t->entries = more;
     t->entries[t->count++] = (entry_t){ whole, all, r->start, *v };
     return (true);

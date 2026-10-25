@@ -34,6 +34,8 @@ static names_t find_names(const stating_t *s, const char *name)
         permit_in(c, (uint32_t)c->local, &k, &got);
     else
         permit_in(c, 0, &k, &got);
+    got.names = state_keep(s, got.names);
+    got.count = got.names ? got.count : 0;
     return (got);
 }
 
@@ -48,10 +50,11 @@ static void say_names(const stating_t *s, const char *key,
     printf("]\n");
 }
 
-static void take_losses(bridge_module_config_t *cfg, const value_t *v)
+static void take_losses(const stating_t *s, bridge_module_config_t *cfg,
+    const value_t *v)
 {
     const char **names = v->kind == VALUE_LIST
-        ? malloc(sizeof(*names) * (v->count + 1)) : nullptr;
+        ? state_keep(s, malloc(sizeof(*names) * (v->count + 1))) : nullptr;
 
     cfg->loss_count = BRIDGE_NONE;
     if (!names)
@@ -71,7 +74,7 @@ bool state_take_list(const stating_t *s, const module_rule_t *rule,
     if (rule->check != CHECK_NAMES) {
         v = state_find_key(s, rule);
         if (v)
-            take_losses(cfg, v);
+            take_losses(s, cfg, v);
         return (v != nullptr);
     }
     got = find_names(s, rule->name);

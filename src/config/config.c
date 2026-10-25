@@ -16,11 +16,14 @@ static bool take_local(config_t *c, const char *name)
     FILE *there = nullptr;
 
     c->local = -1;
-    if (path)
-        snprintf(path, len, "%s.d/local.toml", name);
-    there = path ? fopen(path, "rb") : nullptr;
-    if (!there)
-        return (path != nullptr);
+    if (!path)
+        return (false);
+    snprintf(path, len, "%s.d/local.toml", name);
+    there = fopen(path, "rb");
+    if (!there) {
+        free(path);
+        return (true);
+    }
     fclose(there);
     c->local = config_add_file(c, path, -1, 0);
     return (c->local >= 0);

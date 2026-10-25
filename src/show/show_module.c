@@ -9,7 +9,8 @@ void show_module(void *ud, const char *path)
 {
     host_t *h = ud;
     handed_t now = {};
-    const stating_t s = { h, &now, "  refused: ", true };
+    made_t made = {};
+    const stating_t s = { h, &now, "  refused: ", true, &made };
     bridge_module_config_t cfg;
     const char *why = nullptr;
 
@@ -19,10 +20,11 @@ void show_module(void *ud, const char *path)
     why = manifest_read((const unsigned char *)now.bytes, now.len, &now.who);
     if (why)
         printf("not a module: %s: %s\n", path, why);
-    if (why)
-        return;
-    printf("module %s, %s, %s\n", now.who.identity, now.who.backend, path);
-    if (config_load(h, now.who.identity, s.prefix) < 0
-        || !state_found(&s, &cfg))
+    else
+        printf("module %s, %s, %s\n", now.who.identity, now.who.backend, path);
+    if (!why && (config_load(h, now.who.identity, s.prefix) < 0
+        || !state_found(&s, &cfg)))
         h->counts.failed++;
+    state_free(&made);
+    free(now.bytes);
 }

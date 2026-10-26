@@ -688,3 +688,75 @@ paths = ["config-quiet"]
 wasm = "{bb_wasm}/bridge_wasm"
 native = "{bb_native}/bridge_native"
 '''
+
+[[case]]
+name = "a world with no checks table writes no line for its checks"
+run = ["{out}/bridge-host{exe}", "{case}/plain.toml"]
+
+[case.claims]
+status = 0
+line = ["record[6] bridge-host:quiet@1.0.0/say: said once 1 0"]
+lacks = ["not stated:"]
+
+[case.folders]
+"{case}/config-quiet" = ["quiet"]
+
+[case.files]
+"{case}/plain.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["config-quiet"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/plain.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+[content]
+paths = ["config-quiet"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "two files that differ on a check are refused"
+run = ["{out}/bridge-host{exe}", "{case}/both.toml"]
+
+[case.claims]
+status = 1
+has = ['refused: checks.profile: true in ca.toml:2, false in cb.toml:2']
+
+[case.folders]
+"{case}/config-quiet" = ["quiet"]
+
+[case.files]
+"{case}/ca.toml" = '''
+[checks]
+profile = true
+'''
+"{case}/cb.toml" = '''
+[checks]
+profile = false
+'''
+"{case}/both.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "ca.toml", "cb.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["config-quiet"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/cb.toml" = '''
+[checks]
+profile = true
+'''

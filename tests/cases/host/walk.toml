@@ -1,5 +1,5 @@
 [[case]]
-name = "ignores that match a folder exactly, by prefix, and not at a boundary"
+name = "ignores that match a file exactly, by prefix, and not at a boundary"
 run = ["{out}/bridge-host{exe}", "{case}/ig.toml"]
 
 [case.claims]
@@ -8,13 +8,14 @@ has = [
     "record[6] bridge-host:quiet@1.0.0/say: said once 1 0",
     "not a module: prex/y.txt",
 ]
+lacks = ["skip.wasm"]
 
 [case.folders]
 "{case}/base" = ["quiet"]
-"{case}/base/skip" = []
 
 [case.files]
 "{case}/base/empty.wasm" = ""
+"{case}/base/skip.wasm" = "junk"
 "{case}/pre/x.txt" = "junk"
 "{case}/prex/y.txt" = "junk"
 "{case}/ig.toml" = '''
@@ -23,7 +24,7 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["base", "pre", "prex"]
-ignore = ["base/skip", "pre"]
+ignore = ["base/skip.wasm", "pre"]
 [backend]
 wasm = "{bb_wasm}/bridge_wasm"
 native = "{bb_native}/bridge_native"

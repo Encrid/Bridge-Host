@@ -30,12 +30,15 @@ static void walk_folder(const host_t *h, const char *path, see_fn *see,
     void *ud)
 {
     DIR *d = opendir(path);
+    DIR *sub = nullptr;
     char full[1024];
 
     for (struct dirent *e = d ? readdir(d) : nullptr; e; e = readdir(d)) {
         snprintf(full, sizeof(full), "%s/%s", path, e->d_name);
-        if (strcmp(e->d_name, ".") && strcmp(e->d_name, "..")
-            && !is_ignored(h, full))
+        sub = opendir(full);
+        if (sub)
+            closedir(sub);
+        if (!sub && !is_ignored(h, full))
             see(ud, full);
     }
     if (d)

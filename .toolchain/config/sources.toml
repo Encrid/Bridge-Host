@@ -12,7 +12,7 @@ into = "{build}/third_party/bridge_os/{target}"
 
 [[source]]
 name = "bb_native"
-url = "https://github.com/Encrid/BB-Native/releases/download/v0.1.0/BB-Native-{target}.zip"
+url = "https://github.com/Encrid/BB-Native/releases/download/v0.1.1/BB-Native-{target}.zip"
 sha256 = "{bb_native_sha256}"
 into = "{build}/third_party/bb_native/{target}"
 

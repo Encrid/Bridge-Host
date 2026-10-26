@@ -4,7 +4,7 @@ kind = "program"
 sources = ["src/**/*.c"]
 include = ["{bridge}/include", "src", "src/config", "src/manifest", "src/state", "src/toml", "src/show", "{bridge_os}/include"]
 defines = ['LIBRARY_SUFFIX="{library}"']
-flags = ["{quiet}", "{system_defines}", "{system_libraries}"]
+flags = ["{system_defines}", "{system_libraries}"]
 link = ["{bridge}/bridge.a", "{bridge_os}/os.a"]
 
 [[artifact]]
@@ -13,7 +13,7 @@ kind = "program"
 test = true
 sources = ["tests/unit/*.c", "src/toml/*.c", "src/config/config_value.c"]
 include = ["{bridge}/include", "src", "src/config", "src/manifest", "src/state", "src/toml", "src/show"]
-flags = ["{quiet}", "{system_defines}", "{system_libraries}"]
+flags = ["{system_defines}", "{system_libraries}"]
 
 [[artifact]]
 name = "hello"

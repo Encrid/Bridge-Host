@@ -58,6 +58,7 @@ has = [
     "config.z = true",
     'read = ["bridge-host:Word", "a:b@1"]',
     'write = ["c:d@1"]',
+    'losses = ["e:f@1"]  st.toml:13',
     "config.word = \"its own\"  its file",
 ]
 

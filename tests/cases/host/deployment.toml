@@ -1,0 +1,485 @@
+[[case]]
+name = "in one file the table of the identity is over the table of the backend, and that one is over all"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/tables.toml"]
+
+[case.claims]
+status = 0
+has = ["log_ring = 111  tables.toml:7", "log_ring = 222  tables.toml:9"]
+lacks = ["log_ring = 333"]
+
+[case.folders]
+"{case}/mods" = ["quiet", "hello"]
+
+[case.files]
+"{case}/tables.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[module."bridge-host:quiet@1.0.0"]
+log_ring = 111
+[module.wasm]
+log_ring = 222
+[module.all]
+log_ring = 333
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/tables.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[module.wasm]
+log_ring = 222
+[module.all]
+log_ring = 333
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a key that a file states is over the default of the manifest"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/over.toml"]
+
+[case.claims]
+status = 1
+line = ["  scratch = 200  over.toml:23"]
+
+[case.folders]
+"{case}/mods" = ["owns"]
+
+[case.files]
+"{case}/over.toml" = '''
+threads = 1
+live = false
+phases = ["update"]
+rounds = 8
+[budget]
+entities = 8192
+tables = 8
+types = 16
+systems = 16
+terms = 8
+modules = 8
+persistent = 262144
+columns = 1048576
+sparse_sets = "none"
+direct_indexed = "none"
+[content]
+paths = ["mods"]
+[content.load]
+all = true
+[content.arrive]
+wasm = "load"
+[module.all]
+scratch = 200
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+'''
+
+[case.false.files]
+"{case}/over.toml" = '''
+threads = 1
+live = false
+phases = ["update"]
+rounds = 8
+[budget]
+entities = 8192
+tables = 8
+types = 16
+systems = 16
+terms = 8
+modules = 8
+persistent = 262144
+columns = 1048576
+sparse_sets = "none"
+direct_indexed = "none"
+[content]
+paths = ["mods"]
+[content.load]
+all = true
+[content.arrive]
+wasm = "load"
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+'''
+
+[[case]]
+name = "a setting that a file states is over the default of the manifest"
+run = ["{out}/bridge-host{exe}", "{case}/owned.toml"]
+
+[case.claims]
+status = 0
+line = ["record[6] bridge-host:owned@1.0.0/say: hi 0 0"]
+
+[case.folders]
+"{case}/owned" = ["owned"]
+
+[case.files]
+"{case}/owned.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["late"]
+rounds = 8
+[module."bridge-host:owned@1.0.0".config]
+word = "hi"
+[content]
+paths = ["owned"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/owned.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["late"]
+rounds = 8
+[content]
+paths = ["owned"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a path of a setting counts from the folder of the preset that states it"
+run = ["{out}/bridge-host{exe}", "{case}/path.toml"]
+
+[case.claims]
+status = 0
+line = ["record[6] bridge-host:word@1.0.0/say: sub/x 0 0"]
+
+[case.folders]
+"{case}/mods" = ["word"]
+
+[case.files]
+"{case}/sub/word.toml" = '''
+[module."bridge-host:word@1.0.0".config]
+word = { path = "x" }
+'''
+"{case}/path.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "sub/word.toml"]
+phases = ["late"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/sub/word.toml" = '''
+[module."bridge-host:word@1.0.0".config]
+word = "x"
+'''
+
+[[case]]
+name = "a backend library counts from the folder of the preset that states it"
+run = ["{out}/bridge-host{exe}", "{case}/back.toml"]
+
+[case.claims]
+status = 1
+has = ["cannot open backend library 'sub/nothere{library}'"]
+
+[case.files]
+"{case}/sub/back.toml" = '''
+[backend]
+wasm = "nothere"
+'''
+"{case}/back.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "sub/back.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+'''
+
+[case.false.files]
+"{case}/back.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "sub/back.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "nothere"
+'''
+
+[[case]]
+name = "a value of a wrong form is refused, for each kind of key"
+run = ["{out}/bridge-host{exe}", "{case}/forms.toml"]
+
+[case.claims]
+status = 1
+line = [
+    "refused: forms.toml:1: threads: a whole number, from 1",
+    "refused: forms.toml:2: rounds: a whole number, from 0 to 1000000",
+    "refused: forms.toml:3: phases: a list of names",
+    'refused: forms.toml:5: budget.sparse_sets: a whole number, from 1, or "none"',
+    "refused: forms.toml:7: order.before: a list of pairs of systems",
+    "refused: forms.toml:9: backend.wasm: text",
+    'refused: forms.toml:11: content.arrive.wasm: "ask", "load" or "leave"',
+    "refused: forms.toml:13: module.all.hot_reload: true or false",
+    'refused: forms.toml:14: module.all.on_error: "fail" or "skip"',
+    "refused: forms.toml:15: module.all.log_level: a level, from 1 to 7",
+    'refused: forms.toml:16: module.all.losses: a list of names, or "none"',
+    'refused: forms.toml:18: module."bridge-host:word@1.0.0".config.word: text, a number, true or false, or { path = "..." }',
+]
+
+[case.folders]
+"{case}/mods" = ["quiet"]
+
+[case.files]
+"{case}/forms.toml" = '''
+threads = 0
+rounds = 1000001
+phases = "update"
+[budget]
+sparse_sets = 0
+[order]
+before = [["a"]]
+[backend]
+wasm = 1
+[content.arrive]
+wasm = "maybe"
+[module.all]
+hot_reload = 1
+on_error = "stop"
+log_level = 8
+losses = "all"
+[module."bridge-host:word@1.0.0".config]
+word = [1, 2]
+'''
+
+[case.false.files]
+"{case}/forms.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "the content paths of a file and of its preset add up"
+run = ["{out}/bridge-host{exe}", "{case}/both.toml"]
+
+[case.claims]
+status = 0
+line = [
+    "loaded: bridge-host:quiet@1.0.0, wasm, one/quiet.wasm",
+    "loaded: bridge-host:hello@1.0.0, wasm, two/hello.wasm",
+]
+
+[case.folders]
+"{case}/one" = ["quiet"]
+"{case}/two" = ["hello"]
+
+[case.files]
+"{case}/more.toml" = '''
+[content]
+paths = ["two"]
+'''
+"{case}/both.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "more.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["one"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/more.toml" = ""
+
+[[case]]
+name = "the read lists of two presets add up"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/grants.toml"]
+
+[case.claims]
+status = 0
+line = ['  read = ["a:A", "b:B"]']
+
+[case.folders]
+"{case}/mods" = ["word"]
+
+[case.files]
+"{case}/ra.toml" = '''
+[module."bridge-host:word@1.0.0"]
+read = ["a:A"]
+'''
+"{case}/rb.toml" = '''
+[module."bridge-host:word@1.0.0"]
+read = ["b:B"]
+'''
+"{case}/grants.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "ra.toml", "rb.toml"]
+phases = ["late"]
+rounds = 8
+[content]
+paths = ["mods"]
+[module."bridge-host:word@1.0.0".config]
+word = "hi"
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/rb.toml" = ""
+
+[[case]]
+name = "the read list of a file is over the read lists of its presets"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/grants.toml"]
+
+[case.claims]
+status = 0
+line = ['  read = ["m:M"]']
+
+[case.folders]
+"{case}/mods" = ["word"]
+
+[case.files]
+"{case}/ra.toml" = '''
+[module."bridge-host:word@1.0.0"]
+read = ["a:A"]
+'''
+"{case}/rb.toml" = '''
+[module."bridge-host:word@1.0.0"]
+read = ["b:B"]
+'''
+"{case}/grants.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "ra.toml", "rb.toml"]
+phases = ["late"]
+rounds = 8
+[content]
+paths = ["mods"]
+[module."bridge-host:word@1.0.0"]
+read = ["m:M"]
+[module."bridge-host:word@1.0.0".config]
+word = "hi"
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/grants.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "ra.toml", "rb.toml"]
+phases = ["late"]
+rounds = 8
+[content]
+paths = ["mods"]
+[module."bridge-host:word@1.0.0".config]
+word = "hi"
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a module in a folder below a content folder is not loaded"
+run = ["{out}/bridge-host{exe}", "{case}/deep.toml"]
+
+[case.claims]
+status = 0
+line = ["loaded: bridge-host:quiet@1.0.0, wasm, mods/quiet.wasm"]
+lacks = ["bridge-host:hello@1.0.0"]
+
+[case.folders]
+"{case}/mods" = ["quiet"]
+"{case}/mods/below" = ["hello"]
+
+[case.files]
+"{case}/deep.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["quiet", "hello"]
+
+[[case]]
+name = "a word of the manifest with a key that the host does not know is not read"
+run = ["{out}/bridge-host{exe}", "{case}/words.toml"]
+
+[case.claims]
+status = 0
+line = ["loaded: bridge-host:unknownkey@1.0.0, wasm, mods/unknownkey.wasm"]
+
+[case.folders]
+"{case}/mods" = ["unknownkey"]
+
+[case.files]
+"{case}/words.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["bareword"]
+
+[[case]]
+name = "a limit that the backend of a native module cannot keep refuses the module"
+run = ["{out}/bridge-host{exe}", "{case}/limit.toml"]
+
+[case.claims]
+status = 1
+has = ["bridge-host:knock@1.0.0 was refused"]
+lacks = ["loaded: bridge-host:knock@1.0.0"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/limit.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[module."bridge-host:knock@1.0.0"]
+work_limit = 5
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/limit.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[module."bridge-host:knock@1.0.0"]
+work_limit = "none"
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''

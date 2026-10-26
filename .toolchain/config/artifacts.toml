@@ -54,6 +54,7 @@ variants = [
     { name = "nocat", manifest = ["has:colon", "abi=1", "pinned=false", "reloadable=false", "config=none"] },
     { name = "firsteq", manifest = ["x:y@1=v", "abi=1", "pinned=false", "reloadable=false", "config=none"] },
     { name = "bareword", manifest = ["bw:x@1", "bareword", "abi=1", "pinned=false", "reloadable=false", "config=none"] },
+    { name = "unknownkey", manifest = ["bridge-host:unknownkey@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=none", "colour=blue"] },
     { name = "longword", manifest = ["lw:x@1", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"] },
     { name = "longid", manifest = ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "abi=1"] },
     { name = "emptyabi", manifest = ["ea:x@1", "abi="] },

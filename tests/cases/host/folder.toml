@@ -9,6 +9,7 @@ line = [
     "loaded: bridge-host:wait@1.0.0, native, folder-found/wait{library}",
     "not a module: folder-found/plain.wasm: no manifest",
 ]
+lacks = ["? trust"]
 
 [case.folders]
 "{case}/folder-found" = ["wait", "plain"]

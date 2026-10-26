@@ -457,7 +457,7 @@ why = "config_check refuses a depth-five setting whose fifth key is not path, so
 
 [[branches.exception]]
 path = "src/host_walk.c"
-line = 35
+line = 36
 col = 29
 side = "false"
 why = "walk_folder opens a directory that walk_path already opened, so the open always succeeds."
@@ -541,7 +541,7 @@ why = "bridge_unload fails only when the engine cannot unload a module the host 
 
 [[branches.exception]]
 path = "src/host_walk.c"
-line = 41
+line = 44
 col = 9
 side = "false"
 why = "walk_folder opens the same folder that walk_path already confirmed as a folder, so its handle is never null and the close always runs."

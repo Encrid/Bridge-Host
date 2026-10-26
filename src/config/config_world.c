@@ -77,6 +77,6 @@ bool config_world(host_t *h)
 
     taken = take_run(h) && taken;
     taken = take_budget(h) && taken;
-    take_checks(h);
+    taken = take_checks(h) && taken;
     return (config_order(h) && taken);
 }

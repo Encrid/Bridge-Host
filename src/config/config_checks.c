@@ -7,17 +7,31 @@
 
 #include "host.h"
 
-void take_checks(host_t *h)
+static bool take_check(const host_t *h, const char *name, bool *flag)
 {
-    static const char *const profile[] = { "checks", "profile" };
-    static const char *const validate[] = { "checks", "validate" };
-    const value_t *v = config_find_key(&h->config, profile, 2).value;
+    const char *const names[] = { "checks", name };
+    const keyed_t k = { names, 2 };
+    found_t f = config_find(&h->config, config_states_key, &k);
+    char key[64];
 
-    if (v)
-        h->profile = v->flag;
-    v = config_find_key(&h->config, validate, 2).value;
-    if (v)
-        h->validate = v->flag;
+    if (!f.at.value)
+        return (true);
+    config_say_key(names, 2, key, sizeof(key));
+    if (!config_say_found(&h->config, key, &f, ""))
+        return (false);
+    *flag = f.at.value->flag;
+    return (true);
+}
+
+bool take_checks(host_t *h)
+{
+    const char *const name[] = { "profile", "validate" };
+    bool *const flag[] = { &h->profile, &h->validate };
+    bool taken = true;
+
+    for (uint32_t i = 0; i < 2; i++)
+        taken = take_check(h, name[i], flag[i]) && taken;
+    return (taken);
 }
 
 const char *config_check_checks(const entry_t *e, bool local)

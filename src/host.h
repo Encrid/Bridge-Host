@@ -108,7 +108,7 @@ typedef void see_fn(void *ud, const char *path);
 
 [[nodiscard]] bool config_world(host_t *h);
 
-void take_checks(host_t *h);
+[[nodiscard]] bool take_checks(host_t *h);
 
 [[nodiscard]] bool config_order(host_t *h);
 

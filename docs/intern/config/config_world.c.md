@@ -7,6 +7,7 @@ This file takes the world keys: the phases, the counts, and the budget.
 `take_budget` reads the ten budget fields and writes each into `bridge_budget_t` by its offset.
 `take_field` copies a four-byte or eight-byte field, and uses `BRIDGE_NONE` when the value is `none`.
 `config_world` runs these, takes the checks through `take_checks` of `src/config/config_checks.c`, then takes the order through `config_order`.
+A refused check makes `config_world` give false, as a refused key of the run does.
 
 ## Functions
 

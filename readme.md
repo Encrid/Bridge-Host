@@ -39,6 +39,11 @@ The deployment file states these keys at its top:
 | `rounds` | The most rounds of the run, from 0 to 1000000. 0 is no limit. |
 | `live` | `false`: a quiet round ends the run. `true`: a quiet round does not end it. |
 
+The table `[checks]` holds two switches, `profile` and `validate`, each `true` or `false`.
+A check that no file states is off, and the host writes no line for it.
+If two files state different values for a check, the host refuses it, as it refuses each other key.
+The document of the header `bridge.h` of Bridge tells what each check does.
+
 A round is quiet if the look finds no change in the content and no phase writes a record.
 The run also ends at the limit of `rounds`, and when Bridge refuses a call.
 A system or an observer that gives `BRIDGE_END` ends the run after its round, with each value of `live`.

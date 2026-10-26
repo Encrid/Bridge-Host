@@ -1,6 +1,5 @@
 [variables]
 own = ["abi=1", "pinned=false", "reloadable=false", "config=none"]
-quiet = ["-Wno-missing-field-initializers"]
 binaryen_top = "binaryen-version_133"
 features = ["--enable-multimemory", "--enable-bulk-memory", "--enable-sign-ext", "--enable-nontrapping-float-to-int", "--enable-mutable-globals"]
 

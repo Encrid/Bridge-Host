@@ -107,6 +107,7 @@ run = ["{out}/bridge-host{exe}", "{case}/lcl.toml"]
 [case.claims]
 status = 1
 has = [
+    "presets: fixed when the world is made: not in the local file",
     "rounds: fixed when the world is made: not in the local file",
     "live: fixed when the world is made: not in the local file",
     "budget.entities: fixed when the world is made: not in the local file",
@@ -119,6 +120,7 @@ has = [
 rounds = 1
 '''
 "{case}/lcl.toml.d/local.toml" = '''
+presets = ["x.toml"]
 rounds = 1
 live = true
 [budget]

@@ -108,7 +108,8 @@ If the manifest gives none, the host writes `not stated: <key>`, and does not lo
 | --- | --- |
 | `hot_reload` | `true` or `false`. A reload also needs `reloadable=true` in the manifest. |
 | `on_error` | `"fail"` or `"skip"`. |
-| `max_system_failures`, `work_limit`, `memory_limit`, `init_timeout`, `reload_timeout`, `shutdown_timeout` | A whole number from 1, or `"none"`, which is no limit. The backend of BB-Native keeps no limit, so it needs `"none"`. |
+| `max_system_failures` | A whole number from 1, or `"none"`, which is no limit. |
+| `work_limit`, `memory_limit`, `init_timeout`, `reload_timeout`, `shutdown_timeout` | A whole number from 1, or `"none"`, which is no limit. A limit asks a capability of the backend. The backend of BB-Native has none of them, so it needs `"none"`. |
 | `log_level` | A level, from 1 to 7. |
 | `scratch`, `log_ring`, `spans` | A whole number from 1. |
 | `spawns`, `persistent`, `changes` | A whole number from 1, or `"none"`, which is none at all. |

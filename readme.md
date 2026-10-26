@@ -49,7 +49,7 @@ A deployment is a TOML file. The document of the header `bridge.h` of Bridge tel
 - A path counts from the folder of the file that states it: a preset, a path of `[content]`, a library of `[backend]`, and `{ path = "..." }`.
 - A file is over the files that it names. If two presets of one file give different values for a key, the host refuses the key.
 - The paths of `[content]` and the pairs of `[order]` of all the files add up.
-- For `read` and `write`, the first file that states the list gives the whole list. If it names presets, their lists add up.
+- For `read` and `write`, the first file that states the list gives the whole list. If a file states no list, the lists of the presets that it names add up.
 - The host refuses a file that names itself, and reads a file that two files name only one time.
 - It refuses a key that a file states twice, a key that it does not know, and an empty table.
 - The local file cannot state `presets`, the keys of the world, `[budget]`, `[backend]` or `[checks]`.

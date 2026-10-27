@@ -6,7 +6,8 @@ This file matches a setting statement and reads a setting from the manifest.
 `state_states_setting` finds such an entry in one file.
 `state_is_path` tells whether the found value came as the `path` form.
 `state_own_setting` reads `config.<name>` from the manifest and checks it.
-It keeps the value in the `made_t` of the module.
+It builds the key `config.<name>` at the length of the name, so a name has no limit of length.
+It keeps the key and the value in the `made_t` of the module.
 
 ## Functions
 

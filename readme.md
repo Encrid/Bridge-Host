@@ -144,7 +144,7 @@ A module states its manifest in its file, as words that each end with a zero byt
 
 | Word | Value |
 | --- | --- |
-| The first word | The identity `<namespace>:<name>@<version>`, under 96 bytes. |
+| The first word | The identity `<namespace>:<name>@<version>`, of at most 127 bytes, as Bridge takes it. |
 | `abi=<number>` | Needed. The ABI of Bridge that the module was built against. |
 | `config=<component>` or `config=none` | Needed. The component that holds the settings. |
 | `pinned=true` or `pinned=false` | Needed. `true`: the systems of the module run on the thread that runs the phases. |
@@ -153,7 +153,7 @@ A module states its manifest in its file, as words that each end with a zero byt
 | `<key>=<value>` | The default of a key of the module, for example `scratch=65536`. |
 | `config.<name>=<value>` | The default of a setting. |
 
-The values of `config` and of `settings` are under 96 bytes, and each word is under 160 bytes.
+A word of the manifest has no limit of length, but the identity.
 The host refuses a word with no `=` after the first word. It does not read a word with a key that it does not know.
 
 ## Messages
@@ -196,6 +196,11 @@ Finding the modules:
 - `too many files: <count> are looked at`
 - `not a module: <file>: <why>`
 - `states a <word> that cannot be`
+- `its manifest does not begin with who it is`
+- `its identity has more than 127 bytes`
+- `its manifest has a word with no zero byte at its end`
+- `its manifest is empty`
+- `states no abi`
 - `unloaded: <identity>: <file> is gone`
 
 Loading a module:

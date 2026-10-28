@@ -11,4 +11,4 @@ It also declares the helpers for numbers, the per-format finders, and the key ta
 | `manifest_number` | Reads a little-endian number of a given width, with a bounds check. |
 | `manifest_find_elf`, `manifest_find_macho`, `manifest_find_wasm` | Find the manifest section of one format. |
 | `manifest_find` | Picks the format from the head and gives the backend name. |
-| `manifest_take` | Takes one `key=value` word into `manifest_t`. |
+| `manifest_take` | Takes the key, by its length, and the value of one `key=value` word into `manifest_t`. |

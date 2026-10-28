@@ -15,6 +15,7 @@ It refuses a word with no zero byte before the end of the section, since nothing
 
 `read_word` points `identity` at the first word.
 It splits a later word at its first `=`, and gives the two parts to `manifest_take`.
+The reason of a refused word shows the part before its first `=`, and at most 60 bytes of that part.
 `manifest_read` first finds the section for the format, then parses it.
 `readme.md`, *Messages*, quotes each reason of a refusal.
 

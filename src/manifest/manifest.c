@@ -8,40 +8,48 @@
 
 #include "manifest_inside.h"
 
-static const char *read_word(manifest_t *m, char *word, bool first)
+constexpr size_t IDENTITY_MOST = 127;
+constexpr size_t WORD_SHOWN_MOST = 60;
+
+static size_t get_word_end(const char *text, size_t at, size_t size)
+{
+    return (at + strnlen(text + at, size - at));
+}
+
+static const char *read_word(manifest_t *m, const char *word, bool first)
 {
     static char why[160];
-    char *value = strchr(word, '=');
+    const char *value = strchr(word, '=');
+    size_t len = strcspn(word, "=");
 
     if (first && (!strchr(word, ':') || !strchr(word, '@') || value))
         return ("its manifest does not begin with who it is");
+    if (first && len > IDENTITY_MOST)
+        return ("its identity has more than 127 bytes");
     if (first) {
-        strcpy(m->identity, word);
+        m->identity = word;
         return (nullptr);
     }
-    if (value)
-        *value++ = 0;
-    if (value && manifest_take(m, word, value) >= 0)
+    if (value && manifest_take(m, word, len, value + 1) >= 0)
         return (nullptr);
-    snprintf(why, sizeof(why), "states a %.60s that cannot be", word);
+    if (len > WORD_SHOWN_MOST)
+        len = WORD_SHOWN_MOST;
+    snprintf(why, sizeof(why), "states a %.*s that cannot be", (int)len, word);
     return (why);
 }
 
 static const char *parse(const char *text, size_t size, manifest_t *m)
 {
-    char word[160];
     const char *why = nullptr;
     size_t at = 0;
-    size_t len;
+    size_t end = 0;
 
     while (!why && at < size && text[at]) {
-        len = strnlen(text + at, size - at);
-        if (len >= sizeof(word) || (!at && len >= sizeof(m->identity)))
-            return ("its manifest holds a word that is too long");
-        memcpy(word, text + at, len);
-        word[len] = 0;
-        why = read_word(m, word, !at);
-        at += len + 1;
+        end = get_word_end(text, at, size);
+        if (end == size)
+            return ("its manifest has a word with no zero byte at its end");
+        why = read_word(m, text + at, !at);
+        at = end + 1;
     }
     if (why)
         return (why);
@@ -56,7 +64,7 @@ const char *manifest_read(const unsigned char *bytes, size_t len,
     size_t at = 0;
     size_t size = 0;
 
-    *m = (manifest_t){};
+    *m = (manifest_t){ .identity = "", .config = "", .settings = "" };
     m->backend = manifest_find(bytes, len, &at, &size);
     if (!m->backend)
         return ("neither a wasm module nor a library");
@@ -71,19 +79,19 @@ const char *manifest_get_value(const unsigned char *bytes, size_t len,
     size_t name = strlen(key);
     size_t at = 0;
     size_t left = 0;
-    size_t word;
+    const char *text = nullptr;
+    size_t end = 0;
 
     if (!manifest_find(bytes, len, &at, &left))
         return (nullptr);
-    while (left && bytes[at]) {
-        word = strnlen((const char *)bytes + at, left);
-        if (word > name && bytes[at + name] == '='
-            && !memcmp(bytes + at, key, name)) {
-            *size = word - name - 1;
-            return ((const char *)bytes + at + name + 1);
+    text = (const char *)bytes + at;
+    for (size_t word = 0; word < left && text[word]; word = end + 1) {
+        end = get_word_end(text, word, left);
+        if (end - word > name && text[word + name] == '='
+            && !memcmp(text + word, key, name)) {
+            *size = end - word - name - 1;
+            return (text + word + name + 1);
         }
-        at += word + 1;
-        left -= word < left ? word + 1 : left;
     }
     return (nullptr);
 }

@@ -34,18 +34,15 @@ const char *config_say_key(const char *const *names, uint32_t depth,
 bool config_say_found(const config_t *c, const char *key, const found_t *f,
     const char *prefix)
 {
-    char one[256];
-    char two[256];
-
     if (!f->at.value && !f->other.value)
         printf("%snot stated: %s\n", prefix, key);
     if (!f->other.value)
         return (f->at.value != nullptr);
-    toml_say(f->at.value, one, sizeof(one));
-    toml_say(f->other.value, two, sizeof(two));
-    printf("%srefused: %s: %s in %s:%u, %s in %s:%u\n", prefix, key, one,
-        c->files[f->at.file].path, f->at.line, two,
-        c->files[f->other.file].path, f->other.line);
+    printf("%srefused: %s: ", prefix, key);
+    toml_say(f->at.value);
+    printf(" in %s:%u, ", c->files[f->at.file].path, f->at.line);
+    toml_say(f->other.value);
+    printf(" in %s:%u\n", c->files[f->other.file].path, f->other.line);
     return (false);
 }
 

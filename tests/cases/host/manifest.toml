@@ -9,15 +9,13 @@ has = [
     "not a module: bad/nocat.wasm: its manifest does not begin with who it is",
     "not a module: bad/firsteq.wasm: its manifest does not begin with who it is",
     "not loaded: bad/bareword.wasm: bw:x@1 states a bareword that cannot be",
-    "not loaded: bad/longword.wasm: lw:x@1 its manifest holds a word that is too long",
-    "not a module: bad/longid.wasm: its manifest holds a word that is too long",
+    "not a module: bad/longid.wasm: its identity has more than 127 bytes",
     "not loaded: bad/emptyabi.wasm: ea:x@1 states a abi that cannot be",
-    "not loaded: bad/longconfig.wasm: lc:x@1 states a config that cannot be",
     "not loaded: bad/badflag.wasm: bf:x@1 states a pinned that cannot be",
 ]
 
 [case.folders]
-"{case}/bad" = ["nocolon", "nocat", "firsteq", "bareword", "longword", "longid", "emptyabi", "badabi", "negabi", "relfirst", "longconfig", "badflag"]
+"{case}/bad" = ["nocolon", "nocat", "firsteq", "bareword", "longid", "emptyabi", "badabi", "negabi", "relfirst", "badflag"]
 
 [case.files]
 "{case}/mf.toml" = '''
@@ -33,3 +31,55 @@ native = "{bb_native}/bridge_native"
 
 [case.false.folders]
 "{case}/bad" = ["quiet"]
+
+[[case]]
+name = "an identity of 127 bytes is read"
+run = ["{out}/bridge-host{exe}", "{case}/id.toml"]
+
+[case.claims]
+status = 0
+matches = ["loaded: i:d{123}@1, wasm, ids/id127\\.wasm"]
+
+[case.folders]
+"{case}/ids" = ["id127"]
+
+[case.files]
+"{case}/id.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["ids"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/ids" = ["longid"]
+
+[[case]]
+name = "the first word is checked for its colon before its length"
+run = ["{out}/bridge-host{exe}", "{case}/id.toml"]
+
+[case.claims]
+status = 0
+has = ["not a module: ids/longbare.wasm: its manifest does not begin with who it is"]
+
+[case.folders]
+"{case}/ids" = ["longbare"]
+
+[case.files]
+"{case}/id.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["ids"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/ids" = ["quiet"]

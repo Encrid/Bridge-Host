@@ -32,7 +32,7 @@ typedef struct {
 [[nodiscard]] const char *manifest_find(const unsigned char *bytes, size_t len,
     size_t *at, size_t *size);
 
-[[nodiscard]] int manifest_take(manifest_t *m, const char *key,
+[[nodiscard]] int manifest_take(manifest_t *m, const char *key, size_t len,
     const char *value);
 
 #endif

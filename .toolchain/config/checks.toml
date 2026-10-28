@@ -270,14 +270,21 @@ why = "state_find_own's own comes from calloc through state_keep_value, which gi
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 59
+line = 41
+col = 9
+side = "true"
+why = "take_setting builds the key with malloc, which returns null only when memory runs out, which the tests do not force."
+
+[[branches.exception]]
+path = "src/state/state_setting.c"
+line = 62
 col = 9
 side = "false"
 why = "split_names copies with malloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/state/state_setting_find.c"
-line = 47
+line = 45
 col = 9
 side = "true"
 why = "state_own_setting's own comes from malloc, which returns null only when memory runs out, which the tests do not force."
@@ -401,14 +408,14 @@ why = "content.arrive is checked to be ask, load, or leave, so get_arrive always
 
 [[branches.exception]]
 path = "src/config/config_find.c"
-line = 63
+line = 61
 col = 9
 side = "true"
 why = "config_say_value prints a found value. The state callers reach it only past config_say_found, which is true when the value is non-null. show reaches it only when the world loaded, which needs phases, threads, rounds and the budget stated, and shows other keys only when config_names lists them, so every key it prints is found."
 
 [[branches.exception]]
 path = "src/config/config_find.c"
-line = 68
+line = 66
 col = 9
 side = "false"
 why = "every caller of config_say_value passes a non-null states function."
@@ -429,7 +436,7 @@ why = "config_say_chain stops at the re-included file, which is an ancestor of t
 
 [[branches.exception]]
 path = "src/config/config_say.c"
-line = 40
+line = 37
 col = 25
 side = "false"
 why = "config_find sets f.at whenever it sets f.other, so f.other is never set on its own."
@@ -471,7 +478,7 @@ why = "bridge_list_modules returns at most FILES modules, so the count guard end
 
 [[branches.exception]]
 path = "src/manifest/manifest.c"
-line = 76
+line = 85
 col = 9
 side = "true"
 why = "read_own reads a module's own bytes, whose format manifest_find already recognized, so it never fails to find it."
@@ -547,13 +554,6 @@ side = "false"
 why = "walk_folder opens the same folder that walk_path already confirmed as a folder, so its handle is never null and the close always runs."
 
 [[branches.exception]]
-path = "src/manifest/manifest.c"
-line = 78
-col = 20
-side = "false"
-why = "manifest_get_value steps over the NUL-separated words of a module's manifest to find a key. The toolchain writes the words with one separator each and no empty word, so the scan ends when the remaining length reaches zero, never on a zero byte with bytes still left."
-
-[[branches.exception]]
 path = "src/state/state_key.c"
 line = 16
 col = 24
@@ -562,28 +562,28 @@ why = "config_find sets other only together with at, so other is null whenever a
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 41
+line = 44
 col = 24
 side = "false"
 why = "config_find sets other only together with at, so other is null whenever at is null; the right test runs only when at is null, where other is also null."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 61
+line = 64
 col = 12
 side = "false"
 why = "copy is the result of malloc for the settings string; it is null only when the allocation fails."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 74
+line = 77
 col = 53
 side = "false"
 why = "set is the result of calloc for the settings array; it is null only when the allocation fails."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 80
+line = 83
 col = 26
 side = "false"
 why = "set is the result of calloc for the settings array; it is null only when the allocation fails, and it does not change inside the loop."

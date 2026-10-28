@@ -58,13 +58,11 @@ said_t config_find_key(const config_t *c, const char *const *names,
 void config_say_value(const config_t *c, const char *key,
     const found_t *f, const shown_t *how)
 {
-    char value[512];
-
     if (!f->at.value)
         return;
-    toml_say(f->at.value, value, sizeof(value));
-    printf("%s%s = %s  %s", how->prefix, key, value,
-        config_say_where(c, &f->at));
+    printf("%s%s = ", how->prefix, key);
+    toml_say(f->at.value);
+    printf("  %s", config_say_where(c, &f->at));
     if (how->states && f->at.file != UINT32_MAX)
         config_say_over(c, how->states, how->asked, &f->at);
     printf("\n");

@@ -81,7 +81,7 @@ void toml_skip(reading_t *r);
 
 [[nodiscard]] bool toml_is_same(const value_t *a, const value_t *b);
 
-void toml_say(const value_t *v, char *out, size_t size);
+void toml_say(const value_t *v);
 
 void toml_free(toml_t *t);
 

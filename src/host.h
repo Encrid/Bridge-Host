@@ -156,7 +156,7 @@ typedef void see_fn(void *ud, const char *path);
 
 [[nodiscard]] bool state_is_path(const config_t *c, const said_t *said);
 
-[[nodiscard]] said_t state_own_setting(const stating_t *s, const char *name);
+[[nodiscard]] said_t state_own_setting(const stating_t *s, const char *key);
 
 [[nodiscard]] uint32_t state_undeclared(const stating_t *s,
     const names_t *declared);

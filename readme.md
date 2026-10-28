@@ -153,7 +153,7 @@ A module states its manifest in its file, as words that each end with a zero byt
 | `<key>=<value>` | The default of a key of the module, for example `scratch=65536`. |
 | `config.<name>=<value>` | The default of a setting. |
 
-A word of the manifest has no limit of length, but the identity.
+Only the identity has a limit of length. No other word of the manifest has one.
 The host refuses a word with no `=` after the first word. It does not read a word with a key that it does not know.
 
 ## Messages
@@ -195,6 +195,8 @@ Finding the modules:
 - `cannot look in '<path>'`
 - `too many files: <count> are looked at`
 - `not a module: <file>: <why>`
+- `neither a wasm module nor a library`
+- `no manifest`
 - `states a <word> that cannot be`
 - `its manifest does not begin with who it is`
 - `its identity has more than 127 bytes`

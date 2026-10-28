@@ -83,3 +83,29 @@ native = "{bb_native}/bridge_native"
 
 [case.false.folders]
 "{case}/ids" = ["quiet"]
+
+[[case]]
+name = "the message of a refused word shows at most its first 60 bytes"
+run = ["{out}/bridge-host{exe}", "{case}/lw.toml"]
+
+[case.claims]
+status = 0
+matches = ["lw:x@1 states a w{60} that cannot be"]
+
+[case.folders]
+"{case}/bad" = ["longword"]
+
+[case.files]
+"{case}/lw.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["bad"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/bad" = ["quiet"]

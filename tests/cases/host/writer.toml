@@ -286,17 +286,17 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a module built against another ABI"
-run = ["{out}/bridge-host{exe}", "{case}/abitwo.toml"]
+run = ["{out}/bridge-host{exe}", "{case}/abithree.toml"]
 
 [case.claims]
 status = 0
-has = ["bridge-host:abitwo@1.0.0 was built against another ABI"]
+has = ["bridge-host:abithree@1.0.0 was built against another ABI"]
 
 [case.folders]
-"{case}/ab" = ["abitwo"]
+"{case}/ab" = ["abithree"]
 
 [case.files]
-"{case}/abitwo.toml" = '''
+"{case}/abithree.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
 rounds = 1

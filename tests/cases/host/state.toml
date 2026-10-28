@@ -271,3 +271,141 @@ native = "{bb_native}/bridge_native"
 [module."bridge-host:word@1.0.0".config]
 word = "local"
 '''
+
+[[case]]
+name = "a config word of 200 bytes is read whole"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/lc.toml"]
+
+[case.claims]
+matches = ["config = \"c{200}\"  its file"]
+
+[case.folders]
+"{case}/mods" = ["longconfig"]
+
+[case.files]
+"{case}/lc.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["quiet"]
+
+[[case]]
+name = "a setting name of 200 bytes takes its default from the manifest"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/ln.toml"]
+
+[case.claims]
+matches = ["config\\.n{200} = \"its own\"  its file"]
+
+[case.folders]
+"{case}/mods" = ["longname"]
+
+[case.files]
+"{case}/ln.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update", "late"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["owned"]
+
+[[case]]
+name = "a setting name of 200 bytes is named whole in the lines of the host"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/ln.toml"]
+
+[case.claims]
+matches = ["config\\.n{200} = \"hi\"  ln\\.toml:[0-9]+"]
+
+[case.folders]
+"{case}/mods" = ["longname"]
+
+[case.files]
+"{case}/ln.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update", "late"]
+rounds = 8
+[content]
+paths = ["mods"]
+[module."bridge-host:longname@1.0.0".config]
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn = "hi"
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/ln.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update", "late"]
+rounds = 8
+[content]
+paths = ["mods"]
+[module."bridge-host:longname@1.0.0".config]
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn = "ho"
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a manifest value keeps each = after the first"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/eq.toml"]
+
+[case.claims]
+has = ["config.word = \"x=y\"  its file"]
+
+[case.folders]
+"{case}/mods" = ["equals"]
+
+[case.files]
+"{case}/eq.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update", "late"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["owned"]
+
+[[case]]
+name = "a word that the manifest does not state is an empty text"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/no.toml"]
+
+[case.claims]
+has = ["settings = \"\"  its file"]
+
+[case.folders]
+"{case}/mods" = ["quiet"]
+
+[case.files]
+"{case}/no.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["word"]

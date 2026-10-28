@@ -8,7 +8,7 @@ This file finds the value of a key across the files, and prints a found value.
 `find_in` reads a file, and otherwise descends into the files that it names.
 When two peers state a key whose values differ, it returns both as a clash.
 `config_find_key` finds a key and reports it through `config_say_found`.
-`config_say_value` prints the key, its value, its place, and any file that it overrides.
+`config_say_value` prints the key, its whole value, its place, and any file that it overrides.
 
 ## Functions
 

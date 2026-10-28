@@ -29,7 +29,7 @@ It links the library of Bridge, and opens each backend that the deployment names
 | `python project.py distclean` | Removes the folder `build`, also what `fetch` downloaded. |
 
 After `python project.py build`, run `bridge-host <config.toml>`, or `bridge-host --show-config <config.toml>` to print the deployment without running it.
-`--show-config` prints each key, with the file and the line that state it.
+`--show-config` prints each key and its whole value, with the file and the line that state it.
 The host exits with 0 after a run, and with 2 after it prints its usage.
 It exits with 1 if it refuses a key, if Bridge refuses a call, or if a record is an error.
 
@@ -155,6 +155,7 @@ A module states its manifest in its file, as words that each end with a zero byt
 
 Only the identity has a limit of length. No other word of the manifest has one.
 The host refuses a word with no `=` after the first word. It does not read a word with a key that it does not know.
+In the message `states a <word> that cannot be`, `<word>` is the part before the first `=`, cut to its first 60 bytes.
 
 ## Messages
 

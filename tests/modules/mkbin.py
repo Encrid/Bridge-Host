@@ -86,8 +86,8 @@ def bins():
     out["wasm_longleb"] = b"\x00asm\x01\x00\x00\x00\x00\x80\x80\x80\x80\x80\x80"
     out["wasm_cutleb"] = b"\x00asm\x01\x00\x00\x00\x00"
     out["wasm_emptyman"] = wasm_manifest(b"\x00")
-    out["wasm_nulfirst"] = wasm_manifest(b"id:x@1\x00\x00abi=1")
-    out["wasm_nozero"] = wasm_manifest(b"nz:x@1\x00abi=1")
+    out["wasm_nulfirst"] = wasm_manifest(b"id:x@1\x00\x00abi=2")
+    out["wasm_nozero"] = wasm_manifest(b"nz:x@1\x00abi=2")
     return out
 
 

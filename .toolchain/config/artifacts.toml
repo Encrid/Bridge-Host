@@ -43,26 +43,27 @@ manifest = ["bridge-host:quiet@1.0.0", "{own}"]
 variants = [
     { name = "quiet2", defines = ["ONCE", 'SAY="said once, again"'] },
     { name = "noabi", manifest = ["bridge-host:noabi@1.0.0", "pinned=false", "reloadable=false", "config=none"] },
-    { name = "mute", manifest = ["bridge-host:mute@1.0.0", "abi=1", "reloadable=false", "config=none"] },
-    { name = "swap", defines = ["ONCE", 'SAY="swaps"'], manifest = ["bridge-host:swap@1.0.0", "abi=1", "pinned=false", "reloadable=true", "config=none"] },
-    { name = "swap2", defines = ["ONCE", 'SAY="swapped"'], manifest = ["bridge-host:swap@1.0.0", "abi=1", "pinned=false", "reloadable=true", "config=none"] },
-    { name = "abitwo", manifest = ["bridge-host:abitwo@1.0.0", "abi=2", "pinned=false", "reloadable=false", "config=none"] },
+    { name = "mute", manifest = ["bridge-host:mute@1.0.0", "abi=2", "reloadable=false", "config=none"] },
+    { name = "swap", defines = ["ONCE", 'SAY="swaps"'], manifest = ["bridge-host:swap@1.0.0", "abi=2", "pinned=false", "reloadable=true", "config=none"] },
+    { name = "swap2", defines = ["ONCE", 'SAY="swapped"'], manifest = ["bridge-host:swap@1.0.0", "abi=2", "pinned=false", "reloadable=true", "config=none"] },
+    { name = "abithree", manifest = ["bridge-host:abithree@1.0.0", "abi=3", "pinned=false", "reloadable=false", "config=none"] },
     { name = "badabi", manifest = ["bridge-host:badabi@1.0.0", "abi=x", "pinned=false", "reloadable=false", "config=none"] },
-    { name = "noconfig", manifest = ["bridge-host:noconfig@1.0.0", "abi=1", "pinned=false", "reloadable=false"] },
-    { name = "noreload", manifest = ["bridge-host:noreload@1.0.0", "abi=1", "pinned=false", "config=none"] },
-    { name = "nocolon", manifest = ["nocolon", "abi=1", "pinned=false", "reloadable=false", "config=none"] },
-    { name = "nocat", manifest = ["has:colon", "abi=1", "pinned=false", "reloadable=false", "config=none"] },
-    { name = "firsteq", manifest = ["x:y@1=v", "abi=1", "pinned=false", "reloadable=false", "config=none"] },
-    { name = "bareword", manifest = ["bw:x@1", "bareword", "abi=1", "pinned=false", "reloadable=false", "config=none"] },
-    { name = "unknownkey", manifest = ["bridge-host:unknownkey@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=none", "colour=blue"] },
-    { name = "longid", manifest = ["i:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd@1", "abi=1"] },
+    { name = "noconfig", manifest = ["bridge-host:noconfig@1.0.0", "abi=2", "pinned=false", "reloadable=false"] },
+    { name = "noreload", manifest = ["bridge-host:noreload@1.0.0", "abi=2", "pinned=false", "config=none"] },
+    { name = "nocolon", manifest = ["nocolon", "abi=2", "pinned=false", "reloadable=false", "config=none"] },
+    { name = "nocat", manifest = ["has:colon", "abi=2", "pinned=false", "reloadable=false", "config=none"] },
+    { name = "firsteq", manifest = ["x:y@1=v", "abi=2", "pinned=false", "reloadable=false", "config=none"] },
+    { name = "bareword", manifest = ["bw:x@1", "bareword", "abi=2", "pinned=false", "reloadable=false", "config=none"] },
+    { name = "unknownkey", manifest = ["bridge-host:unknownkey@1.0.0", "abi=2", "pinned=false", "reloadable=false", "config=none", "colour=blue"] },
+    { name = "longid", manifest = ["i:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd@1", "abi=2"] },
     { name = "emptyabi", manifest = ["ea:x@1", "abi="] },
-    { name = "longconfig", manifest = ["lc:x@1", "abi=1", "pinned=false", "reloadable=false", "config=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"] },
-    { name = "badflag", manifest = ["bf:x@1", "abi=1", "pinned=maybe", "reloadable=false", "config=none"] },
+    { name = "longconfig", manifest = ["lc:x@1", "abi=2", "pinned=false", "reloadable=false", "config=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"] },
+    { name = "badflag", manifest = ["bf:x@1", "abi=2", "pinned=maybe", "reloadable=false", "config=none"] },
     { name = "negabi", manifest = ["ng:x@1", "abi=-5", "pinned=false", "reloadable=false", "config=none"] },
-    { name = "relfirst", manifest = ["rf:x@1", "abi=1", "reloadable=false", "pinned=false", "config=none"] },
+    { name = "relfirst", manifest = ["rf:x@1", "abi=2", "reloadable=false", "pinned=false", "config=none"] },
     { name = "id127", manifest = ["i:ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd@1", "{own}"] },
-    { name = "longbare", manifest = ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "abi=1"] },
+    { name = "longbare", manifest = ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "abi=2"] },
+    { name = "longword", manifest = ["lw:x@1", "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"] },
 ]
 
 [[artifact]]
@@ -72,16 +73,16 @@ test = true
 folder = "fixtures"
 sources = ["tests/modules/word.c"]
 include = ["{bridge}/include", "{bb_wasm}/include", "tests/modules"]
-manifest = ["bridge-host:word@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=word"]
+manifest = ["bridge-host:word@1.0.0", "abi=2", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=word"]
 variants = [
     { name = "guest", manifest = ["guest:word@1.0.0", "{own}"] },
-    { name = "owned", manifest = ["bridge-host:owned@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=word", 'config.word="its own"'] },
-    { name = "nocomp", manifest = ["bridge-host:nocomp@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=none", "settings=word"] },
-    { name = "badset", manifest = ["bridge-host:badset@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=word", 'config.word=[1, 2]'] },
-    { name = "multi", manifest = ["bridge-host:multi@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=w x y z"] },
-    { name = "owns", manifest = ["bridge-host:owns@1.0.0", "abi=1", "pinned=true", "reloadable=true", "config=bridge-host:Word", "settings=own", "scratch=100", "log_level=9", "on_error=@", "spans=1\nx=2", ""] },
-    { name = "longname", manifest = ["bridge-host:longname@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn", 'config.nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn="its own"'] },
-    { name = "equals", manifest = ["bridge-host:equals@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=word", 'config.word="x=y"'] },
+    { name = "owned", manifest = ["bridge-host:owned@1.0.0", "abi=2", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=word", 'config.word="its own"'] },
+    { name = "nocomp", manifest = ["bridge-host:nocomp@1.0.0", "abi=2", "pinned=false", "reloadable=false", "config=none", "settings=word"] },
+    { name = "badset", manifest = ["bridge-host:badset@1.0.0", "abi=2", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=word", 'config.word=[1, 2]'] },
+    { name = "multi", manifest = ["bridge-host:multi@1.0.0", "abi=2", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=w x y z"] },
+    { name = "owns", manifest = ["bridge-host:owns@1.0.0", "abi=2", "pinned=true", "reloadable=true", "config=bridge-host:Word", "settings=own", "scratch=100", "log_level=9", "on_error=@", "spans=1\nx=2", ""] },
+    { name = "longname", manifest = ["bridge-host:longname@1.0.0", "abi=2", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn", 'config.nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn="its own"'] },
+    { name = "equals", manifest = ["bridge-host:equals@1.0.0", "abi=2", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=word", 'config.word="x=y"'] },
 ]
 
 [[artifact]]

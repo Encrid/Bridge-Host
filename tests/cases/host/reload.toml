@@ -57,11 +57,11 @@ script = [{ wait = "? go on", type = "go" }]
 [[case]]
 name = "a reload to a file built against another ABI"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
-script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "abitwo" }, type = "go" }]
+script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "abithree" }, type = "go" }]
 
 [case.claims]
 status = 1
-has = ["not replaced: d/swap.wasm: bridge-host:abitwo@1.0.0 was refused"]
+has = ["not replaced: d/swap.wasm: bridge-host:abithree@1.0.0 was refused"]
 
 [case.folders]
 "{case}/d" = ["wait", "swap"]

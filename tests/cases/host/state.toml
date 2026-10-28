@@ -409,3 +409,41 @@ native = "{bb_native}/bridge_native"
 
 [case.false.folders]
 "{case}/mods" = ["word"]
+
+[[case]]
+name = "--show-config prints a value of 600 bytes whole"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/lv.toml"]
+
+[case.claims]
+matches = ["config\\.word = \"v{600}\"  lv\\.toml:[0-9]+"]
+
+[case.folders]
+"{case}/mods" = ["word"]
+
+[case.files]
+"{case}/lv.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update", "late"]
+rounds = 8
+[content]
+paths = ["mods"]
+[module."bridge-host:word@1.0.0".config]
+word = "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/lv.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update", "late"]
+rounds = 8
+[content]
+paths = ["mods"]
+[module."bridge-host:word@1.0.0".config]
+word = "v"
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''

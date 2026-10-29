@@ -35,11 +35,14 @@ static bool take_setting(const stating_t *s, const char *name,
     const char *const two[] = { s->of->who.identity, name };
     const shown_t how = { "  ", state_states_setting, two };
     found_t f = config_find(&s->h->config, state_states_setting, two);
-    char key[160];
+    size_t size = sizeof("config.") + strlen(name);
+    char *key = state_keep(s, malloc(size));
 
-    snprintf(key, sizeof(key), "config.%s", name);
+    if (!key)
+        return (false);
+    snprintf(key, size, "config.%s", name);
     if (!f.at.value && !f.other.value)
-        f.at = state_own_setting(s, name);
+        f.at = state_own_setting(s, key);
     if (!config_say_found(&s->h->config, key, &f, s->prefix))
         return (false);
     if (s->show)

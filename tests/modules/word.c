@@ -32,7 +32,7 @@ BRIDGE_EXPORT(init) int init(void)
     bridge_term_t terms[1] = {{ 0, BRIDGE_READ, BRIDGE_OPTIONAL, 0 }};
 
     word = BRIDGE_COMPONENT("bridge-host:Word", word_t, BRIDGE_DELETE,
-        BRIDGE_SINGLETON);
+        BRIDGE_SINGLETON, BRIDGE_ON_DESTROY_REMOVE);
     terms[0].slot = word;
     BRIDGE_ADD_SYSTEM("say", "late", terms, 1, nullptr, 0, nullptr, 0);
     return (0);

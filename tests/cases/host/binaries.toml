@@ -40,3 +40,91 @@ native = "{bb_native}/bridge_native"
 
 [case.false.folders]
 "{case}/bin" = ["quiet"]
+
+[[case]]
+name = "a manifest whose last word has no zero byte is refused"
+run = ["{out}/bridge-host{exe}", "{case}/mb.toml"]
+
+[case.claims]
+status = 0
+has = ["not loaded: bin/wasm_nozero.bin: nz:x@1 its manifest has a word with no zero byte at its end"]
+
+[case.folders]
+"{case}/bin" = ["wasm_nozero"]
+
+[case.files]
+"{case}/mb.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["bin"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/bin" = ["quiet"]
+
+[[case]]
+name = "an empty manifest is refused"
+run = ["{out}/bridge-host{exe}", "{case}/mb.toml"]
+
+[case.claims]
+status = 0
+has = ["not a module: bin/wasm_emptyman.bin: its manifest is empty"]
+
+[case.folders]
+"{case}/bin" = ["wasm_emptyman"]
+
+[case.files]
+"{case}/mb.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["bin"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/bin" = ["quiet"]
+
+[[case]]
+name = "a file of no known format is not a module"
+run = ["{out}/bridge-host{exe}", "{case}/mb.toml"]
+
+[case.claims]
+status = 0
+has = ["not a module: odd/note.txt: neither a wasm module nor a library"]
+
+[case.files]
+"{case}/odd/note.txt" = "a note, and no module"
+"{case}/mb.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["odd"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/mb.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["quiet"]

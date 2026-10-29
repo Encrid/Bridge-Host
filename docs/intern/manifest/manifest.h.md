@@ -8,8 +8,9 @@ The flags `has_pinned` and `has_reloadable` record whether the manifest stated e
 
 `identity`, `config` and `settings` point into the bytes of the file, at the text of their words.
 The zero byte that ends each word ends each of them too.
+A word that the manifest does not state gives an empty text, not a null pointer.
 The bytes outlive the manifest, since one `handed_t` holds both, and `handed_free` frees both.
-Thus the manifest copies no word, and no word has a limit of length but the identity: `docs/intern/manifest/manifest.c.md`.
+Thus the manifest copies no word, and the identity is the one word with a limit of length: `docs/intern/manifest/manifest.c.md`.
 
 ## Functions
 

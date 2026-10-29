@@ -10,10 +10,10 @@
     #include <stdint.h>
 
 typedef struct {
-    char identity[96];
+    const char *identity;
     const char *backend;
-    char config[96];
-    char settings[96];
+    const char *config;
+    const char *settings;
     int64_t abi;
     bool pinned;
     bool reloadable;

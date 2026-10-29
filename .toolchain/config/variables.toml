@@ -1,5 +1,5 @@
 [variables]
-own = ["abi=1", "pinned=false", "reloadable=false", "config=none"]
+own = ["abi=2", "pinned=false", "reloadable=false", "config=none"]
 binaryen_top = "binaryen-version_133"
 features = ["--enable-multimemory", "--enable-bulk-memory", "--enable-sign-ext", "--enable-nontrapping-float-to-int", "--enable-mutable-globals"]
 

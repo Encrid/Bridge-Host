@@ -37,13 +37,11 @@ bool state_is_path(const config_t *c, const said_t *said)
     return (false);
 }
 
-said_t state_own_setting(const stating_t *s, const char *name)
+said_t state_own_setting(const stating_t *s, const char *key)
 {
-    char key[160];
     value_t *own = state_keep_value(s, calloc(1, sizeof(*own)));
     const char *why = nullptr;
 
-    snprintf(key, sizeof(key), "config.%s", name);
     if (!own || !read_own(s->of, key, own))
         return ((said_t){});
     why = config_check_value(own, CHECK_SETTING);

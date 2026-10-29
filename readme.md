@@ -29,7 +29,7 @@ It links the library of Bridge, and opens each backend that the deployment names
 | `python project.py distclean` | Removes the folder `build`, also what `fetch` downloaded. |
 
 After `python project.py build`, run `bridge-host <config.toml>`, or `bridge-host --show-config <config.toml>` to print the deployment without running it.
-`--show-config` prints each key, with the file and the line that state it.
+`--show-config` prints each key and its whole value, with the file and the line that state it.
 The host exits with 0 after a run, and with 2 after it prints its usage.
 It exits with 1 if it refuses a key, if Bridge refuses a call, or if a record is an error.
 
@@ -153,8 +153,9 @@ A module states its manifest in its file, as words that each end with a zero byt
 | `<key>=<value>` | The default of a key of the module, for example `scratch=65536`. |
 | `config.<name>=<value>` | The default of a setting. |
 
-A word of the manifest has no limit of length, but the identity.
+Only the identity has a limit of length. No other word of the manifest has one.
 The host refuses a word with no `=` after the first word. It does not read a word with a key that it does not know.
+In the message `states a <word> that cannot be`, `<word>` is the part before the first `=`, cut to its first 60 bytes.
 
 ## Messages
 
@@ -195,6 +196,8 @@ Finding the modules:
 - `cannot look in '<path>'`
 - `too many files: <count> are looked at`
 - `not a module: <file>: <why>`
+- `neither a wasm module nor a library`
+- `no manifest`
 - `states a <word> that cannot be`
 - `its manifest does not begin with who it is`
 - `its identity has more than 127 bytes`

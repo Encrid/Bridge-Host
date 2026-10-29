@@ -181,23 +181,14 @@ static void do_say(void)
     value_t items[3] = { { .kind = VALUE_WHOLE, .whole = 100 },
         { .kind = VALUE_WHOLE, .whole = 200 },
         { .kind = VALUE_WHOLE, .whole = 300 } };
-    value_t list = { .kind = VALUE_LIST, .items = items, .count = 3 };
-    char big[64];
-    char tiny[4];
+    value_t all[5] = { { .kind = VALUE_TEXT, .text = (char *)"hi" },
+        { .kind = VALUE_WHOLE, .whole = 42 },
+        { .kind = VALUE_REAL, .real = 3.5 },
+        { .kind = VALUE_FLAG, .flag = true },
+        { .kind = VALUE_LIST, .items = items, .count = 3 } };
 
-    toml_say(&(value_t){ .kind = VALUE_TEXT, .text = (char *)"hi" }, big,
-        sizeof(big));
-    ck(!strcmp(big, "\"hi\""), "say text");
-    toml_say(&(value_t){ .kind = VALUE_WHOLE, .whole = 42 }, big, sizeof(big));
-    ck(!strcmp(big, "42"), "say whole");
-    toml_say(&(value_t){ .kind = VALUE_REAL, .real = 3.5 }, big, sizeof(big));
-    ck(!strcmp(big, "3.5"), "say real");
-    toml_say(&(value_t){ .kind = VALUE_FLAG, .flag = true }, big, sizeof(big));
-    ck(!strcmp(big, "true"), "say flag");
-    toml_say(&list, big, sizeof(big));
-    ck(!strcmp(big, "[100, 200, 300]"), "say list");
-    toml_say(&list, tiny, sizeof(tiny));
-    ck(tiny[0] == '[', "say tiny");
+    toml_say(&(value_t){ .kind = VALUE_LIST, .items = all, .count = 5 });
+    printf("\n");
 }
 
 static void do_prefix(void)

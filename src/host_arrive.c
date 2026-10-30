@@ -9,8 +9,7 @@ static bool is_trusted(const file_t *f, const char *backend)
 {
     char answer[64] = "";
 
-    printf("? trust %s, %s, %s\n", f->of->who.identity, backend, f->path);
-    fflush(stdout);
+    say("? trust %s, %s, %s\n", f->of->who.identity, backend, f->path);
     if (!fgets(answer, sizeof(answer), stdin))
         return (false);
     answer[strcspn(answer, "\r\n")] = 0;
@@ -24,7 +23,7 @@ bool may_arrive(const file_t *f, const held_t *held)
     if (held->arrive == ARRIVE_ASK)
         may = is_trusted(f, held->name);
     if (!may)
-        printf("not loaded: %s: %s, %s, not trusted\n", f->path,
+        say("not loaded: %s: %s, %s, not trusted\n", f->path,
             f->of->who.identity, held->name);
     return (may);
 }

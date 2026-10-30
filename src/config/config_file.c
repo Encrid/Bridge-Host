@@ -10,6 +10,7 @@
 #include "config.h"
 #include "file_bytes.h"
 #include "os.h"
+#include "say.h"
 
 static char *read_text(const char *path)
 {
@@ -30,7 +31,7 @@ static bool take_text(cfile_t *f, char *text)
 
     free(text);
     if (!taken)
-        printf("refused: %s:%u: %s\n", f->path, f->toml.line, f->toml.why);
+        say("refused: %s:%u: %s\n", f->path, f->toml.line, f->toml.why);
     return (taken);
 }
 
@@ -42,7 +43,7 @@ int32_t config_add_file(config_t *c, char *path, int32_t by, uint32_t line)
     cfile_t *f = nullptr;
 
     if (!more) {
-        printf("cannot read '%s'\n", path);
+        say("cannot read '%s'\n", path);
         free(text);
         free(path);
         return (-1);
@@ -69,5 +70,5 @@ void config_say_chain(const config_t *c, int32_t from, int32_t to)
 {
     if (from != to && from >= 0)
         config_say_chain(c, c->files[from].by, to);
-    printf(" %s", c->files[from].path);
+    say_part(" %s", c->files[from].path);
 }

@@ -30,6 +30,7 @@ It links the library of Bridge, and opens each backend that the deployment names
 
 After `python project.py build`, run `bridge-host <config.toml>`, or `bridge-host --show-config <config.toml>` to print the deployment without running it.
 `--show-config` prints each key and its whole value, with the file and the line that state it.
+The host gives each line to the output in one piece, when the line is complete.
 The host exits with 0 after a run, and with 2 after it prints its usage.
 It exits with 1 if it refuses a key, if Bridge refuses a call, or if a record is an error.
 

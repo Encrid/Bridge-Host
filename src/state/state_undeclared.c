@@ -24,7 +24,7 @@ static uint32_t say_undeclared_in(const stating_t *s, const cfile_t *f,
         e = &f->toml.entries[i];
         if (!state_is_setting(e, any) || has_declared(declared, e->key[3]))
             continue;
-        printf("%sit takes no config.%s, stated in %s:%u\n", s->prefix,
+        say("%sit takes no config.%s, stated in %s:%u\n", s->prefix,
             e->key[3], f->path, e->line);
         count++;
     }

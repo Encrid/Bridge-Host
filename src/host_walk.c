@@ -54,7 +54,7 @@ static int walk_path(const host_t *h, const char *path, see_fn *see,
     if (d)
         closedir(d);
     if (!d && !file) {
-        printf("cannot look in '%s'\n", path);
+        say("cannot look in '%s'\n", path);
         return (-1);
     }
     if (file) {

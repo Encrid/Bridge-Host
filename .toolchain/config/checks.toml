@@ -172,28 +172,28 @@ why = "add_path's realloc returns null only when memory runs out, which the test
 
 [[branches.exception]]
 path = "src/config/config_name.c"
-line = 30
+line = 31
 col = 9
 side = "true"
 why = "add_named's realloc returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_name.c"
-line = 54
+line = 55
 col = 25
 side = "true"
 why = "add_named fails only when its realloc runs out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_name.c"
-line = 70
+line = 71
 col = 19
 side = "false"
 why = "config_take_file's path is null only when an earlier malloc ran out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_name.c"
-line = 80
+line = 81
 col = 10
 side = "false"
 why = "the path is null only when an earlier malloc ran out of memory, which the tests do not force."
@@ -334,7 +334,7 @@ why = "os_path_whole of a stored path returns null only for an unparseable path,
 
 [[branches.exception]]
 path = "src/config/config_file.c"
-line = 63
+line = 64
 col = 13
 side = "false"
 system = "windows"
@@ -342,7 +342,7 @@ why = "config_find_whole's key from os_path_whole is null only for an unparseabl
 
 [[branches.exception]]
 path = "src/config/config_file.c"
-line = 63
+line = 64
 col = 22
 side = "false"
 why = "a stored file's whole path is null only when os_path_whole could not resolve it, which the tests do not force."
@@ -408,14 +408,14 @@ why = "content.arrive is checked to be ask, load, or leave, so get_arrive always
 
 [[branches.exception]]
 path = "src/config/config_find.c"
-line = 61
+line = 62
 col = 9
 side = "true"
 why = "config_say_value prints a found value. The state callers reach it only past config_say_found, which is true when the value is non-null. show reaches it only when the world loaded, which needs phases, threads, rounds and the budget stated, and shows other keys only when config_names lists them, so every key it prints is found."
 
 [[branches.exception]]
 path = "src/config/config_find.c"
-line = 66
+line = 67
 col = 9
 side = "false"
 why = "every caller of config_say_value passes a non-null states function."
@@ -429,14 +429,14 @@ why = "config_states_module always gets three non-null table names: a module's i
 
 [[branches.exception]]
 path = "src/config/config_file.c"
-line = 70
+line = 71
 col = 23
 side = "false"
 why = "config_say_chain stops at the re-included file, which is an ancestor of the including file, so it never reaches the root's -1."
 
 [[branches.exception]]
 path = "src/config/config_say.c"
-line = 37
+line = 38
 col = 25
 side = "false"
 why = "config_find sets f.at whenever it sets f.other, so f.other is never set on its own."

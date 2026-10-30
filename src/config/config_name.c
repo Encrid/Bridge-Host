@@ -9,6 +9,7 @@
 
 #include "config.h"
 #include "os.h"
+#include "say.h"
 
 static const char *const PRESET[] = { "presets" };
 static const keyed_t PRESETS = { PRESET, 1 };
@@ -44,7 +45,7 @@ static bool take_named(config_t *c, int32_t at)
         return (true);
     list = said.value;
     if (!is_paths(list)) {
-        printf("refused: %s:%u: presets: a list of files\n",
+        say("refused: %s:%u: presets: a list of files\n",
             c->files[at].path, said.line);
         return (false);
     }
@@ -59,9 +60,9 @@ static bool take_named(config_t *c, int32_t at)
 
 static int32_t refuse_loop(const config_t *c, int32_t by, int32_t at)
 {
-    printf("refused: %s names itself:", c->files[at].path);
+    say_part("refused: %s names itself:", c->files[at].path);
     config_say_chain(c, by, at);
-    printf(" %s\n", c->files[at].path);
+    say(" %s\n", c->files[at].path);
     return (-1);
 }
 

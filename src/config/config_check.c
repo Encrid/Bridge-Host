@@ -3,10 +3,10 @@
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
-#include <stdio.h>
 #include <string.h>
 
 #include "config.h"
+#include "say.h"
 
 static const char *check_order(const entry_t *e)
 {
@@ -61,7 +61,7 @@ static uint32_t check_file(const config_t *c, uint32_t at)
         why = e->value.kind ? check_entry(c, e, (int32_t)at == c->local)
             : check_header(f, e);
         if (why)
-            printf("refused: %s:%u: %s: %s\n", f->path, e->line,
+            say("refused: %s:%u: %s: %s\n", f->path, e->line,
                 config_say_key((const char *const *)e->key, e->depth, key,
                 sizeof(key)), why);
         refused += why != nullptr;

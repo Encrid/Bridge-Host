@@ -53,7 +53,7 @@ bool config_backends(host_t *h)
     bool taken = names.count > 0;
 
     if (!names.count)
-        printf("not stated: backend\n");
+        say("not stated: backend\n");
     h->held = calloc(names.count + 1, sizeof(*h->held));
     h->backends = calloc(names.count + 1, sizeof(*h->backends));
     for (uint32_t i = 0; h->held && h->backends && i < names.count; i++)

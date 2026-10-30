@@ -15,16 +15,16 @@ bool take_lock(const char *name)
     if (path)
         snprintf(path, len, "%s.d", name);
     if (!path || os_folder_make(path)) {
-        printf("refused: %s.d is no folder\n", name);
+        say("refused: %s.d is no folder\n", name);
         free(path);
         return (false);
     }
     snprintf(path, len, "%s.d/lock", name);
     got = os_lock(path);
     if (got > 0)
-        printf("refused: %s is being run\n", name);
+        say("refused: %s is being run\n", name);
     if (got < 0)
-        printf("cannot lock '%s'\n", path);
+        say("cannot lock '%s'\n", path);
     free(path);
     return (!got);
 }

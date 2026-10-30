@@ -9,7 +9,7 @@ static const file_t *get_same(const host_t *h, const char *who)
 {
     const file_t *same = nullptr;
 
-    for (int i = 0; i < FILES; i++)
+    for (uint32_t i = 0; i < h->d.files; i++)
         if (h->files[i].loaded && !strncmp(h->files[i].of->who.identity, who,
             strcspn(who, "@") + 1))
             same = &h->files[i];

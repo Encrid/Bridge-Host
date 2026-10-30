@@ -45,6 +45,8 @@ written = 6
 failing = 3
 [content]
 paths = ["mods"]
+files = 32
+depth = 1
 [content.load]
 all = true
 [content.arrive]
@@ -160,6 +162,8 @@ written = 6
 failing = 3
 [content]
 paths = ["mods"]
+files = 32
+depth = 1
 [content.load]
 all = true
 [content.arrive]
@@ -489,7 +493,7 @@ library = "{bb_native}/bridge_native"
 [[case]]
 name = "a statement whose prefix finds no memory writes its lines with no prefix"
 run = ["{out}/bridge-host{exe}", "{case}/p.toml"]
-fail = { calloc = 9 }
+fail = { calloc = 11 }
 
 [case.claims]
 status = 1
@@ -515,7 +519,7 @@ fail = {}
 [[case]]
 name = "a default of the manifest that finds no memory is not taken"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/d.toml"]
-fail = { calloc = 10 }
+fail = { calloc = 12 }
 
 [case.claims]
 status = 1

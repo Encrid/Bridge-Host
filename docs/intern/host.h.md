@@ -1,19 +1,21 @@
 # src/host.h
 
 This private header gathers the whole host.
-It sets the constant `FILES`, the `arrive` choices, the outcomes of a replacement, and the structs that one run shares.
+It sets the `arrive` choices, the outcomes of a replacement, and the structs that one run shares.
 It then declares the functions that the other sources of `src` define.
 
 ## The data
 
-`host_t` holds one run: the parsed `config_t`, the `deployment_t`, the backends, the content paths, the `bridge_world_t`, and a fixed array of `file_t` slots.
+`host_t` holds one run: the parsed `config_t`, the `deployment_t`, the backends, the content paths and the `bridge_world_t`.
+It also holds the array of the `file_t` slots, and the found files of a look.
 Of the run, it keeps the count `round` of the rounds that ran, and `ended`: whether a module asked for the end.
 It also keeps `full`: whether the last look found a path with no free slot.
+
 A `file_t` records one known file by its path, its hash mark, and the module behind it.
 A `handed_t` keeps the bytes of a file together with the manifest that the host read from them.
 A `held_t` names a backend, its library path, its arrive rule, and the array of its settings.
 
-`stating_t`, `look_t` and `seeing_t` carry state while the host states a module or walks the content.
+`stating_t`, `look_t`, `seeing_t` and `walk_t` carry state while the host states a module or walks the content.
 A `made_t` lists what the host allocates for the config of one module, and a `stating_t` points at it.
 
 ## Functions

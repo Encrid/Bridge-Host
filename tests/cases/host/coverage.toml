@@ -198,6 +198,8 @@ has = [
     "not stated: checks.validate",
     "not stated: records.written",
     "not stated: records.failing",
+    "not stated: content.files",
+    "not stated: content.depth",
     "not stated: budget.entities",
     "not stated: content.arrive.wasm",
 ]

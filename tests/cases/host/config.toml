@@ -511,6 +511,9 @@ validate = false
 [records]
 written = 6
 failing = 3
+[content]
+files = 32
+depth = 1
 
 [content.load]
 all = true

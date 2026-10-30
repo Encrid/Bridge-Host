@@ -52,7 +52,7 @@ run = ["{out}/bridge-host{exe}", "--show-config", "{case}/over.toml"]
 
 [case.claims]
 status = 1
-line = ["  scratch = 200  over.toml:34"]
+line = ["  scratch = 200  over.toml:36"]
 
 [case.folders]
 "{case}/mods" = ["owns"]
@@ -87,6 +87,8 @@ written = 6
 failing = 3
 [content]
 paths = ["mods"]
+files = 32
+depth = 1
 [content.load]
 all = true
 [content.arrive]
@@ -127,6 +129,8 @@ written = 6
 failing = 3
 [content]
 paths = ["mods"]
+files = 32
+depth = 1
 [content.load]
 all = true
 [content.arrive]

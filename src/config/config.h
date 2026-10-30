@@ -119,6 +119,8 @@ typedef struct {
     enum bridge_flag live;
     uint8_t written;
     uint8_t failing;
+    uint32_t files;
+    uint32_t depth;
 } deployment_t;
 
 extern const key_rule_t MODULE_KEYS[];

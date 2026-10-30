@@ -7,15 +7,6 @@
 
 #include "config.h"
 
-static const char *check_named(const entry_t *e, const char *const *names,
-    const enum check *checks)
-{
-    for (uint32_t i = 0; names[i]; i++)
-        if (!strcmp(e->key[e->depth - 1], names[i]))
-            return (config_check_value(&e->value, checks[i]));
-    return ("no key of Bridge-Host's or Bridge's");
-}
-
 static const char *check_rule(const key_rule_t *rules, uint32_t count,
     const entry_t *e, bool local)
 {
@@ -57,14 +48,14 @@ const char *config_check_backend(const entry_t *e, bool local)
 
 const char *config_check_content(const entry_t *e)
 {
-    static const char *const NAMES[] = { "paths", "ignore", nullptr };
-    static const enum check CHECKS[] = { CHECK_NAMES, CHECK_NAMES };
+    bool list = e->depth == 2 && (!strcmp(e->key[1], "paths")
+        || !strcmp(e->key[1], "ignore"));
 
-    if (e->depth == 2)
-        return (check_named(e, NAMES, CHECKS));
+    if (list)
+        return (config_check_value(&e->value, CHECK_NAMES));
     if (e->depth == 3 && !strcmp(e->key[1], "load"))
         return (config_check_value(&e->value, CHECK_FLAG));
     if (e->depth == 3 && !strcmp(e->key[1], "arrive"))
         return (config_check_value(&e->value, CHECK_ARRIVE));
-    return ("no key of Bridge-Host's or Bridge's");
+    return (check_rule(WORLD_KEYS, WORLD_KEY_COUNT, e, false));
 }

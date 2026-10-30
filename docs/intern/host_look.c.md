@@ -14,8 +14,8 @@ It allocates a `handed_t` only for a file that it meets. An unchanged file costs
 
 ## The full room
 
-`look_t` notes whether a path of this look found no slot, and `host_t` keeps that note of the last look.
-`look` writes `too many files: 32 are looked at` when the room is full now and was not full at the last look.
+The room is `content.files` slots. `look_t` notes whether a path of this look found no slot, and `host_t` keeps that note of the last look.
+`look` writes `too many files: <files> are looked at` when the room is full now and was not full at the last look.
 Thus the line comes each time the room becomes full, and not at each round of a full room.
 The line counts as work of the look, so the run does not end on that round.
 

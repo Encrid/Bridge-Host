@@ -266,7 +266,7 @@ library = "{bb_native}/bridge_native"
 [[case]]
 name = "a path that finds no memory is not looked at, and the walk goes on"
 run = ["{out}/bridge-host{exe}", "{case}/j.toml"]
-fail = { calloc = 8 }
+fail = { calloc = 10 }
 
 [case.claims]
 status = 0
@@ -278,6 +278,131 @@ lacks = ["loaded: bridge-host:knock@1.0.0"]
 
 [case.files]
 "{case}/j.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a module in a folder below a content folder loads at a depth of 2"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+
+[case.claims]
+status = 0
+line = ["loaded: bridge-host:knock@1.0.0, native, mods/below/knock{library}"]
+
+[case.folders]
+"{case}/mods/below" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+depth = 2
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+depth = 1
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "the host looks at as many files as content.files states"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+
+[case.claims]
+status = 0
+line = ["too many files: 1 are looked at"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+files = 1
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+"{case}/mods/note.txt" = '''
+a note
+'''
+
+[case.false.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+files = 2
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "the slots of the files that find no memory refuse the run"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { calloc = 8 }
+
+[case.claims]
+status = 1
+lacks = ["still loaded:"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "the list of the found files that finds no memory refuses the run"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { calloc = 9 }
+
+[case.claims]
+status = 1
+lacks = ["still loaded:"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
 rounds = 8

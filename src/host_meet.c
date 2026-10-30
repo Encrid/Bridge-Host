@@ -9,7 +9,7 @@ file_t *find_file(host_t *h, const char *path)
 {
     file_t *free_one = nullptr;
 
-    for (int i = 0; i < FILES; i++) {
+    for (uint32_t i = 0; i < h->d.files; i++) {
         if (h->files[i].path && !strcmp(h->files[i].path, path))
             return (&h->files[i]);
         if (!h->files[i].path && !free_one)

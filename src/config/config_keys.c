@@ -87,7 +87,11 @@ const key_rule_t WORLD_KEYS[] = {
     { "written", CHECK_RECORD, 1, offsetof(deployment_t, written), 0,
         "records", false },
     { "failing", CHECK_RECORD, 1, offsetof(deployment_t, failing), 0,
-        "records", false }
+        "records", false },
+    { "files", CHECK_COUNT, 4, offsetof(deployment_t, files), 0, "content",
+        false },
+    { "depth", CHECK_COUNT, 4, offsetof(deployment_t, depth), 0, "content",
+        false }
 };
 
 const uint32_t WORLD_KEY_COUNT = sizeof(WORLD_KEYS) / sizeof(WORLD_KEYS[0]);

@@ -17,8 +17,6 @@
     #include "manifest.h"
     #include "say.h"
 
-constexpr int FILES = 32;
-
 enum arrive : uint8_t {
     ARRIVE_UNSTATED,
     ARRIVE_ASK,
@@ -76,7 +74,8 @@ typedef struct {
     char **ignore;
     uint32_t ignore_count;
     bridge_world_t *w;
-    file_t files[FILES];
+    file_t *files;
+    file_t **found;
     bool looked;
     bool full;
     counts_t counts;
@@ -98,7 +97,7 @@ typedef struct {
 } stating_t;
 
 typedef struct {
-    file_t *found[FILES];
+    file_t **found;
     int count;
     int did;
     bool full;
@@ -110,6 +109,12 @@ typedef struct {
 } seeing_t;
 
 typedef void see_fn(void *ud, const char *path);
+
+typedef struct {
+    const host_t *h;
+    see_fn *see;
+    void *ud;
+} walk_t;
 
 [[nodiscard]] bool config_world(host_t *h);
 

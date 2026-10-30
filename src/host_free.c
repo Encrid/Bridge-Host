@@ -12,6 +12,16 @@ void handed_free(handed_t *of)
     free(of);
 }
 
+static void free_files(host_t *h)
+{
+    for (uint32_t i = 0; h->files && i < h->d.files; i++) {
+        free(h->files[i].path);
+        handed_free(h->files[i].of);
+    }
+    free(h->files);
+    free(h->found);
+}
+
 void host_free(host_t *h)
 {
     for (uint32_t i = 0; h->held && i < h->backend_count; i++) {
@@ -22,10 +32,7 @@ void host_free(host_t *h)
         free(h->paths[i]);
     for (uint32_t i = 0; i < h->ignore_count; i++)
         free(h->ignore[i]);
-    for (int i = 0; i < FILES; i++) {
-        free(h->files[i].path);
-        handed_free(h->files[i].of);
-    }
+    free_files(h);
     free(h->held);
     free(h->backends);
     free(h->phases);

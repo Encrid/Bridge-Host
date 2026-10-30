@@ -54,7 +54,9 @@ bool config_content(host_t *h)
     h->ignore_count = collect(h, "ignore", &h->ignore);
     if (!h->path_count)
         say("not stated: content.paths\n");
-    return (h->path_count > 0);
+    h->files = calloc(h->d.files, sizeof(*h->files));
+    h->found = calloc(h->d.files, sizeof(*h->found));
+    return (h->path_count > 0 && h->files && h->found);
 }
 
 int config_load(const host_t *h, const char *identity, const char *prefix)

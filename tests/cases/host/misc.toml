@@ -67,6 +67,8 @@ written = 6
 failing = 3
 [content]
 paths = ["sm"]
+files = 32
+depth = 1
 [content.arrive]
 wasm = "load"
 native = "ask"

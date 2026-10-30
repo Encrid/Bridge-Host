@@ -196,6 +196,7 @@ has = [
     "not stated: live",
     "not stated: checks.profile",
     "not stated: checks.validate",
+    "not stated: checks.usage",
     "not stated: records.written",
     "not stated: records.failing",
     "not stated: content.files",

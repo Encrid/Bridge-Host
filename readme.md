@@ -79,15 +79,16 @@ Bridge refuses a value outside the range that it allows.
 `entities`, `tables`, `types`, `systems`, `terms`, `modules`, `persistent` and `columns` take a whole number from 1.
 `sparse_sets` and `direct_indexed` take a whole number from 1, or `"none"`.
 
-The table `[checks]` holds two switches. Each one is `true` or `false`, and each one is needed.
+The table `[checks]` holds three switches. Each one is `true` or `false`, and each one is needed.
 
 | Key | Value |
 | --- | --- |
 | `profile` | `true`: Bridge times each system and observer. |
 | `validate` | `true`: Bridge checks each column for a write that no running system declared. |
+| `usage` | `true`: at the end of the run, the host writes what the world used of its budget. |
 
 If two files state different values for a check, the host refuses it, as it refuses each other key.
-The document of the header `bridge.h` of Bridge tells what each check does.
+The document of the header `bridge.h` of Bridge tells what `profile` and `validate` do.
 
 The table `[records]` tells what the host does with each record of Bridge.
 
@@ -176,6 +177,17 @@ The document of the header `bridge_abi.h` of Bridge tells the status `BRIDGE_END
 
 The host writes each record whose level is `[records] written` or lower.
 A record whose level is `[records] failing` or lower is a failure, and the host then exits with 1.
+
+After the last round, the host writes these lines:
+
+1. `still loaded:`, and each module that Bridge still holds.
+2. With `profile = true`, one line for each system and observer: `profile <name>: <calls> calls, <nanos> ns`.
+3. With `usage = true`, one line for each key of `[budget]`: `usage <key>: <used> now, <most> at most`.
+4. With `usage = true`, one line for each loaded module: `usage <identity>: <bytes> persistent, <count> systems, <count> observers, <count> entities`.
+5. `destroyed: <count>`, after Bridge destroyed the world.
+
+Bridge gives each number, and the host reads no clock.
+The document of the header `bridge.h` of Bridge tells what each number counts.
 
 ## The manifest of a module
 
@@ -284,6 +296,9 @@ Running the rounds:
 - `ended after <rounds> rounds, as many as it was given`
 - `ended at round <round>: a module asked for the end`
 - `still loaded:`
+- `profile <name>: <calls> calls, <nanos> ns`
+- `usage <key>: <used> now, <most> at most`
+- `usage <identity>: <bytes> persistent, <count> systems, <count> observers, <count> entities`
 - `destroyed: <count>`
 
 Showing the deployment:

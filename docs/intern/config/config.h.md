@@ -23,7 +23,7 @@ It also names the table of the key, and tells whether the key is fixed.
 `table` is null for a key at the top of a file, and `fixed` marks a key that the local file cannot state.
 `MODULE_KEYS`, `WORLD_KEYS` and `BUDGET_KEYS` hold the rules, and `docs/intern/config/config_keys.c.md` tells them.
 
-A `deployment_t` holds what the host takes of the world. It holds the `bridge_config_t` of Bridge, `rounds` and `live`.
+A `deployment_t` holds what the host takes of the world. It holds the `bridge_config_t` of Bridge, `rounds`, `live` and the check `usage`.
 It also holds the levels `written` and `failing` of the records, and the `files` and the `depth` of the content.
 
 ## Functions

@@ -84,6 +84,8 @@ const key_rule_t WORLD_KEYS[] = {
         "checks", true },
     { "validate", CHECK_FLAG, 1, offsetof(deployment_t, world.validate), 0,
         "checks", true },
+    { "usage", CHECK_FLAG, 1, offsetof(deployment_t, usage), 0, "checks",
+        true },
     { "written", CHECK_RECORD, 1, offsetof(deployment_t, written), 0,
         "records", false },
     { "failing", CHECK_RECORD, 1, offsetof(deployment_t, failing), 0,

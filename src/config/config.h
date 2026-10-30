@@ -117,6 +117,7 @@ typedef struct {
     bridge_config_t world;
     uint32_t rounds;
     enum bridge_flag live;
+    enum bridge_flag usage;
     uint8_t written;
     uint8_t failing;
     uint32_t files;

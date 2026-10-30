@@ -15,7 +15,7 @@ This file makes the Bridge world and runs the rounds.
 A phase that gives 2 sets `ended`, and the other phases of the round still run.
 After the loop, `run` writes the line of an end that a module asked for, or else the line of the round limit.
 `say_record` prints a record of the level `written` or lower, and counts a failure for a record of the level `failing` or lower.
-`say_loaded` asks Bridge how many modules stay loaded, then lists them in memory of that size.
+After the line of the end, `run` calls `say_end` of `src/host_end.c`, then `bridge_destroy`.
 
 ## Functions
 

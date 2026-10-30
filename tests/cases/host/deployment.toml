@@ -52,7 +52,7 @@ run = ["{out}/bridge-host{exe}", "--show-config", "{case}/over.toml"]
 
 [case.claims]
 status = 1
-line = ["  scratch = 200  over.toml:38"]
+line = ["  scratch = 200  over.toml:39"]
 
 [case.folders]
 "{case}/mods" = ["owns"]
@@ -82,6 +82,7 @@ direct_indexed = "none"
 [checks]
 profile = false
 validate = false
+usage = false
 [records]
 written = 6
 failing = 3
@@ -126,6 +127,7 @@ direct_indexed = "none"
 [checks]
 profile = false
 validate = false
+usage = false
 [records]
 written = 6
 failing = 3

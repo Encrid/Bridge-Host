@@ -18,21 +18,6 @@ static void say_record(void *ud, const bridge_record_t *r)
     h->counts.said++;
 }
 
-static void say_loaded(bridge_world_t *w)
-{
-    int count = bridge_list_modules(w, nullptr, 0);
-    bridge_module_info_t *loaded = count > 0
-        ? malloc(sizeof(*loaded) * (size_t)count) : nullptr;
-
-    if (loaded)
-        bridge_list_modules(w, loaded, count);
-    say_part("still loaded:");
-    for (int i = 0; loaded && i < count; i++)
-        say_part("%s %s", i ? "," : "", loaded[i].identity);
-    say("%s\n", count > 0 ? "" : " nothing");
-    free(loaded);
-}
-
 static int run_round(host_t *h, int *did)
 {
     int refused;
@@ -87,7 +72,7 @@ int run(host_t *h)
         say("ended at round %d: a module asked for the end\n", h->round);
     else if (!refused && h->d.rounds && left < 0)
         say("ended after %u rounds, as many as it was given\n", h->d.rounds);
-    say_loaded(h->w);
+    say_end(h);
     say("destroyed: %d\n", bridge_destroy(h->w));
     return (refused || h->counts.failed ? 1 : 0);
 }

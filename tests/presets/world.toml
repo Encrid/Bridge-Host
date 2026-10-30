@@ -1,5 +1,10 @@
 threads = 1
 live = false
+stack = 1048576
+observer_passes = 1
+table_growth = 150
+table_hash_fill = 50
+table_retry = 50
 
 [budget]
 entities = 8192
@@ -12,6 +17,10 @@ persistent = 262144
 columns = 1048576
 sparse_sets = "none"
 direct_indexed = "none"
+
+[checks]
+profile = false
+validate = false
 
 [content.load]
 all = true

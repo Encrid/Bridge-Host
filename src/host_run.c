@@ -52,12 +52,15 @@ static int run_round(host_t *h, int *did)
 
 static bool make_world(host_t *h)
 {
-    bridge_config_t cfg = { .abi = BRIDGE_HOST_ABI, .threads = h->threads,
-        .backends = h->backends, .backend_count = h->backend_count,
-        .phases = h->phases, .phase_count = h->phase_count,
-        .order = h->order, .order_count = h->order_count,
-        .budget = h->budget, .profile = h->profile, .validate = h->validate };
+    bridge_config_t cfg = h->d.world;
 
+    cfg.abi = BRIDGE_HOST_ABI;
+    cfg.backends = h->backends;
+    cfg.backend_count = h->backend_count;
+    cfg.phases = h->phases;
+    cfg.phase_count = h->phase_count;
+    cfg.order = h->order;
+    cfg.order_count = h->order_count;
     h->w = bridge_create(&cfg, say_record, &h->counts);
     if (!h->w)
         say("bridge_create refused\n");
@@ -67,18 +70,19 @@ static bool make_world(host_t *h)
 int run(host_t *h)
 {
     int refused = 0;
-    int left = h->rounds;
+    int left = (int)h->d.rounds;
     int did = 1;
 
     if (!make_world(h))
         return (1);
-    while (!refused && !h->ended && (h->live || did || h->counts.said)
-        && (!h->rounds || left--))
+    while (!refused && !h->ended
+        && (h->d.live == BRIDGE_TRUE || did || h->counts.said)
+        && (!h->d.rounds || left--))
         refused = run_round(h, &did);
     if (h->ended)
         say("ended at round %d: a module asked for the end\n", h->round);
-    else if (!refused && h->rounds && left < 0)
-        say("ended after %d rounds, as many as it was given\n", h->rounds);
+    else if (!refused && h->d.rounds && left < 0)
+        say("ended after %u rounds, as many as it was given\n", h->d.rounds);
     say_loaded(h->w);
     say("destroyed: %d\n", bridge_destroy(h->w));
     return (refused || h->counts.failed ? 1 : 0);

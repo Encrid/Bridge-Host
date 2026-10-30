@@ -53,6 +53,7 @@ A deployment is a TOML file. The document of the header `bridge.h` of Bridge tel
 - For `read` and `write`, the first file that states the list gives the whole list. If a file states no list, the lists of the presets that it names add up.
 - The host refuses a file that names itself, and reads a file that two files name only one time.
 - It refuses a key that a file states twice, a key that it does not know, and an empty table.
+- For a key that it needs and that no file states, it writes `not stated: <key>`.
 - The local file cannot state `presets`, the keys of the world, `[budget]`, `[backend]` or `[checks]`.
 
 ### The world
@@ -62,15 +63,29 @@ A deployment is a TOML file. The document of the header `bridge.h` of Bridge tel
 | `presets` | A list of files. |
 | `phases` | The names of the phases. A round runs them in this order. |
 | `threads` | How many threads run a phase, from 1. |
+| `stack` | The bytes of the stack of each thread of the world. |
+| `observer_passes` | The most barriers that one call of Bridge runs in a row. |
+| `table_growth` | The room that a table of storage asks for when it grows, in percent of its room. |
+| `table_hash_fill` | The most fill of the hash of the tables of storage, in percent. |
+| `table_retry` | The rows that a table of storage asks for again, in percent of its last ask. |
 | `rounds` | The most rounds of the run, from 0 to 1000000. 0 is no limit. |
 | `live` | `false`: a quiet round ends the run. `true`: a quiet round does not end it. |
+
+Each key but `presets` is needed.
+`stack`, `observer_passes`, `table_growth`, `table_hash_fill` and `table_retry` take a whole number from 1.
+Bridge refuses a value outside the range that it allows.
 
 `[budget]` holds the 10 limits of the world, and each one is needed.
 `entities`, `tables`, `types`, `systems`, `terms`, `modules`, `persistent` and `columns` take a whole number from 1.
 `sparse_sets` and `direct_indexed` take a whole number from 1, or `"none"`.
 
-The table `[checks]` holds two switches, `profile` and `validate`, each `true` or `false`.
-A check that no file states is off, and the host writes no line for it.
+The table `[checks]` holds two switches. Each one is `true` or `false`, and each one is needed.
+
+| Key | Value |
+| --- | --- |
+| `profile` | `true`: Bridge times each system and observer. |
+| `validate` | `true`: Bridge checks each column for a write that no running system declared. |
+
 If two files state different values for a check, the host refuses it, as it refuses each other key.
 The document of the header `bridge.h` of Bridge tells what each check does.
 
@@ -119,7 +134,7 @@ If the manifest gives none, the host writes `not stated: <key>`, and does not lo
 | `hot_reload` | `true` or `false`. A reload also needs `reloadable=true` in the manifest. |
 | `on_error` | `"fail"` or `"skip"`. |
 | `max_system_failures` | A whole number from 1, or `"none"`, which is no limit. |
-| `work_limit`, `memory_limit`, `init_timeout`, `reload_timeout`, `shutdown_timeout` | A whole number from 1, or `"none"`, which is no limit. A limit asks a capability of the backend. The backend of BB-Native has none of them, so it needs `"none"`. |
+| `work_limit`, `memory_limit`, `element_limit`, `init_timeout`, `reload_timeout`, `shutdown_timeout` | A whole number from 1, or `"none"`, which is no limit. A limit asks a capability of the backend. The backend of BB-Native has none of them, so it needs `"none"`. |
 | `log_level` | A level, from 1 to 7. |
 | `scratch`, `log_ring`, `spans` | A whole number from 1. |
 | `spawns`, `persistent`, `changes` | A whole number from 1, or `"none"`, which is none at all. |

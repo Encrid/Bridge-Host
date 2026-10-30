@@ -46,11 +46,12 @@ static void say_under(const config_t *c, const char *top, const char *next)
 
 static void say_world(const host_t *h)
 {
-    static const char *const ONE[] = { "phases", "threads", "rounds", "live" };
+    const char *names[2] = {};
 
-    for (size_t i = 0; i < sizeof(ONE) / sizeof(*ONE); i++)
-        say_key(&h->config, &ONE[i], 1);
-    say_under(&h->config, "budget", nullptr);
+    for (uint32_t i = 0; i < WORLD_KEY_COUNT; i++)
+        say_key(&h->config, names, config_get_names(&WORLD_KEYS[i], names));
+    for (uint32_t i = 0; i < BUDGET_KEY_COUNT; i++)
+        say_key(&h->config, names, config_get_names(&BUDGET_KEYS[i], names));
     say_under(&h->config, "backend", nullptr);
     say_under(&h->config, "content", "arrive");
     say_under(&h->config, "content", "load");

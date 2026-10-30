@@ -62,7 +62,7 @@ static void put_names(bridge_module_config_t *cfg, const char *key,
     }
 }
 
-bool state_take_list(const stating_t *s, const module_rule_t *rule,
+bool state_take_list(const stating_t *s, const key_rule_t *rule,
     bridge_module_config_t *cfg)
 {
     names_t got = {};

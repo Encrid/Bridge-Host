@@ -37,7 +37,7 @@ bool read_own(const stating_t *s, const char *key, value_t *v)
     return (count == 1 && parse_own(raw, v));
 }
 
-const value_t *state_find_own(const stating_t *s, const module_rule_t *rule)
+const value_t *state_find_own(const stating_t *s, const key_rule_t *rule)
 {
     value_t *own = state_keep_value(s, calloc(1, sizeof(*own)));
     const char *why = nullptr;

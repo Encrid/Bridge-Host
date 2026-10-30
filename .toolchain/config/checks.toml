@@ -270,14 +270,14 @@ why = "state_own_setting's own comes from malloc, which returns null only when m
 
 [[branches.exception]]
 path = "src/host_meet.c"
-line = 86
+line = 87
 col = 9
 side = "false"
 why = "meet allocates f->path with malloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/host_meet.c"
-line = 94
+line = 95
 col = 21
 side = "false"
 why = "f->path is null only when its malloc ran out of memory, which the tests do not force."

@@ -187,7 +187,14 @@ status = 1
 has = [
     "not stated: phases",
     "not stated: threads",
+    "not stated: stack",
+    "not stated: observer_passes",
+    "not stated: table_growth",
+    "not stated: table_hash_fill",
+    "not stated: table_retry",
     "not stated: live",
+    "not stated: checks.profile",
+    "not stated: checks.validate",
     "not stated: budget.entities",
     "not stated: content.arrive.wasm",
 ]

@@ -6,8 +6,8 @@ It then declares the functions that the other sources of `src` define.
 
 ## The data
 
-`host_t` holds one run: the parsed `config_t`, the world settings, the backends, the content paths, the `bridge_world_t`, and a fixed array of `file_t` slots.
-Of the run, it keeps `rounds` and `live`, the count `round` of the rounds that ran, and `ended`: whether a module asked for the end.
+`host_t` holds one run: the parsed `config_t`, the `deployment_t`, the backends, the content paths, the `bridge_world_t`, and a fixed array of `file_t` slots.
+Of the run, it keeps the count `round` of the rounds that ran, and `ended`: whether a module asked for the end.
 It also keeps `full`: whether the last look found a path with no free slot.
 A `file_t` records one known file by its path, its hash mark, and the module behind it.
 A `handed_t` keeps the bytes of a file together with the manifest that the host read from them.

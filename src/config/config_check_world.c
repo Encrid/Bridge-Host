@@ -55,7 +55,8 @@ const char *config_check_content(const entry_t *e)
         return (config_check_value(&e->value, CHECK_NAMES));
     if (e->depth == 3 && !strcmp(e->key[1], "load"))
         return (config_check_value(&e->value, CHECK_FLAG));
-    if (e->depth == 3 && !strcmp(e->key[1], "arrive"))
+    if (e->depth == 3 && (!strcmp(e->key[1], "start")
+        || !strcmp(e->key[1], "arrive")))
         return (config_check_value(&e->value, CHECK_ARRIVE));
     return (check_rule(WORLD_KEYS, WORLD_KEY_COUNT, e, false));
 }

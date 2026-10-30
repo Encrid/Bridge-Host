@@ -2,7 +2,8 @@
 
 This file asks whether an arriving module may load.
 
-`may_arrive` loads at once when the arrive rule is `load`, and asks when the rule is `ask`.
+`may_arrive` gets the rule of the backend: its start rule at the first look, and else its arrive rule.
+It loads at once when the rule is `load`, and asks when the rule is `ask`.
 `is_trusted` prints `? trust <identity>, <backend>, <file>`, and `is_yes` reads the answer.
 A refusal prints `not loaded: <file>: <identity>, <backend>, not trusted`.
 
@@ -17,4 +18,4 @@ The next question reads the next line, and never the rest of a long answer.
 
 | Function | Result |
 | --- | --- |
-| `may_arrive` | Gives true when the module may load under its arrive rule. |
+| `may_arrive` | Gives true when the module may load under the rule that it gets. |

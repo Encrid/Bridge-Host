@@ -201,6 +201,7 @@ has = [
     "not stated: content.files",
     "not stated: content.depth",
     "not stated: budget.entities",
+    "not stated: content.start.wasm",
     "not stated: content.arrive.wasm",
 ]
 

@@ -49,6 +49,8 @@ files = 32
 depth = 1
 [content.load]
 all = true
+[content.start]
+wasm = "load"
 [content.arrive]
 wasm = "load"
 [backend.wasm]
@@ -166,6 +168,8 @@ files = 32
 depth = 1
 [content.load]
 all = true
+[content.start]
+wasm = "load"
 [content.arrive]
 wasm = "load"
 [module.all]

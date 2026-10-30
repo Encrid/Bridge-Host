@@ -24,11 +24,11 @@ static bool is_trusted(const file_t *f, const char *backend)
     return (is_yes());
 }
 
-bool may_arrive(const file_t *f, const held_t *held)
+bool may_arrive(const file_t *f, const held_t *held, enum arrive rule)
 {
-    bool may = held->arrive == ARRIVE_LOAD;
+    bool may = rule == ARRIVE_LOAD;
 
-    if (held->arrive == ARRIVE_ASK)
+    if (rule == ARRIVE_ASK)
         may = is_trusted(f, held->name);
     if (!may)
         say("not loaded: %s: %s, %s, not trusted\n", f->path,

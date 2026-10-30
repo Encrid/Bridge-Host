@@ -65,10 +65,11 @@ void load_found(host_t *h, file_t *f, bool first)
     bridge_artifact_t a;
     made_t made = {};
     const char *who = f->of->who.identity;
+    const held_t *held = get_held(h, f->of->who.backend);
     bool go = !is_left(h, f) && is_stated(h, f, &a, &made);
 
-    if (go && !first)
-        go = may_arrive(f, get_held(h, f->of->who.backend));
+    if (go)
+        go = may_arrive(f, held, first ? held->start : held->arrive);
     if (go && bridge_load(h->w, &a)) {
         say("not loaded: %s: %s was refused\n", f->path, who);
         go = false;

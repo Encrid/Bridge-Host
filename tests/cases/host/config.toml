@@ -194,6 +194,57 @@ short = 1
 '''
 
 [[case]]
+name = "a key of a table that a file states outside its table is refused"
+run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
+
+[case.claims]
+status = 1
+line = ["refused: k.toml:1: written: no key of Bridge-Host's or Bridge's"]
+
+[case.files]
+"{case}/k.toml" = '''
+written = 6
+'''
+
+[case.false.files]
+"{case}/k.toml" = '''
+[records]
+written = 6
+'''
+
+[[case]]
+name = "the local file can state the levels of the records"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/rl.toml"]
+
+[case.claims]
+status = 0
+has = ["records.written = 7  rl.toml.d/local.toml:2"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/rl.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+"{case}/rl.toml.d/local.toml" = '''
+[records]
+written = 7
+'''
+
+[case.false.files]
+"{case}/rl.toml.d/local.toml" = '''
+[records]
+written = 5
+'''
+
+[[case]]
 name = "a key that is nobody's"
 run = ["{out}/bridge-host{exe}", "{case}/nobody.toml"]
 

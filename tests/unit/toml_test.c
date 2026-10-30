@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "config.h"
+#include "say.h"
 #include "toml.h"
 
 static int fails;
@@ -188,7 +189,7 @@ static void do_say(void)
         { .kind = VALUE_LIST, .items = items, .count = 3 } };
 
     toml_say(&(value_t){ .kind = VALUE_LIST, .items = all, .count = 5 });
-    printf("\n");
+    say("\n");
 }
 
 static void do_prefix(void)

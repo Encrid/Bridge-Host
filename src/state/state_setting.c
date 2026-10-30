@@ -77,7 +77,7 @@ bool state_settings(const stating_t *s, bridge_module_config_t *cfg)
     bool taken = !state_undeclared(s, &declared) && set;
 
     if (declared.count && !strcmp(s->of->who.config, BRIDGE_NO_CONFIG)) {
-        printf("%sit names no component, and settings\n", s->prefix);
+        say("%sit names no component, and settings\n", s->prefix);
         taken = false;
     }
     for (uint32_t i = 0; set && i < declared.count; i++)

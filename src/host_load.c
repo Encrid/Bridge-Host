@@ -33,12 +33,12 @@ static bool is_left(const host_t *h, const file_t *f)
     const held_t *held = get_held(h, f->of->who.backend);
 
     if (same)
-        printf("not loaded: %s: %s is %s\n", f->path, who, same->path);
+        say("not loaded: %s: %s is %s\n", f->path, who, same->path);
     else if (f->of->who.abi != BRIDGE_ABI)
-        printf("not loaded: %s: %s was built against another ABI\n",
+        say("not loaded: %s: %s was built against another ABI\n",
             f->path, who);
     else if (!held)
-        printf("not loaded: %s: %s asks for %s, which the host was not "
+        say("not loaded: %s: %s asks for %s, which the host was not "
             "given\n", f->path, who, f->of->who.backend);
     return (same || f->of->who.abi != BRIDGE_ABI || !held);
 }
@@ -54,7 +54,7 @@ static bool is_stated(host_t *h, const file_t *f, bridge_artifact_t *a,
         f->of->who.identity);
     load = config_load(h, f->of->who.identity, prefix);
     if (!load)
-        printf("not loaded: %s: %s, as content.load says\n", f->path,
+        say("not loaded: %s: %s, as content.load says\n", f->path,
             f->of->who.identity);
     if (load > 0 && make_artifact(&s, f, a))
         return (true);
@@ -72,11 +72,11 @@ void load_found(host_t *h, file_t *f, bool first)
     if (go && !first)
         go = may_arrive(f, get_held(h, f->of->who.backend));
     if (go && bridge_load(h->w, &a)) {
-        printf("not loaded: %s: %s was refused\n", f->path, who);
+        say("not loaded: %s: %s was refused\n", f->path, who);
         go = false;
     }
     if (go) {
-        printf("loaded: %s, %s, %s\n", who, a.backend, f->path);
+        say("loaded: %s, %s, %s\n", who, a.backend, f->path);
         f->loaded = true;
     }
     state_free(&made);

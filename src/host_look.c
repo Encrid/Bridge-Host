@@ -19,7 +19,7 @@ static void pass_file(host_t *h, look_t *lk, file_t *f, handed_t *now)
     if (f)
         f->seen = true;
     if (!f && now->bytes && !h->full) {
-        printf("too many files: %d are looked at\n", FILES);
+        say("too many files: %d are looked at\n", FILES);
         lk->did++;
     }
     h->full = h->full || (now->bytes && !f);
@@ -58,7 +58,7 @@ static void drop_gone(host_t *h, look_t *lk)
         if (!f->path || f->seen)
             continue;
         if (f->loaded && !bridge_unload(h->w, f->of->who.identity))
-            printf("unloaded: %s: %s is gone\n", f->of->who.identity,
+            say("unloaded: %s: %s is gone\n", f->of->who.identity,
                 f->path);
         lk->did += f->loaded;
         free(f->path);

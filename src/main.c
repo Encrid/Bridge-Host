@@ -7,7 +7,7 @@
 
 static int say_usage(void)
 {
-    printf("usage: bridge-host <config.toml>\n"
+    say("usage: bridge-host <config.toml>\n"
         "       bridge-host --show-config <config.toml>\n");
     return (2);
 }
@@ -33,12 +33,11 @@ int main(int argc, char **argv)
     bool taken = false;
     int status = 1;
 
-    setvbuf(stdout, nullptr, _IONBF, 0);
     if (!named || named[0] == '-')
         return (say_usage());
     name = config_go_beside(named);
     if (!name)
-        printf("cannot go into '%s'\n", named);
+        say("cannot go into '%s'\n", named);
     taken = name && take_config(&h, name);
     if (show)
         status = show_config(&h, taken);

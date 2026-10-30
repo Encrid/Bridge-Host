@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "config.h"
+#include "say.h"
 
 static bool is_bare(const char *name)
 {
@@ -35,14 +36,14 @@ bool config_say_found(const config_t *c, const char *key, const found_t *f,
     const char *prefix)
 {
     if (!f->at.value && !f->other.value)
-        printf("%snot stated: %s\n", prefix, key);
+        say("%snot stated: %s\n", prefix, key);
     if (!f->other.value)
         return (f->at.value != nullptr);
-    printf("%srefused: %s: ", prefix, key);
+    say_part("%srefused: %s: ", prefix, key);
     toml_say(f->at.value);
-    printf(" in %s:%u, ", c->files[f->at.file].path, f->at.line);
+    say_part(" in %s:%u, ", c->files[f->at.file].path, f->at.line);
     toml_say(f->other.value);
-    printf(" in %s:%u\n", c->files[f->other.file].path, f->other.line);
+    say(" in %s:%u\n", c->files[f->other.file].path, f->other.line);
     return (false);
 }
 
@@ -64,5 +65,5 @@ void config_say_over(const config_t *c, states_fn *states,
 
     for (uint32_t i = 0; i < c->count; i++)
         if (i != at->file && states(&c->files[i], asked, &other))
-            printf(", over %s:%u", c->files[i].path, other.line);
+            say_part(", over %s:%u", c->files[i].path, other.line);
 }

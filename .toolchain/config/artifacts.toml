@@ -11,7 +11,7 @@ link = ["{bridge}/bridge.a", "{bridge_os}/os.a"]
 name = "host-unit"
 kind = "program"
 test = true
-sources = ["tests/unit/*.c", "src/toml/*.c", "src/config/config_value.c"]
+sources = ["tests/unit/*.c", "src/toml/*.c", "src/config/config_value.c", "src/say.c"]
 include = ["{bridge}/include", "src", "src/config", "src/manifest", "src/state", "src/toml", "src/show"]
 flags = ["{system_defines}", "{system_libraries}"]
 

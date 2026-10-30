@@ -11,10 +11,10 @@ static void say_files(const config_t *c)
 
     for (uint32_t i = 0; i < c->count; i++) {
         f = &c->files[i];
-        printf("file %s", f->path);
+        say_part("file %s", f->path);
         if (f->by >= 0)
-            printf(", named by %s:%u", c->files[f->by].path, f->by_line);
-        printf("%s\n", (int32_t)i == c->local ? ", the local file" : "");
+            say_part(", named by %s:%u", c->files[f->by].path, f->by_line);
+        say("%s\n", (int32_t)i == c->local ? ", the local file" : "");
     }
 }
 
@@ -55,11 +55,11 @@ static void say_world(const host_t *h)
     say_under(&h->config, "content", "arrive");
     say_under(&h->config, "content", "load");
     for (uint32_t i = 0; i < h->path_count; i++)
-        printf("content.paths: %s\n", h->paths[i]);
+        say("content.paths: %s\n", h->paths[i]);
     for (uint32_t i = 0; i < h->ignore_count; i++)
-        printf("content.ignore: %s\n", h->ignore[i]);
+        say("content.ignore: %s\n", h->ignore[i]);
     for (uint32_t i = 0; i < h->order_count; i++)
-        printf("order: %s before %s\n", h->order[i].before,
+        say("order: %s before %s\n", h->order[i].before,
             h->order[i].after);
 }
 

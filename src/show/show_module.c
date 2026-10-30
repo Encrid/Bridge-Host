@@ -19,9 +19,9 @@ void show_module(void *ud, const char *path)
         return;
     why = manifest_read((const unsigned char *)now.bytes, now.len, &now.who);
     if (why)
-        printf("not a module: %s: %s\n", path, why);
+        say("not a module: %s: %s\n", path, why);
     else
-        printf("module %s, %s, %s\n", now.who.identity, now.who.backend, path);
+        say("module %s, %s, %s\n", now.who.identity, now.who.backend, path);
     if (!why && (config_load(h, now.who.identity, s.prefix) < 0
         || !state_found(&s, &cfg)))
         h->counts.failed++;

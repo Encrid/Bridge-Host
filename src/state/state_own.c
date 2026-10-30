@@ -47,7 +47,7 @@ const value_t *state_find_own(const stating_t *s, const module_rule_t *rule)
         return (nullptr);
     why = config_check_value(own, rule->check);
     if (why)
-        printf("%sits file states %s: %s\n", s->prefix, rule->name, why);
+        say("%sits file states %s: %s\n", s->prefix, rule->name, why);
     return (why ? nullptr : own);
 }
 
@@ -57,10 +57,10 @@ static void say_own_keys(const stating_t *s)
 
     if (!s->show)
         return;
-    printf("  config = \"%s\"  its file\n", who->config);
-    printf("  settings = \"%s\"  its file\n", who->settings);
-    printf("  pinned = %s  its file\n", who->pinned ? "true" : "false");
-    printf("  reloadable = %s  its file\n",
+    say("  config = \"%s\"  its file\n", who->config);
+    say("  settings = \"%s\"  its file\n", who->settings);
+    say("  pinned = %s  its file\n", who->pinned ? "true" : "false");
+    say("  reloadable = %s  its file\n",
         who->reloadable ? "true" : "false");
 }
 
@@ -69,11 +69,11 @@ bool state_own_keys(const stating_t *s)
     const manifest_t *who = &s->of->who;
 
     if (!who->config[0])
-        printf("%sits file states no config\n", s->prefix);
+        say("%sits file states no config\n", s->prefix);
     if (!who->has_pinned)
-        printf("%sits file states no pinned\n", s->prefix);
+        say("%sits file states no pinned\n", s->prefix);
     if (!who->has_reloadable)
-        printf("%sits file states no reloadable\n", s->prefix);
+        say("%sits file states no reloadable\n", s->prefix);
     say_own_keys(s);
     return (who->config[0] && who->has_pinned && who->has_reloadable);
 }

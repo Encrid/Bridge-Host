@@ -44,10 +44,10 @@ static void say_names(const stating_t *s, const char *key,
 {
     if (!s->show)
         return;
-    printf("  %s = [", key);
+    say_part("  %s = [", key);
     for (uint32_t i = 0; i < got->count; i++)
-        printf("%s\"%s\"", i ? ", " : "", got->names[i]);
-    printf("]\n");
+        say_part("%s\"%s\"", i ? ", " : "", got->names[i]);
+    say("]\n");
 }
 
 static void take_losses(const stating_t *s, bridge_module_config_t *cfg,

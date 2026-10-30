@@ -15,6 +15,7 @@
     #include "config.h"
     #include "file_bytes.h"
     #include "manifest.h"
+    #include "say.h"
 
 constexpr int FILES = 32;
 

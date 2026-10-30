@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include "config.h"
+#include "say.h"
 
 static found_t find_in(const config_t *c, uint32_t file, states_fn *states,
     const void *asked)
@@ -60,10 +61,10 @@ void config_say_value(const config_t *c, const char *key,
 {
     if (!f->at.value)
         return;
-    printf("%s%s = ", how->prefix, key);
+    say_part("%s%s = ", how->prefix, key);
     toml_say(f->at.value);
-    printf("  %s", config_say_where(c, &f->at));
+    say_part("  %s", config_say_where(c, &f->at));
     if (how->states && f->at.file != UINT32_MAX)
         config_say_over(c, how->states, how->asked, &f->at);
-    printf("\n");
+    say("\n");
 }

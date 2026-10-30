@@ -21,10 +21,10 @@ file_t *find_file(host_t *h, const char *path)
 static bool keep_old(const file_t *f, const handed_t *now, const char *why)
 {
     if (why)
-        printf("not replaced: %s: %s%s%s\n", f->path, now->who.identity,
+        say("not replaced: %s: %s%s%s\n", f->path, now->who.identity,
             now->who.identity[0] ? " " : "", why);
     else if (!f->of->who.reloadable)
-        printf("not replaced: %s: it does not say it can be\n",
+        say("not replaced: %s: it does not say it can be\n",
             f->of->who.identity);
     return (why || !f->of->who.reloadable);
 }
@@ -52,13 +52,13 @@ static void replace(host_t *h, file_t *f, handed_t *now, const char *why)
         return;
     }
     if (!is_reloaded(h, f, now)) {
-        printf("not replaced: %s: %s was refused\n", f->path,
+        say("not replaced: %s: %s was refused\n", f->path,
             now->who.identity);
         h->counts.failed++;
         handed_free(now);
         return;
     }
-    printf("replaced: %s by %s, %s\n", f->of->who.identity,
+    say("replaced: %s by %s, %s\n", f->of->who.identity,
         now->who.identity, f->path);
     handed_free(f->of);
     f->of = now;
@@ -80,8 +80,8 @@ bool meet(host_t *h, file_t *f, const char *path, handed_t *now)
     handed_free(f->of);
     f->of = now;
     if (why && !now->who.identity[0])
-        printf("not a module: %s: %s\n", path, why);
+        say("not a module: %s: %s\n", path, why);
     else if (why)
-        printf("not loaded: %s: %s %s\n", path, now->who.identity, why);
+        say("not loaded: %s: %s %s\n", path, now->who.identity, why);
     return (!why && f->path);
 }

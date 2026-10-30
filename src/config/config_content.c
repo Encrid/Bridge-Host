@@ -53,7 +53,7 @@ bool config_content(host_t *h)
     h->path_count = collect(h, "paths", &h->paths);
     h->ignore_count = collect(h, "ignore", &h->ignore);
     if (!h->path_count)
-        printf("not stated: content.paths\n");
+        say("not stated: content.paths\n");
     return (h->path_count > 0);
 }
 

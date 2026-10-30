@@ -18,6 +18,19 @@ A `held_t` names a backend, its library path, its start rule and its arrive rule
 `stating_t`, `look_t`, `seeing_t` and `walk_t` carry state while the host states a module or walks the content.
 A `made_t` lists what the host allocates for the config of one module, and a `stating_t` points at it.
 
+## What a deployment does not choose
+
+The host fixes these parts. A deployment cannot state them, for the reason that the table gives.
+
+| Part | Value | Reason |
+| --- | --- | --- |
+| The output | The host writes its lines to the standard output. | It is no number and no flag. |
+| The end that a module or a signal asks for | The run ends after the round that runs. | It is no number and no flag. |
+| The word of trust | `yes` | It is no number and no flag. |
+| The names of the overlay and of the lock | `<file>.d/local.toml` and `<file>.d/lock` | They are no number and no flag. |
+| The order of the loads | By identity, then by path. | The host has one implementation of it. |
+| The pace of the rounds | A round starts when the round before it ends. | The host reads no clock. |
+
 ## Functions
 
 | Function | Result |

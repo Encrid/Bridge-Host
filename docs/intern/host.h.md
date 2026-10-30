@@ -24,7 +24,7 @@ A `made_t` lists what the host allocates for the config of one module, and a `st
 | --- | --- |
 | `config_world`, `config_order`, `config_backends`, `config_content` | Take the world, order, backend and content keys. |
 | `config_load`, `config_unfound`, `get_held` | Read `content.load`, report named modules that no look finds, and find a backend. |
-| `run`, `look`, `walk_content` | Run the world, do one look, and walk the content paths. |
+| `run`, `say_end`, `look`, `walk_content` | Run the world, write the lines of its end, do one look, and walk the content paths. |
 | `find_file`, `meet`, `may_arrive`, `load_found`, `make_artifact` | Track a slot, read a met file, ask to trust it, load it, and build its artifact. |
 | `show_config`, `show_module`, `take_lock` | Show a configuration, show one module, and take the run lock. |
 | `state_*`, `read_own` | State the keys, lists, phases and settings of a module. |

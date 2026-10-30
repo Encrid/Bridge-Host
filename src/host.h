@@ -195,6 +195,8 @@ void handed_free(handed_t *of);
 
 [[nodiscard]] int run(host_t *h);
 
+void say_end(const host_t *h);
+
 [[nodiscard]] int look(host_t *h, bool first);
 
 [[nodiscard]] file_t *find_file(host_t *h, const char *path);

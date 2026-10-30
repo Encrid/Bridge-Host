@@ -62,6 +62,7 @@ direct_indexed = "none"
 [checks]
 profile = false
 validate = false
+usage = false
 [records]
 written = 6
 failing = 3

@@ -508,6 +508,7 @@ direct_indexed = "none"
 [checks]
 profile = false
 validate = false
+usage = false
 [records]
 written = 6
 failing = 3
@@ -660,6 +661,7 @@ line = [
     "table_retry = 50  {root}/tests/presets/world.toml:7",
     "checks.profile = false  {root}/tests/presets/world.toml:22",
     "checks.validate = false  {root}/tests/presets/world.toml:23",
+    "checks.usage = false  {root}/tests/presets/world.toml:24",
     "module bridge-host:quiet@1.0.0, wasm, config-quiet/quiet.wasm",
     "  pinned = false  its file",
 ]

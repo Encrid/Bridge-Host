@@ -171,3 +171,141 @@ phases = ["update"]
 rounds = 4
 live = false
 '''
+
+[[case]]
+name = "the profile of each system comes at the end of the run, before the world is destroyed"
+run = ["{out}/bridge-host{exe}", "{case}/e.toml"]
+
+[case.claims]
+status = 0
+matches = ["still loaded: bridge-host:knock@1\\.0\\.0\nprofile bridge-host:knock:say: 0 calls, [0-9]+ ns\ndestroyed: 0"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/e.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 3
+[checks]
+profile = true
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/e.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 3
+[checks]
+profile = false
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a world with no system writes no line of profile"
+run = ["{out}/bridge-host{exe}", "{case}/e.toml"]
+
+[case.claims]
+status = 0
+line = ["still loaded: nothing"]
+lacks = ["profile "]
+
+[case.folders]
+"{case}/mods" = []
+
+[case.files]
+"{case}/e.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 3
+[checks]
+profile = true
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["knock"]
+
+[[case]]
+name = "the usage of the budget and of each module comes at the end of the run"
+run = ["{out}/bridge-host{exe}", "{case}/e.toml"]
+
+[case.claims]
+status = 0
+order = [
+    "still loaded: bridge-host:knock@1.0.0",
+    "usage entities: 0 now, 0 at most",
+    "usage systems: 1 now, 1 at most",
+    "usage modules: 1 now, 1 at most",
+    "usage direct_indexed: 0 now, 0 at most",
+    "usage bridge-host:knock@1.0.0: 0 persistent, 1 systems, 0 observers, 0 entities",
+    "destroyed: 0",
+]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/e.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 3
+[checks]
+usage = true
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/e.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 3
+[checks]
+usage = false
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a world with no module writes no line of the usage of a module"
+run = ["{out}/bridge-host{exe}", "{case}/e.toml"]
+
+[case.claims]
+status = 0
+line = ["usage modules: 0 now, 0 at most"]
+lacks = ["persistent,"]
+
+[case.folders]
+"{case}/mods" = []
+
+[case.files]
+"{case}/e.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 3
+[checks]
+usage = true
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["knock"]

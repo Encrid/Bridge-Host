@@ -4,6 +4,7 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include "host.h"
+#include "os.h"
 
 static void say_record(void *ud, const bridge_record_t *r)
 {
@@ -56,6 +57,16 @@ static bool make_world(host_t *h)
     return (h->w != nullptr);
 }
 
+static void say_ended(const host_t *h, int refused, int left)
+{
+    if (h->ended)
+        say("ended at round %d: a module asked for the end\n", h->round);
+    else if (os_signal_is_caught())
+        say("ended at round %d: a signal stopped the run\n", h->round);
+    else if (!refused && h->d.rounds && left < 0)
+        say("ended after %u rounds, as many as it was given\n", h->d.rounds);
+}
+
 int run(host_t *h)
 {
     int refused = 0;
@@ -64,14 +75,11 @@ int run(host_t *h)
 
     if (!make_world(h))
         return (1);
-    while (!refused && !h->ended
+    while (!refused && !h->ended && !os_signal_is_caught()
         && (h->d.live == BRIDGE_TRUE || did || h->counts.said)
         && (!h->d.rounds || left--))
         refused = run_round(h, &did);
-    if (h->ended)
-        say("ended at round %d: a module asked for the end\n", h->round);
-    else if (!refused && h->d.rounds && left < 0)
-        say("ended after %u rounds, as many as it was given\n", h->d.rounds);
+    say_ended(h, refused, left);
     say_end(h);
     say("destroyed: %d\n", bridge_destroy(h->w));
     return (refused || h->counts.failed ? 1 : 0);

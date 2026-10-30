@@ -15,6 +15,8 @@ Thus no text is lost, but the system can get that line in more than one piece.
 The standard output keeps the buffer that the C library gives it, also when it is a pipe or a file.
 A native module can write into the same output.
 Its lines and the lines of the host then come in the order that they were written.
+Bridge-OS writes the line of the first signal past that buffer, with one call of the system.
+As each line of the host goes out at its end, the line of a signal comes between two lines.
 
 ## Functions
 

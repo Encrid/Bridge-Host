@@ -32,7 +32,7 @@ After `python project.py build`, run `bridge-host <config.toml>`, or `bridge-hos
 `--show-config` prints each key and its whole value, with the file and the line that state it.
 The host gives each line to the output in one piece, when the line is complete.
 The host exits with 0 after a run, and with 2 after it prints its usage.
-It exits with 1 if it refuses a key, if Bridge refuses a call, or if a record is a failure.
+It exits with 1 if it refuses a key, if Bridge refuses a call, if a record is a failure, or at a second signal.
 
 ## The deployment file
 
@@ -189,6 +189,17 @@ After the last round, the host writes these lines:
 Bridge gives each number, and the host reads no clock.
 The document of the header `bridge.h` of Bridge tells what each number counts.
 
+### The signals
+
+An interrupt, a termination or a hang-up stops the host.
+The document of the header `os.h` of Bridge-OS tells which events of each system are such signals.
+
+At the first signal, the host writes `a signal stops the host: a second one ends it at once`.
+It finishes the round that runs, and starts no other round: `ended at round <round>: a signal stopped the run`.
+Then it writes the lines of the end, and Bridge calls the `shutdown` of each module. The exit status is the status of a run.
+Before the run, and with `--show-config`, the host also finishes its work after the first signal.
+A second signal ends the host at once, with the status 1.
+
 ## The manifest of a module
 
 A module states its manifest in its file, as words that each end with a zero byte.
@@ -295,11 +306,17 @@ Running the rounds:
 - `record[<level>] <identity>/<system>: <text> <number> <number>`
 - `ended after <rounds> rounds, as many as it was given`
 - `ended at round <round>: a module asked for the end`
+- `ended at round <round>: a signal stopped the run`
 - `still loaded:`
 - `profile <name>: <calls> calls, <nanos> ns`
 - `usage <key>: <used> now, <most> at most`
 - `usage <identity>: <bytes> persistent, <count> systems, <count> observers, <count> entities`
 - `destroyed: <count>`
+
+Stopping at a signal:
+
+- `a signal stops the host: a second one ends it at once`
+- `cannot catch the signals`
 
 Showing the deployment:
 

@@ -258,7 +258,7 @@ run = ["{out}/bridge-host{exe}", "{case}/forms.toml"]
 status = 1
 line = [
     "refused: forms.toml:1: threads: a whole number, from 1",
-    "refused: forms.toml:2: rounds: a whole number, from 0 to 1000000",
+    "refused: forms.toml:2: rounds: a whole number, from 0 to 4294967295",
     "refused: forms.toml:3: phases: a list of names",
     "refused: forms.toml:4: stack: a whole number, from 1",
     'refused: forms.toml:6: budget.sparse_sets: a whole number, from 1, or "none"',
@@ -278,7 +278,7 @@ line = [
 [case.files]
 "{case}/forms.toml" = '''
 threads = 0
-rounds = 1000001
+rounds = 4294967296
 phases = "update"
 stack = 0
 [budget]
@@ -307,6 +307,39 @@ rounds = 8
 paths = ["mods"]
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "the most rounds that a deployment can state is 4294967295"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/r.toml"]
+
+[case.claims]
+status = 0
+line = ["rounds = 4294967295  r.toml:3"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/r.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 4294967295
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/r.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 4294967296
+[content]
+paths = ["mods"]
 [backend.native]
 library = "{bb_native}/bridge_native"
 '''

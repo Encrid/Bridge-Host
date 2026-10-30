@@ -22,8 +22,8 @@ static const value_rule_t RULES[] = {
     [CHECK_ARRIVE] = { ALLOW_WORD, 0, 0, "ask load leave ",
         "\"ask\", \"load\" or \"leave\"" },
     [CHECK_TEXT] = { ALLOW_TEXT, 0, 0, "", "text" },
-    [CHECK_ROUNDS] = { ALLOW_WHOLE, 0, 1'000'000, "",
-        "a whole number, from 0 to 1000000" },
+    [CHECK_ROUNDS] = { ALLOW_WHOLE, 0, UINT32_MAX, "",
+        "a whole number, from 0 to 4294967295" },
     [CHECK_SETTING] = { ALLOW_FLAG | ALLOW_WHOLE | ALLOW_REAL | ALLOW_TEXT
         | ALLOW_EMPTY, INT64_MIN, INT64_MAX, "",
         "text, a number, true or false, or { path = \"...\" }" },

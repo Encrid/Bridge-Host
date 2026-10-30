@@ -68,7 +68,7 @@ A deployment is a TOML file. The document of the header `bridge.h` of Bridge tel
 | `table_growth` | The room that a table of storage asks for when it grows, in percent of its room. |
 | `table_hash_fill` | The most fill of the hash of the tables of storage, in percent. |
 | `table_retry` | The rows that a table of storage asks for again, in percent of its last ask. |
-| `rounds` | The most rounds of the run, from 0 to 1000000. 0 is no limit. |
+| `rounds` | The most rounds of the run, from 0 to 4294967295. 0 is no limit. |
 | `live` | `false`: a quiet round ends the run. `true`: a quiet round does not end it. |
 
 Each key but `presets` is needed.

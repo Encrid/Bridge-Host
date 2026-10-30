@@ -50,7 +50,7 @@ run = ["{out}/bridge-host{exe}", "--show-config", "{case}/over.toml"]
 
 [case.claims]
 status = 1
-line = ["  scratch = 200  over.toml:23"]
+line = ["  scratch = 200  over.toml:31"]
 
 [case.folders]
 "{case}/mods" = ["owns"]
@@ -59,6 +59,11 @@ line = ["  scratch = 200  over.toml:23"]
 "{case}/over.toml" = '''
 threads = 1
 live = false
+stack = 1048576
+observer_passes = 1
+table_growth = 150
+table_hash_fill = 50
+table_retry = 50
 phases = ["update"]
 rounds = 8
 [budget]
@@ -72,6 +77,9 @@ persistent = 262144
 columns = 1048576
 sparse_sets = "none"
 direct_indexed = "none"
+[checks]
+profile = false
+validate = false
 [content]
 paths = ["mods"]
 [content.load]
@@ -88,6 +96,11 @@ wasm = "{bb_wasm}/bridge_wasm"
 "{case}/over.toml" = '''
 threads = 1
 live = false
+stack = 1048576
+observer_passes = 1
+table_growth = 150
+table_hash_fill = 50
+table_retry = 50
 phases = ["update"]
 rounds = 8
 [budget]
@@ -101,6 +114,9 @@ persistent = 262144
 columns = 1048576
 sparse_sets = "none"
 direct_indexed = "none"
+[checks]
+profile = false
+validate = false
 [content]
 paths = ["mods"]
 [content.load]
@@ -223,15 +239,16 @@ line = [
     "refused: forms.toml:1: threads: a whole number, from 1",
     "refused: forms.toml:2: rounds: a whole number, from 0 to 1000000",
     "refused: forms.toml:3: phases: a list of names",
-    'refused: forms.toml:5: budget.sparse_sets: a whole number, from 1, or "none"',
-    "refused: forms.toml:7: order.before: a list of pairs of systems",
-    "refused: forms.toml:9: backend.wasm: text",
-    'refused: forms.toml:11: content.arrive.wasm: "ask", "load" or "leave"',
-    "refused: forms.toml:13: module.all.hot_reload: true or false",
-    'refused: forms.toml:14: module.all.on_error: "fail" or "skip"',
-    "refused: forms.toml:15: module.all.log_level: a level, from 1 to 7",
-    'refused: forms.toml:16: module.all.losses: a list of names, or "none"',
-    'refused: forms.toml:18: module."bridge-host:word@1.0.0".config.word: text, a number, true or false, or { path = "..." }',
+    "refused: forms.toml:4: stack: a whole number, from 1",
+    'refused: forms.toml:6: budget.sparse_sets: a whole number, from 1, or "none"',
+    "refused: forms.toml:8: order.before: a list of pairs of systems",
+    "refused: forms.toml:10: backend.wasm: text",
+    'refused: forms.toml:12: content.arrive.wasm: "ask", "load" or "leave"',
+    "refused: forms.toml:14: module.all.hot_reload: true or false",
+    'refused: forms.toml:15: module.all.on_error: "fail" or "skip"',
+    "refused: forms.toml:16: module.all.log_level: a level, from 1 to 7",
+    'refused: forms.toml:17: module.all.losses: a list of names, or "none"',
+    'refused: forms.toml:19: module."bridge-host:word@1.0.0".config.word: text, a number, true or false, or { path = "..." }',
 ]
 
 [case.folders]
@@ -242,6 +259,7 @@ line = [
 threads = 0
 rounds = 1000001
 phases = "update"
+stack = 0
 [budget]
 sparse_sets = 0
 [order]
@@ -548,3 +566,41 @@ native = "{bb_native}/bridge_native"
 
 [case.false.folders]
 "{case}/mods" = ["knock"]
+
+[[case]]
+name = "an element limit that the backend of a native module cannot keep refuses the module"
+run = ["{out}/bridge-host{exe}", "{case}/el.toml"]
+
+[case.claims]
+status = 1
+has = ["it states element_limit, which backend 'native' cannot keep", "bridge-host:knock@1.0.0 was refused"]
+lacks = ["loaded: bridge-host:knock@1.0.0"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/el.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[module."bridge-host:knock@1.0.0"]
+element_limit = 5
+[content]
+paths = ["mods"]
+[backend]
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/el.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[module."bridge-host:knock@1.0.0"]
+element_limit = "none"
+[content]
+paths = ["mods"]
+[backend]
+native = "{bb_native}/bridge_native"
+'''

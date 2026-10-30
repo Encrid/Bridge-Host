@@ -4,7 +4,7 @@ This file makes the Bridge world and runs the rounds.
 
 ## The run
 
-`make_world` fills a `bridge_config_t` and calls `bridge_create` with the record sink.
+`make_world` copies the `bridge_config_t` of the `deployment_t`, adds the ABI, the backends, the phases and the order, and calls `bridge_create`.
 `run` loops the rounds while each of these holds:
 
 - No call was refused, and no module asked for the end.

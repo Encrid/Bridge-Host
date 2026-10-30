@@ -468,6 +468,11 @@ line = ["not loaded: config-quiet/quiet.wasm: bridge-host:quiet@1.0.0: not state
 "{case}/terse-world.toml" = '''
 threads = 1
 live = false
+stack = 1048576
+observer_passes = 1
+table_growth = 150
+table_hash_fill = 50
+table_retry = 50
 
 [budget]
 entities = 8192
@@ -480,6 +485,9 @@ persistent = 262144
 columns = 1048576
 sparse_sets = "none"
 direct_indexed = "none"
+[checks]
+profile = false
+validate = false
 
 [content.load]
 all = true
@@ -613,6 +621,13 @@ status = 0
 line = [
     "threads = 1  {root}/tests/presets/world.toml:1",
     "live = false  {root}/tests/presets/world.toml:2",
+    "stack = 1048576  {root}/tests/presets/world.toml:3",
+    "observer_passes = 1  {root}/tests/presets/world.toml:4",
+    "table_growth = 150  {root}/tests/presets/world.toml:5",
+    "table_hash_fill = 50  {root}/tests/presets/world.toml:6",
+    "table_retry = 50  {root}/tests/presets/world.toml:7",
+    "checks.profile = false  {root}/tests/presets/world.toml:22",
+    "checks.validate = false  {root}/tests/presets/world.toml:23",
     "module bridge-host:quiet@1.0.0, wasm, config-quiet/quiet.wasm",
     "  pinned = false  its file",
 ]
@@ -690,47 +705,12 @@ native = "{bb_native}/bridge_native"
 '''
 
 [[case]]
-name = "a world with no checks table writes no line for its checks"
-run = ["{out}/bridge-host{exe}", "{case}/plain.toml"]
-
-[case.claims]
-status = 0
-line = ["record[6] bridge-host:quiet@1.0.0/say: said once 1 0"]
-lacks = ["not stated:"]
-
-[case.folders]
-"{case}/config-quiet" = ["quiet"]
-
-[case.files]
-"{case}/plain.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
-phases = ["update"]
-rounds = 8
-[content]
-paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
-'''
-
-[case.false.files]
-"{case}/plain.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
-phases = ["update"]
-[content]
-paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
-'''
-
-[[case]]
 name = "two files that differ on a check are refused"
 run = ["{out}/bridge-host{exe}", "{case}/both.toml"]
 
 [case.claims]
 status = 1
-has = ['refused: checks.profile: true in ca.toml:2, false in cb.toml:2']
+has = ['refused: checks.profile: false in {root}/tests/presets/world.toml:22, true in ca.toml:2']
 
 [case.folders]
 "{case}/config-quiet" = ["quiet"]
@@ -756,7 +736,42 @@ native = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
-"{case}/cb.toml" = '''
+"{case}/ca.toml" = '''
 [checks]
-profile = true
+profile = false
+'''
+
+[[case]]
+name = "a key of the world goes to Bridge, which refuses it outside its range"
+run = ["{out}/bridge-host{exe}", "{case}/range.toml"]
+
+[case.claims]
+status = 1
+has = ["table_growth is 50, which is less than 100"]
+line = ["bridge_create refused"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/range.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+table_growth = 50
+[content]
+paths = ["mods"]
+[backend]
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/range.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+native = "{bb_native}/bridge_native"
 '''

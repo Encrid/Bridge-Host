@@ -16,34 +16,32 @@ static const char *check_named(const entry_t *e, const char *const *names,
     return ("no key of Bridge-Host's or Bridge's");
 }
 
-const char *config_check_world(const entry_t *e, bool local)
+static const char *check_rule(const key_rule_t *rules, uint32_t count,
+    const entry_t *e, bool local)
 {
-    static const char *const NAMES[] = { "phases", "threads", "rounds",
-        "live", "presets", nullptr };
-    static const enum check CHECKS[] = { CHECK_NAMES, CHECK_COUNT,
-        CHECK_ROUNDS, CHECK_FLAG, CHECK_NAMES };
+    const char *table = e->depth == 2 ? e->key[0] : nullptr;
+    const key_rule_t *rule = nullptr;
 
-    if (e->depth != 1)
+    if (e->depth <= 2)
+        rule = config_get_rule(rules, count, table, e->key[e->depth - 1]);
+    if (!rule)
         return ("no key of Bridge-Host's or Bridge's");
-    if (local)
+    if (local && rule->fixed)
         return ("fixed when the world is made: not in the local file");
-    return (check_named(e, NAMES, CHECKS));
+    return (config_check_value(&e->value, rule->check));
 }
 
-const char *config_check_budget(const entry_t *e, bool local)
+const char *config_check_world(const entry_t *e, bool local)
 {
-    static const char *const NAMES[] = { "entities", "tables", "types",
-        "systems", "terms", "modules", "persistent", "columns", "sparse_sets",
-        "direct_indexed", nullptr };
-    static const enum check CHECKS[] = { CHECK_COUNT, CHECK_COUNT,
-        CHECK_COUNT, CHECK_COUNT, CHECK_COUNT, CHECK_COUNT, CHECK_COUNT,
-        CHECK_COUNT, CHECK_LIMIT, CHECK_LIMIT };
+    bool presets = e->depth == 1 && !strcmp(e->key[0], "presets");
 
-    if (e->depth != 2)
-        return ("no key of Bridge-Host's or Bridge's");
-    if (local)
+    if (presets && local)
         return ("fixed when the world is made: not in the local file");
-    return (check_named(e, NAMES, CHECKS));
+    if (presets)
+        return (config_check_value(&e->value, CHECK_NAMES));
+    if (!strcmp(e->key[0], "budget"))
+        return (check_rule(BUDGET_KEYS, BUDGET_KEY_COUNT, e, local));
+    return (check_rule(WORLD_KEYS, WORLD_KEY_COUNT, e, local));
 }
 
 const char *config_check_backend(const entry_t *e, bool local)

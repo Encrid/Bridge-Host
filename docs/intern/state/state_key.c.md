@@ -3,8 +3,7 @@
 This file takes one scalar key of a module.
 
 `state_find_key` searches the module tables and the manifest, and reports a clash or a missing key.
-`put_value` writes the value into the config field by its width, and maps a flag or an error word.
-`state_take_key` skips an author key, hands a list key to `state_take_list`, and otherwise stores the scalar.
+`state_take_key` skips an author key, hands a list key to `state_take_list`, and otherwise stores the scalar with `config_put`.
 
 ## Functions
 

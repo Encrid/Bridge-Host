@@ -7,3 +7,4 @@ memory_limit = 16777216
 init_timeout = 2000000000
 reload_timeout = 2000000000
 shutdown_timeout = 2000000000
+element_limit = 1024

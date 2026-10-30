@@ -29,7 +29,8 @@ static const char *check_table(const config_t *c, const char *table)
 
 static const char *check_rule(const entry_t *e)
 {
-    const module_rule_t *rule = config_get_rule(e->key[2]);
+    const key_rule_t *rule = config_get_rule(MODULE_KEYS, MODULE_KEY_COUNT,
+        nullptr, e->key[2]);
 
     if (!rule)
         return ("no key of a module");

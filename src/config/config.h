@@ -9,6 +9,7 @@
     #include <stddef.h>
     #include <stdint.h>
 
+    #include "bridge.h"
     #include "toml.h"
 
 typedef struct {
@@ -77,7 +78,8 @@ enum check : uint8_t {
     CHECK_ROUNDS,
     CHECK_SETTING,
     CHECK_PAIRS,
-    CHECK_AUTHOR
+    CHECK_AUTHOR,
+    CHECK_SIZE
 };
 
 enum allow : uint8_t {
@@ -105,12 +107,29 @@ typedef struct {
     uint8_t width;
     size_t at;
     int64_t none;
-} module_rule_t;
+    const char *table;
+    bool fixed;
+} key_rule_t;
 
-extern const module_rule_t MODULE_KEYS[];
+typedef struct {
+    bridge_config_t world;
+    uint32_t rounds;
+    enum bridge_flag live;
+} deployment_t;
+
+extern const key_rule_t MODULE_KEYS[];
 extern const uint32_t MODULE_KEY_COUNT;
+extern const key_rule_t WORLD_KEYS[];
+extern const uint32_t WORLD_KEY_COUNT;
+extern const key_rule_t BUDGET_KEYS[];
+extern const uint32_t BUDGET_KEY_COUNT;
 
-[[nodiscard]] const module_rule_t *config_get_rule(const char *name);
+[[nodiscard]] const key_rule_t *config_get_rule(const key_rule_t *rules,
+    uint32_t count, const char *table, const char *name);
+
+uint32_t config_get_names(const key_rule_t *rule, const char **names);
+
+void config_put(void *into, const key_rule_t *rule, const value_t *v);
 
 [[nodiscard]] const char *config_go_beside(char *name);
 
@@ -138,10 +157,6 @@ void config_free_file(cfile_t *f);
 [[nodiscard]] uint32_t config_check(config_t *c);
 
 [[nodiscard]] const char *config_check_world(const entry_t *e, bool local);
-
-[[nodiscard]] const char *config_check_budget(const entry_t *e, bool local);
-
-[[nodiscard]] const char *config_check_checks(const entry_t *e, bool local);
 
 [[nodiscard]] const char *config_check_backend(const entry_t *e, bool local);
 

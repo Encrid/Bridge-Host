@@ -19,55 +19,23 @@ static bool take_phases(host_t *h)
     return (h->phases != nullptr);
 }
 
-static bool take_run(host_t *h)
+static bool take_rules(host_t *h, const key_rule_t *rules, uint32_t count,
+    void *into)
 {
-    static const char *const THREADS[] = { "threads" };
-    static const char *const ROUNDS[] = { "rounds" };
-    static const char *const LIVE[] = { "live" };
-    const value_t *threads = config_find_key(&h->config, THREADS, 1).value;
-    const value_t *rounds = config_find_key(&h->config, ROUNDS, 1).value;
-    const value_t *live = config_find_key(&h->config, LIVE, 1).value;
-
-    if (threads)
-        h->threads = (uint32_t)threads->whole;
-    if (rounds)
-        h->rounds = (int)rounds->whole;
-    if (live)
-        h->live = live->flag;
-    return (threads && rounds && live);
-}
-
-static bool take_field(host_t *h, const char *field, size_t at, bool wide)
-{
-    const char *const names[] = { "budget", field };
-    const value_t *v = config_find_key(&h->config, names, 2).value;
-    int64_t n = v && v->kind == VALUE_WHOLE ? v->whole : BRIDGE_NONE;
-    uint32_t narrow = (uint32_t)n;
-
-    if (v && wide)
-        memcpy((char *)&h->budget + at, &n, 8);
-    else if (v)
-        memcpy((char *)&h->budget + at, &narrow, 4);
-    return (v != nullptr);
-}
-
-static bool take_budget(host_t *h)
-{
-    static const char *const NAME[] = { "entities", "tables", "types",
-        "systems", "terms", "modules", "persistent", "columns", "sparse_sets",
-        "direct_indexed" };
-    static const size_t AT[] = { offsetof(bridge_budget_t, entities),
-        offsetof(bridge_budget_t, tables), offsetof(bridge_budget_t, types),
-        offsetof(bridge_budget_t, systems), offsetof(bridge_budget_t, terms),
-        offsetof(bridge_budget_t, modules),
-        offsetof(bridge_budget_t, persistent),
-        offsetof(bridge_budget_t, columns),
-        offsetof(bridge_budget_t, sparse_sets),
-        offsetof(bridge_budget_t, direct_indexed) };
+    const char *names[2] = {};
+    uint32_t depth = 0;
+    const value_t *v = nullptr;
     bool taken = true;
 
-    for (uint32_t i = 0; i < 10; i++)
-        taken = take_field(h, NAME[i], AT[i], !i || i >= 6) && taken;
+    for (uint32_t i = 0; i < count; i++) {
+        if (!rules[i].width)
+            continue;
+        depth = config_get_names(&rules[i], names);
+        v = config_find_key(&h->config, names, depth).value;
+        if (v)
+            config_put(into, &rules[i], v);
+        taken = v && taken;
+    }
     return (taken);
 }
 
@@ -75,8 +43,8 @@ bool config_world(host_t *h)
 {
     bool taken = take_phases(h);
 
-    taken = take_run(h) && taken;
-    taken = take_budget(h) && taken;
-    taken = take_checks(h) && taken;
+    taken = take_rules(h, WORLD_KEYS, WORLD_KEY_COUNT, &h->d) && taken;
+    taken = take_rules(h, BUDGET_KEYS, BUDGET_KEY_COUNT, &h->d.world.budget)
+        && taken;
     return (config_order(h) && taken);
 }

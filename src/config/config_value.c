@@ -29,7 +29,8 @@ static const value_rule_t RULES[] = {
         "text, a number, true or false, or { path = \"...\" }" },
     [CHECK_PAIRS] = { ALLOW_PAIRS, 0, 0, "", "a list of pairs of systems" },
     [CHECK_AUTHOR] = { 0, 0, 0, "",
-        "only a module's author states it, in its file" }
+        "only a module's author states it, in its file" },
+    [CHECK_SIZE] = { ALLOW_WHOLE, 1, INT64_MAX, "", "a whole number, from 1" }
 };
 
 static bool is_word(const char *text, const char *words)

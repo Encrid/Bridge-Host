@@ -60,16 +60,11 @@ typedef struct {
 
 typedef struct {
     config_t config;
+    deployment_t d;
     const char **phases;
     uint32_t phase_count;
-    uint32_t threads;
-    int rounds;
-    bool live;
     bool ended;
     int round;
-    bool profile;
-    bool validate;
-    bridge_budget_t budget;
     held_t *held;
     bridge_backend_t *backends;
     uint32_t backend_count;
@@ -117,8 +112,6 @@ typedef void see_fn(void *ud, const char *path);
 
 [[nodiscard]] bool config_world(host_t *h);
 
-[[nodiscard]] bool take_checks(host_t *h);
-
 [[nodiscard]] bool config_order(host_t *h);
 
 [[nodiscard]] bool config_backends(host_t *h);
@@ -138,18 +131,18 @@ typedef void see_fn(void *ud, const char *path);
 [[nodiscard]] bool read_own(const stating_t *s, const char *key, value_t *v);
 
 [[nodiscard]] const value_t *state_find_own(const stating_t *s,
-    const module_rule_t *rule);
+    const key_rule_t *rule);
 
 [[nodiscard]] bool state_own_keys(const stating_t *s);
 
 [[nodiscard]] const value_t *state_find_key(const stating_t *s,
-    const module_rule_t *rule);
+    const key_rule_t *rule);
 
 [[nodiscard]] bool state_take_key(const stating_t *s,
-    const module_rule_t *rule, bridge_module_config_t *cfg);
+    const key_rule_t *rule, bridge_module_config_t *cfg);
 
 [[nodiscard]] bool state_take_list(const stating_t *s,
-    const module_rule_t *rule, bridge_module_config_t *cfg);
+    const key_rule_t *rule, bridge_module_config_t *cfg);
 
 [[nodiscard]] bool state_take_phases(const stating_t *s,
     bridge_module_config_t *cfg);

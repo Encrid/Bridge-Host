@@ -41,7 +41,8 @@ static enum replaced reload_found(host_t *h, const file_t *f,
     enum replaced got = REPLACE_REFUSED;
 
     if (now->who.abi == BRIDGE_ABI)
-        hot = state_find_key(&s, config_get_rule("hot_reload"));
+        hot = state_find_key(&s, config_get_rule(MODULE_KEYS,
+            MODULE_KEY_COUNT, nullptr, "hot_reload"));
     if (hot && !hot->flag)
         got = REPLACE_NOT_HOT;
     else if (hot && make_artifact(&s, f, &a) && !bridge_reload(h->w, &a, 1))

@@ -26,5 +26,5 @@ A `made_t` lists what the host allocates for the config of one module, and a `st
 | `find_file`, `meet`, `may_arrive`, `load_found`, `make_artifact` | Track a slot, read a met file, ask to trust it, load it, and build its artifact. |
 | `show_config`, `show_module`, `take_lock` | Show a configuration, show one module, and take the run lock. |
 | `state_*`, `read_own` | State the keys, lists, phases and settings of a module. |
-| `state_keep`, `state_keep_value`, `state_free` | Add a block or a value to the `made_t` of a module, and free the list. |
+| `state_keep_prefix`, `state_keep`, `state_keep_value`, `state_free` | Make the prefix of a statement, add a block or a value to the `made_t` of a module, and free the list. |
 | `host_free`, `handed_free` | Free the host, and free one `handed_t`. |

@@ -16,6 +16,19 @@ static bool add_one(void ***list, uint32_t *count, void *one)
     return (true);
 }
 
+const char *state_keep_prefix(made_t *m, const char *what, const char *path,
+    const char *who)
+{
+    const stating_t keep = { .made = m };
+    size_t size = strlen(what) + strlen(path) + strlen(who) + sizeof(": : : ");
+    char *prefix = state_keep(&keep, calloc(size, 1));
+
+    if (!prefix)
+        return ("");
+    snprintf(prefix, size, "%s: %s: %s: ", what, path, who);
+    return (prefix);
+}
+
 void *state_keep(const stating_t *s, void *block)
 {
     made_t *m = s->made;

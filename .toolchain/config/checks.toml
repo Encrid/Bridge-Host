@@ -291,14 +291,14 @@ why = "state_own_setting's own comes from malloc, which returns null only when m
 
 [[branches.exception]]
 path = "src/host_meet.c"
-line = 87
+line = 86
 col = 9
 side = "false"
 why = "meet allocates f->path with malloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/host_meet.c"
-line = 95
+line = 94
 col = 21
 side = "false"
 why = "f->path is null only when its malloc ran out of memory, which the tests do not force."
@@ -464,7 +464,7 @@ why = "config_check refuses a depth-five setting whose fifth key is not path, so
 
 [[branches.exception]]
 path = "src/host_walk.c"
-line = 36
+line = 49
 col = 29
 side = "false"
 why = "walk_folder opens a directory that walk_path already opened, so the open always succeeds."
@@ -548,7 +548,7 @@ why = "bridge_unload fails only when the engine cannot unload a module the host 
 
 [[branches.exception]]
 path = "src/host_walk.c"
-line = 44
+line = 58
 col = 9
 side = "false"
 why = "walk_folder opens the same folder that walk_path already confirmed as a folder, so its handle is never null and the close always runs."
@@ -604,21 +604,21 @@ why = "add_one's realloc returns null only when memory runs out, which the tests
 
 [[branches.exception]]
 path = "src/state/state_made.c"
-line = 23
+line = 36
 col = 18
 side = "true"
 why = "add_one fails only when its realloc runs out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/state/state_made.c"
-line = 34
+line = 47
 col = 9
 side = "false"
 why = "state_keep_value gets null only when calloc runs out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/state/state_made.c"
-line = 34
+line = 47
 col = 14
 side = "true"
 why = "add_one fails only when its realloc runs out of memory, which the tests do not force."

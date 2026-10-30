@@ -91,6 +91,7 @@ Two systems of two modules that conflict in one phase need a pair, or Bridge ref
 A module asks for the backend `native` or `wasm` by the format of its file. Each backend needs its key of `[content.arrive]`.
 
 The host reads a folder one level deep.
+A path of the content has no limit of length, but a system can refuse to open a long path.
 
 It looks at 32 files at most, and it does not read a file for which it has no room.
 Each time its room becomes full, it writes `too many files: <count> are looked at`.

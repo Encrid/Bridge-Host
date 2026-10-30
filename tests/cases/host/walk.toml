@@ -255,3 +255,30 @@ native = "{bb_native}/bridge_native"
 
 [case.false.files]
 "{case}/heap/f32.txt" = ""
+
+[[case]]
+name = "a path that finds no memory is not looked at, and the walk goes on"
+run = ["{out}/bridge-host{exe}", "{case}/j.toml"]
+fail = { calloc = 7 }
+
+[case.claims]
+status = 0
+line = ["still loaded: nothing"]
+lacks = ["loaded: bridge-host:knock@1.0.0"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/j.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}

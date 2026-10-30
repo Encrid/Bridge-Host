@@ -53,6 +53,7 @@ static void say_world(const host_t *h)
         say_key(&h->config, names, config_get_names(&BUDGET_KEYS[i], names));
     for (uint32_t i = 0; i < h->backend_count; i++)
         say_under(&h->config, "backend", h->held[i].name);
+    say_under(&h->config, "content", "start");
     say_under(&h->config, "content", "arrive");
     say_under(&h->config, "content", "load");
     for (uint32_t i = 0; i < h->path_count; i++)

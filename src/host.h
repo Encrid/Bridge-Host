@@ -53,6 +53,7 @@ typedef struct {
 typedef struct {
     const char *name;
     char *library;
+    enum arrive start;
     enum arrive arrive;
     bridge_setting_t *settings;
 } held_t;
@@ -201,7 +202,8 @@ void handed_free(handed_t *of);
 [[nodiscard]] bool meet(host_t *h, file_t *f, const char *path,
     handed_t *now);
 
-[[nodiscard]] bool may_arrive(const file_t *f, const held_t *held);
+[[nodiscard]] bool may_arrive(const file_t *f, const held_t *held,
+    enum arrive rule);
 
 void load_found(host_t *h, file_t *f, bool first);
 

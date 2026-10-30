@@ -123,28 +123,28 @@ why = "with_suffix allocates with malloc, which returns null only when memory ru
 
 [[branches.exception]]
 path = "src/config/config_backend.c"
-line = 61
+line = 63
 col = 26
 side = "false"
 why = "h->held comes from calloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_backend.c"
-line = 61
+line = 63
 col = 37
 side = "false"
 why = "h->backends comes from calloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_backend.c"
-line = 65
+line = 67
 col = 22
 side = "false"
 why = "h->held is null only when its calloc ran out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_backend.c"
-line = 65
+line = 67
 col = 33
 side = "false"
 why = "h->backends is null only when its calloc ran out of memory, which the tests do not force."

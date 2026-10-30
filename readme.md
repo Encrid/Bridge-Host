@@ -113,6 +113,7 @@ Two systems of two modules that conflict in one phase need a pair, or Bridge ref
 | `[content] files` | The most files that the host looks at, from 1. |
 | `[content] depth` | How many levels of folders the host reads in a folder of `paths`, from 1. |
 | `[content.load] <identity>` or `all` | `true` loads the module, `false` does not. The key of an identity is over `all`. |
+| `[content.start] <backend>` | `"ask"`, `"load"` or `"leave"`: what the host does with a module that the first look finds. |
 | `[content.arrive] <backend>` | `"ask"`, `"load"` or `"leave"`: what the host does with a module that comes after the first look. |
 
 The host needs each key of this table, but `[content] ignore`, a key of an identity in `[content.load]`, and the settings of a backend.
@@ -121,7 +122,7 @@ The backend refuses a setting that is missing or that it does not know, so the d
 The readme of a backend gives its settings.
 
 A module asks for the backend `native` or `wasm` by the format of its file.
-Each backend needs its key of `[content.arrive]`.
+Each backend needs its keys of `[content.start]` and `[content.arrive]`.
 With `"ask"`, the host writes `? trust <identity>, <backend>, <file>`, and reads one whole line.
 It loads the module only if the line is `yes`.
 

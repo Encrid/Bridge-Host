@@ -383,3 +383,69 @@ script = [
     { wait = "? trust bridge-host:knock@1.0.0, native, folder-long/knock{library}", type = "no" },
     { wait = "? trust bridge-host:nender@1.0.0, native, folder-long/nender{library}", type = "yes" },
 ]
+
+[[case]]
+name = "a module of the first look is asked about when the start rule of its backend is ask"
+run = ["{out}/bridge-host{exe}", "{case}/s.toml"]
+script = [{ wait = "? trust bridge-host:knock@1.0.0, native, mods/knock{library}", type = "yes" }]
+
+[case.claims]
+status = 0
+order = ["? trust bridge-host:knock@1.0.0, native, mods/knock{library}", "loaded: bridge-host:knock@1.0.0, native, mods/knock{library}"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/s.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[content.start]
+native = "ask"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+script = [{ wait = "? trust bridge-host:knock@1.0.0, native, mods/knock{library}", type = "no" }]
+
+[[case]]
+name = "a module of the first look is left when the start rule of its backend is leave"
+run = ["{out}/bridge-host{exe}", "{case}/s.toml"]
+
+[case.claims]
+status = 0
+line = ["not loaded: mods/knock{library}: bridge-host:knock@1.0.0, native, not trusted"]
+lacks = ["? trust"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/s.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[content.start]
+native = "leave"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/s.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[content.start]
+native = "load"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''

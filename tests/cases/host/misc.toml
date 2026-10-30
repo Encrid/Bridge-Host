@@ -69,6 +69,9 @@ failing = 3
 paths = ["sm"]
 files = 32
 depth = 1
+[content.start]
+wasm = "load"
+native = "load"
 [content.arrive]
 wasm = "load"
 native = "ask"

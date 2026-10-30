@@ -8,7 +8,7 @@ This file takes the settings that a module declares.
 It builds the key `config.<name>` one time, at the length of the name, in the `made_t` of the module. Thus a name has no limit of length.
 It writes the key in its lines, and gives it to `state_own_setting`.
 
-`put_setting` writes the setting as a string, an integer, a float, or a boolean, and resolves a path value.
+`put_setting` resolves a path value, and makes the setting with `config_get_setting`.
 The copy of the `settings` word, the settings array and each resolved path go into the `made_t` of the module.
 `state_settings` frees the list of the names.
 

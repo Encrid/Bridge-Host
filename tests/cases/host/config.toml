@@ -18,9 +18,10 @@ threads = 1
 threads = 1
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -30,9 +31,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -51,9 +53,10 @@ line = ["not stated: content.paths"]
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
 rounds = 8
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -63,9 +66,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -94,9 +98,10 @@ presets = ["{root}/tests/presets/test.toml", "peer1.toml", "peer2.toml"]
 phases = ["update"]
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -105,9 +110,10 @@ presets = ["{root}/tests/presets/test.toml", "peer1.toml", "peer3.toml"]
 phases = ["update"]
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -132,9 +138,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -144,9 +151,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -169,9 +177,10 @@ rounds = 8
 entities = 1
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -181,9 +190,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -206,9 +216,10 @@ rounds = 8
 pinned = false
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -218,9 +229,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -247,9 +259,10 @@ paths = ["elsewhere"]
 presets = ["{root}/tests/presets/test.toml", "{case}/beside/beside.toml"]
 phases = ["update"]
 rounds = 8
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -257,9 +270,10 @@ native = "{bb_native}/bridge_native"
 presets = ["{root}/tests/presets/test.toml", "{case}/beside/elsewhere.toml"]
 phases = ["update"]
 rounds = 8
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -283,8 +297,8 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-knock"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
 '''
 
 [case.false.files]
@@ -318,8 +332,8 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-formats"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
 '''
 
 [case.false.files]
@@ -351,9 +365,10 @@ rounds = 8
 word = "hi"
 [content]
 paths = ["config-word"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 "{case}/local.toml.d/local.toml" = '''
 [module."bridge-host:word@1.0.0".config]
@@ -372,9 +387,10 @@ rounds = 8
 word = "hi"
 [content]
 paths = ["config-word"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -400,9 +416,10 @@ rounds = 8
 hot_reload = false
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -412,9 +429,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -436,9 +454,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-mute"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -448,9 +467,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -510,9 +530,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -522,9 +543,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -548,9 +570,10 @@ rounds = 8
 "bridge-host:quiet@1.0.0" = false
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -560,9 +583,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -595,9 +619,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -607,9 +632,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -642,9 +668,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -659,9 +686,10 @@ presets = ["{root}/tests/presets/test.toml", "peer1.toml", "peer2.toml"]
 phases = ["update"]
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -685,9 +713,10 @@ profile = true
 validate = true
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -699,9 +728,10 @@ rounds = 8
 profile = "nope"
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -730,9 +760,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["config-quiet"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -761,8 +792,8 @@ rounds = 8
 table_growth = 50
 [content]
 paths = ["mods"]
-[backend]
-native = "{bb_native}/bridge_native"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -772,6 +803,6 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["mods"]
-[backend]
-native = "{bb_native}/bridge_native"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''

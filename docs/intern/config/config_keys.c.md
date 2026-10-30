@@ -20,8 +20,10 @@ Each world key and budget key is fixed. Each module key can be in the local file
 `config_get_rule` finds a rule by its name and its table. A key with no table matches a rule with no table.
 Thus a check and a statement find a key in one place.
 `config_get_names` writes the names of the key of a rule, one or two, and gives their count.
+
 `config_put` writes a value at the offset of its rule, in the width of its field.
 It writes `BRIDGE_TRUE` or `BRIDGE_FALSE` for a flag, the item of `enum bridge_on_error` for `on_error`, and the `none` of the rule for the word `none`.
+`config_get_setting` makes a `bridge_setting_t` of a value: an integer, a real, a flag, or a text that the caller gives.
 
 ## Functions
 
@@ -30,3 +32,4 @@ It writes `BRIDGE_TRUE` or `BRIDGE_FALSE` for a flag, the item of `enum bridge_o
 | `config_get_rule` | Gives the rule of a key in a table, or null for a key that no rule has. |
 | `config_get_names` | Writes the names of the key of a rule, and gives how many there are. |
 | `config_put` | Writes a value into a struct, as its rule tells. |
+| `config_get_setting` | Gives the setting of a key and its value. |

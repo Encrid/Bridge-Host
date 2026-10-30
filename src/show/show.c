@@ -32,14 +32,13 @@ static void say_key(const config_t *c, const char *const *names,
 
 static void say_under(const config_t *c, const char *top, const char *next)
 {
-    const char *const under[] = { top, next };
-    const keyed_t k = { under, next ? 2 : 1 };
-    names_t names = config_names(c, &k);
     const char *key[3] = { top, next, nullptr };
+    const keyed_t k = { key, 2 };
+    names_t names = config_names(c, &k);
 
     for (uint32_t i = 0; i < names.count; i++) {
-        key[k.depth] = names.names[i];
-        say_key(c, key, k.depth + 1);
+        key[2] = names.names[i];
+        say_key(c, key, 3);
     }
     free(names.names);
 }
@@ -52,7 +51,8 @@ static void say_world(const host_t *h)
         say_key(&h->config, names, config_get_names(&WORLD_KEYS[i], names));
     for (uint32_t i = 0; i < BUDGET_KEY_COUNT; i++)
         say_key(&h->config, names, config_get_names(&BUDGET_KEYS[i], names));
-    say_under(&h->config, "backend", nullptr);
+    for (uint32_t i = 0; i < h->backend_count; i++)
+        say_under(&h->config, "backend", h->held[i].name);
     say_under(&h->config, "content", "arrive");
     say_under(&h->config, "content", "load");
     for (uint32_t i = 0; i < h->path_count; i++)

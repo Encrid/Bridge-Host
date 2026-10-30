@@ -154,3 +154,22 @@ void config_put(void *into, const key_rule_t *rule, const value_t *v)
     if (rule->width == 8)
         memcpy((char *)into + rule->at, &n, 8);
 }
+
+bridge_setting_t config_get_setting(const char *key, const value_t *v,
+    const char *text)
+{
+    switch (v->kind) {
+        case VALUE_WHOLE:
+            return ((bridge_setting_t){ .key = key, .kind = BRIDGE_INT,
+                .v.i = v->whole });
+        case VALUE_REAL:
+            return ((bridge_setting_t){ .key = key, .kind = BRIDGE_FLOAT,
+                .v.f = v->real });
+        case VALUE_FLAG:
+            return ((bridge_setting_t){ .key = key, .kind = BRIDGE_BOOL,
+                .v.b = v->flag });
+        default:
+            return ((bridge_setting_t){ .key = key, .kind = BRIDGE_STRING,
+                .v.s = text });
+    }
+}

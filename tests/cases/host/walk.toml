@@ -25,9 +25,10 @@ rounds = 8
 [content]
 paths = ["base", "pre", "prex"]
 ignore = ["base/skip.wasm", "pre"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -38,9 +39,10 @@ rounds = 8
 [content]
 paths = ["base"]
 ignore = ["base"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -61,9 +63,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["mods/quiet.wasm"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -73,9 +76,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["mods/none.wasm"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -92,9 +96,10 @@ phases = ["update"]
 rounds = 1
 [content]
 paths = ["heap"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 "{case}/heap/f01.txt" = "x"
 "{case}/heap/f02.txt" = "x"
@@ -158,9 +163,10 @@ rounds = 8
 live = true
 [content]
 paths = ["heap"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 "{case}/heap/f01.txt" = "x"
 "{case}/heap/f02.txt" = "x"
@@ -215,9 +221,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["heap"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 "{case}/heap/zz.txt" = ""
 "{case}/heap/f01.txt" = "x"
@@ -259,7 +266,7 @@ native = "{bb_native}/bridge_native"
 [[case]]
 name = "a path that finds no memory is not looked at, and the walk goes on"
 run = ["{out}/bridge-host{exe}", "{case}/j.toml"]
-fail = { calloc = 7 }
+fail = { calloc = 8 }
 
 [case.claims]
 status = 0
@@ -276,8 +283,8 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["mods"]
-[backend]
-native = "{bb_native}/bridge_native"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false]

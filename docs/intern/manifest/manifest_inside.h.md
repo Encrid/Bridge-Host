@@ -2,7 +2,7 @@
 
 This private header is shared by the sources that read a manifest.
 It defines `format_t`, which pairs a magic head with the function that locates the section.
-It also declares the helpers for numbers, the per-format finders, and the key taker.
+It also declares the helpers for numbers, the per-format finders, the key taker and the reader of a word.
 
 ## Functions
 
@@ -12,3 +12,4 @@ It also declares the helpers for numbers, the per-format finders, and the key ta
 | `manifest_find_elf`, `manifest_find_macho`, `manifest_find_wasm` | Find the manifest section of one format. |
 | `manifest_find` | Picks the format from the head and gives the backend name. |
 | `manifest_take` | Takes the key, by its length, and the value of one `key=value` word into `manifest_t`. |
+| `manifest_read_word` | Reads the identity or a later word, and gives the reason of a refused word. |

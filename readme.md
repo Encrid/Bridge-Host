@@ -165,6 +165,9 @@ A module states its manifest in its file, as words that each end with a zero byt
 
 Only the identity has a limit of length. No other word of the manifest has one.
 The host refuses a word with no `=` after the first word. It does not read a word with a key that it does not know.
+
+It refuses a word that it reads if the manifest states its key twice.
+For `abi`, `config`, `settings`, `pinned` and `reloadable`, it writes `states <key> twice`. For a default, it writes `its file states <key> twice`.
 In the message `states a <word> that cannot be`, `<word>` is the part before the first `=`, cut to its first 60 bytes.
 
 ## Messages
@@ -209,6 +212,7 @@ Finding the modules:
 - `neither a wasm module nor a library`
 - `no manifest`
 - `states a <word> that cannot be`
+- `states <key> twice`
 - `its manifest does not begin with who it is`
 - `its identity has more than 127 bytes`
 - `its manifest has a word with no zero byte at its end`
@@ -262,6 +266,7 @@ Showing the deployment:
 - `pinned = <flag>  its file`
 - `reloadable = <flag>  its file`
 - `its file states <key>: <why>`
+- `its file states <key> twice`
 - `its file states no config`
 - `its file states no pinned`
 - `its file states no reloadable`

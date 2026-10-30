@@ -2,7 +2,7 @@
 
 This header defines `manifest_t` and declares the two readers of a manifest.
 A `manifest_t` holds the identity of a module, its backend, and the author keys `config`, `settings`, `abi`, `pinned` and `reloadable`.
-The flags `has_pinned` and `has_reloadable` record whether the manifest stated each one.
+The mask `taken` holds a mark of `enum manifest_word` for each author word that the manifest stated.
 
 ## The words in the bytes
 
@@ -17,4 +17,4 @@ Thus the manifest copies no word, and the identity is the one word with a limit 
 | Function | Result |
 | --- | --- |
 | `manifest_read` | Fills a `manifest_t` from the bytes of a file. Gives a reason on refusal, else null. |
-| `manifest_get_value` | Points at the raw value of one key in the manifest, and reports its size. |
+| `manifest_get_value` | Counts the words of one key in the manifest, and gives the value of the first of them. |

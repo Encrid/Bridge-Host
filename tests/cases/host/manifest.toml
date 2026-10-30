@@ -109,3 +109,93 @@ native = "{bb_native}/bridge_native"
 
 [case.false.folders]
 "{case}/bad" = ["quiet"]
+
+[[case]]
+name = "an author word that the manifest states twice is refused"
+run = ["{out}/bridge-host{exe}", "{case}/tw.toml"]
+
+[case.claims]
+status = 0
+line = ["not loaded: mods/twice{library}: bridge-host:twice@1.0.0 states reloadable twice"]
+lacks = ["loaded: bridge-host:twice@1.0.0"]
+
+[case.folders]
+"{case}/mods" = ["twice"]
+
+[case.files]
+"{case}/tw.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["knock"]
+
+[[case]]
+name = "a default that the manifest states twice is refused when the host reads it"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/td.toml"]
+
+[case.claims]
+status = 1
+line = ["  refused: its file states config.word twice"]
+
+[case.folders]
+"{case}/mods" = ["twiceset"]
+
+[case.files]
+"{case}/td.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update", "late"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["owned"]
+
+[[case]]
+name = "a default that the manifest states twice is not refused when a file states its key"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/td.toml"]
+
+[case.claims]
+status = 0
+line = ['  config.word = "hi"  td.toml:5']
+
+[case.folders]
+"{case}/mods" = ["twiceset"]
+
+[case.files]
+"{case}/td.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update", "late"]
+rounds = 8
+[module."bridge-host:twiceset@1.0.0".config]
+word = "hi"
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/td.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update", "late"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''

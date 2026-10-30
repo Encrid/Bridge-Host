@@ -14,39 +14,38 @@ static int order_files(const void *left, const void *right)
     return (order ? order : strcmp(l->path, r->path));
 }
 
-static void pass_file(host_t *h, look_t *lk, file_t *f, handed_t *now)
+static void read_file(seeing_t *s, file_t *f, const char *path)
 {
-    if (f)
-        f->seen = true;
-    if (!f && now->bytes && !h->full) {
-        say("too many files: %d are looked at\n", FILES);
-        lk->did++;
+    handed_t now = {};
+    handed_t *kept = nullptr;
+    uint64_t mark = 0;
+
+    now.bytes = read_whole(path, &now.len);
+    if (!now.bytes)
+        return;
+    mark = hash_bytes(now.bytes, now.len);
+    f->seen = true;
+    if (!f->path || f->mark != mark)
+        kept = malloc(sizeof(*kept));
+    if (!kept) {
+        free(now.bytes);
+        return;
     }
-    h->full = h->full || (now->bytes && !f);
-    handed_free(now);
+    *kept = now;
+    f->mark = mark;
+    if (meet(s->h, f, path, kept))
+        s->lk->found[s->lk->count++] = f;
+    s->lk->did++;
 }
 
 static void see_file(void *ud, const char *path)
 {
     seeing_t *s = ud;
-    handed_t *now = calloc(1, sizeof(*now));
-    file_t *f = nullptr;
-    uint64_t mark = 0;
+    file_t *f = find_file(s->h, path);
 
-    now->bytes = read_whole(path, &now->len);
-    if (now->bytes)
-        f = find_file(s->h, path);
-    if (now->bytes)
-        mark = hash_bytes(now->bytes, now->len);
-    if (!f || (f->path && f->mark == mark)) {
-        pass_file(s->h, s->lk, f, now);
-        return;
-    }
-    if (meet(s->h, f, path, now))
-        s->lk->found[s->lk->count++] = f;
-    f->mark = mark;
-    f->seen = true;
-    s->lk->did++;
+    s->lk->full = s->lk->full || !f;
+    if (f)
+        read_file(s, f, path);
 }
 
 static void drop_gone(host_t *h, look_t *lk)
@@ -76,6 +75,11 @@ int look(host_t *h, bool first)
         h->files[i].seen = false;
     if (walk_content(h, see_file, &s) < 0)
         return (-1);
+    if (lk.full && !h->full) {
+        say("too many files: %d are looked at\n", FILES);
+        lk.did++;
+    }
+    h->full = lk.full;
     drop_gone(h, &lk);
     qsort(lk.found, (size_t)lk.count, sizeof(lk.found[0]), order_files);
     for (int i = 0; i < lk.count; i++)

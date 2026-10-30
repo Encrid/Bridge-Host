@@ -98,6 +98,7 @@ typedef struct {
     file_t *found[FILES];
     int count;
     int did;
+    bool full;
 } look_t;
 
 typedef struct {

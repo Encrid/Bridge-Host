@@ -23,9 +23,10 @@ log_ring = 111
 log_ring = 222
 [module.all]
 log_ring = 333
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -39,9 +40,10 @@ paths = ["mods"]
 log_ring = 222
 [module.all]
 log_ring = 333
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -50,7 +52,7 @@ run = ["{out}/bridge-host{exe}", "--show-config", "{case}/over.toml"]
 
 [case.claims]
 status = 1
-line = ["  scratch = 200  over.toml:23"]
+line = ["  scratch = 200  over.toml:39"]
 
 [case.folders]
 "{case}/mods" = ["owns"]
@@ -59,6 +61,11 @@ line = ["  scratch = 200  over.toml:23"]
 "{case}/over.toml" = '''
 threads = 1
 live = false
+stack = 1048576
+observer_passes = 1
+table_growth = 150
+table_hash_fill = 50
+table_retry = 50
 phases = ["update"]
 rounds = 8
 [budget]
@@ -72,22 +79,38 @@ persistent = 262144
 columns = 1048576
 sparse_sets = "none"
 direct_indexed = "none"
+[checks]
+profile = false
+validate = false
+usage = false
+[records]
+written = 6
+failing = 3
 [content]
 paths = ["mods"]
+files = 32
+depth = 1
 [content.load]
 all = true
+[content.start]
+wasm = "load"
 [content.arrive]
 wasm = "load"
 [module.all]
 scratch = 200
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
 '''
 
 [case.false.files]
 "{case}/over.toml" = '''
 threads = 1
 live = false
+stack = 1048576
+observer_passes = 1
+table_growth = 150
+table_hash_fill = 50
+table_retry = 50
 phases = ["update"]
 rounds = 8
 [budget]
@@ -101,14 +124,25 @@ persistent = 262144
 columns = 1048576
 sparse_sets = "none"
 direct_indexed = "none"
+[checks]
+profile = false
+validate = false
+usage = false
+[records]
+written = 6
+failing = 3
 [content]
 paths = ["mods"]
+files = 32
+depth = 1
 [content.load]
 all = true
+[content.start]
+wasm = "load"
 [content.arrive]
 wasm = "load"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
 '''
 
 [[case]]
@@ -131,9 +165,10 @@ rounds = 8
 word = "hi"
 [content]
 paths = ["owned"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -143,9 +178,10 @@ phases = ["late"]
 rounds = 8
 [content]
 paths = ["owned"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -170,9 +206,10 @@ phases = ["late"]
 rounds = 8
 [content]
 paths = ["mods"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -191,8 +228,8 @@ has = ["cannot open backend library 'sub/nothere{library}'"]
 
 [case.files]
 "{case}/sub/back.toml" = '''
-[backend]
-wasm = "nothere"
+[backend.wasm]
+library = "nothere"
 '''
 "{case}/back.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "sub/back.toml"]
@@ -209,8 +246,8 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["mods"]
-[backend]
-wasm = "nothere"
+[backend.wasm]
+library = "nothere"
 '''
 
 [[case]]
@@ -221,17 +258,18 @@ run = ["{out}/bridge-host{exe}", "{case}/forms.toml"]
 status = 1
 line = [
     "refused: forms.toml:1: threads: a whole number, from 1",
-    "refused: forms.toml:2: rounds: a whole number, from 0 to 1000000",
+    "refused: forms.toml:2: rounds: a whole number, from 0 to 4294967295",
     "refused: forms.toml:3: phases: a list of names",
-    'refused: forms.toml:5: budget.sparse_sets: a whole number, from 1, or "none"',
-    "refused: forms.toml:7: order.before: a list of pairs of systems",
-    "refused: forms.toml:9: backend.wasm: text",
-    'refused: forms.toml:11: content.arrive.wasm: "ask", "load" or "leave"',
-    "refused: forms.toml:13: module.all.hot_reload: true or false",
-    'refused: forms.toml:14: module.all.on_error: "fail" or "skip"',
-    "refused: forms.toml:15: module.all.log_level: a level, from 1 to 7",
-    'refused: forms.toml:16: module.all.losses: a list of names, or "none"',
-    'refused: forms.toml:18: module."bridge-host:word@1.0.0".config.word: text, a number, true or false, or { path = "..." }',
+    "refused: forms.toml:4: stack: a whole number, from 1",
+    'refused: forms.toml:6: budget.sparse_sets: a whole number, from 1, or "none"',
+    "refused: forms.toml:8: order.before: a list of pairs of systems",
+    "refused: forms.toml:10: backend.wasm.library: text",
+    'refused: forms.toml:12: content.arrive.wasm: "ask", "load" or "leave"',
+    "refused: forms.toml:14: module.all.hot_reload: true or false",
+    'refused: forms.toml:15: module.all.on_error: "fail" or "skip"',
+    "refused: forms.toml:16: module.all.log_level: a level, from 1 to 7",
+    'refused: forms.toml:17: module.all.losses: a list of names, or "none"',
+    'refused: forms.toml:19: module."bridge-host:word@1.0.0".config.word: text, a number, true or false, or { path = "..." }',
 ]
 
 [case.folders]
@@ -240,14 +278,15 @@ line = [
 [case.files]
 "{case}/forms.toml" = '''
 threads = 0
-rounds = 1000001
+rounds = 4294967296
 phases = "update"
+stack = 0
 [budget]
 sparse_sets = 0
 [order]
 before = [["a"]]
-[backend]
-wasm = 1
+[backend.wasm]
+library = 1
 [content.arrive]
 wasm = "maybe"
 [module.all]
@@ -266,9 +305,43 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["mods"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "the most rounds that a deployment can state is 4294967295"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/r.toml"]
+
+[case.claims]
+status = 0
+line = ["rounds = 4294967295  r.toml:3"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/r.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 4294967295
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/r.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 4294967296
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -297,9 +370,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["one"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -333,9 +407,10 @@ rounds = 8
 paths = ["mods"]
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -371,9 +446,10 @@ paths = ["mods"]
 read = ["m:M"]
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -385,9 +461,10 @@ rounds = 8
 paths = ["mods"]
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -410,9 +487,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["mods"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
@@ -436,9 +514,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["mods"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
@@ -465,9 +544,10 @@ rounds = 8
 paths = ["mods"]
 [module."bridge-host:knock@1.0.0"]
 work_limit = 5
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -479,7 +559,114 @@ rounds = 8
 paths = ["mods"]
 [module."bridge-host:knock@1.0.0"]
 work_limit = "none"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a module with a grant that no file states, and that its manifest does not give, is not loaded"
+run = ["{out}/bridge-host{exe}", "{case}/ng.toml"]
+
+[case.claims]
+status = 1
+line = [
+    "not loaded: mods/knock{library}: bridge-host:knock@1.0.0: not stated: read",
+    "not loaded: mods/knock{library}: bridge-host:knock@1.0.0: not stated: write",
+]
+lacks = ["loaded: bridge-host:knock@1.0.0"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/ng.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/ng.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "the default of a grant in the manifest counts when no file states the grant"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/dg.toml"]
+
+[case.claims]
+status = 0
+line = ['  read = ["a:A"]  its file', '  write = ["b:B"]  its file']
+
+[case.folders]
+"{case}/mods" = ["granted"]
+
+[case.files]
+"{case}/dg.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["knock"]
+
+[[case]]
+name = "an element limit that the backend of a native module cannot keep refuses the module"
+run = ["{out}/bridge-host{exe}", "{case}/el.toml"]
+
+[case.claims]
+status = 1
+has = ["it states element_limit, which backend 'native' cannot keep", "bridge-host:knock@1.0.0 was refused"]
+lacks = ["loaded: bridge-host:knock@1.0.0"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/el.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[module."bridge-host:knock@1.0.0"]
+element_limit = 5
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/el.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[module."bridge-host:knock@1.0.0"]
+element_limit = "none"
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''

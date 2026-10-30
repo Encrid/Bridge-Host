@@ -9,6 +9,14 @@
     #include <stddef.h>
     #include <stdint.h>
 
+enum manifest_word : uint8_t {
+    MANIFEST_ABI = 1,
+    MANIFEST_CONFIG = 2,
+    MANIFEST_SETTINGS = 4,
+    MANIFEST_PINNED = 8,
+    MANIFEST_RELOADABLE = 16
+};
+
 typedef struct {
     const char *identity;
     const char *backend;
@@ -17,14 +25,13 @@ typedef struct {
     int64_t abi;
     bool pinned;
     bool reloadable;
-    bool has_pinned;
-    bool has_reloadable;
+    uint8_t taken;
 } manifest_t;
 
 [[nodiscard]] const char *manifest_read(const unsigned char *bytes, size_t len,
     manifest_t *m);
 
-[[nodiscard]] const char *manifest_get_value(const unsigned char *bytes,
-    size_t len, const char *key, size_t *size);
+[[nodiscard]] uint32_t manifest_get_value(const unsigned char *bytes,
+    size_t len, const char *key, const char **value);
 
 #endif

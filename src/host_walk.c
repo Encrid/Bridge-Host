@@ -3,10 +3,7 @@
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
-#include <dirent.h>
-
 #include "host.h"
-#include "os.h"
 
 static bool is_ignored(const host_t *h, const char *path)
 {
@@ -26,50 +23,76 @@ static bool is_ignored(const host_t *h, const char *path)
     return (is);
 }
 
-static void walk_folder(const host_t *h, const char *path, see_fn *see,
-    void *ud)
+static char *join_path(const char *path, const char *name)
 {
-    DIR *d = opendir(path);
-    DIR *sub = nullptr;
-    char full[1024];
+    size_t len = strlen(path);
+    const char *between = config_folder_size(path) == len ? "" : "/";
+    size_t size = len + strlen(name) + 2;
+    char *full = calloc(size, 1);
 
-    for (struct dirent *e = d ? readdir(d) : nullptr; e; e = readdir(d)) {
-        snprintf(full, sizeof(full), "%s/%s", path, e->d_name);
-        sub = opendir(full);
-        if (sub)
-            closedir(sub);
-        if (!sub && !is_ignored(h, full))
-            see(ud, full);
-    }
-    if (d)
-        closedir(d);
+    if (full)
+        snprintf(full, size, "%s%s%s", path, between, name);
+    return (full);
 }
 
-static int walk_path(const host_t *h, const char *path, see_fn *see,
-    void *ud)
+static void walk_folder(const walk_t *w, os_folder_t *in, const char *path,
+    uint32_t levels)
 {
-    DIR *d = opendir(path);
-    FILE *file = d ? nullptr : fopen(path, "rb");
+    bool is_folder = false;
+    char *full = nullptr;
+    bool kept = false;
+    os_folder_t *sub = nullptr;
 
-    if (d)
-        closedir(d);
-    if (!d && !file) {
-        printf("cannot look in '%s'\n", path);
-        return (-1);
+    for (const char *name = os_folder_read_entry(in, &is_folder); name;
+        name = os_folder_read_entry(in, &is_folder)) {
+        full = join_path(path, name);
+        kept = full && !is_ignored(w->h, full);
+        sub = kept && is_folder && levels > 1 ? os_folder_open(full) : nullptr;
+        if (sub)
+            walk_folder(w, sub, full, levels - 1);
+        if (kept && !is_folder)
+            w->see(w->ud, full, in, name);
+        os_folder_close(sub);
+        free(full);
     }
-    if (file) {
-        fclose(file);
-        see(ud, path);
-        return (0);
-    }
-    walk_folder(h, path, see, ud);
-    return (0);
+}
+
+static int walk_file(const walk_t *w, const char *path)
+{
+    size_t cut = config_folder_size(path);
+    char *folder = calloc(cut + 1, 1);
+    os_folder_t *in = nullptr;
+    size_t len = 0;
+    bool seen = false;
+
+    if (folder)
+        memcpy(folder, path, cut);
+    if (folder)
+        in = os_folder_open(cut ? folder : ".");
+    seen = in && os_folder_read_file(in, path + cut, &len);
+    if (seen)
+        w->see(w->ud, path, in, path + cut);
+    else
+        say("cannot look in '%s'\n", path);
+    os_folder_close(in);
+    free(folder);
+    return (seen ? 0 : -1);
 }
 
 int walk_content(const host_t *h, see_fn *see, void *ud)
 {
-    for (uint32_t i = 0; i < h->path_count; i++)
-        if (walk_path(h, h->paths[i], see, ud) < 0)
+    const walk_t w = { h, see, ud };
+    os_folder_t *in = nullptr;
+    bool folder = false;
+
+    for (uint32_t i = 0; i < h->path_count; i++) {
+        in = os_folder_open(h->paths[i]);
+        folder = in != nullptr;
+        if (folder)
+            walk_folder(&w, in, h->paths[i], h->d.depth);
+        os_folder_close(in);
+        if (!folder && walk_file(&w, h->paths[i]) < 0)
             return (-1);
+    }
     return (0);
 }

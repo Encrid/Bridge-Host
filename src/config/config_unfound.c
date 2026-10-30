@@ -7,7 +7,7 @@
 
 static bool is_found(const host_t *h, const char *identity)
 {
-    for (int i = 0; i < FILES; i++)
+    for (uint32_t i = 0; i < h->d.files; i++)
         if (h->files[i].of && !strcmp(h->files[i].of->who.identity, identity))
             return (true);
     return (false);
@@ -35,18 +35,18 @@ static bool say_unfound(const host_t *h, const cfile_t *f,
     names_add(said, named);
     if (said->count == count)
         return (false);
-    printf("refused: %s:%u: %s: no module found is it\n", f->path, e->line,
+    say("refused: %s:%u: %s: no module found is it\n", f->path, e->line,
         named);
     return (true);
 }
 
 static void say_found_ones(const host_t *h)
 {
-    printf("found:");
-    for (int i = 0; i < FILES; i++)
+    say_part("found:");
+    for (uint32_t i = 0; i < h->d.files; i++)
         if (h->files[i].of && h->files[i].of->who.identity[0])
-            printf(" %s", h->files[i].of->who.identity);
-    printf("\n");
+            say_part(" %s", h->files[i].of->who.identity);
+    say("\n");
 }
 
 uint32_t config_unfound(const host_t *h)

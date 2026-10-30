@@ -111,7 +111,7 @@ has = [
     "rounds: fixed when the world is made: not in the local file",
     "live: fixed when the world is made: not in the local file",
     "budget.entities: fixed when the world is made: not in the local file",
-    "backend.wasm: fixed when the world is made: not in the local file",
+    "backend.wasm.library: fixed when the world is made: not in the local file",
     "checks.profile: fixed when the world is made: not in the local file",
 ]
 
@@ -125,8 +125,8 @@ rounds = 1
 live = true
 [budget]
 entities = 1
-[backend]
-wasm = "y"
+[backend.wasm]
+library = "y"
 [checks]
 profile = true
 '''
@@ -164,9 +164,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -187,8 +188,21 @@ status = 1
 has = [
     "not stated: phases",
     "not stated: threads",
+    "not stated: stack",
+    "not stated: observer_passes",
+    "not stated: table_growth",
+    "not stated: table_hash_fill",
+    "not stated: table_retry",
     "not stated: live",
+    "not stated: checks.profile",
+    "not stated: checks.validate",
+    "not stated: checks.usage",
+    "not stated: records.written",
+    "not stated: records.failing",
+    "not stated: content.files",
+    "not stated: content.depth",
     "not stated: budget.entities",
+    "not stated: content.start.wasm",
     "not stated: content.arrive.wasm",
 ]
 
@@ -210,9 +224,10 @@ sparse_sets = "none"
 direct_indexed = "none"
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -222,9 +237,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -247,9 +263,10 @@ rounds = 8
 [content]
 paths = ["cq", "cq", "cq2"]
 ignore = ["z", "z"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -259,9 +276,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq2"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -288,9 +306,10 @@ rounds = 8
 before = [["a", "b"], ["a", "c"], ["c", "d"], ["b", "a"], ["c", "a"]]
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -300,9 +319,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -329,9 +349,10 @@ rounds = 8
 before = [["a", "b"], ["e", "f"]]
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -347,9 +368,10 @@ rounds = 8
 before = [["a", "b"], ["e", "f"]]
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -358,7 +380,7 @@ run = ["{out}/bridge-host{exe}", "{case}/ocf.toml"]
 
 [case.claims]
 status = 1
-has = ["refused: order a b:"]
+has = ['refused: order.before: ["a", "b"] in ocf1.toml:2, ["b", "a"] in ocf2.toml:2']
 
 [case.folders]
 "{case}/cq" = ["quiet"]
@@ -378,9 +400,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -398,7 +421,8 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''

@@ -32,17 +32,21 @@ static enum arrive get_arrive(const value_t *v)
 
 static bool take_backend(host_t *h, const char *name, uint32_t at)
 {
-    const char *const library[] = { "backend", name };
+    const char *const library[] = { "backend", name, "library" };
+    const char *const start[] = { "content", "start", name };
     const char *const arrive[] = { "content", "arrive", name };
-    said_t lib = config_find_key(&h->config, library, 2);
+    said_t lib = config_find_key(&h->config, library, 3);
+    said_t first = config_find_key(&h->config, start, 3);
     said_t way = config_find_key(&h->config, arrive, 3);
     char *path = lib.value ? config_path(&h->config, lib.file,
         lib.value->text) : nullptr;
 
-    h->held[at] = (held_t){ name, with_suffix(path), get_arrive(way.value) };
+    h->held[at] = (held_t){ name, with_suffix(path), get_arrive(first.value),
+        get_arrive(way.value), nullptr };
     h->backends[at] = (bridge_backend_t){ .name = name,
         .library = h->held[at].library };
-    return (h->held[at].library && way.value);
+    return (config_backend_settings(h, at) && h->held[at].library
+        && first.value && way.value);
 }
 
 bool config_backends(host_t *h)
@@ -53,7 +57,7 @@ bool config_backends(host_t *h)
     bool taken = names.count > 0;
 
     if (!names.count)
-        printf("not stated: backend\n");
+        say("not stated: backend\n");
     h->held = calloc(names.count + 1, sizeof(*h->held));
     h->backends = calloc(names.count + 1, sizeof(*h->backends));
     for (uint32_t i = 0; h->held && h->backends && i < names.count; i++)

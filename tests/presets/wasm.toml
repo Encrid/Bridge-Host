@@ -1,3 +1,6 @@
+[content.start]
+wasm = "load"
+
 [content.arrive]
 wasm = "load"
 
@@ -7,3 +10,13 @@ memory_limit = 16777216
 init_timeout = 2000000000
 reload_timeout = 2000000000
 shutdown_timeout = 2000000000
+element_limit = 1024
+
+[backend.wasm]
+reservation = 4294967296
+guard = 33554432
+max_wasm_stack = 524288
+stack_margin = 65536
+watchdog_stack = 65536
+opt_level = "speed"
+parallel_compilation = false

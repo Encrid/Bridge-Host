@@ -11,10 +11,10 @@ static void say_files(const config_t *c)
 
     for (uint32_t i = 0; i < c->count; i++) {
         f = &c->files[i];
-        printf("file %s", f->path);
+        say_part("file %s", f->path);
         if (f->by >= 0)
-            printf(", named by %s:%u", c->files[f->by].path, f->by_line);
-        printf("%s\n", (int32_t)i == c->local ? ", the local file" : "");
+            say_part(", named by %s:%u", c->files[f->by].path, f->by_line);
+        say("%s\n", (int32_t)i == c->local ? ", the local file" : "");
     }
 }
 
@@ -24,42 +24,42 @@ static void say_key(const config_t *c, const char *const *names,
     const keyed_t k = { names, depth };
     const shown_t how = { "", config_states_key, &k };
     found_t f = config_find(c, config_states_key, &k);
-    char key[256];
 
-    config_say_value(c, config_say_key(names, depth, key, sizeof(key)), &f,
-        &how);
+    config_say_value(c, &k, &f, &how);
 }
 
 static void say_under(const config_t *c, const char *top, const char *next)
 {
-    const char *const under[] = { top, next };
-    const keyed_t k = { under, next ? 2 : 1 };
-    names_t names = config_names(c, &k);
     const char *key[3] = { top, next, nullptr };
+    const keyed_t k = { key, 2 };
+    names_t names = config_names(c, &k);
 
     for (uint32_t i = 0; i < names.count; i++) {
-        key[k.depth] = names.names[i];
-        say_key(c, key, k.depth + 1);
+        key[2] = names.names[i];
+        say_key(c, key, 3);
     }
     free(names.names);
 }
 
 static void say_world(const host_t *h)
 {
-    static const char *const ONE[] = { "phases", "threads", "rounds", "live" };
+    const char *names[2] = {};
 
-    for (size_t i = 0; i < sizeof(ONE) / sizeof(*ONE); i++)
-        say_key(&h->config, &ONE[i], 1);
-    say_under(&h->config, "budget", nullptr);
-    say_under(&h->config, "backend", nullptr);
+    for (uint32_t i = 0; i < WORLD_KEY_COUNT; i++)
+        say_key(&h->config, names, config_get_names(&WORLD_KEYS[i], names));
+    for (uint32_t i = 0; i < BUDGET_KEY_COUNT; i++)
+        say_key(&h->config, names, config_get_names(&BUDGET_KEYS[i], names));
+    for (uint32_t i = 0; i < h->backend_count; i++)
+        say_under(&h->config, "backend", h->held[i].name);
+    say_under(&h->config, "content", "start");
     say_under(&h->config, "content", "arrive");
     say_under(&h->config, "content", "load");
     for (uint32_t i = 0; i < h->path_count; i++)
-        printf("content.paths: %s\n", h->paths[i]);
+        say("content.paths: %s\n", h->paths[i]);
     for (uint32_t i = 0; i < h->ignore_count; i++)
-        printf("content.ignore: %s\n", h->ignore[i]);
+        say("content.ignore: %s\n", h->ignore[i]);
     for (uint32_t i = 0; i < h->order_count; i++)
-        printf("order: %s before %s\n", h->order[i].before,
+        say("order: %s before %s\n", h->order[i].before,
             h->order[i].after);
 }
 

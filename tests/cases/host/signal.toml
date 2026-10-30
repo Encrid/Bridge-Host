@@ -1,0 +1,83 @@
+[[case]]
+name = "a first signal stops the run after its round, and the host ends its work"
+run = ["{python}", "tests/signal_driver.py", "{out}/bridge-host{exe}", "{case}/sig.toml", "interrupt"]
+
+[case.claims]
+status = 0
+order = [
+    "? go on",
+    "a signal stops the host: a second one ends it at once",
+    "ended at round 1: a signal stopped the run",
+    "still loaded: bridge-host:wait@1.0.0",
+    "destroyed: 0",
+]
+
+[case.folders]
+"{case}/mods" = ["wait"]
+
+[case.files]
+"{case}/sig.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 16
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+run = ["{python}", "tests/signal_driver.py", "{out}/bridge-host{exe}", "{case}/sig.toml", "interrupt twice"]
+
+[[case]]
+name = "a second signal ends the host at once, with the status 1"
+run = ["{python}", "tests/signal_driver.py", "{out}/bridge-host{exe}", "{case}/sig.toml", "interrupt twice"]
+
+[case.claims]
+status = 1
+order = ["? go on", "a signal stops the host: a second one ends it at once"]
+lacks = ["destroyed:"]
+
+[case.folders]
+"{case}/mods" = ["wait"]
+
+[case.files]
+"{case}/sig.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 16
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+run = ["{python}", "tests/signal_driver.py", "{out}/bridge-host{exe}", "{case}/sig.toml", "interrupt"]
+
+[[case]]
+name = "a host that cannot catch the signals does not run"
+run = ["{out}/bridge-host{exe}", "{case}/sig.toml"]
+fail = { os_signal_catch = 1 }
+
+[case.claims]
+status = 1
+line = ["cannot catch the signals"]
+lacks = ["loaded:"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/sig.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 16
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}

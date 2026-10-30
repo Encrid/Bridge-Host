@@ -25,13 +25,11 @@ static bool take_phase(const stating_t *s, const char *name,
         "all" }, { names, 2 } };
     const shown_t how = { "  ", config_states_module, &k };
     found_t f = config_find(&s->h->config, config_states_module, &k);
-    char key[256];
 
-    snprintf(key, sizeof(key), "phases.%s", name);
-    if (!config_say_found(&s->h->config, key, &f, s->prefix))
+    if (!config_say_found(&s->h->config, &k.key, &f, s->prefix))
         return (false);
     if (s->show)
-        config_say_value(&s->h->config, key, &f, &how);
+        config_say_value(&s->h->config, &k.key, &f, &how);
     *into = (bridge_phase_name_t){ name, f.at.value->text };
     return (true);
 }

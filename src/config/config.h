@@ -9,6 +9,7 @@
     #include <stddef.h>
     #include <stdint.h>
 
+    #include "bridge.h"
     #include "toml.h"
 
 typedef struct {
@@ -77,7 +78,10 @@ enum check : uint8_t {
     CHECK_ROUNDS,
     CHECK_SETTING,
     CHECK_PAIRS,
-    CHECK_AUTHOR
+    CHECK_AUTHOR,
+    CHECK_SIZE,
+    CHECK_VALUE,
+    CHECK_RECORD
 };
 
 enum allow : uint8_t {
@@ -105,10 +109,39 @@ typedef struct {
     uint8_t width;
     size_t at;
     int64_t none;
-} module_rule_t;
+    const char *table;
+    bool fixed;
+} key_rule_t;
 
-extern const module_rule_t MODULE_KEYS[];
+typedef struct {
+    bridge_config_t world;
+    uint32_t rounds;
+    enum bridge_flag live;
+    enum bridge_flag usage;
+    uint8_t written;
+    uint8_t failing;
+    uint32_t files;
+    uint32_t depth;
+} deployment_t;
+
+extern const key_rule_t MODULE_KEYS[];
 extern const uint32_t MODULE_KEY_COUNT;
+extern const key_rule_t WORLD_KEYS[];
+extern const uint32_t WORLD_KEY_COUNT;
+extern const key_rule_t BUDGET_KEYS[];
+extern const uint32_t BUDGET_KEY_COUNT;
+
+[[nodiscard]] const key_rule_t *config_get_rule(const key_rule_t *rules,
+    uint32_t count, const char *table, const char *name);
+
+uint32_t config_get_names(const key_rule_t *rule, const char **names);
+
+void config_put(void *into, const key_rule_t *rule, const value_t *v);
+
+[[nodiscard]] bridge_setting_t config_get_setting(const char *key,
+    const value_t *v, const char *text);
+
+[[nodiscard]] size_t config_folder_size(const char *path);
 
 [[nodiscard]] const char *config_go_beside(char *name);
 
@@ -137,10 +170,6 @@ void config_free_file(cfile_t *f);
 
 [[nodiscard]] const char *config_check_world(const entry_t *e, bool local);
 
-[[nodiscard]] const char *config_check_budget(const entry_t *e, bool local);
-
-[[nodiscard]] const char *config_check_checks(const entry_t *e, bool local);
-
 [[nodiscard]] const char *config_check_backend(const entry_t *e, bool local);
 
 [[nodiscard]] const char *config_check_content(const entry_t *e);
@@ -167,19 +196,17 @@ void names_add(names_t *into, const char *name);
 
 [[nodiscard]] names_t config_names(const config_t *c, const keyed_t *under);
 
-const char *config_say_key(const char *const *names, uint32_t depth,
-    char *out, size_t size);
+void config_say_key(const char *const *names, uint32_t depth);
 
-[[nodiscard]] bool config_say_found(const config_t *c, const char *key,
+[[nodiscard]] bool config_say_found(const config_t *c, const keyed_t *key,
     const found_t *f, const char *prefix);
 
-[[nodiscard]] const char *config_say_where(const config_t *c,
-    const said_t *said);
+void config_say_where(const config_t *c, const said_t *said);
 
 void config_say_over(const config_t *c, states_fn *states,
     const void *asked, const said_t *at);
 
-void config_say_value(const config_t *c, const char *key,
+void config_say_value(const config_t *c, const keyed_t *key,
     const found_t *f, const shown_t *how);
 
 #endif

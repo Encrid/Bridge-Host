@@ -15,14 +15,21 @@
     #include "config.h"
     #include "file_bytes.h"
     #include "manifest.h"
-
-constexpr int FILES = 32;
+    #include "os.h"
+    #include "say.h"
 
 enum arrive : uint8_t {
     ARRIVE_UNSTATED,
     ARRIVE_ASK,
     ARRIVE_LOAD,
     ARRIVE_LEAVE
+};
+
+enum replaced : uint8_t {
+    REPLACED,
+    REPLACE_REFUSED,
+    REPLACE_NOT_HOT,
+    REPLACE_KEPT
 };
 
 typedef struct {
@@ -42,26 +49,24 @@ typedef struct {
     handed_t *of;
     bool loaded;
     bool seen;
+    bool unread;
 } file_t;
 
 typedef struct {
     const char *name;
     char *library;
+    enum arrive start;
     enum arrive arrive;
+    bridge_setting_t *settings;
 } held_t;
 
 typedef struct {
     config_t config;
+    deployment_t d;
     const char **phases;
     uint32_t phase_count;
-    uint32_t threads;
-    int rounds;
-    bool live;
     bool ended;
     int round;
-    bool profile;
-    bool validate;
-    bridge_budget_t budget;
     held_t *held;
     bridge_backend_t *backends;
     uint32_t backend_count;
@@ -72,7 +77,8 @@ typedef struct {
     char **ignore;
     uint32_t ignore_count;
     bridge_world_t *w;
-    file_t files[FILES];
+    file_t *files;
+    file_t **found;
     bool looked;
     bool full;
     counts_t counts;
@@ -94,9 +100,10 @@ typedef struct {
 } stating_t;
 
 typedef struct {
-    file_t *found[FILES];
+    file_t **found;
     int count;
     int did;
+    bool full;
 } look_t;
 
 typedef struct {
@@ -104,15 +111,22 @@ typedef struct {
     look_t *lk;
 } seeing_t;
 
-typedef void see_fn(void *ud, const char *path);
+typedef void see_fn(void *ud, const char *path, os_folder_t *in,
+    const char *name);
+
+typedef struct {
+    const host_t *h;
+    see_fn *see;
+    void *ud;
+} walk_t;
 
 [[nodiscard]] bool config_world(host_t *h);
-
-[[nodiscard]] bool take_checks(host_t *h);
 
 [[nodiscard]] bool config_order(host_t *h);
 
 [[nodiscard]] bool config_backends(host_t *h);
+
+[[nodiscard]] bool config_backend_settings(host_t *h, uint32_t at);
 
 [[nodiscard]] const held_t *get_held(const host_t *h, const char *name);
 
@@ -126,21 +140,21 @@ typedef void see_fn(void *ud, const char *path);
 [[nodiscard]] bool state_found(const stating_t *s,
     bridge_module_config_t *cfg);
 
-[[nodiscard]] bool read_own(const handed_t *of, const char *key, value_t *v);
+[[nodiscard]] bool read_own(const stating_t *s, const char *key, value_t *v);
 
 [[nodiscard]] const value_t *state_find_own(const stating_t *s,
-    const module_rule_t *rule);
+    const key_rule_t *rule);
 
 [[nodiscard]] bool state_own_keys(const stating_t *s);
 
 [[nodiscard]] const value_t *state_find_key(const stating_t *s,
-    const module_rule_t *rule);
+    const key_rule_t *rule);
 
 [[nodiscard]] bool state_take_key(const stating_t *s,
-    const module_rule_t *rule, bridge_module_config_t *cfg);
+    const key_rule_t *rule, bridge_module_config_t *cfg);
 
 [[nodiscard]] bool state_take_list(const stating_t *s,
-    const module_rule_t *rule, bridge_module_config_t *cfg);
+    const key_rule_t *rule, bridge_module_config_t *cfg);
 
 [[nodiscard]] bool state_take_phases(const stating_t *s,
     bridge_module_config_t *cfg);
@@ -161,6 +175,9 @@ typedef void see_fn(void *ud, const char *path);
 [[nodiscard]] uint32_t state_undeclared(const stating_t *s,
     const names_t *declared);
 
+[[nodiscard]] const char *state_keep_prefix(made_t *m, const char *what,
+    const char *path, const char *who);
+
 [[nodiscard]] void *state_keep(const stating_t *s, void *block);
 
 [[nodiscard]] value_t *state_keep_value(const stating_t *s, value_t *v);
@@ -171,24 +188,28 @@ void state_free(made_t *m);
 
 [[nodiscard]] int show_config(host_t *h, bool taken);
 
-void show_module(void *ud, const char *path);
+void show_module(void *ud, const char *path, os_folder_t *in,
+    const char *name);
 
 [[nodiscard]] bool take_lock(const char *name);
 
 void host_free(host_t *h);
 
-void handed_free(handed_t *of);
-
 [[nodiscard]] int run(host_t *h);
+
+void say_end(const host_t *h);
 
 [[nodiscard]] int look(host_t *h, bool first);
 
 [[nodiscard]] file_t *find_file(host_t *h, const char *path);
 
+[[nodiscard]] bool keep_path(file_t *f, const char *path);
+
 [[nodiscard]] bool meet(host_t *h, file_t *f, const char *path,
     handed_t *now);
 
-[[nodiscard]] bool may_arrive(const file_t *f, const held_t *held);
+[[nodiscard]] bool may_arrive(const file_t *f, const held_t *held,
+    enum arrive rule);
 
 void load_found(host_t *h, file_t *f, bool first);
 

@@ -51,9 +51,9 @@ static bool read_real(const char *digits, value_t *v)
 
 bool toml_read_number(reading_t *r, value_t *v)
 {
-    char digits[64];
     size_t len = strspn(r->at, "+-0123456789_.eE");
-    bool taken = len < sizeof(digits) && copy_digits(r->at, len, digits);
+    char *digits = malloc(len + 1);
+    bool taken = digits && copy_digits(r->at, len, digits);
 
     if (taken && (r->at[len] == ':' || islower((unsigned char)r->at[len])))
         taken = false;
@@ -63,6 +63,7 @@ bool toml_read_number(reading_t *r, value_t *v)
         taken = read_real(digits, v);
     else if (taken)
         taken = read_whole(digits, v);
+    free(digits);
     if (!taken)
         return (toml_refuse(r, "a number that is not taken"));
     r->at += len;

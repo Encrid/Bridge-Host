@@ -4,19 +4,19 @@ run = ["{out}/bridge-host{exe}", "{case}/bconf.toml"]
 
 [case.claims]
 status = 1
-has = ["refused: backend.wasm: "]
+has = ["refused: backend.wasm.library: "]
 
 [case.folders]
 "{case}/cq" = ["quiet"]
 
 [case.files]
 "{case}/bc1.toml" = '''
-[backend]
-wasm = "a"
+[backend.wasm]
+library = "a"
 '''
 "{case}/bc2.toml" = '''
-[backend]
-wasm = "b"
+[backend.wasm]
+library = "b"
 '''
 "{case}/bconf.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "bc1.toml", "bc2.toml"]
@@ -35,9 +35,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -58,8 +59,8 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "/x"
+[backend.wasm]
+library = "/x"
 '''
 
 [case.false.files]
@@ -69,9 +70,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -92,11 +94,15 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
+[content.start]
+aa = "load"
+zz = "load"
 [content.arrive]
 zz = "load"
-[backend]
-aa = "x"
-zz = "y"
+[backend.aa]
+library = "x"
+[backend.zz]
+library = "y"
 '''
 
 [case.false.files]
@@ -106,9 +112,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -126,6 +133,11 @@ has = ["not stated: content.load.all"]
 "{case}/nolworld.toml" = '''
 threads = 1
 live = false
+stack = 1048576
+observer_passes = 1
+table_growth = 150
+table_hash_fill = 50
+table_retry = 50
 [budget]
 entities = 8192
 tables = 8
@@ -137,6 +149,16 @@ persistent = 262144
 columns = 1048576
 sparse_sets = "none"
 direct_indexed = "none"
+[checks]
+profile = false
+validate = false
+usage = false
+[records]
+written = 6
+failing = 3
+[content]
+files = 32
+depth = 1
 [module.all]
 hot_reload = false
 on_error = "skip"
@@ -156,9 +178,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -168,9 +191,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -202,9 +226,10 @@ presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", 
 phases = ["update"]
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -225,9 +250,10 @@ presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", 
 phases = ["update"]
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -247,4 +273,170 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 [case.false.files]
 "{case}/sk.toml" = '''
 rounds = 1
+'''
+
+[[case]]
+name = "a backend takes its settings from its table, and refuses a setting that it does not know"
+run = ["{out}/bridge-host{exe}", "{case}/bs.toml"]
+
+[case.claims]
+status = 1
+has = ["backend 'native' would not start: it knows no setting 'colour'"]
+line = ["bridge_create refused"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/bs.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+colour = "blue"
+'''
+
+[case.false.files]
+"{case}/bs.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a setting of a backend that two presets state two ways is refused"
+run = ["{out}/bridge-host{exe}", "{case}/bt.toml"]
+
+[case.claims]
+status = 1
+has = ["refused: backend.native.colour: \"blue\" in ba.toml:2, \"red\" in bb.toml:2"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/ba.toml" = '''
+[backend.native]
+colour = "blue"
+'''
+"{case}/bb.toml" = '''
+[backend.native]
+colour = "red"
+size = 1
+'''
+"{case}/bt.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml", "ba.toml", "bb.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/bb.toml" = '''
+[backend.native]
+colour = "blue"
+'''
+
+[[case]]
+name = "a backend whose settings find no memory is not taken"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/so.toml"]
+fail = { calloc = 7 }
+
+[case.claims]
+status = 1
+lacks = ["backend.native.library"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/so.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a backend with no library is not stated"
+run = ["{out}/bridge-host{exe}", "{case}/bn.toml"]
+
+[case.claims]
+status = 1
+line = ["not stated: backend.native.library"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/bn.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+colour = "blue"
+'''
+
+[case.false.files]
+"{case}/bn.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+colour = "blue"
+'''
+
+[[case]]
+name = "the settings of a backend are shown with their places"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/bw.toml"]
+
+[case.claims]
+status = 0
+line = ['backend.native.colour = "blue"  bw.toml:8', 'backend.native.library = "{bb_native}/bridge_native"  bw.toml:7']
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/bw.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+colour = "blue"
+'''
+
+[case.false.files]
+"{case}/bw.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''

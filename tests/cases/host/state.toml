@@ -19,6 +19,11 @@ has = [
 "{case}/owns.toml" = '''
 threads = 1
 live = false
+stack = 1048576
+observer_passes = 1
+table_growth = 150
+table_hash_fill = 50
+table_retry = 50
 phases = ["update"]
 rounds = 8
 [budget]
@@ -32,14 +37,25 @@ persistent = 262144
 columns = 1048576
 sparse_sets = "none"
 direct_indexed = "none"
+[checks]
+profile = false
+validate = false
+usage = false
+[records]
+written = 6
+failing = 3
 [content]
 paths = ["mods"]
+files = 32
+depth = 1
 [content.load]
 all = true
+[content.start]
+wasm = "load"
 [content.arrive]
 wasm = "load"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
 '''
 
 [case.false.folders]
@@ -71,7 +87,7 @@ has = [
 read = ["bridge-host:Word", "a:b@1"]
 '''
 "{case}/st.toml" = '''
-presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml", "grants.toml"]
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml", "grants.toml"]
 phases = ["update", "late"]
 rounds = 8
 [content]
@@ -86,9 +102,10 @@ write = ["c:d@1"]
 losses = ["e:f@1"]
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
@@ -122,6 +139,11 @@ hot_reload = false
 presets = ["ta.toml", "tb.toml"]
 threads = 1
 live = false
+stack = 1048576
+observer_passes = 1
+table_growth = 150
+table_hash_fill = 50
+table_retry = 50
 phases = ["update"]
 rounds = 8
 [budget]
@@ -135,10 +157,21 @@ persistent = 262144
 columns = 1048576
 sparse_sets = "none"
 direct_indexed = "none"
+[checks]
+profile = false
+validate = false
+usage = false
+[records]
+written = 6
+failing = 3
 [content]
 paths = ["mods"]
+files = 32
+depth = 1
 [content.load]
 all = true
+[content.start]
+wasm = "load"
 [content.arrive]
 wasm = "load"
 [module.all]
@@ -158,8 +191,11 @@ memory_limit = "none"
 init_timeout = "none"
 reload_timeout = "none"
 shutdown_timeout = "none"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
+element_limit = "none"
+read = []
+write = []
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
 '''
 
 [case.false.files]
@@ -177,9 +213,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["mods"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -210,9 +247,10 @@ rounds = 8
 paths = ["mods"]
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -232,9 +270,10 @@ rounds = 8
 paths = ["mods"]
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -261,9 +300,10 @@ rounds = 8
 paths = ["mods"]
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -289,9 +329,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["mods"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
@@ -314,9 +355,10 @@ phases = ["update", "late"]
 rounds = 8
 [content]
 paths = ["mods"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
@@ -341,9 +383,10 @@ rounds = 8
 paths = ["mods"]
 [module."bridge-host:longname@1.0.0".config]
 nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn = "hi"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -355,9 +398,10 @@ rounds = 8
 paths = ["mods"]
 [module."bridge-host:longname@1.0.0".config]
 nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn = "ho"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -377,9 +421,10 @@ phases = ["update", "late"]
 rounds = 8
 [content]
 paths = ["mods"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
@@ -402,9 +447,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["mods"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
@@ -429,9 +475,10 @@ rounds = 8
 paths = ["mods"]
 [module."bridge-host:word@1.0.0".config]
 word = "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -443,7 +490,60 @@ rounds = 8
 paths = ["mods"]
 [module."bridge-host:word@1.0.0".config]
 word = "v"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
+
+[[case]]
+name = "a statement whose prefix finds no memory writes its lines with no prefix"
+run = ["{out}/bridge-host{exe}", "{case}/p.toml"]
+fail = { calloc = 10 }
+
+[case.claims]
+status = 1
+line = ["not stated: read", "not stated: write"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/p.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a default of the manifest that finds no memory is not taken"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/d.toml"]
+fail = { calloc = 11 }
+
+[case.claims]
+status = 1
+line = ["  refused: not stated: read", '  write = ["b:B"]  its file']
+
+[case.folders]
+"{case}/mods" = ["granted"]
+
+[case.files]
+"{case}/d.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}

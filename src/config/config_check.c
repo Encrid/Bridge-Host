@@ -3,10 +3,10 @@
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
-#include <stdio.h>
 #include <string.h>
 
 #include "config.h"
+#include "say.h"
 
 static const char *check_order(const entry_t *e)
 {
@@ -26,10 +26,6 @@ static const char *check_entry(const config_t *c, const entry_t *e,
         return (config_check_content(e));
     if (!strcmp(top, "order"))
         return (check_order(e));
-    if (!strcmp(top, "budget"))
-        return (config_check_budget(e, local));
-    if (!strcmp(top, "checks"))
-        return (config_check_checks(e, local));
     if (!strcmp(top, "backend"))
         return (config_check_backend(e, local));
     return (config_check_world(e, local));
@@ -53,17 +49,17 @@ static uint32_t check_file(const config_t *c, uint32_t at)
     const cfile_t *f = &c->files[at];
     const entry_t *e = nullptr;
     const char *why = nullptr;
-    char key[256];
     uint32_t refused = 0;
 
     for (uint32_t i = 0; i < f->toml.count; i++) {
         e = &f->toml.entries[i];
         why = e->value.kind ? check_entry(c, e, (int32_t)at == c->local)
             : check_header(f, e);
-        if (why)
-            printf("refused: %s:%u: %s: %s\n", f->path, e->line,
-                config_say_key((const char *const *)e->key, e->depth, key,
-                sizeof(key)), why);
+        if (why) {
+            say_part("refused: %s:%u: ", f->path, e->line);
+            config_say_key((const char *const *)e->key, e->depth);
+            say(": %s\n", why);
+        }
         refused += why != nullptr;
     }
     return (refused);

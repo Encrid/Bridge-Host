@@ -37,18 +37,16 @@ static bool add_order(host_t *h, const value_t *pair)
     const char *two[] = { pair->items[0].text, pair->items[1].text };
     found_t f = {};
     bridge_order_t *more = nullptr;
-    char key[256];
 
     for (uint32_t i = 0; i < h->order_count; i++)
         if (is_pair(h->order[i].before, h->order[i].after, two))
             return (true);
     f = config_find(&h->config, states_pair, two);
-    snprintf(key, sizeof(key), "order %s %s", two[0], two[1]);
     more = realloc(h->order, sizeof(*more) * (h->order_count + 1));
     if (!more)
         return (false);
     h->order = more;
-    if (!config_say_found(&h->config, key, &f, ""))
+    if (!config_say_found(&h->config, &ORDERED, &f, ""))
         return (false);
     h->order[h->order_count++] = (bridge_order_t){
         f.at.value->items[0].text, f.at.value->items[1].text };

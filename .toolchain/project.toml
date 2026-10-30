@@ -4,4 +4,4 @@ name = "Bridge-Host"
 [test]
 timeout = 120
 copies = 6
-writers = ["printf", "snprintf"]
+writers = ["snprintf", "say", "say_part"]

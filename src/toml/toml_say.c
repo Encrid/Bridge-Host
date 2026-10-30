@@ -3,9 +3,9 @@
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
-#include <stdio.h>
 #include <string.h>
 
+#include "say.h"
 #include "toml.h"
 
 bool toml_is_same(const value_t *a, const value_t *b)
@@ -28,13 +28,13 @@ bool toml_is_same(const value_t *a, const value_t *b)
 static void say_scalar(const value_t *v)
 {
     if (v->kind == VALUE_TEXT)
-        printf("\"%s\"", v->text);
+        say_part("\"%s\"", v->text);
     if (v->kind == VALUE_WHOLE)
-        printf("%lld", (long long)v->whole);
+        say_part("%lld", (long long)v->whole);
     if (v->kind == VALUE_REAL)
-        printf("%g", v->real);
+        say_part("%g", v->real);
     if (v->kind == VALUE_FLAG)
-        printf("%s", v->flag ? "true" : "false");
+        say_part("%s", v->flag ? "true" : "false");
 }
 
 void toml_say(const value_t *v)
@@ -43,11 +43,11 @@ void toml_say(const value_t *v)
         say_scalar(v);
         return;
     }
-    printf("[");
+    say_part("[");
     for (uint32_t i = 0; i < v->count; i++) {
         if (i)
-            printf(", ");
+            say_part(", ");
         toml_say(&v->items[i]);
     }
-    printf("]");
+    say_part("]");
 }

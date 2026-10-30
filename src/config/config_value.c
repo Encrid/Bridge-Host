@@ -22,14 +22,19 @@ static const value_rule_t RULES[] = {
     [CHECK_ARRIVE] = { ALLOW_WORD, 0, 0, "ask load leave ",
         "\"ask\", \"load\" or \"leave\"" },
     [CHECK_TEXT] = { ALLOW_TEXT, 0, 0, "", "text" },
-    [CHECK_ROUNDS] = { ALLOW_WHOLE, 0, 1'000'000, "",
-        "a whole number, from 0 to 1000000" },
+    [CHECK_ROUNDS] = { ALLOW_WHOLE, 0, UINT32_MAX, "",
+        "a whole number, from 0 to 4294967295" },
     [CHECK_SETTING] = { ALLOW_FLAG | ALLOW_WHOLE | ALLOW_REAL | ALLOW_TEXT
         | ALLOW_EMPTY, INT64_MIN, INT64_MAX, "",
         "text, a number, true or false, or { path = \"...\" }" },
     [CHECK_PAIRS] = { ALLOW_PAIRS, 0, 0, "", "a list of pairs of systems" },
     [CHECK_AUTHOR] = { 0, 0, 0, "",
-        "only a module's author states it, in its file" }
+        "only a module's author states it, in its file" },
+    [CHECK_SIZE] = { ALLOW_WHOLE, 1, INT64_MAX, "", "a whole number, from 1" },
+    [CHECK_VALUE] = { ALLOW_FLAG | ALLOW_WHOLE | ALLOW_REAL | ALLOW_TEXT
+        | ALLOW_EMPTY, INT64_MIN, INT64_MAX, "",
+        "text, a number, true or false" },
+    [CHECK_RECORD] = { ALLOW_WHOLE, 0, 7, "", "a level, from 0 to 7" }
 };
 
 static bool is_word(const char *text, const char *words)

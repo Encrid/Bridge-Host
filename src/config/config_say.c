@@ -3,10 +3,10 @@
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
-#include <stdio.h>
 #include <string.h>
 
 #include "config.h"
+#include "say.h"
 
 static bool is_bare(const char *name)
 {
@@ -16,45 +16,41 @@ static bool is_bare(const char *name)
     return (len && !name[len]);
 }
 
-const char *config_say_key(const char *const *names, uint32_t depth,
-    char *out, size_t size)
+void config_say_key(const char *const *names, uint32_t depth)
 {
-    size_t used = 0;
-    const char *form = nullptr;
-
-    out[0] = 0;
-    for (uint32_t i = 0; i < depth && used < size; i++) {
-        form = is_bare(names[i]) ? "%s%s" : "%s\"%s\"";
-        used += (size_t)snprintf(out + used, size - used, form,
-            i ? "." : "", names[i]);
+    for (uint32_t i = 0; i < depth; i++) {
+        if (i)
+            say_part(".");
+        say_part(is_bare(names[i]) ? "%s" : "\"%s\"", names[i]);
     }
-    return (out);
 }
 
-bool config_say_found(const config_t *c, const char *key, const found_t *f,
-    const char *prefix)
+bool config_say_found(const config_t *c, const keyed_t *key,
+    const found_t *f, const char *prefix)
 {
-    if (!f->at.value && !f->other.value)
-        printf("%snot stated: %s\n", prefix, key);
+    if (!f->at.value && !f->other.value) {
+        say_part("%snot stated: ", prefix);
+        config_say_key(key->names, key->depth);
+        say("\n");
+    }
     if (!f->other.value)
         return (f->at.value != nullptr);
-    printf("%srefused: %s: ", prefix, key);
+    say_part("%srefused: ", prefix);
+    config_say_key(key->names, key->depth);
+    say_part(": ");
     toml_say(f->at.value);
-    printf(" in %s:%u, ", c->files[f->at.file].path, f->at.line);
+    say_part(" in %s:%u, ", c->files[f->at.file].path, f->at.line);
     toml_say(f->other.value);
-    printf(" in %s:%u\n", c->files[f->other.file].path, f->other.line);
+    say(" in %s:%u\n", c->files[f->other.file].path, f->other.line);
     return (false);
 }
 
-const char *config_say_where(const config_t *c, const said_t *said)
+void config_say_where(const config_t *c, const said_t *said)
 {
-    static char where[1100];
-
     if (said->file == UINT32_MAX)
-        return ("its file");
-    snprintf(where, sizeof(where), "%s:%u", c->files[said->file].path,
-        said->line);
-    return (where);
+        say_part("  its file");
+    else
+        say_part("  %s:%u", c->files[said->file].path, said->line);
 }
 
 void config_say_over(const config_t *c, states_fn *states,
@@ -64,5 +60,5 @@ void config_say_over(const config_t *c, states_fn *states,
 
     for (uint32_t i = 0; i < c->count; i++)
         if (i != at->file && states(&c->files[i], asked, &other))
-            printf(", over %s:%u", c->files[i].path, other.line);
+            say_part(", over %s:%u", c->files[i].path, other.line);
 }

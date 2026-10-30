@@ -1,13 +1,12 @@
 # src/config/config_world.c
 
-This file takes the world keys: the phases, the counts, and the budget.
+This file takes the world keys: the phases, the keys of `WORLD_KEYS`, the budget and the order.
 
 `take_phases` reads `phases` into an array of names.
-`take_run` reads `threads`, `rounds` and `live`, the keys of the run.
-`take_budget` reads the ten budget fields and writes each into `bridge_budget_t` by its offset.
-`take_field` copies a four-byte or eight-byte field, and uses `BRIDGE_NONE` when the value is `none`.
-`config_world` runs these, takes the checks through `take_checks` of `src/config/config_checks.c`, then takes the order through `config_order`.
-A refused check makes `config_world` give false, as a refused key of the run does.
+`take_rules` takes each rule of a table with a width: it finds the key over the files, and writes the value with `config_put`.
+`config_world` takes `WORLD_KEYS` into the `deployment_t` of the host, and `BUDGET_KEYS` into its `bridge_budget_t`.
+Then it takes the order through `config_order`.
+A key that no file states makes `config_world` give false, after `config_find_key` wrote `not stated: <key>`.
 
 ## Functions
 

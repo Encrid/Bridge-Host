@@ -30,8 +30,9 @@ It links the library of Bridge, and opens each backend that the deployment names
 
 After `python project.py build`, run `bridge-host <config.toml>`, or `bridge-host --show-config <config.toml>` to print the deployment without running it.
 `--show-config` prints each key and its whole value, with the file and the line that state it.
+The host gives each line to the output in one piece, when the line is complete.
 The host exits with 0 after a run, and with 2 after it prints its usage.
-It exits with 1 if it refuses a key, if Bridge refuses a call, or if a record is an error.
+It exits with 1 if it refuses a key, if Bridge refuses a call, if a record is a failure, or at a second signal.
 
 ## The deployment file
 
@@ -46,12 +47,13 @@ A deployment is a TOML file. The document of the header `bridge.h` of Bridge tel
 | `<file>.d/local.toml` | The local file. It is over each other file. |
 | `<file>.d/lock` | The host holds it during a run, so only one run of a deployment goes on at a time. |
 
-- A path counts from the folder of the file that states it: a preset, a path of `[content]`, a library of `[backend]`, and `{ path = "..." }`.
+- A path counts from the folder of the file that states it: a preset, a path of `[content]`, the `library` of a backend, and `{ path = "..." }`.
 - A file is over the files that it names. If two presets of one file give different values for a key, the host refuses the key.
 - The paths of `[content]` and the pairs of `[order]` of all the files add up.
 - For `read` and `write`, the first file that states the list gives the whole list. If a file states no list, the lists of the presets that it names add up.
 - The host refuses a file that names itself, and reads a file that two files name only one time.
 - It refuses a key that a file states twice, a key that it does not know, and an empty table.
+- For a key that it needs and that no file states, it writes `not stated: <key>`.
 - The local file cannot state `presets`, the keys of the world, `[budget]`, `[backend]` or `[checks]`.
 
 ### The world
@@ -61,17 +63,41 @@ A deployment is a TOML file. The document of the header `bridge.h` of Bridge tel
 | `presets` | A list of files. |
 | `phases` | The names of the phases. A round runs them in this order. |
 | `threads` | How many threads run a phase, from 1. |
-| `rounds` | The most rounds of the run, from 0 to 1000000. 0 is no limit. |
+| `stack` | The bytes of the stack of each thread of the world. |
+| `observer_passes` | The most barriers that one call of Bridge runs in a row. |
+| `table_growth` | The room that a table of storage asks for when it grows, in percent of its room. |
+| `table_hash_fill` | The most fill of the hash of the tables of storage, in percent. |
+| `table_retry` | The rows that a table of storage asks for again, in percent of its last ask. |
+| `rounds` | The most rounds of the run, from 0 to 4294967295. 0 is no limit. |
 | `live` | `false`: a quiet round ends the run. `true`: a quiet round does not end it. |
+
+Each key but `presets` is needed.
+`stack`, `observer_passes`, `table_growth`, `table_hash_fill` and `table_retry` take a whole number from 1.
+Bridge refuses a value outside the range that it allows.
 
 `[budget]` holds the 10 limits of the world, and each one is needed.
 `entities`, `tables`, `types`, `systems`, `terms`, `modules`, `persistent` and `columns` take a whole number from 1.
 `sparse_sets` and `direct_indexed` take a whole number from 1, or `"none"`.
 
-The table `[checks]` holds two switches, `profile` and `validate`, each `true` or `false`.
-A check that no file states is off, and the host writes no line for it.
+The table `[checks]` holds three switches. Each one is `true` or `false`, and each one is needed.
+
+| Key | Value |
+| --- | --- |
+| `profile` | `true`: Bridge times each system and observer. |
+| `validate` | `true`: Bridge checks each column for a write that no running system declared. |
+| `usage` | `true`: at the end of the run, the host writes what the world used of its budget. |
+
 If two files state different values for a check, the host refuses it, as it refuses each other key.
-The document of the header `bridge.h` of Bridge tells what each check does.
+The document of the header `bridge.h` of Bridge tells what `profile` and `validate` do.
+
+The table `[records]` tells what the host does with each record of Bridge.
+
+| Key | Value |
+| --- | --- |
+| `written` | The highest level of a record that the host writes, from 0 to 7. |
+| `failing` | The highest level of a record that is a failure, from 0 to 7. |
+
+Each one is needed. A lower level is worse, and Bridge gives the level 3 to an error.
 
 `[order] before` is a list of pairs of systems, each with its full name `<namespace>:<name>:<system>`.
 In one phase, the first system of a pair runs before the second.
@@ -81,16 +107,39 @@ Two systems of two modules that conflict in one phase need a pair, or Bridge ref
 
 | Key | Value |
 | --- | --- |
-| `[backend] <name>` | The library of a backend, with no suffix. The host adds `.dll`, `.so` or `.dylib`. |
+| `[backend.<name>] library` | The library of a backend, with no suffix. The host adds `.dll`, `.so` or `.dylib`. |
+| `[backend.<name>] <key>` | A setting of the backend: a text, a whole or real number, `true` or `false`. |
 | `[content] paths` | The files and the folders of the modules. Each one is needed. |
 | `[content] ignore` | The paths that the host does not read, with each path below them. |
+| `[content] files` | The most files that the host looks at, from 1. |
+| `[content] depth` | How many levels of folders the host reads in a folder of `paths`, from 1. |
 | `[content.load] <identity>` or `all` | `true` loads the module, `false` does not. The key of an identity is over `all`. |
+| `[content.start] <backend>` | `"ask"`, `"load"` or `"leave"`: what the host does with a module that the first look finds. |
 | `[content.arrive] <backend>` | `"ask"`, `"load"` or `"leave"`: what the host does with a module that comes after the first look. |
 
-A module asks for the backend `native` or `wasm` by the format of its file. Each backend needs its key of `[content.arrive]`.
-The host reads a folder one level deep, and it looks at 32 files at most.
+The host needs each key of this table, but `[content] ignore`, a key of an identity in `[content.load]`, and the settings of a backend.
+The host gives the settings of a backend to Bridge, which starts the backend with them.
+The backend refuses a setting that is missing or that it does not know, so the deployment states each one.
+The readme of a backend gives its settings.
+
+A module asks for the backend `native` or `wasm` by the format of its file.
+Each backend needs its keys of `[content.start]` and `[content.arrive]`.
+With `"ask"`, the host writes `? trust <identity>, <backend>, <file>`, and reads one whole line.
+It loads the module only if the line is `yes`.
+
+At a depth of 1, the host reads only the files of a folder of `paths`. At 2, it also reads the files of each folder in it.
+It opens each folder by its path, and reads each file by its name in that folder. Thus a file of the content can be at each depth.
+A native module loads by its path, so the loader of the system keeps its limit of length.
+Bridge-OS gives that limit in the document of its header `os.h`.
+
+For a file that the system does not open, the host writes `cannot read '<file>'` one time. The file keeps its place in the room.
+An empty file is a file too: `not a module: <file>: neither a wasm module nor a library`.
+
+It looks at `[content] files` files at most, and it does not read a file for which it has no room.
+Each time its room becomes full, it writes `too many files: <count> are looked at`.
 At each round, it loads a new module and unloads the module of a removed file.
-It replaces the module of a changed file if the module can be reloaded.
+It replaces the module of a changed file only if the manifest states `reloadable=true` and the deployment states `hot_reload = true`.
+Else it keeps the old module, and writes why.
 
 ### The modules
 
@@ -109,7 +158,7 @@ If the manifest gives none, the host writes `not stated: <key>`, and does not lo
 | `hot_reload` | `true` or `false`. A reload also needs `reloadable=true` in the manifest. |
 | `on_error` | `"fail"` or `"skip"`. |
 | `max_system_failures` | A whole number from 1, or `"none"`, which is no limit. |
-| `work_limit`, `memory_limit`, `init_timeout`, `reload_timeout`, `shutdown_timeout` | A whole number from 1, or `"none"`, which is no limit. A limit asks a capability of the backend. The backend of BB-Native has none of them, so it needs `"none"`. |
+| `work_limit`, `memory_limit`, `element_limit`, `init_timeout`, `reload_timeout`, `shutdown_timeout` | A whole number from 1, or `"none"`, which is no limit. A limit asks a capability of the backend. The backend of BB-Native has none of them, so it needs `"none"`. |
 | `log_level` | A level, from 1 to 7. |
 | `scratch`, `log_ring`, `spans` | A whole number from 1. |
 | `spawns`, `persistent`, `changes` | A whole number from 1, or `"none"`, which is none at all. |
@@ -130,7 +179,31 @@ A round is quiet if the look finds no change in the content and no phase writes 
 The run also ends at the limit of `rounds`, and when Bridge refuses a call.
 A system or an observer that gives `BRIDGE_END` ends the run after its round, with each value of `live`.
 The document of the header `bridge_abi.h` of Bridge tells the status `BRIDGE_END`.
-The host writes each record of a level from 0 to 6.
+
+The host writes each record whose level is `[records] written` or lower.
+A record whose level is `[records] failing` or lower is a failure, and the host then exits with 1.
+
+After the last round, the host writes these lines:
+
+1. `still loaded:`, and each module that Bridge still holds.
+2. With `profile = true`, one line for each system and observer: `profile <name>: <calls> calls, <nanos> ns`.
+3. With `usage = true`, one line for each key of `[budget]`: `usage <key>: <used> now, <most> at most`.
+4. With `usage = true`, one line for each loaded module: `usage <identity>: <bytes> persistent, <count> systems, <count> observers, <count> entities`.
+5. `destroyed: <count>`, after Bridge destroyed the world.
+
+Bridge gives each number, and the host reads no clock.
+The document of the header `bridge.h` of Bridge tells what each number counts.
+
+### The signals
+
+An interrupt, a termination or a hang-up stops the host.
+The document of the header `os.h` of Bridge-OS tells which events of each system are such signals.
+
+At the first signal, the host writes `a signal stops the host: a second one ends it at once`.
+It finishes the round that runs, and starts no other round: `ended at round <round>: a signal stopped the run`.
+Then it writes the lines of the end, and Bridge calls the `shutdown` of each module. The exit status is the status of a run.
+Before the run, and with `--show-config`, the host also finishes its work after the first signal.
+A second signal ends the host at once, with the status 1.
 
 ## The manifest of a module
 
@@ -150,11 +223,14 @@ A module states its manifest in its file, as words that each end with a zero byt
 | `pinned=true` or `pinned=false` | Needed. `true`: the systems of the module run on the thread that runs the phases. |
 | `reloadable=true` or `reloadable=false` | Needed. `true`: the host can replace the module while the run goes on. |
 | `settings=<names>` | The names of the settings, with a space between two names. |
-| `<key>=<value>` | The default of a key of the module, for example `scratch=65536`. |
+| `<key>=<value>` | The default of a key of the module, for example `scratch=65536` or `read=["game:Body"]`. |
 | `config.<name>=<value>` | The default of a setting. |
 
 Only the identity has a limit of length. No other word of the manifest has one.
 The host refuses a word with no `=` after the first word. It does not read a word with a key that it does not know.
+
+It refuses a word that it reads if the manifest states its key twice.
+For `abi`, `config`, `settings`, `pinned` and `reloadable`, it writes `states <key> twice`. For a default, it writes `its file states <key> twice`.
 In the message `states a <word> that cannot be`, `<word>` is the part before the first `=`, cut to its first 60 bytes.
 
 ## Messages
@@ -179,7 +255,6 @@ Reading the deployment:
 - `refused: <file>:<line>: presets: a list of files`
 - `refused: <file> names itself:`
 - `refused: <key>: <value> in <file>:<line>, <value> in <file>:<line>`
-- `order <system> <system>`
 - `, over <file>:<line>`
 - `, named by <file>:<line>`
 - `<file>.d/local.toml`
@@ -194,11 +269,13 @@ Holding one instance:
 Finding the modules:
 
 - `cannot look in '<path>'`
+- `cannot read '<file>'`
 - `too many files: <count> are looked at`
 - `not a module: <file>: <why>`
 - `neither a wasm module nor a library`
 - `no manifest`
 - `states a <word> that cannot be`
+- `states <key> twice`
 - `its manifest does not begin with who it is`
 - `its identity has more than 127 bytes`
 - `its manifest has a word with no zero byte at its end`
@@ -223,6 +300,7 @@ Replacing a module:
 
 - `replaced: <identity> by <identity>, <file>`
 - `not replaced: <identity>: it does not say it can be`
+- `not replaced: <identity>: its hot_reload is false`
 - `not replaced: <file>: <identity> was refused`
 - `not replaced: <file>: <identity> <why>`
 - `not replaced: <file>: <identity>:`
@@ -233,8 +311,17 @@ Running the rounds:
 - `record[<level>] <identity>/<system>: <text> <number> <number>`
 - `ended after <rounds> rounds, as many as it was given`
 - `ended at round <round>: a module asked for the end`
+- `ended at round <round>: a signal stopped the run`
 - `still loaded:`
+- `profile <name>: <calls> calls, <nanos> ns`
+- `usage <key>: <used> now, <most> at most`
+- `usage <identity>: <bytes> persistent, <count> systems, <count> observers, <count> entities`
 - `destroyed: <count>`
+
+Stopping at a signal:
+
+- `a signal stops the host: a second one ends it at once`
+- `cannot catch the signals`
 
 Showing the deployment:
 
@@ -251,6 +338,7 @@ Showing the deployment:
 - `pinned = <flag>  its file`
 - `reloadable = <flag>  its file`
 - `its file states <key>: <why>`
+- `its file states <key> twice`
 - `its file states no config`
 - `its file states no pinned`
 - `its file states no reloadable`

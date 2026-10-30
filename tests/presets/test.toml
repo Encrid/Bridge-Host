@@ -1,1 +1,1 @@
-presets = ["world.toml", "wasm.toml", "native.toml"]
+presets = ["world.toml", "wasm.toml", "native.toml", "grants.toml"]

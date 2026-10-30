@@ -41,6 +41,11 @@ has = [
 "{case}/sm.toml" = '''
 threads = 1
 live = false
+stack = 1048576
+observer_passes = 1
+table_growth = 150
+table_hash_fill = 50
+table_retry = 50
 phases = ["update"]
 rounds = 8
 [budget]
@@ -54,8 +59,20 @@ persistent = 262144
 columns = 1048576
 sparse_sets = "none"
 direct_indexed = "none"
+[checks]
+profile = false
+validate = false
+usage = false
+[records]
+written = 6
+failing = 3
 [content]
 paths = ["sm"]
+files = 32
+depth = 1
+[content.start]
+wasm = "load"
+native = "load"
 [content.arrive]
 wasm = "load"
 native = "ask"
@@ -71,9 +88,10 @@ spawns = "none"
 persistent = "none"
 changes = 1048576
 losses = "none"
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -83,9 +101,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["sm"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -107,10 +126,86 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["mods"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
 "{case}/mods" = ["hello"]
+
+[[case]]
+name = "a record of a level above the written level is not written"
+run = ["{out}/bridge-host{exe}", "{case}/rec.toml"]
+
+[case.claims]
+status = 0
+line = ["loaded: bridge-host:knock@1.0.0, native, mods/knock{library}"]
+lacks = ["record[6] bridge-host:knock@1.0.0/say: knock 0 0"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/rec.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[records]
+written = 5
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/rec.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[records]
+written = 6
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a record of the failing level or lower makes the run fail"
+run = ["{out}/bridge-host{exe}", "{case}/rec.toml"]
+
+[case.claims]
+status = 1
+line = ["record[6] bridge-host:knock@1.0.0/say: knock 0 0"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/rec.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[records]
+failing = 6
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/rec.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[records]
+failing = 3
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''

@@ -5,26 +5,33 @@
 */
 #include "host.h"
 
-static bool is_trusted(const file_t *f, const char *backend)
+static bool is_yes(void)
 {
-    char answer[64] = "";
+    static const char YES[] = "yes";
+    size_t at = 0;
+    bool same = true;
 
-    printf("? trust %s, %s, %s\n", f->of->who.identity, backend, f->path);
-    fflush(stdout);
-    if (!fgets(answer, sizeof(answer), stdin))
-        return (false);
-    answer[strcspn(answer, "\r\n")] = 0;
-    return (!strcmp(answer, "yes"));
+    for (int c = getchar(); c != EOF && c != '\n'; c = getchar()) {
+        same = same && at < sizeof(YES) - 1 && c == YES[at];
+        at++;
+    }
+    return (same && at == sizeof(YES) - 1);
 }
 
-bool may_arrive(const file_t *f, const held_t *held)
+static bool is_trusted(const file_t *f, const char *backend)
 {
-    bool may = held->arrive == ARRIVE_LOAD;
+    say("? trust %s, %s, %s\n", f->of->who.identity, backend, f->path);
+    return (is_yes());
+}
 
-    if (held->arrive == ARRIVE_ASK)
+bool may_arrive(const file_t *f, const held_t *held, enum arrive rule)
+{
+    bool may = rule == ARRIVE_LOAD;
+
+    if (rule == ARRIVE_ASK)
         may = is_trusted(f, held->name);
     if (!may)
-        printf("not loaded: %s: %s, %s, not trusted\n", f->path,
+        say("not loaded: %s: %s, %s, not trusted\n", f->path,
             f->of->who.identity, held->name);
     return (may);
 }

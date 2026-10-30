@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "config.h"
+#include "say.h"
 #include "toml.h"
 
 static int fails;
@@ -71,6 +72,8 @@ static void do_numbers(void)
     try_ok("a = 1.5\n");
     try_ok("a = 1e3\n");
     try_ok("a = 9223372036854775807\n");
+    try_ok("a = 1.000000000000000000000000000000000000000000000000000"
+        "0000000000000000001\n");
     try_no("a = 1_\n", "number");
     try_no("a = +_1\n", "number");
     try_no("a = 01\n", "number");
@@ -188,7 +191,7 @@ static void do_say(void)
         { .kind = VALUE_LIST, .items = items, .count = 3 } };
 
     toml_say(&(value_t){ .kind = VALUE_LIST, .items = all, .count = 5 });
-    printf("\n");
+    say("\n");
 }
 
 static void do_prefix(void)

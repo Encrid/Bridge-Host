@@ -4,10 +4,12 @@ This file loads a found module into the world.
 
 ## The load
 
-`load_found` runs the gates, asks to trust an arriving module, then calls `bridge_load`.
+`load_found` runs the gates, applies the start rule or the arrive rule of the backend, then calls `bridge_load`.
 It keeps the memory of the statement in a `made_t`, and frees it when `bridge_load` returns.
 `is_left` turns a module down when a peer already holds its name, when its ABI differs, or when the host lacks its backend.
+
 `is_stated` reads `content.load` and builds the artifact when the module is to load.
+Its prefix `not loaded: <file>: <identity>: ` comes from `state_keep_prefix`, at the length of its parts.
 `make_artifact` fills a `bridge_artifact_t` with the bytes or the path and the module config.
 `get_same` finds a loaded module of the same name.
 

@@ -21,9 +21,10 @@ phases = ["update"]
 rounds = 16
 [content]
 paths = ["folder-found"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
@@ -51,9 +52,10 @@ phases = ["update"]
 rounds = 16
 [content]
 paths = ["folder-why"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
@@ -82,9 +84,10 @@ phases = ["update"]
 rounds = 16
 [content]
 paths = ["folder-in"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false]
@@ -113,9 +116,10 @@ phases = ["update"]
 rounds = 16
 [content]
 paths = ["folder-out"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false]
@@ -147,9 +151,10 @@ rounds = 16
 hot_reload = true
 [content]
 paths = ["folder-replaced"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false]
@@ -174,9 +179,10 @@ phases = ["update"]
 rounds = 16
 [content]
 paths = ["folder-left"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false]
@@ -208,9 +214,10 @@ phases = ["update"]
 rounds = 16
 [content]
 paths = ["folder-yes"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false]
@@ -242,9 +249,10 @@ phases = ["update"]
 rounds = 16
 [content]
 paths = ["folder-no"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false]
@@ -275,9 +283,10 @@ rounds = 16
 native = "load"
 [content]
 paths = ["folder-load"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -287,9 +296,10 @@ phases = ["update"]
 rounds = 16
 [content]
 paths = ["folder-load"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -314,9 +324,10 @@ rounds = 16
 native = "leave"
 [content]
 paths = ["folder-leave"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -328,7 +339,113 @@ rounds = 16
 native = "load"
 [content]
 paths = ["folder-leave"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "the answer to a question of trust is its whole line"
+run = ["{out}/bridge-host{exe}", "{case}/folder-long.toml"]
+script = [
+    { wait = "? go on", put = { "{case}/folder-long/knock{library}" = "knock", "{case}/folder-long/nender{library}" = "nender" }, type = "go" },
+    { wait = "? trust bridge-host:knock@1.0.0, native, folder-long/knock{library}", type = "yesssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssyes" },
+    { wait = "? trust bridge-host:nender@1.0.0, native, folder-long/nender{library}", type = "no" },
+]
+
+[case.claims]
+status = 0
+line = [
+    "not loaded: folder-long/knock{library}: bridge-host:knock@1.0.0, native, not trusted",
+    "not loaded: folder-long/nender{library}: bridge-host:nender@1.0.0, native, not trusted",
+]
+
+[case.folders]
+"{case}/folder-long" = ["wait"]
+
+[case.files]
+"{case}/folder-long.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 16
+[content]
+paths = ["folder-long"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+script = [
+    { wait = "? go on", put = { "{case}/folder-long/knock{library}" = "knock", "{case}/folder-long/nender{library}" = "nender" }, type = "go" },
+    { wait = "? trust bridge-host:knock@1.0.0, native, folder-long/knock{library}", type = "no" },
+    { wait = "? trust bridge-host:nender@1.0.0, native, folder-long/nender{library}", type = "yes" },
+]
+
+[[case]]
+name = "a module of the first look is asked about when the start rule of its backend is ask"
+run = ["{out}/bridge-host{exe}", "{case}/s.toml"]
+script = [{ wait = "? trust bridge-host:knock@1.0.0, native, mods/knock{library}", type = "yes" }]
+
+[case.claims]
+status = 0
+order = ["? trust bridge-host:knock@1.0.0, native, mods/knock{library}", "loaded: bridge-host:knock@1.0.0, native, mods/knock{library}"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/s.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[content.start]
+native = "ask"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+script = [{ wait = "? trust bridge-host:knock@1.0.0, native, mods/knock{library}", type = "no" }]
+
+[[case]]
+name = "a module of the first look is left when the start rule of its backend is leave"
+run = ["{out}/bridge-host{exe}", "{case}/s.toml"]
+
+[case.claims]
+status = 0
+line = ["not loaded: mods/knock{library}: bridge-host:knock@1.0.0, native, not trusted"]
+lacks = ["? trust"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/s.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[content.start]
+native = "leave"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/s.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[content.start]
+native = "load"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''

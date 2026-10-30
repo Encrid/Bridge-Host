@@ -42,10 +42,10 @@ said_t state_own_setting(const stating_t *s, const char *key)
     value_t *own = state_keep_value(s, calloc(1, sizeof(*own)));
     const char *why = nullptr;
 
-    if (!own || !read_own(s->of, key, own))
+    if (!own || !read_own(s, key, own))
         return ((said_t){});
     why = config_check_value(own, CHECK_SETTING);
     if (why)
-        printf("%sits file states %s: %s\n", s->prefix, key, why);
+        say("%sits file states %s: %s\n", s->prefix, key, why);
     return ((said_t){ why ? nullptr : own, UINT32_MAX, 0 });
 }

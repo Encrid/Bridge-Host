@@ -483,3 +483,68 @@ work_limit = "none"
 wasm = "{bb_wasm}/bridge_wasm"
 native = "{bb_native}/bridge_native"
 '''
+
+[[case]]
+name = "a module with a grant that no file states, and that its manifest does not give, is not loaded"
+run = ["{out}/bridge-host{exe}", "{case}/ng.toml"]
+
+[case.claims]
+status = 1
+line = [
+    "not loaded: mods/knock{library}: bridge-host:knock@1.0.0: not stated: read",
+    "not loaded: mods/knock{library}: bridge-host:knock@1.0.0: not stated: write",
+]
+lacks = ["loaded: bridge-host:knock@1.0.0"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/ng.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/ng.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "the default of a grant in the manifest counts when no file states the grant"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/dg.toml"]
+
+[case.claims]
+status = 0
+line = ['  read = ["a:A"]  its file', '  write = ["b:B"]  its file']
+
+[case.folders]
+"{case}/mods" = ["granted"]
+
+[case.files]
+"{case}/dg.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["knock"]

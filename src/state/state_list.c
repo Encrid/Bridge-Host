@@ -5,38 +5,35 @@
 */
 #include "host.h"
 
-static void permit_in(const config_t *c, uint32_t file,
+static bool permit_in(const config_t *c, uint32_t file,
     const module_key_t *k, names_t *into)
 {
     const cfile_t *f = &c->files[file];
     said_t said = {};
+    bool stated = false;
 
     if (config_states_module(f, k, &said)) {
         for (uint32_t i = 0; i < said.value->count; i++)
             names_add(into, said.value->items[i].text);
-        return;
+        return (true);
     }
     for (uint32_t i = 0; i < f->named_count; i++)
-        permit_in(c, f->named[i], k, into);
+        stated = permit_in(c, f->named[i], k, into) || stated;
+    return (stated);
 }
 
-static names_t find_names(const stating_t *s, const char *name)
+static bool find_names(const stating_t *s, const char *name, names_t *got)
 {
     const char *const names[] = { name };
     const module_key_t k = { { s->of->who.identity, s->of->who.backend,
         "all" }, { names, 1 } };
     const config_t *c = &s->h->config;
     said_t said = {};
-    names_t got = {};
 
     if (c->local >= 0 && config_states_module(&c->files[c->local], &k,
         &said))
-        permit_in(c, (uint32_t)c->local, &k, &got);
-    else
-        permit_in(c, 0, &k, &got);
-    got.names = state_keep(s, got.names);
-    got.count = got.names ? got.count : 0;
-    return (got);
+        return (permit_in(c, (uint32_t)c->local, &k, got));
+    return (permit_in(c, 0, &k, got));
 }
 
 static void say_names(const stating_t *s, const char *key,
@@ -50,42 +47,37 @@ static void say_names(const stating_t *s, const char *key,
     say("]\n");
 }
 
-static void take_losses(const stating_t *s, bridge_module_config_t *cfg,
-    const value_t *v)
+static void put_names(bridge_module_config_t *cfg, const char *key,
+    const names_t *got, bool none)
 {
-    const char **names = v->kind == VALUE_LIST
-        ? state_keep(s, malloc(sizeof(*names) * (v->count + 1))) : nullptr;
-
-    cfg->loss_count = BRIDGE_NONE;
-    if (!names)
-        return;
-    for (uint32_t i = 0; i < v->count; i++)
-        names[i] = v->items[i].text;
-    cfg->losses = names;
-    cfg->loss_count = v->count;
+    if (key[0] == 'r') {
+        cfg->read = got->names;
+        cfg->read_count = got->count;
+    } else if (key[0] == 'w') {
+        cfg->write = got->names;
+        cfg->write_count = got->count;
+    } else {
+        cfg->losses = got->names;
+        cfg->loss_count = none ? BRIDGE_NONE : got->count;
+    }
 }
 
 bool state_take_list(const stating_t *s, const module_rule_t *rule,
     bridge_module_config_t *cfg)
 {
     names_t got = {};
-    const value_t *v = nullptr;
+    bool stated = rule->check == CHECK_NAMES && find_names(s, rule->name,
+        &got);
+    const value_t *v = stated ? nullptr : state_find_key(s, rule);
 
-    if (rule->check != CHECK_NAMES) {
-        v = state_find_key(s, rule);
-        if (v)
-            take_losses(s, cfg, v);
-        return (v != nullptr);
-    }
-    got = find_names(s, rule->name);
-    say_names(s, rule->name, &got);
-    if (rule->name[0] == 'r')
-        cfg->read = got.names;
-    else
-        cfg->write = got.names;
-    if (rule->name[0] == 'r')
-        cfg->read_count = got.count;
-    else
-        cfg->write_count = got.count;
+    if (stated)
+        say_names(s, rule->name, &got);
+    if (!stated && !v)
+        return (false);
+    for (uint32_t i = 0; v && v->kind == VALUE_LIST && i < v->count; i++)
+        names_add(&got, v->items[i].text);
+    got.names = state_keep(s, got.names);
+    got.count = got.names ? got.count : 0;
+    put_names(cfg, rule->name, &got, v && v->kind != VALUE_LIST);
     return (true);
 }

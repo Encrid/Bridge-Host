@@ -71,7 +71,7 @@ has = [
 read = ["bridge-host:Word", "a:b@1"]
 '''
 "{case}/st.toml" = '''
-presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml", "grants.toml"]
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml", "grants.toml"]
 phases = ["update", "late"]
 rounds = 8
 [content]
@@ -158,6 +158,8 @@ memory_limit = "none"
 init_timeout = "none"
 reload_timeout = "none"
 shutdown_timeout = "none"
+read = []
+write = []
 [backend]
 wasm = "{bb_wasm}/bridge_wasm"
 '''

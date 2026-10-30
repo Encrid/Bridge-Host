@@ -52,7 +52,7 @@ static void drop_gone(host_t *h, look_t *lk)
 {
     file_t *f = nullptr;
 
-    for (int i = 0; i < FILES; i++) {
+    for (uint32_t i = 0; i < h->d.files; i++) {
         f = &h->files[i];
         if (!f->path || f->seen)
             continue;
@@ -68,15 +68,15 @@ static void drop_gone(host_t *h, look_t *lk)
 
 int look(host_t *h, bool first)
 {
-    look_t lk = {};
+    look_t lk = { .found = h->found };
     seeing_t s = { h, &lk };
 
-    for (int i = 0; i < FILES; i++)
+    for (uint32_t i = 0; i < h->d.files; i++)
         h->files[i].seen = false;
     if (walk_content(h, see_file, &s) < 0)
         return (-1);
     if (lk.full && !h->full) {
-        say("too many files: %d are looked at\n", FILES);
+        say("too many files: %u are looked at\n", h->d.files);
         lk.did++;
     }
     h->full = lk.full;

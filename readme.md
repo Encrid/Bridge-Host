@@ -110,6 +110,8 @@ Two systems of two modules that conflict in one phase need a pair, or Bridge ref
 | `[backend.<name>] <key>` | A setting of the backend: a text, a whole or real number, `true` or `false`. |
 | `[content] paths` | The files and the folders of the modules. Each one is needed. |
 | `[content] ignore` | The paths that the host does not read, with each path below them. |
+| `[content] files` | The most files that the host looks at, from 1. |
+| `[content] depth` | How many levels of folders the host reads in a folder of `paths`, from 1. |
 | `[content.load] <identity>` or `all` | `true` loads the module, `false` does not. The key of an identity is over `all`. |
 | `[content.arrive] <backend>` | `"ask"`, `"load"` or `"leave"`: what the host does with a module that comes after the first look. |
 
@@ -123,10 +125,10 @@ Each backend needs its key of `[content.arrive]`.
 With `"ask"`, the host writes `? trust <identity>, <backend>, <file>`, and reads one whole line.
 It loads the module only if the line is `yes`.
 
-The host reads a folder one level deep.
+At a depth of 1, the host reads only the files of a folder of `paths`. At 2, it also reads the files of each folder in it.
 A path of the content has no limit of length, but a system can refuse to open a long path.
 
-It looks at 32 files at most, and it does not read a file for which it has no room.
+It looks at `[content] files` files at most, and it does not read a file for which it has no room.
 Each time its room becomes full, it writes `too many files: <count> are looked at`.
 At each round, it loads a new module and unloads the module of a removed file.
 It replaces the module of a changed file only if the manifest states `reloadable=true` and the deployment states `hot_reload = true`.

@@ -449,13 +449,6 @@ side = "false"
 why = "walk_folder opens a directory that walk_path already opened, so the open always succeeds."
 
 [[branches.exception]]
-path = "src/host_run.c"
-line = 27
-col = 34
-side = "false"
-why = "bridge_list_modules returns at most FILES modules, so the count guard ends the loop before the FILES guard can fail."
-
-[[branches.exception]]
 path = "src/manifest/manifest.c"
 line = 60
 col = 9
@@ -527,7 +520,7 @@ why = "bridge_unload fails only when the engine cannot unload a module the host 
 
 [[branches.exception]]
 path = "src/host_walk.c"
-line = 58
+line = 61
 col = 9
 side = "false"
 why = "walk_folder opens the same folder that walk_path already confirmed as a folder, so its handle is never null and the close always runs."

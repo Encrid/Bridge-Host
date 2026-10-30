@@ -20,13 +20,17 @@ static void say_record(void *ud, const bridge_record_t *r)
 
 static void say_loaded(bridge_world_t *w)
 {
-    bridge_module_info_t loaded[FILES];
-    int count = bridge_list_modules(w, loaded, FILES);
+    int count = bridge_list_modules(w, nullptr, 0);
+    bridge_module_info_t *loaded = count > 0
+        ? malloc(sizeof(*loaded) * (size_t)count) : nullptr;
 
+    if (loaded)
+        bridge_list_modules(w, loaded, count);
     say_part("still loaded:");
-    for (int i = 0; i < count && i < FILES; i++)
+    for (int i = 0; loaded && i < count; i++)
         say_part("%s %s", i ? "," : "", loaded[i].identity);
-    say("%s\n", count ? "" : " nothing");
+    say("%s\n", count > 0 ? "" : " nothing");
+    free(loaded);
 }
 
 static int run_round(host_t *h, int *did)

@@ -39,28 +39,30 @@ static char *join_path(const char *path, const char *name)
     return (full);
 }
 
-static void walk_folder(const host_t *h, const char *path, see_fn *see,
-    void *ud)
+static void walk_folder(const walk_t *w, const char *path, uint32_t levels)
 {
     DIR *d = opendir(path);
     DIR *sub = nullptr;
     char *full = nullptr;
+    bool kept = false;
 
     for (struct dirent *e = d ? readdir(d) : nullptr; e; e = readdir(d)) {
         full = join_path(path, e->d_name);
-        sub = full ? opendir(full) : nullptr;
+        kept = full && !is_ignored(w->h, full);
+        sub = kept ? opendir(full) : nullptr;
         if (sub)
             closedir(sub);
-        if (full && !sub && !is_ignored(h, full))
-            see(ud, full);
+        if (sub && levels > 1)
+            walk_folder(w, full, levels - 1);
+        if (kept && !sub)
+            w->see(w->ud, full);
         free(full);
     }
     if (d)
         closedir(d);
 }
 
-static int walk_path(const host_t *h, const char *path, see_fn *see,
-    void *ud)
+static int walk_path(const walk_t *w, const char *path)
 {
     DIR *d = opendir(path);
     FILE *file = d ? nullptr : fopen(path, "rb");
@@ -73,17 +75,19 @@ static int walk_path(const host_t *h, const char *path, see_fn *see,
     }
     if (file) {
         fclose(file);
-        see(ud, path);
+        w->see(w->ud, path);
         return (0);
     }
-    walk_folder(h, path, see, ud);
+    walk_folder(w, path, w->h->d.depth);
     return (0);
 }
 
 int walk_content(const host_t *h, see_fn *see, void *ud)
 {
+    const walk_t w = { h, see, ud };
+
     for (uint32_t i = 0; i < h->path_count; i++)
-        if (walk_path(h, h->paths[i], see, ud) < 0)
+        if (walk_path(&w, h->paths[i]) < 0)
             return (-1);
     return (0);
 }

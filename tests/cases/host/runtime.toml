@@ -152,6 +152,9 @@ validate = false
 [records]
 written = 6
 failing = 3
+[content]
+files = 32
+depth = 1
 [module.all]
 hot_reload = false
 on_error = "skip"

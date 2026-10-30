@@ -4,10 +4,12 @@ This file walks the content paths and offers each file to a callback.
 
 ## The walk
 
-`walk_content` steps over every path of `content.paths`.
+`walk_content` steps over every path of `content.paths`, with a `walk_t` that holds the host and the callback.
 `walk_path` offers a lone file, or reads a folder, and prints `cannot look in '<path>'` when the path is neither.
-`walk_folder` reads the entries of a folder, and skips the ignored ones and each folder. So no system finds a module in a subfolder.
-`is_ignored` tests a path against `content.ignore` by its whole form.
+
+`walk_folder` reads the entries of a folder, and skips the ignored ones. It offers each file to the callback.
+It reads a folder in it only if more than one level is left, so `content.depth` bounds the walk.
+`is_ignored` tests a path against `content.ignore` by its whole form. An ignored folder is not read.
 
 ## The paths
 

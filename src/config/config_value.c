@@ -33,7 +33,8 @@ static const value_rule_t RULES[] = {
     [CHECK_SIZE] = { ALLOW_WHOLE, 1, INT64_MAX, "", "a whole number, from 1" },
     [CHECK_VALUE] = { ALLOW_FLAG | ALLOW_WHOLE | ALLOW_REAL | ALLOW_TEXT
         | ALLOW_EMPTY, INT64_MIN, INT64_MAX, "",
-        "text, a number, true or false" }
+        "text, a number, true or false" },
+    [CHECK_RECORD] = { ALLOW_WHOLE, 0, 7, "", "a level, from 0 to 7" }
 };
 
 static bool is_word(const char *text, const char *words)

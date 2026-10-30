@@ -9,13 +9,13 @@ static void say_record(void *ud, const bridge_record_t *r)
 {
     const char *identity = r->identity ? r->identity : "-";
     const char *system = r->system ? r->system : "-";
-    counts_t *counts = ud;
+    host_t *h = ud;
 
-    if (r->level <= BRIDGE_INFO)
+    if (r->level <= h->d.written)
         say("record[%d] %s/%s: %.*s %u %u\n", r->level, identity, system,
             (int)r->len, r->text, r->arg[0], r->arg[1]);
-    counts->failed += r->level <= BRIDGE_ERR;
-    counts->said++;
+    h->counts.failed += r->level <= h->d.failing;
+    h->counts.said++;
 }
 
 static void say_loaded(bridge_world_t *w)
@@ -61,7 +61,7 @@ static bool make_world(host_t *h)
     cfg.phase_count = h->phase_count;
     cfg.order = h->order;
     cfg.order_count = h->order_count;
-    h->w = bridge_create(&cfg, say_record, &h->counts);
+    h->w = bridge_create(&cfg, say_record, h);
     if (!h->w)
         say("bridge_create refused\n");
     return (h->w != nullptr);

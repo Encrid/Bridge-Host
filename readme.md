@@ -32,7 +32,7 @@ After `python project.py build`, run `bridge-host <config.toml>`, or `bridge-hos
 `--show-config` prints each key and its whole value, with the file and the line that state it.
 The host gives each line to the output in one piece, when the line is complete.
 The host exits with 0 after a run, and with 2 after it prints its usage.
-It exits with 1 if it refuses a key, if Bridge refuses a call, or if a record is an error.
+It exits with 1 if it refuses a key, if Bridge refuses a call, or if a record is a failure.
 
 ## The deployment file
 
@@ -88,6 +88,15 @@ The table `[checks]` holds two switches. Each one is `true` or `false`, and each
 
 If two files state different values for a check, the host refuses it, as it refuses each other key.
 The document of the header `bridge.h` of Bridge tells what each check does.
+
+The table `[records]` tells what the host does with each record of Bridge.
+
+| Key | Value |
+| --- | --- |
+| `written` | The highest level of a record that the host writes, from 0 to 7. |
+| `failing` | The highest level of a record that is a failure, from 0 to 7. |
+
+Each one is needed. A lower level is worse, and Bridge gives the level 3 to an error.
 
 `[order] before` is a list of pairs of systems, each with its full name `<namespace>:<name>:<system>`.
 In one phase, the first system of a pair runs before the second.
@@ -161,7 +170,9 @@ A round is quiet if the look finds no change in the content and no phase writes 
 The run also ends at the limit of `rounds`, and when Bridge refuses a call.
 A system or an observer that gives `BRIDGE_END` ends the run after its round, with each value of `live`.
 The document of the header `bridge_abi.h` of Bridge tells the status `BRIDGE_END`.
-The host writes each record of a level from 0 to 6.
+
+The host writes each record whose level is `[records] written` or lower.
+A record whose level is `[records] failing` or lower is a failure, and the host then exits with 1.
 
 ## The manifest of a module
 

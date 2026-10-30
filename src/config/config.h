@@ -80,7 +80,8 @@ enum check : uint8_t {
     CHECK_PAIRS,
     CHECK_AUTHOR,
     CHECK_SIZE,
-    CHECK_VALUE
+    CHECK_VALUE,
+    CHECK_RECORD
 };
 
 enum allow : uint8_t {
@@ -116,6 +117,8 @@ typedef struct {
     bridge_config_t world;
     uint32_t rounds;
     enum bridge_flag live;
+    uint8_t written;
+    uint8_t failing;
 } deployment_t;
 
 extern const key_rule_t MODULE_KEYS[];

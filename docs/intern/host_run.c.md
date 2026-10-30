@@ -14,7 +14,8 @@ This file makes the Bridge world and runs the rounds.
 `run_round` does a look, checks the named modules after the first look, runs each phase, and counts the round in `round`.
 A phase that gives 2 sets `ended`, and the other phases of the round still run.
 After the loop, `run` writes the line of an end that a module asked for, or else the line of the round limit.
-`say_record` prints a record below the info level and counts an error. `say_loaded` lists the modules that stay loaded.
+`say_record` prints a record of the level `written` or lower, and counts a failure for a record of the level `failing` or lower.
+`say_loaded` lists the modules that stay loaded.
 
 ## Functions
 

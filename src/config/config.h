@@ -141,6 +141,8 @@ void config_put(void *into, const key_rule_t *rule, const value_t *v);
 [[nodiscard]] bridge_setting_t config_get_setting(const char *key,
     const value_t *v, const char *text);
 
+[[nodiscard]] size_t config_folder_size(const char *path);
+
 [[nodiscard]] const char *config_go_beside(char *name);
 
 [[nodiscard]] char *config_path(const config_t *c, uint32_t file,

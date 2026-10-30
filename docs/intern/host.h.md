@@ -12,6 +12,7 @@ Of the run, it keeps the count `round` of the rounds that ran, and `ended`: whet
 It also keeps `full`: whether the last look found a path with no free slot.
 
 A `file_t` records one known file by its path, its hash mark, and the module behind it.
+Its `unread` notes that the last read of the file failed.
 A `handed_t` keeps the bytes of a file together with the manifest that the host read from them.
 A `held_t` names a backend, its library path, its start rule and its arrive rule, and the array of its settings.
 
@@ -38,8 +39,9 @@ The host fixes these parts. A deployment cannot state them, for the reason that 
 | `config_world`, `config_order`, `config_backends`, `config_content` | Take the world, order, backend and content keys. |
 | `config_load`, `config_unfound`, `get_held` | Read `content.load`, report named modules that no look finds, and find a backend. |
 | `run`, `say_end`, `look`, `walk_content` | Run the world, write the lines of its end, do one look, and walk the content paths. |
-| `find_file`, `meet`, `may_arrive`, `load_found`, `make_artifact` | Track a slot, read a met file, ask to trust it, load it, and build its artifact. |
+| `find_file`, `keep_path` | Find the slot of a path, and keep a path in its slot. |
+| `meet`, `may_arrive`, `load_found`, `make_artifact` | Read a met file, ask to trust it, load it, and build its artifact. |
 | `show_config`, `show_module`, `take_lock` | Show a configuration, show one module, and take the run lock. |
 | `state_*`, `read_own` | State the keys, lists, phases and settings of a module. |
 | `state_keep_prefix`, `state_keep`, `state_keep_value`, `state_free` | Make the prefix of a statement, add a block or a value to the `made_t` of a module, and free the list. |
-| `host_free`, `handed_free` | Free the host, and free one `handed_t`. |
+| `host_free` | Free the host. |

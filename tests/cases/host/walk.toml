@@ -261,7 +261,18 @@ library = "{bb_native}/bridge_native"
 "{case}/heap/f32.txt" = "x"
 
 [case.false.files]
-"{case}/heap/f32.txt" = ""
+"{case}/room.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["heap"]
+files = 33
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
 
 [[case]]
 name = "a path that finds no memory is not looked at, and the walk goes on"
@@ -408,6 +419,242 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a module under a path past the limit of each system loads"
+run = ["{out}/bridge-host{exe}", "{case}/deep.toml"]
+helper = { run = ["{python}", "tests/content_helper.py", "deep", "{case}/deep", "21", "{case}/src/quiet.wasm"], wait = "ready", stdin = "done" }
+
+[case.claims]
+status = 0
+has = ["loaded: bridge-host:quiet@1.0.0, wasm, deep/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/quiet.wasm"]
+
+[case.folders]
+"{case}/src" = ["quiet"]
+
+[case.files]
+"{case}/deep.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["deep"]
+depth = 22
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+helper = { run = ["{python}", "tests/content_helper.py", "deep", "{case}/deep", "21", "none"], wait = "ready", stdin = "done" }
+
+[[case]]
+name = "a file that the system does not open gives its line one time, and keeps its slot"
+run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
+helper = { run = ["{python}", "tests/content_helper.py", "unreadable", "{case}/a/x.txt"], wait = "ready", stdin = "done" }
+
+[case.claims]
+status = 0
+line = ["cannot read 'a/x.txt'", "too many files: 1 are looked at"]
+matches_not = ["cannot read.*cannot read"]
+
+[case.folders]
+"{case}/b" = ["knock"]
+
+[case.files]
+"{case}/a/x.txt" = "x"
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["a", "b"]
+files = 1
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+helper = {}
+
+[[case]]
+name = "an empty file is read as a file"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/e.toml"]
+
+[case.claims]
+status = 0
+line = ["not a module: mods/e.txt: neither a wasm module nor a library"]
+
+[case.files]
+"{case}/mods/e.txt" = ""
+"{case}/e.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/e.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["other"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+"{case}/other/x.txt" = ""
+
+[[case]]
+name = "a folder of the content that does not open is left out of the walk"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/s.toml"]
+fail = { os_folder_open = 2 }
+
+[case.claims]
+status = 0
+lacks = ["module bridge-host:knock@1.0.0"]
+
+[case.folders]
+"{case}/mods/sub" = ["knock"]
+
+[case.files]
+"{case}/s.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+depth = 2
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a file that the system does not open is named when the host shows the deployment"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/r.toml"]
+fail = { os_folder_read_file = 1 }
+
+[case.claims]
+status = 0
+line = ["cannot read 'mods/knock{library}'"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/r.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a content path that names a file beside the deployment"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/n.toml"]
+
+[case.claims]
+status = 0
+line = ["module bridge-host:knock@1.0.0, native, knock{library}"]
+
+[case.folders]
+"{case}" = ["knock"]
+
+[case.files]
+"{case}/n.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["knock{library}"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/n.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["none{library}"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a content path that ends with a separator is read as its folder"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/t.toml"]
+
+[case.claims]
+status = 0
+line = ["module bridge-host:knock@1.0.0, native, mods/knock{library}"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/t.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods/"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/t.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["other/"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+"{case}/other/x.txt" = "x"
+
+[[case]]
+name = "a content path of a file that finds no memory cannot be looked in"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/m.toml"]
+fail = { calloc = 10 }
+
+[case.claims]
+status = 1
+line = ["cannot look in 'mods/knock{library}'"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/m.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods/knock{library}"]
 [backend.native]
 library = "{bb_native}/bridge_native"
 '''

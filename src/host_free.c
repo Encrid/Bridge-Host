@@ -5,18 +5,11 @@
 */
 #include "host.h"
 
-void handed_free(handed_t *of)
-{
-    if (of)
-        free(of->bytes);
-    free(of);
-}
-
 static void free_files(host_t *h)
 {
     for (uint32_t i = 0; h->files && i < h->d.files; i++) {
         free(h->files[i].path);
-        handed_free(h->files[i].of);
+        free(h->files[i].of);
     }
     free(h->files);
     free(h->found);

@@ -14,38 +14,45 @@ static int order_files(const void *left, const void *right)
     return (order ? order : strcmp(l->path, r->path));
 }
 
-static void read_file(seeing_t *s, file_t *f, const char *path)
+static void read_file(seeing_t *s, file_t *f, const char *path,
+    const handed_t *now)
 {
-    handed_t now = {};
+    uint64_t mark = hash_bytes(now->bytes, now->len);
     handed_t *kept = nullptr;
-    uint64_t mark = 0;
 
-    now.bytes = read_whole(path, &now.len);
-    if (!now.bytes)
-        return;
-    mark = hash_bytes(now.bytes, now.len);
-    f->seen = true;
+    f->unread = false;
     if (!f->path || f->mark != mark)
-        kept = malloc(sizeof(*kept));
-    if (!kept) {
-        free(now.bytes);
+        kept = malloc(sizeof(*kept) + now->len + 1);
+    if (!kept)
         return;
-    }
-    *kept = now;
+    *kept = (handed_t){ .bytes = memcpy(kept + 1, now->bytes, now->len + 1),
+        .len = now->len };
     f->mark = mark;
     if (meet(s->h, f, path, kept))
         s->lk->found[s->lk->count++] = f;
     s->lk->did++;
 }
 
-static void see_file(void *ud, const char *path)
+static void see_file(void *ud, const char *path, os_folder_t *in,
+    const char *name)
 {
     seeing_t *s = ud;
     file_t *f = find_file(s->h, path);
+    handed_t now = {};
 
     s->lk->full = s->lk->full || !f;
     if (f)
-        read_file(s, f, path);
+        now.bytes = os_folder_read_file(in, name, &now.len);
+    if (now.bytes) {
+        read_file(s, f, path, &now);
+    } else if (f) {
+        if (!f->unread)
+            say("cannot read '%s'\n", path);
+        s->lk->did += !f->unread;
+        f->unread = keep_path(f, path);
+    }
+    if (f)
+        f->seen = true;
 }
 
 static void drop_gone(host_t *h, look_t *lk)
@@ -61,7 +68,7 @@ static void drop_gone(host_t *h, look_t *lk)
                 f->path);
         lk->did += f->loaded;
         free(f->path);
-        handed_free(f->of);
+        free(f->of);
         *f = (file_t){};
     }
 }

@@ -508,6 +508,9 @@ direct_indexed = "none"
 [checks]
 profile = false
 validate = false
+[records]
+written = 6
+failing = 3
 
 [content.load]
 all = true

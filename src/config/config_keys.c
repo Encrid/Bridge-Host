@@ -83,7 +83,11 @@ const key_rule_t WORLD_KEYS[] = {
     { "profile", CHECK_FLAG, 1, offsetof(deployment_t, world.profile), 0,
         "checks", true },
     { "validate", CHECK_FLAG, 1, offsetof(deployment_t, world.validate), 0,
-        "checks", true }
+        "checks", true },
+    { "written", CHECK_RECORD, 1, offsetof(deployment_t, written), 0,
+        "records", false },
+    { "failing", CHECK_RECORD, 1, offsetof(deployment_t, failing), 0,
+        "records", false }
 };
 
 const uint32_t WORLD_KEY_COUNT = sizeof(WORLD_KEYS) / sizeof(WORLD_KEYS[0]);

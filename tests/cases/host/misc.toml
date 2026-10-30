@@ -62,6 +62,9 @@ direct_indexed = "none"
 [checks]
 profile = false
 validate = false
+[records]
+written = 6
+failing = 3
 [content]
 paths = ["sm"]
 [content.arrive]
@@ -125,3 +128,78 @@ library = "{bb_native}/bridge_native"
 
 [case.false.folders]
 "{case}/mods" = ["hello"]
+
+[[case]]
+name = "a record of a level above the written level is not written"
+run = ["{out}/bridge-host{exe}", "{case}/rec.toml"]
+
+[case.claims]
+status = 0
+line = ["loaded: bridge-host:knock@1.0.0, native, mods/knock{library}"]
+lacks = ["record[6] bridge-host:knock@1.0.0/say: knock 0 0"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/rec.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[records]
+written = 5
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/rec.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[records]
+written = 6
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a record of the failing level or lower makes the run fail"
+run = ["{out}/bridge-host{exe}", "{case}/rec.toml"]
+
+[case.claims]
+status = 1
+line = ["record[6] bridge-host:knock@1.0.0/say: knock 0 0"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/rec.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[records]
+failing = 6
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/rec.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[records]
+failing = 3
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''

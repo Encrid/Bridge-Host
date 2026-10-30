@@ -7,12 +7,12 @@ This file defines the tables of the rules of the keys that the host reads, and t
 | Table | Keys | `at` is an offset into |
 | --- | --- | --- |
 | `MODULE_KEYS` | The keys of a module. | `bridge_module_config_t`. |
-| `WORLD_KEYS` | The keys of the world at the top of a file, and the table `checks`. | `deployment_t`. |
+| `WORLD_KEYS` | The keys of the world at the top of a file, and the tables `checks` and `records`. | `deployment_t`. |
 | `BUDGET_KEYS` | The keys of the table `budget`. | `bridge_budget_t`. |
 
 The author keys `abi`, `config`, `settings`, `pinned` and `reloadable` carry the `CHECK_AUTHOR` mark.
 A rule with a width of 0 is checked, and another source takes its value: a list of a module, or `phases`.
-Each world key and budget key is fixed. Each module key can be in the local file.
+Each world key and budget key is fixed, but the keys of `records`. Each module key can be in the local file.
 `MODULE_KEY_COUNT`, `WORLD_KEY_COUNT` and `BUDGET_KEY_COUNT` give the length of each table.
 
 ## The functions

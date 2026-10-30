@@ -24,6 +24,7 @@ It also names the table of the key, and tells whether the key is fixed.
 `MODULE_KEYS`, `WORLD_KEYS` and `BUDGET_KEYS` hold the rules, and `docs/intern/config/config_keys.c.md` tells them.
 
 A `deployment_t` holds what the host takes of the world. It holds the `bridge_config_t` of Bridge, `rounds` and `live`.
+It also holds the levels `written` and `failing` of the records.
 
 ## Functions
 

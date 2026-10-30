@@ -332,3 +332,41 @@ paths = ["folder-leave"]
 wasm = "{bb_wasm}/bridge_wasm"
 native = "{bb_native}/bridge_native"
 '''
+
+[[case]]
+name = "the answer to a question of trust is its whole line"
+run = ["{out}/bridge-host{exe}", "{case}/folder-long.toml"]
+script = [
+    { wait = "? go on", put = { "{case}/folder-long/knock{library}" = "knock", "{case}/folder-long/nender{library}" = "nender" }, type = "go" },
+    { wait = "? trust bridge-host:knock@1.0.0, native, folder-long/knock{library}", type = "yesssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssyes" },
+    { wait = "? trust bridge-host:nender@1.0.0, native, folder-long/nender{library}", type = "no" },
+]
+
+[case.claims]
+status = 0
+line = [
+    "not loaded: folder-long/knock{library}: bridge-host:knock@1.0.0, native, not trusted",
+    "not loaded: folder-long/nender{library}: bridge-host:nender@1.0.0, native, not trusted",
+]
+
+[case.folders]
+"{case}/folder-long" = ["wait"]
+
+[case.files]
+"{case}/folder-long.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 16
+[content]
+paths = ["folder-long"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+script = [
+    { wait = "? go on", put = { "{case}/folder-long/knock{library}" = "knock", "{case}/folder-long/nender{library}" = "nender" }, type = "go" },
+    { wait = "? trust bridge-host:knock@1.0.0, native, folder-long/knock{library}", type = "no" },
+    { wait = "? trust bridge-host:nender@1.0.0, native, folder-long/nender{library}", type = "yes" },
+]

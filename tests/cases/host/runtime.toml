@@ -94,6 +94,9 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
+[content.start]
+aa = "load"
+zz = "load"
 [content.arrive]
 zz = "load"
 [backend.aa]
@@ -326,6 +329,7 @@ colour = "blue"
 "{case}/bb.toml" = '''
 [backend.native]
 colour = "red"
+size = 1
 '''
 "{case}/bt.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml", "ba.toml", "bb.toml"]
@@ -342,6 +346,32 @@ library = "{bb_native}/bridge_native"
 [backend.native]
 colour = "blue"
 '''
+
+[[case]]
+name = "a backend whose settings find no memory is not taken"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/so.toml"]
+fail = { calloc = 7 }
+
+[case.claims]
+status = 1
+lacks = ["backend.native.library"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/so.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
 
 [[case]]
 name = "a backend with no library is not stated"

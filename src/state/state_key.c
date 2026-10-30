@@ -15,10 +15,10 @@ const value_t *state_find_key(const stating_t *s, const key_rule_t *rule)
 
     if (!f.at.value && !f.other.value)
         f.at = (said_t){ state_find_own(s, rule), UINT32_MAX, 0 };
-    if (!config_say_found(&s->h->config, rule->name, &f, s->prefix))
+    if (!config_say_found(&s->h->config, &k.key, &f, s->prefix))
         return (nullptr);
     if (s->show)
-        config_say_value(&s->h->config, rule->name, &f, &how);
+        config_say_value(&s->h->config, &k.key, &f, &how);
     return (f.at.value);
 }
 

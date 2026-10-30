@@ -72,6 +72,8 @@ static void do_numbers(void)
     try_ok("a = 1.5\n");
     try_ok("a = 1e3\n");
     try_ok("a = 9223372036854775807\n");
+    try_ok("a = 1.000000000000000000000000000000000000000000000000000"
+        "0000000000000000001\n");
     try_no("a = 1_\n", "number");
     try_no("a = +_1\n", "number");
     try_no("a = 01\n", "number");

@@ -380,7 +380,7 @@ run = ["{out}/bridge-host{exe}", "{case}/ocf.toml"]
 
 [case.claims]
 status = 1
-has = ["refused: order a b:"]
+has = ['refused: order.before: ["a", "b"] in ocf1.toml:2, ["b", "a"] in ocf2.toml:2']
 
 [case.folders]
 "{case}/cq" = ["quiet"]

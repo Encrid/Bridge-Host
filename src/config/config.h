@@ -194,10 +194,9 @@ void names_add(names_t *into, const char *name);
 
 [[nodiscard]] names_t config_names(const config_t *c, const keyed_t *under);
 
-const char *config_say_key(const char *const *names, uint32_t depth,
-    char *out, size_t size);
+void config_say_key(const char *const *names, uint32_t depth);
 
-[[nodiscard]] bool config_say_found(const config_t *c, const char *key,
+[[nodiscard]] bool config_say_found(const config_t *c, const keyed_t *key,
     const found_t *f, const char *prefix);
 
 void config_say_where(const config_t *c, const said_t *said);
@@ -205,7 +204,7 @@ void config_say_where(const config_t *c, const said_t *said);
 void config_say_over(const config_t *c, states_fn *states,
     const void *asked, const said_t *at);
 
-void config_say_value(const config_t *c, const char *key,
+void config_say_value(const config_t *c, const keyed_t *key,
     const found_t *f, const shown_t *how);
 
 #endif

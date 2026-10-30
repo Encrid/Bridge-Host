@@ -3,7 +3,6 @@
 **
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
-#include <stdio.h>
 #include <string.h>
 
 #include "config.h"
@@ -17,29 +16,28 @@ static bool is_bare(const char *name)
     return (len && !name[len]);
 }
 
-const char *config_say_key(const char *const *names, uint32_t depth,
-    char *out, size_t size)
+void config_say_key(const char *const *names, uint32_t depth)
 {
-    size_t used = 0;
-    const char *form = nullptr;
-
-    out[0] = 0;
-    for (uint32_t i = 0; i < depth && used < size; i++) {
-        form = is_bare(names[i]) ? "%s%s" : "%s\"%s\"";
-        used += (size_t)snprintf(out + used, size - used, form,
-            i ? "." : "", names[i]);
+    for (uint32_t i = 0; i < depth; i++) {
+        if (i)
+            say_part(".");
+        say_part(is_bare(names[i]) ? "%s" : "\"%s\"", names[i]);
     }
-    return (out);
 }
 
-bool config_say_found(const config_t *c, const char *key, const found_t *f,
-    const char *prefix)
+bool config_say_found(const config_t *c, const keyed_t *key,
+    const found_t *f, const char *prefix)
 {
-    if (!f->at.value && !f->other.value)
-        say("%snot stated: %s\n", prefix, key);
+    if (!f->at.value && !f->other.value) {
+        say_part("%snot stated: ", prefix);
+        config_say_key(key->names, key->depth);
+        say("\n");
+    }
     if (!f->other.value)
         return (f->at.value != nullptr);
-    say_part("%srefused: %s: ", prefix, key);
+    say_part("%srefused: ", prefix);
+    config_say_key(key->names, key->depth);
+    say_part(": ");
     toml_say(f->at.value);
     say_part(" in %s:%u, ", c->files[f->at.file].path, f->at.line);
     toml_say(f->other.value);

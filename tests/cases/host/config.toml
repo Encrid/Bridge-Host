@@ -158,6 +158,42 @@ library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
+name = "a number that finds no memory is not taken"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/n.toml"]
+fail = { malloc = 7 }
+
+[case.claims]
+status = 1
+line = ["refused: n.toml:2: a number that is not taken"]
+
+[case.files]
+"{case}/n.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+rounds = 8
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a key of 300 bytes is named whole in the line that refuses it"
+run = ["{out}/bridge-host{exe}", "{case}/long.toml"]
+
+[case.claims]
+status = 1
+line = ["refused: long.toml:1: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: no key of Bridge-Host's or Bridge's"]
+
+[case.files]
+"{case}/long.toml" = '''
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 1
+'''
+
+[case.false.files]
+"{case}/long.toml" = '''
+short = 1
+'''
+
+[[case]]
 name = "a key that is nobody's"
 run = ["{out}/bridge-host{exe}", "{case}/nobody.toml"]
 
@@ -602,7 +638,7 @@ run = ["{out}/bridge-host{exe}", "{case}/order.toml"]
 
 [case.claims]
 status = 1
-line = ['refused: order bridge-host:hello:say bridge-host:quiet:say: ["bridge-host:hello:say", "bridge-host:quiet:say"] in first.toml:2, ["bridge-host:quiet:say", "bridge-host:hello:say"] in back.toml:2']
+line = ['refused: order.before: ["bridge-host:hello:say", "bridge-host:quiet:say"] in first.toml:2, ["bridge-host:quiet:say", "bridge-host:hello:say"] in back.toml:2']
 
 [case.folders]
 "{case}/config-quiet" = ["quiet"]

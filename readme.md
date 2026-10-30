@@ -250,7 +250,6 @@ Reading the deployment:
 - `refused: <file>:<line>: presets: a list of files`
 - `refused: <file> names itself:`
 - `refused: <key>: <value> in <file>:<line>, <value> in <file>:<line>`
-- `order <system> <system>`
 - `, over <file>:<line>`
 - `, named by <file>:<line>`
 - `<file>.d/local.toml`

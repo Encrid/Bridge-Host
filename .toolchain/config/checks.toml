@@ -207,7 +207,7 @@ why = "names_add's realloc returns null only when memory runs out, which the tes
 
 [[branches.exception]]
 path = "src/config/config_order.c"
-line = 48
+line = 46
 col = 9
 side = "true"
 why = "add_order's realloc returns null only when memory runs out, which the tests do not force."
@@ -249,14 +249,14 @@ why = "state_find_own's own comes from calloc through state_keep_value, which gi
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 30
+line = 32
 col = 9
 side = "true"
 why = "take_setting builds the key with malloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 51
+line = 53
 col = 9
 side = "false"
 why = "split_names copies with malloc, which returns null only when memory runs out, which the tests do not force."
@@ -387,7 +387,7 @@ why = "content.arrive is checked to be ask, load, or leave, so get_arrive always
 
 [[branches.exception]]
 path = "src/config/config_find.c"
-line = 62
+line = 60
 col = 9
 side = "true"
 why = "config_say_value prints a found value. The state callers reach it only past config_say_found, which is true when the value is non-null. show reaches it only when the world loaded, which needs phases, threads, rounds and the budget stated, and shows other keys only when config_names lists them, so every key it prints is found."
@@ -412,13 +412,6 @@ line = 71
 col = 23
 side = "false"
 why = "config_say_chain stops at the re-included file, which is an ancestor of the including file, so it never reaches the root's -1."
-
-[[branches.exception]]
-path = "src/config/config_say.c"
-line = 38
-col = 25
-side = "false"
-why = "config_find sets f.at whenever it sets f.other, so f.other is never set on its own."
 
 [[branches.exception]]
 path = "src/state/state_setting_find.c"
@@ -534,28 +527,28 @@ why = "config_find sets other only together with at, so other is null whenever a
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 33
+line = 35
 col = 24
 side = "false"
 why = "config_find sets other only together with at, so other is null whenever at is null; the right test runs only when at is null, where other is also null."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 53
+line = 55
 col = 12
 side = "false"
 why = "copy is the result of malloc for the settings string; it is null only when the allocation fails."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 66
+line = 68
 col = 53
 side = "false"
 why = "set is the result of calloc for the settings array; it is null only when the allocation fails."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 72
+line = 74
 col = 26
 side = "false"
 why = "set is the result of calloc for the settings array; it is null only when the allocation fails, and it does not change inside the loop."
@@ -601,3 +594,10 @@ line = 25
 col = 9
 side = "true"
 why = "keep_name's realloc of the names returns null only when memory runs out, which the tests do not force."
+
+[[branches.exception]]
+path = "src/config/config_say.c"
+line = 31
+col = 25
+side = "false"
+why = "config_find sets f.at whenever it sets f.other, so f.other is never set on its own."

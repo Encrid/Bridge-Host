@@ -24,10 +24,8 @@ static void say_key(const config_t *c, const char *const *names,
     const keyed_t k = { names, depth };
     const shown_t how = { "", config_states_key, &k };
     found_t f = config_find(c, config_states_key, &k);
-    char key[256];
 
-    config_say_value(c, config_say_key(names, depth, key, sizeof(key)), &f,
-        &how);
+    config_say_value(c, &k, &f, &how);
 }
 
 static void say_under(const config_t *c, const char *top, const char *next)

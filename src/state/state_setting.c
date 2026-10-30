@@ -22,6 +22,8 @@ static bool take_setting(const stating_t *s, const char *name,
     bridge_setting_t *set)
 {
     const char *const two[] = { s->of->who.identity, name };
+    const char *const named[] = { "config", name };
+    const keyed_t shown = { named, 2 };
     const shown_t how = { "  ", state_states_setting, two };
     found_t f = config_find(&s->h->config, state_states_setting, two);
     size_t size = sizeof("config.") + strlen(name);
@@ -32,10 +34,10 @@ static bool take_setting(const stating_t *s, const char *name,
     snprintf(key, size, "config.%s", name);
     if (!f.at.value && !f.other.value)
         f.at = state_own_setting(s, key);
-    if (!config_say_found(&s->h->config, key, &f, s->prefix))
+    if (!config_say_found(&s->h->config, &shown, &f, s->prefix))
         return (false);
     if (s->show)
-        config_say_value(&s->h->config, key, &f, &how);
+        config_say_value(&s->h->config, &shown, &f, &how);
     set->key = name;
     put_setting(s, &f.at, set);
     return (true);

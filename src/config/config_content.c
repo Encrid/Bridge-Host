@@ -70,7 +70,7 @@ int config_load(const host_t *h, const char *identity, const char *prefix)
         k.names = all;
         f = config_find(&h->config, config_states_key, &k);
     }
-    if (!config_say_found(&h->config, "content.load.all", &f, prefix))
+    if (!config_say_found(&h->config, &k, &f, prefix))
         return (-1);
     return (f.at.value->flag ? 1 : 0);
 }

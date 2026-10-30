@@ -48,20 +48,20 @@ said_t config_find_key(const config_t *c, const char *const *names,
 {
     const keyed_t k = { names, depth };
     found_t f = config_find(c, config_states_key, &k);
-    char key[256];
 
-    config_say_key(names, depth, key, sizeof(key));
-    if (!config_say_found(c, key, &f, ""))
+    if (!config_say_found(c, &k, &f, ""))
         return ((said_t){});
     return (f.at);
 }
 
-void config_say_value(const config_t *c, const char *key,
+void config_say_value(const config_t *c, const keyed_t *key,
     const found_t *f, const shown_t *how)
 {
     if (!f->at.value)
         return;
-    say_part("%s%s = ", how->prefix, key);
+    say_part("%s", how->prefix);
+    config_say_key(key->names, key->depth);
+    say_part(" = ");
     toml_say(f->at.value);
     config_say_where(c, &f->at);
     if (how->states && f->at.file != UINT32_MAX)

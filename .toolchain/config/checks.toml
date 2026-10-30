@@ -242,28 +242,7 @@ why = "take_phases allocates with malloc, which returns null only when memory ru
 
 [[branches.exception]]
 path = "src/state/state_own.c"
-line = 12
-col = 9
-side = "false"
-why = "copy_text's malloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/state/state_own.c"
-line = 14
-col = 9
-side = "false"
-why = "copy_text's buffer is null only when its malloc ran out of memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/state/state_own.c"
-line = 38
-col = 38
-side = "false"
-why = "read_own's text is null only when copy_text's malloc ran out of memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/state/state_own.c"
-line = 46
+line = 45
 col = 9
 side = "true"
 why = "state_find_own's own comes from calloc through state_keep_value, which gives null only when memory runs out, which the tests do not force."
@@ -478,7 +457,7 @@ why = "bridge_list_modules returns at most FILES modules, so the count guard end
 
 [[branches.exception]]
 path = "src/manifest/manifest.c"
-line = 85
+line = 60
 col = 9
 side = "true"
 why = "read_own reads a module's own bytes, whose format manifest_find already recognized, so it never fails to find it."

@@ -35,4 +35,7 @@ typedef struct {
 [[nodiscard]] int manifest_take(manifest_t *m, const char *key, size_t len,
     const char *value);
 
+[[nodiscard]] const char *manifest_read_word(manifest_t *m, const char *word,
+    bool first);
+
 #endif

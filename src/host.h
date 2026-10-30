@@ -135,7 +135,7 @@ typedef void see_fn(void *ud, const char *path);
 [[nodiscard]] bool state_found(const stating_t *s,
     bridge_module_config_t *cfg);
 
-[[nodiscard]] bool read_own(const handed_t *of, const char *key, value_t *v);
+[[nodiscard]] bool read_own(const stating_t *s, const char *key, value_t *v);
 
 [[nodiscard]] const value_t *state_find_own(const stating_t *s,
     const module_rule_t *rule);

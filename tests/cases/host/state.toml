@@ -475,3 +475,29 @@ native = "{bb_native}/bridge_native"
 
 [case.false]
 fail = {}
+
+[[case]]
+name = "a default of the manifest that finds no memory is not taken"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/d.toml"]
+fail = { calloc = 9 }
+
+[case.claims]
+status = 1
+line = ["  refused: not stated: read", '  write = ["b:B"]  its file']
+
+[case.folders]
+"{case}/mods" = ["granted"]
+
+[case.files]
+"{case}/d.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}

@@ -46,13 +46,11 @@ static bool is_left(const host_t *h, const file_t *f)
 static bool is_stated(host_t *h, const file_t *f, bridge_artifact_t *a,
     made_t *made)
 {
-    char prefix[1200];
-    const stating_t s = { h, f->of, prefix, false, made };
-    int load = 0;
-
-    snprintf(prefix, sizeof(prefix), "not loaded: %s: %s: ", f->path,
+    const char *prefix = state_keep_prefix(made, "not loaded", f->path,
         f->of->who.identity);
-    load = config_load(h, f->of->who.identity, prefix);
+    const stating_t s = { h, f->of, prefix, false, made };
+    int load = config_load(h, f->of->who.identity, prefix);
+
     if (!load)
         say("not loaded: %s: %s, as content.load says\n", f->path,
             f->of->who.identity);

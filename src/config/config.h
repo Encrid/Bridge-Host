@@ -175,8 +175,7 @@ const char *config_say_key(const char *const *names, uint32_t depth,
 [[nodiscard]] bool config_say_found(const config_t *c, const char *key,
     const found_t *f, const char *prefix);
 
-[[nodiscard]] const char *config_say_where(const config_t *c,
-    const said_t *said);
+void config_say_where(const config_t *c, const said_t *said);
 
 void config_say_over(const config_t *c, states_fn *states,
     const void *asked, const said_t *at);

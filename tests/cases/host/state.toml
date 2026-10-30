@@ -449,3 +449,29 @@ word = "v"
 wasm = "{bb_wasm}/bridge_wasm"
 native = "{bb_native}/bridge_native"
 '''
+
+[[case]]
+name = "a statement whose prefix finds no memory writes its lines with no prefix"
+run = ["{out}/bridge-host{exe}", "{case}/p.toml"]
+fail = { calloc = 8 }
+
+[case.claims]
+status = 1
+line = ["not stated: read", "not stated: write"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/p.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend]
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}

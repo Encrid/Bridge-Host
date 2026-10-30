@@ -170,6 +170,9 @@ typedef void see_fn(void *ud, const char *path);
 [[nodiscard]] uint32_t state_undeclared(const stating_t *s,
     const names_t *declared);
 
+[[nodiscard]] const char *state_keep_prefix(made_t *m, const char *what,
+    const char *path, const char *who);
+
 [[nodiscard]] void *state_keep(const stating_t *s, void *block);
 
 [[nodiscard]] value_t *state_keep_value(const stating_t *s, value_t *v);

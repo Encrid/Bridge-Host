@@ -47,15 +47,12 @@ bool config_say_found(const config_t *c, const char *key, const found_t *f,
     return (false);
 }
 
-const char *config_say_where(const config_t *c, const said_t *said)
+void config_say_where(const config_t *c, const said_t *said)
 {
-    static char where[1100];
-
     if (said->file == UINT32_MAX)
-        return ("its file");
-    snprintf(where, sizeof(where), "%s:%u", c->files[said->file].path,
-        said->line);
-    return (where);
+        say_part("  its file");
+    else
+        say_part("  %s:%u", c->files[said->file].path, said->line);
 }
 
 void config_say_over(const config_t *c, states_fn *states,

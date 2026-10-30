@@ -63,7 +63,7 @@ void config_say_value(const config_t *c, const char *key,
         return;
     say_part("%s%s = ", how->prefix, key);
     toml_say(f->at.value);
-    say_part("  %s", config_say_where(c, &f->at));
+    config_say_where(c, &f->at);
     if (how->states && f->at.file != UINT32_MAX)
         config_say_over(c, how->states, how->asked, &f->at);
     say("\n");

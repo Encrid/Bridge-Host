@@ -26,20 +26,34 @@ static bool is_ignored(const host_t *h, const char *path)
     return (is);
 }
 
+static char *join_path(const char *path, const char *name)
+{
+    size_t size = strlen(path) + strlen(name) + 2;
+    char *full = nullptr;
+
+    if (!strcmp(name, ".") || !strcmp(name, ".."))
+        return (nullptr);
+    full = calloc(size, 1);
+    if (full)
+        snprintf(full, size, "%s/%s", path, name);
+    return (full);
+}
+
 static void walk_folder(const host_t *h, const char *path, see_fn *see,
     void *ud)
 {
     DIR *d = opendir(path);
     DIR *sub = nullptr;
-    char full[1024];
+    char *full = nullptr;
 
     for (struct dirent *e = d ? readdir(d) : nullptr; e; e = readdir(d)) {
-        snprintf(full, sizeof(full), "%s/%s", path, e->d_name);
-        sub = opendir(full);
+        full = join_path(path, e->d_name);
+        sub = full ? opendir(full) : nullptr;
         if (sub)
             closedir(sub);
-        if (!sub && !is_ignored(h, full))
+        if (full && !sub && !is_ignored(h, full))
             see(ud, full);
+        free(full);
     }
     if (d)
         closedir(d);

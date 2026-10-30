@@ -19,6 +19,8 @@ A bad manifest prints `not a module` or `not loaded`.
 4. If `hot_reload` is `false`, the old module stays, and no failure counts. The host asks Bridge for nothing.
 5. Else it states the new module, and calls `bridge_reload`. Then it frees the memory of the statement.
 
+Each line of the statement starts with `not replaced: <file>: <identity>: `, which `state_keep_prefix` makes.
+
 | `enum replaced` | The host |
 | --- | --- |
 | `REPLACED` | Writes `replaced:`, frees the old `handed_t`, and keeps the new one. |

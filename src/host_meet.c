@@ -32,15 +32,14 @@ static bool keep_old(const file_t *f, const handed_t *now, const char *why)
 static enum replaced reload_found(host_t *h, const file_t *f,
     const handed_t *now)
 {
-    char prefix[1200];
     made_t made = {};
+    const char *prefix = state_keep_prefix(&made, "not replaced", f->path,
+        now->who.identity);
     const stating_t s = { h, now, prefix, false, &made };
     const value_t *hot = nullptr;
     bridge_artifact_t a;
     enum replaced got = REPLACE_REFUSED;
 
-    snprintf(prefix, sizeof(prefix), "not replaced: %s: %s: ", f->path,
-        now->who.identity);
     if (now->who.abi == BRIDGE_ABI)
         hot = state_find_key(&s, config_get_rule("hot_reload"));
     if (hot && !hot->flag)

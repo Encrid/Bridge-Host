@@ -95,7 +95,8 @@ The host reads a folder one level deep.
 It looks at 32 files at most, and it does not read a file for which it has no room.
 Each time its room becomes full, it writes `too many files: <count> are looked at`.
 At each round, it loads a new module and unloads the module of a removed file.
-It replaces the module of a changed file if the module can be reloaded.
+It replaces the module of a changed file only if the manifest states `reloadable=true` and the deployment states `hot_reload = true`.
+Else it keeps the old module, and writes why.
 
 ### The modules
 
@@ -228,6 +229,7 @@ Replacing a module:
 
 - `replaced: <identity> by <identity>, <file>`
 - `not replaced: <identity>: it does not say it can be`
+- `not replaced: <identity>: its hot_reload is false`
 - `not replaced: <file>: <identity> was refused`
 - `not replaced: <file>: <identity> <why>`
 - `not replaced: <file>: <identity>:`

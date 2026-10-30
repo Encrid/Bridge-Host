@@ -213,6 +213,8 @@ phases = ["update", "late"]
 rounds = 16
 [module."bridge-host:swap@1.0.0"]
 hot_reload = true
+[module."bridge-host:word@1.0.0"]
+hot_reload = true
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
 [content]
@@ -266,3 +268,42 @@ native = "{bb_native}/bridge_native"
 
 [case.false]
 script = [{ wait = "? go on", type = "go" }]
+
+[[case]]
+name = "a module whose hot_reload is false keeps its old build, with no failure"
+run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
+script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "swap2" }, type = "go" }]
+
+[case.claims]
+status = 0
+line = ["not replaced: bridge-host:swap@1.0.0: its hot_reload is false"]
+lacks = ["replaced: bridge-host:swap@1.0.0 by"]
+
+[case.folders]
+"{case}/d" = ["wait", "swap"]
+
+[case.files]
+"{case}/r.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 16
+[content]
+paths = ["d"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/r.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 16
+[module."bridge-host:swap@1.0.0"]
+hot_reload = true
+[content]
+paths = ["d"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''

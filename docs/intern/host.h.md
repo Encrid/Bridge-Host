@@ -1,7 +1,7 @@
 # src/host.h
 
 This private header gathers the whole host.
-It sets the constant `FILES`, the `arrive` choices, and the structs that one run shares.
+It sets the constant `FILES`, the `arrive` choices, the outcomes of a replacement, and the structs that one run shares.
 It then declares the functions that the other sources of `src` define.
 
 ## The data

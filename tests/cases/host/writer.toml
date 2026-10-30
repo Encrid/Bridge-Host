@@ -286,6 +286,8 @@ phases = ["update"]
 rounds = 16
 [module."bridge-host:swap@1.0.0"]
 hot_reload = true
+[module."bridge-host:word@1.0.0"]
+hot_reload = true
 [content]
 paths = ["fr"]
 [backend]

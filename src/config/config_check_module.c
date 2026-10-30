@@ -29,10 +29,11 @@ static const char *check_table(const config_t *c, const char *table)
 
 static const char *check_rule(const entry_t *e)
 {
-    for (uint32_t i = 0; i < MODULE_KEY_COUNT; i++)
-        if (!strcmp(e->key[2], MODULE_KEYS[i].name))
-            return (config_check_value(&e->value, MODULE_KEYS[i].check));
-    return ("no key of a module");
+    const module_rule_t *rule = config_get_rule(e->key[2]);
+
+    if (!rule)
+        return ("no key of a module");
+    return (config_check_value(&e->value, rule->check));
 }
 
 static const char *check_setting(const entry_t *e)

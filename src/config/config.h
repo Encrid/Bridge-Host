@@ -110,6 +110,8 @@ typedef struct {
 extern const module_rule_t MODULE_KEYS[];
 extern const uint32_t MODULE_KEY_COUNT;
 
+[[nodiscard]] const module_rule_t *config_get_rule(const char *name);
+
 [[nodiscard]] const char *config_go_beside(char *name);
 
 [[nodiscard]] char *config_path(const config_t *c, uint32_t file,

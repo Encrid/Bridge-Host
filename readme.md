@@ -47,7 +47,7 @@ A deployment is a TOML file. The document of the header `bridge.h` of Bridge tel
 | `<file>.d/local.toml` | The local file. It is over each other file. |
 | `<file>.d/lock` | The host holds it during a run, so only one run of a deployment goes on at a time. |
 
-- A path counts from the folder of the file that states it: a preset, a path of `[content]`, a library of `[backend]`, and `{ path = "..." }`.
+- A path counts from the folder of the file that states it: a preset, a path of `[content]`, the `library` of a backend, and `{ path = "..." }`.
 - A file is over the files that it names. If two presets of one file give different values for a key, the host refuses the key.
 - The paths of `[content]` and the pairs of `[order]` of all the files add up.
 - For `read` and `write`, the first file that states the list gives the whole list. If a file states no list, the lists of the presets that it names add up.
@@ -97,11 +97,17 @@ Two systems of two modules that conflict in one phase need a pair, or Bridge ref
 
 | Key | Value |
 | --- | --- |
-| `[backend] <name>` | The library of a backend, with no suffix. The host adds `.dll`, `.so` or `.dylib`. |
+| `[backend.<name>] library` | The library of a backend, with no suffix. The host adds `.dll`, `.so` or `.dylib`. |
+| `[backend.<name>] <key>` | A setting of the backend: a text, a whole or real number, `true` or `false`. |
 | `[content] paths` | The files and the folders of the modules. Each one is needed. |
 | `[content] ignore` | The paths that the host does not read, with each path below them. |
 | `[content.load] <identity>` or `all` | `true` loads the module, `false` does not. The key of an identity is over `all`. |
 | `[content.arrive] <backend>` | `"ask"`, `"load"` or `"leave"`: what the host does with a module that comes after the first look. |
+
+The host needs each key of this table, but `[content] ignore`, a key of an identity in `[content.load]`, and the settings of a backend.
+The host gives the settings of a backend to Bridge, which starts the backend with them.
+The backend refuses a setting that is missing or that it does not know, so the deployment states each one.
+The readme of a backend gives its settings.
 
 A module asks for the backend `native` or `wasm` by the format of its file.
 Each backend needs its key of `[content.arrive]`.

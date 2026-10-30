@@ -27,9 +27,10 @@ phases = ["update"]
 rounds = 16
 [content]
 paths = ["together-one"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 "{case}/two.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
@@ -37,9 +38,10 @@ phases = ["update"]
 rounds = 16
 [content]
 paths = ["together-two"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false]
@@ -73,9 +75,10 @@ phases = ["update"]
 rounds = 16
 [content]
 paths = ["together-one"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 "{case}/two.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
@@ -83,9 +86,10 @@ phases = ["update"]
 rounds = 16
 [content]
 paths = ["together-two"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false]

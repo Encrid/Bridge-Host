@@ -79,7 +79,8 @@ enum check : uint8_t {
     CHECK_SETTING,
     CHECK_PAIRS,
     CHECK_AUTHOR,
-    CHECK_SIZE
+    CHECK_SIZE,
+    CHECK_VALUE
 };
 
 enum allow : uint8_t {
@@ -130,6 +131,9 @@ extern const uint32_t BUDGET_KEY_COUNT;
 uint32_t config_get_names(const key_rule_t *rule, const char **names);
 
 void config_put(void *into, const key_rule_t *rule, const value_t *v);
+
+[[nodiscard]] bridge_setting_t config_get_setting(const char *key,
+    const value_t *v, const char *text);
 
 [[nodiscard]] const char *config_go_beside(char *name);
 

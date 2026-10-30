@@ -13,9 +13,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ['/no-such-abs-one', '\no-such-abs-two']
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -25,9 +26,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 "{case}/cq/quiet.wasm" = "x"
 
@@ -51,8 +53,8 @@ phases = ["update"]
 threads = 1
 [content]
 paths = ["x"]
-[backend]
-wasm = "y"
+[backend.wasm]
+library = "y"
 '''
 
 [[case]]
@@ -78,9 +80,10 @@ phases = ["update"]
 rounds = 1
 [content]
 paths = ["z"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -146,7 +149,8 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''

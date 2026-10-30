@@ -123,28 +123,28 @@ why = "with_suffix allocates with malloc, which returns null only when memory ru
 
 [[branches.exception]]
 path = "src/config/config_backend.c"
-line = 59
+line = 61
 col = 26
 side = "false"
 why = "h->held comes from calloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_backend.c"
-line = 59
+line = 61
 col = 37
 side = "false"
 why = "h->backends comes from calloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_backend.c"
-line = 63
+line = 65
 col = 22
 side = "false"
 why = "h->held is null only when its calloc ran out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_backend.c"
-line = 63
+line = 65
 col = 33
 side = "false"
 why = "h->backends is null only when its calloc ran out of memory, which the tests do not force."
@@ -249,14 +249,14 @@ why = "state_find_own's own comes from calloc through state_keep_value, which gi
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 41
+line = 30
 col = 9
 side = "true"
 why = "take_setting builds the key with malloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 62
+line = 51
 col = 9
 side = "false"
 why = "split_names copies with malloc, which returns null only when memory runs out, which the tests do not force."
@@ -541,28 +541,28 @@ why = "config_find sets other only together with at, so other is null whenever a
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 44
+line = 33
 col = 24
 side = "false"
 why = "config_find sets other only together with at, so other is null whenever at is null; the right test runs only when at is null, where other is also null."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 64
+line = 53
 col = 12
 side = "false"
 why = "copy is the result of malloc for the settings string; it is null only when the allocation fails."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 77
+line = 66
 col = 53
 side = "false"
 why = "set is the result of calloc for the settings array; it is null only when the allocation fails."
 
 [[branches.exception]]
 path = "src/state/state_setting.c"
-line = 83
+line = 72
 col = 26
 side = "false"
 why = "set is the result of calloc for the settings array; it is null only when the allocation fails, and it does not change inside the loop."

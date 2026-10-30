@@ -46,11 +46,13 @@ const char *config_check_world(const entry_t *e, bool local)
 
 const char *config_check_backend(const entry_t *e, bool local)
 {
-    if (e->depth != 2)
+    if (e->depth != 3)
         return ("no key of Bridge-Host's or Bridge's");
     if (local)
         return ("fixed when the world is made: not in the local file");
-    return (config_check_value(&e->value, CHECK_TEXT));
+    if (!strcmp(e->key[2], "library"))
+        return (config_check_value(&e->value, CHECK_TEXT));
+    return (config_check_value(&e->value, CHECK_VALUE));
 }
 
 const char *config_check_content(const entry_t *e)

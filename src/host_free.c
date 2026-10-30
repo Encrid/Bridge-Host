@@ -14,8 +14,10 @@ void handed_free(handed_t *of)
 
 void host_free(host_t *h)
 {
-    for (uint32_t i = 0; h->held && i < h->backend_count; i++)
+    for (uint32_t i = 0; h->held && i < h->backend_count; i++) {
         free(h->held[i].library);
+        free(h->held[i].settings);
+    }
     for (uint32_t i = 0; i < h->path_count; i++)
         free(h->paths[i]);
     for (uint32_t i = 0; i < h->ignore_count; i++)

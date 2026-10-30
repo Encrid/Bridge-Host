@@ -111,7 +111,7 @@ has = [
     "rounds: fixed when the world is made: not in the local file",
     "live: fixed when the world is made: not in the local file",
     "budget.entities: fixed when the world is made: not in the local file",
-    "backend.wasm: fixed when the world is made: not in the local file",
+    "backend.wasm.library: fixed when the world is made: not in the local file",
     "checks.profile: fixed when the world is made: not in the local file",
 ]
 
@@ -125,8 +125,8 @@ rounds = 1
 live = true
 [budget]
 entities = 1
-[backend]
-wasm = "y"
+[backend.wasm]
+library = "y"
 [checks]
 profile = true
 '''
@@ -164,9 +164,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -217,9 +218,10 @@ sparse_sets = "none"
 direct_indexed = "none"
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -229,9 +231,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -254,9 +257,10 @@ rounds = 8
 [content]
 paths = ["cq", "cq", "cq2"]
 ignore = ["z", "z"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -266,9 +270,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq2"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -295,9 +300,10 @@ rounds = 8
 before = [["a", "b"], ["a", "c"], ["c", "d"], ["b", "a"], ["c", "a"]]
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -307,9 +313,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -336,9 +343,10 @@ rounds = 8
 before = [["a", "b"], ["e", "f"]]
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -354,9 +362,10 @@ rounds = 8
 before = [["a", "b"], ["e", "f"]]
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -385,9 +394,10 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -405,7 +415,8 @@ phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend]
-wasm = "{bb_wasm}/bridge_wasm"
-native = "{bb_native}/bridge_native"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''

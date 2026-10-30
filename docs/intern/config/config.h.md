@@ -33,6 +33,7 @@ A `deployment_t` holds what the host takes of the world. It holds the `bridge_co
 | `config_free`, `config_free_file` | Free a configuration, and free one file. |
 | `config_check`, `config_check_*`, `config_check_value` | Check a statement against the rule of its key. |
 | `config_get_rule`, `config_get_names`, `config_put` | Find a rule by its table and its name, give the names of its key, and write a value by its rule. |
+| `config_get_setting` | Make a setting of Bridge of a value. |
 | `config_find`, `config_find_key`, `config_states_key`, `config_states_module` | Resolve a key over the files. |
 | `config_names`, `names_add` | List the names under a key. |
 | `config_say_*`, `config_path`, `config_get_folder`, `config_go_beside` | Print a key or a problem, and build paths. |

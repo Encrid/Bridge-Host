@@ -30,7 +30,10 @@ static const value_rule_t RULES[] = {
     [CHECK_PAIRS] = { ALLOW_PAIRS, 0, 0, "", "a list of pairs of systems" },
     [CHECK_AUTHOR] = { 0, 0, 0, "",
         "only a module's author states it, in its file" },
-    [CHECK_SIZE] = { ALLOW_WHOLE, 1, INT64_MAX, "", "a whole number, from 1" }
+    [CHECK_SIZE] = { ALLOW_WHOLE, 1, INT64_MAX, "", "a whole number, from 1" },
+    [CHECK_VALUE] = { ALLOW_FLAG | ALLOW_WHOLE | ALLOW_REAL | ALLOW_TEXT
+        | ALLOW_EMPTY, INT64_MIN, INT64_MAX, "",
+        "text, a number, true or false" }
 };
 
 static bool is_word(const char *text, const char *words)

@@ -56,6 +56,7 @@ typedef struct {
     const char *name;
     char *library;
     enum arrive arrive;
+    bridge_setting_t *settings;
 } held_t;
 
 typedef struct {
@@ -115,6 +116,8 @@ typedef void see_fn(void *ud, const char *path);
 [[nodiscard]] bool config_order(host_t *h);
 
 [[nodiscard]] bool config_backends(host_t *h);
+
+[[nodiscard]] bool config_backend_settings(host_t *h, uint32_t at);
 
 [[nodiscard]] const held_t *get_held(const host_t *h, const char *name);
 

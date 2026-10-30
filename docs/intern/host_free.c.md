@@ -2,7 +2,7 @@
 
 This file frees the memory of the host.
 
-`host_free` frees the library path of each backend, each content path and each ignored path.
+`host_free` frees the library path and the settings of each backend, each content path and each ignored path.
 It frees the path and the `handed_t` of each file.
 Then it frees the arrays of the host, and the configuration.
 The phases and the order point into the configuration, so `host_free` frees only their arrays.

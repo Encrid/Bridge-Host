@@ -15,18 +15,7 @@ static void put_setting(const stating_t *s, const said_t *said,
 
     if (path)
         text = state_keep(s, config_path(&s->h->config, said->file, v->text));
-    if (v->kind == VALUE_TEXT)
-        *set = (bridge_setting_t){ .key = set->key, .kind = BRIDGE_STRING,
-            .v.s = text };
-    if (v->kind == VALUE_WHOLE)
-        *set = (bridge_setting_t){ .key = set->key, .kind = BRIDGE_INT,
-            .v.i = v->whole };
-    if (v->kind == VALUE_REAL)
-        *set = (bridge_setting_t){ .key = set->key, .kind = BRIDGE_FLOAT,
-            .v.f = v->real };
-    if (v->kind == VALUE_FLAG)
-        *set = (bridge_setting_t){ .key = set->key, .kind = BRIDGE_BOOL,
-            .v.b = v->flag };
+    *set = config_get_setting(set->key, v, text);
 }
 
 static bool take_setting(const stating_t *s, const char *name,

@@ -541,7 +541,7 @@ why = "On this host os_path_whole yields forward-slash separators, so the charac
 
 [[branches.exception]]
 path = "src/host_look.c"
-line = 60
+line = 59
 col = 26
 side = "false"
 why = "bridge_unload fails only when the engine cannot unload a module the host recorded as loaded. The host records a file as loaded after the engine loaded it, so unloading a file that is gone always succeeds."

@@ -89,7 +89,11 @@ Two systems of two modules that conflict in one phase need a pair, or Bridge ref
 | `[content.arrive] <backend>` | `"ask"`, `"load"` or `"leave"`: what the host does with a module that comes after the first look. |
 
 A module asks for the backend `native` or `wasm` by the format of its file. Each backend needs its key of `[content.arrive]`.
-The host reads a folder one level deep, and it looks at 32 files at most.
+
+The host reads a folder one level deep.
+
+It looks at 32 files at most, and it does not read a file for which it has no room.
+Each time its room becomes full, it writes `too many files: <count> are looked at`.
 At each round, it loads a new module and unloads the module of a removed file.
 It replaces the module of a changed file if the module can be reloaded.
 

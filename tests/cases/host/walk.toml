@@ -133,3 +133,125 @@ native = "{bb_native}/bridge_native"
 
 [case.false]
 run = ["{out}/bridge-host{exe}", "{case}/none.toml"]
+
+[[case]]
+name = "the line of a full room comes each time that the room becomes full"
+run = ["{out}/bridge-host{exe}", "{case}/full.toml"]
+script = [
+    { wait = "? go on", put = { "{case}/heap/x.wasm" = "quiet" }, type = "go" },
+    { wait = "? go on", remove = ["{case}/heap/x.wasm"], type = "go" },
+    { wait = "? go on", put = { "{case}/heap/x.wasm" = "quiet" }, type = "go" },
+]
+
+[case.claims]
+status = 0
+order = ["too many files: 32 are looked at", "too many files: 32 are looked at"]
+
+[case.folders]
+"{case}/heap" = ["asker"]
+
+[case.files]
+"{case}/full.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+live = true
+[content]
+paths = ["heap"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+"{case}/heap/f01.txt" = "x"
+"{case}/heap/f02.txt" = "x"
+"{case}/heap/f03.txt" = "x"
+"{case}/heap/f04.txt" = "x"
+"{case}/heap/f05.txt" = "x"
+"{case}/heap/f06.txt" = "x"
+"{case}/heap/f07.txt" = "x"
+"{case}/heap/f08.txt" = "x"
+"{case}/heap/f09.txt" = "x"
+"{case}/heap/f10.txt" = "x"
+"{case}/heap/f11.txt" = "x"
+"{case}/heap/f12.txt" = "x"
+"{case}/heap/f13.txt" = "x"
+"{case}/heap/f14.txt" = "x"
+"{case}/heap/f15.txt" = "x"
+"{case}/heap/f16.txt" = "x"
+"{case}/heap/f17.txt" = "x"
+"{case}/heap/f18.txt" = "x"
+"{case}/heap/f19.txt" = "x"
+"{case}/heap/f20.txt" = "x"
+"{case}/heap/f21.txt" = "x"
+"{case}/heap/f22.txt" = "x"
+"{case}/heap/f23.txt" = "x"
+"{case}/heap/f24.txt" = "x"
+"{case}/heap/f25.txt" = "x"
+"{case}/heap/f26.txt" = "x"
+"{case}/heap/f27.txt" = "x"
+"{case}/heap/f28.txt" = "x"
+"{case}/heap/f29.txt" = "x"
+"{case}/heap/f30.txt" = "x"
+"{case}/heap/f31.txt" = "x"
+
+[case.false]
+script = [
+    { wait = "? go on", put = { "{case}/heap/x.wasm" = "quiet" }, type = "go" },
+    { wait = "? go on", remove = ["{case}/heap/x.wasm"], type = "go" },
+]
+
+[[case]]
+name = "a file for which the host has no room is not read, and fills the room"
+run = ["{out}/bridge-host{exe}", "{case}/room.toml"]
+
+[case.claims]
+status = 0
+has = ["too many files: 32 are looked at"]
+
+[case.files]
+"{case}/room.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["heap"]
+[backend]
+wasm = "{bb_wasm}/bridge_wasm"
+native = "{bb_native}/bridge_native"
+'''
+"{case}/heap/zz.txt" = ""
+"{case}/heap/f01.txt" = "x"
+"{case}/heap/f02.txt" = "x"
+"{case}/heap/f03.txt" = "x"
+"{case}/heap/f04.txt" = "x"
+"{case}/heap/f05.txt" = "x"
+"{case}/heap/f06.txt" = "x"
+"{case}/heap/f07.txt" = "x"
+"{case}/heap/f08.txt" = "x"
+"{case}/heap/f09.txt" = "x"
+"{case}/heap/f10.txt" = "x"
+"{case}/heap/f11.txt" = "x"
+"{case}/heap/f12.txt" = "x"
+"{case}/heap/f13.txt" = "x"
+"{case}/heap/f14.txt" = "x"
+"{case}/heap/f15.txt" = "x"
+"{case}/heap/f16.txt" = "x"
+"{case}/heap/f17.txt" = "x"
+"{case}/heap/f18.txt" = "x"
+"{case}/heap/f19.txt" = "x"
+"{case}/heap/f20.txt" = "x"
+"{case}/heap/f21.txt" = "x"
+"{case}/heap/f22.txt" = "x"
+"{case}/heap/f23.txt" = "x"
+"{case}/heap/f24.txt" = "x"
+"{case}/heap/f25.txt" = "x"
+"{case}/heap/f26.txt" = "x"
+"{case}/heap/f27.txt" = "x"
+"{case}/heap/f28.txt" = "x"
+"{case}/heap/f29.txt" = "x"
+"{case}/heap/f30.txt" = "x"
+"{case}/heap/f31.txt" = "x"
+"{case}/heap/f32.txt" = "x"
+
+[case.false.files]
+"{case}/heap/f32.txt" = ""

@@ -317,7 +317,8 @@ path = "src/host_walk.c"
 line = 15
 col = 26
 side = "false"
-why = "is_ignored's path from os_path_whole is null only for an unparseable path, which the tests do not provide."
+system = "windows"
+why = "On Windows, os_path_whole gives a whole path for each path that the walk finds, so whole is never null; on Linux and macOS, realpath gives null for the path past PATH_MAX of the deep case."
 
 [[branches.exception]]
 path = "src/host_walk.c"
@@ -434,46 +435,6 @@ col = 24
 side = "true"
 system = "posix"
 why = "A colon at the second character marks a Windows drive path; the tests give no such path on this system."
-
-[[branches.exception]]
-path = "src/config/config_path.c"
-line = 35
-col = 9
-side = "true"
-system = "posix"
-why = "A backslash separator marks a Windows path; the tests give none on this system, so back is always null."
-
-[[branches.exception]]
-path = "src/config/config_path.c"
-line = 35
-col = 18
-side = "true"
-system = "posix"
-why = "config_folder_size tests this backslash operand only when back is non-null, which no posix test path makes, so neither outcome is reached."
-
-[[branches.exception]]
-path = "src/config/config_path.c"
-line = 35
-col = 18
-side = "false"
-system = "posix"
-why = "config_folder_size tests this backslash operand only when back is non-null, which no posix test path makes, so neither outcome is reached."
-
-[[branches.exception]]
-path = "src/config/config_path.c"
-line = 35
-col = 28
-side = "true"
-system = "posix"
-why = "config_folder_size tests this backslash operand only when back is non-null, which no posix test path makes, so neither outcome is reached."
-
-[[branches.exception]]
-path = "src/config/config_path.c"
-line = 35
-col = 28
-side = "false"
-system = "posix"
-why = "config_folder_size tests this backslash operand only when back is non-null, which no posix test path makes, so neither outcome is reached."
 
 [[branches.exception]]
 path = "src/host_walk.c"

@@ -23,6 +23,7 @@ A `names_t` gathers names without a repeat.
 | `config_read`, `config_add_file`, `config_take_file` | Read the files of a configuration, and add one file. |
 | `config_free`, `config_free_file` | Free a configuration, and free one file. |
 | `config_check`, `config_check_*`, `config_check_value` | Check a statement against the rule of its key. |
+| `config_get_rule` | Find a rule of `MODULE_KEYS` by the name of its key. |
 | `config_find`, `config_find_key`, `config_states_key`, `config_states_module` | Resolve a key over the files. |
 | `config_names`, `names_add` | List the names under a key. |
 | `config_say_*`, `config_path`, `config_get_folder`, `config_go_beside` | Print a key or a problem, and build paths. |

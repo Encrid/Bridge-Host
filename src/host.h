@@ -26,6 +26,13 @@ enum arrive : uint8_t {
     ARRIVE_LEAVE
 };
 
+enum replaced : uint8_t {
+    REPLACED,
+    REPLACE_REFUSED,
+    REPLACE_NOT_HOT,
+    REPLACE_KEPT
+};
+
 typedef struct {
     int failed;
     int said;

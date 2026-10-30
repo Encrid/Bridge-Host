@@ -4,6 +4,7 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include <stddef.h>
+#include <string.h>
 
 #include "bridge.h"
 #include "config.h"
@@ -50,3 +51,11 @@ const module_rule_t MODULE_KEYS[] = {
 };
 
 const uint32_t MODULE_KEY_COUNT = sizeof(MODULE_KEYS) / sizeof(MODULE_KEYS[0]);
+
+const module_rule_t *config_get_rule(const char *name)
+{
+    for (uint32_t i = 0; i < MODULE_KEY_COUNT; i++)
+        if (!strcmp(MODULE_KEYS[i].name, name))
+            return (&MODULE_KEYS[i]);
+    return (nullptr);
+}

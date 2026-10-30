@@ -88,7 +88,10 @@ Two systems of two modules that conflict in one phase need a pair, or Bridge ref
 | `[content.load] <identity>` or `all` | `true` loads the module, `false` does not. The key of an identity is over `all`. |
 | `[content.arrive] <backend>` | `"ask"`, `"load"` or `"leave"`: what the host does with a module that comes after the first look. |
 
-A module asks for the backend `native` or `wasm` by the format of its file. Each backend needs its key of `[content.arrive]`.
+A module asks for the backend `native` or `wasm` by the format of its file.
+Each backend needs its key of `[content.arrive]`.
+With `"ask"`, the host writes `? trust <identity>, <backend>, <file>`, and reads one whole line.
+It loads the module only if the line is `yes`.
 
 The host reads a folder one level deep.
 A path of the content has no limit of length, but a system can refuse to open a long path.

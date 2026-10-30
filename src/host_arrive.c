@@ -5,15 +5,23 @@
 */
 #include "host.h"
 
+static bool is_yes(void)
+{
+    static const char YES[] = "yes";
+    size_t at = 0;
+    bool same = true;
+
+    for (int c = getchar(); c != EOF && c != '\n'; c = getchar()) {
+        same = same && at < sizeof(YES) - 1 && c == YES[at];
+        at++;
+    }
+    return (same && at == sizeof(YES) - 1);
+}
+
 static bool is_trusted(const file_t *f, const char *backend)
 {
-    char answer[64] = "";
-
     say("? trust %s, %s, %s\n", f->of->who.identity, backend, f->path);
-    if (!fgets(answer, sizeof(answer), stdin))
-        return (false);
-    answer[strcspn(answer, "\r\n")] = 0;
-    return (!strcmp(answer, "yes"));
+    return (is_yes());
 }
 
 bool may_arrive(const file_t *f, const held_t *held)

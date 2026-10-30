@@ -9,7 +9,7 @@ The mask `taken` holds a mark of `enum manifest_word` for each author word that 
 `identity`, `config` and `settings` point into the bytes of the file, at the text of their words.
 The zero byte that ends each word ends each of them too.
 A word that the manifest does not state gives an empty text, not a null pointer.
-The bytes outlive the manifest, since one `handed_t` holds both, and `handed_free` frees both.
+The bytes outlive the manifest, since one `handed_t` holds both, and one block holds the `handed_t` and its bytes.
 Thus the manifest copies no word, and the identity is the one word with a limit of length: `docs/intern/manifest/manifest.c.md`.
 
 ## Functions

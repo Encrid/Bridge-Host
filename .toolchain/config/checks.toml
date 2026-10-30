@@ -221,14 +221,14 @@ why = "config_path's malloc returns null only when memory runs out, which the te
 
 [[branches.exception]]
 path = "src/config/config_path.c"
-line = 56
+line = 57
 col = 9
 side = "false"
 why = "config_get_folder's malloc returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/config/config_path.c"
-line = 58
+line = 59
 col = 9
 side = "false"
 why = "config_get_folder's folder is null only when its malloc ran out of memory, which the tests do not force."
@@ -267,20 +267,6 @@ line = 45
 col = 9
 side = "true"
 why = "state_own_setting's own comes from malloc, which returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host_meet.c"
-line = 87
-col = 9
-side = "false"
-why = "meet allocates f->path with malloc, which returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host_meet.c"
-line = 95
-col = 21
-side = "false"
-why = "f->path is null only when its malloc ran out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/host_lock.c"
@@ -328,14 +314,14 @@ why = "a stored file's whole path is null only when os_path_whole could not reso
 
 [[branches.exception]]
 path = "src/host_walk.c"
-line = 18
+line = 15
 col = 26
 side = "false"
 why = "is_ignored's path from os_path_whole is null only for an unparseable path, which the tests do not provide."
 
 [[branches.exception]]
 path = "src/host_walk.c"
-line = 20
+line = 17
 col = 15
 side = "false"
 system = "windows"
@@ -343,7 +329,7 @@ why = "an ignore entry's whole path from os_path_whole is null only for an unpar
 
 [[branches.exception]]
 path = "src/host_walk.c"
-line = 21
+line = 18
 col = 14
 side = "false"
 system = "windows"
@@ -351,7 +337,7 @@ why = "the ignore path is null only when os_path_whole could not resolve it, whi
 
 [[branches.exception]]
 path = "src/host_walk.c"
-line = 22
+line = 19
 col = 32
 side = "true"
 system = "windows"
@@ -435,13 +421,6 @@ side = "false"
 why = "config_check refuses a depth-five setting whose fifth key is not path, so it is always path here."
 
 [[branches.exception]]
-path = "src/host_walk.c"
-line = 49
-col = 29
-side = "false"
-why = "walk_folder opens a directory that walk_path already opened, so the open always succeeds."
-
-[[branches.exception]]
 path = "src/manifest/manifest.c"
 line = 60
 col = 9
@@ -458,7 +437,7 @@ why = "A colon at the second character marks a Windows drive path; the tests giv
 
 [[branches.exception]]
 path = "src/config/config_path.c"
-line = 52
+line = 35
 col = 9
 side = "true"
 system = "posix"
@@ -466,39 +445,39 @@ why = "A backslash separator marks a Windows path; the tests give none on this s
 
 [[branches.exception]]
 path = "src/config/config_path.c"
-line = 52
+line = 35
 col = 18
 side = "true"
 system = "posix"
-why = "config_get_folder tests this backslash operand only when back is non-null, which no posix test path makes, so neither outcome is reached."
+why = "config_folder_size tests this backslash operand only when back is non-null, which no posix test path makes, so neither outcome is reached."
 
 [[branches.exception]]
 path = "src/config/config_path.c"
-line = 52
+line = 35
 col = 18
 side = "false"
 system = "posix"
-why = "config_get_folder tests this backslash operand only when back is non-null, which no posix test path makes, so neither outcome is reached."
+why = "config_folder_size tests this backslash operand only when back is non-null, which no posix test path makes, so neither outcome is reached."
 
 [[branches.exception]]
 path = "src/config/config_path.c"
-line = 52
+line = 35
 col = 28
 side = "true"
 system = "posix"
-why = "config_get_folder tests this backslash operand only when back is non-null, which no posix test path makes, so neither outcome is reached."
+why = "config_folder_size tests this backslash operand only when back is non-null, which no posix test path makes, so neither outcome is reached."
 
 [[branches.exception]]
 path = "src/config/config_path.c"
-line = 52
+line = 35
 col = 28
 side = "false"
 system = "posix"
-why = "config_get_folder tests this backslash operand only when back is non-null, which no posix test path makes, so neither outcome is reached."
+why = "config_folder_size tests this backslash operand only when back is non-null, which no posix test path makes, so neither outcome is reached."
 
 [[branches.exception]]
 path = "src/host_walk.c"
-line = 22
+line = 19
 col = 53
 side = "true"
 system = "posix"
@@ -506,17 +485,10 @@ why = "On this host os_path_whole yields forward-slash separators, so the charac
 
 [[branches.exception]]
 path = "src/host_look.c"
-line = 59
+line = 66
 col = 26
 side = "false"
 why = "bridge_unload fails only when the engine cannot unload a module the host recorded as loaded. The host records a file as loaded after the engine loaded it, so unloading a file that is gone always succeeds."
-
-[[branches.exception]]
-path = "src/host_walk.c"
-line = 61
-col = 9
-side = "false"
-why = "walk_folder opens the same folder that walk_path already confirmed as a folder, so its handle is never null and the close always runs."
 
 [[branches.exception]]
 path = "src/state/state_key.c"
@@ -601,3 +573,17 @@ line = 31
 col = 25
 side = "false"
 why = "config_find sets f.at whenever it sets f.other, so f.other is never set on its own."
+
+[[branches.exception]]
+path = "src/host_slot.c"
+line = 25
+col = 9
+side = "false"
+why = "keep_path allocates the path with malloc, which returns null only when memory runs out, which the tests do not force."
+
+[[branches.exception]]
+path = "src/host_meet.c"
+line = 80
+col = 21
+side = "false"
+why = "kept is false only when the malloc of keep_path ran out of memory, which the tests do not force."

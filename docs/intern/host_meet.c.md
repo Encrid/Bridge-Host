@@ -4,8 +4,8 @@ This file meets a file: it reads the manifest and either records a new module or
 
 ## The meeting
 
-`find_file` gives the slot of a path, or a free slot.
 `meet` reads the manifest; a loaded file goes to `replace`, and a new file keeps its path and bytes.
+It keeps the path with `keep_path`: `docs/intern/host_slot.c.md`.
 `meet` frees the `handed_t` of a slot before it puts the new one there.
 A bad manifest prints `not a module` or `not loaded`.
 
@@ -32,5 +32,4 @@ Each line of the statement starts with `not replaced: <file>: <identity>: `, whi
 
 | Function | Result |
 | --- | --- |
-| `find_file` | Gives the slot of a path, or a free slot, or null. |
 | `meet` | Records a new module and gives true, or replaces a loaded one and gives false. |

@@ -499,7 +499,7 @@ library = "{bb_native}/bridge_native"
 [[case]]
 name = "a statement whose prefix finds no memory writes its lines with no prefix"
 run = ["{out}/bridge-host{exe}", "{case}/p.toml"]
-fail = { calloc = 11 }
+fail = { calloc = 10 }
 
 [case.claims]
 status = 1
@@ -525,7 +525,7 @@ fail = {}
 [[case]]
 name = "a default of the manifest that finds no memory is not taken"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/d.toml"]
-fail = { calloc = 12 }
+fail = { calloc = 11 }
 
 [case.claims]
 status = 1

@@ -5,19 +5,6 @@
 */
 #include "host.h"
 
-file_t *find_file(host_t *h, const char *path)
-{
-    file_t *free_one = nullptr;
-
-    for (uint32_t i = 0; i < h->d.files; i++) {
-        if (h->files[i].path && !strcmp(h->files[i].path, path))
-            return (&h->files[i]);
-        if (!h->files[i].path && !free_one)
-            free_one = &h->files[i];
-    }
-    return (free_one);
-}
-
 static bool keep_old(const file_t *f, const handed_t *now, const char *why)
 {
     if (why)
@@ -64,12 +51,12 @@ static void replace(host_t *h, file_t *f, handed_t *now, const char *why)
             now->who.identity);
     h->counts.failed += got == REPLACE_REFUSED;
     if (got != REPLACED) {
-        handed_free(now);
+        free(now);
         return;
     }
     say("replaced: %s by %s, %s\n", f->of->who.identity,
         now->who.identity, f->path);
-    handed_free(f->of);
+    free(f->of);
     f->of = now;
 }
 
@@ -77,20 +64,18 @@ bool meet(host_t *h, file_t *f, const char *path, handed_t *now)
 {
     const char *why = manifest_read((const unsigned char *)now->bytes,
         now->len, &now->who);
+    bool kept = false;
 
     if (f->path && f->loaded) {
         replace(h, f, now, why);
         return (false);
     }
-    if (!f->path)
-        f->path = malloc(strlen(path) + 1);
-    if (f->path)
-        strcpy(f->path, path);
-    handed_free(f->of);
+    kept = keep_path(f, path);
+    free(f->of);
     f->of = now;
     if (why && !now->who.identity[0])
         say("not a module: %s: %s\n", path, why);
     else if (why)
         say("not loaded: %s: %s %s\n", path, now->who.identity, why);
-    return (!why && f->path);
+    return (!why && kept);
 }

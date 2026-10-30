@@ -37,4 +37,4 @@ It also holds the levels `written` and `failing` of the records, and the `files`
 | `config_get_setting` | Make a setting of Bridge of a value. |
 | `config_find`, `config_find_key`, `config_states_key`, `config_states_module` | Resolve a key over the files. |
 | `config_names`, `names_add` | List the names under a key. |
-| `config_say_*`, `config_path`, `config_get_folder`, `config_go_beside` | Print a key or a problem, and build paths. |
+| `config_say_*`, `config_path`, `config_get_folder`, `config_folder_size`, `config_go_beside` | Print a key or a problem, and build paths. |

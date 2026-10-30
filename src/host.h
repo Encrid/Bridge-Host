@@ -15,6 +15,7 @@
     #include "config.h"
     #include "file_bytes.h"
     #include "manifest.h"
+    #include "os.h"
     #include "say.h"
 
 enum arrive : uint8_t {
@@ -48,6 +49,7 @@ typedef struct {
     handed_t *of;
     bool loaded;
     bool seen;
+    bool unread;
 } file_t;
 
 typedef struct {
@@ -109,7 +111,8 @@ typedef struct {
     look_t *lk;
 } seeing_t;
 
-typedef void see_fn(void *ud, const char *path);
+typedef void see_fn(void *ud, const char *path, os_folder_t *in,
+    const char *name);
 
 typedef struct {
     const host_t *h;
@@ -185,13 +188,12 @@ void state_free(made_t *m);
 
 [[nodiscard]] int show_config(host_t *h, bool taken);
 
-void show_module(void *ud, const char *path);
+void show_module(void *ud, const char *path, os_folder_t *in,
+    const char *name);
 
 [[nodiscard]] bool take_lock(const char *name);
 
 void host_free(host_t *h);
-
-void handed_free(handed_t *of);
 
 [[nodiscard]] int run(host_t *h);
 
@@ -200,6 +202,8 @@ void say_end(const host_t *h);
 [[nodiscard]] int look(host_t *h, bool first);
 
 [[nodiscard]] file_t *find_file(host_t *h, const char *path);
+
+[[nodiscard]] bool keep_path(file_t *f, const char *path);
 
 [[nodiscard]] bool meet(host_t *h, file_t *f, const char *path,
     handed_t *now);

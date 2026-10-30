@@ -27,32 +27,33 @@ char *config_path(const config_t *c, uint32_t file, const char *path)
     return (joined);
 }
 
-const char *config_go_beside(char *name)
+size_t config_folder_size(const char *path)
 {
-    char *slash = strrchr(name, '/');
-    char *back = strrchr(name, '\\');
+    const char *slash = strrchr(path, '/');
+    const char *back = strrchr(path, '\\');
 
     if (back && (!slash || back > slash))
         slash = back;
-    if (!slash)
+    return (slash ? (size_t)(slash - path) + 1 : 0);
+}
+
+const char *config_go_beside(char *name)
+{
+    size_t len = config_folder_size(name);
+
+    if (!len)
         return (name);
-    *slash = 0;
-    if (os_folder_set(slash == name ? "/" : name))
+    name[len - 1] = 0;
+    if (os_folder_set(len == 1 ? "/" : name))
         return (nullptr);
-    return (slash + 1);
+    return (name + len);
 }
 
 char *config_get_folder(const char *path)
 {
-    const char *slash = strrchr(path, '/');
-    const char *back = strrchr(path, '\\');
-    size_t len = 0;
-    char *folder = nullptr;
+    size_t len = config_folder_size(path);
+    char *folder = malloc(len + 1);
 
-    if (back && (!slash || back > slash))
-        slash = back;
-    len = slash ? (size_t)(slash - path) + 1 : 0;
-    folder = malloc(len + 1);
     if (folder)
         memcpy(folder, path, len);
     if (folder)

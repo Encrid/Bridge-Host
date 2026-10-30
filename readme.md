@@ -128,7 +128,12 @@ With `"ask"`, the host writes `? trust <identity>, <backend>, <file>`, and reads
 It loads the module only if the line is `yes`.
 
 At a depth of 1, the host reads only the files of a folder of `paths`. At 2, it also reads the files of each folder in it.
-A path of the content has no limit of length, but a system can refuse to open a long path.
+It opens each folder by its path, and reads each file by its name in that folder. Thus a file of the content can be at each depth.
+A native module loads by its path, so the loader of the system keeps its limit of length.
+Bridge-OS gives that limit in the document of its header `os.h`.
+
+For a file that the system does not open, the host writes `cannot read '<file>'` one time. The file keeps its place in the room.
+An empty file is a file too: `not a module: <file>: neither a wasm module nor a library`.
 
 It looks at `[content] files` files at most, and it does not read a file for which it has no room.
 Each time its room becomes full, it writes `too many files: <count> are looked at`.
@@ -264,6 +269,7 @@ Holding one instance:
 Finding the modules:
 
 - `cannot look in '<path>'`
+- `cannot read '<file>'`
 - `too many files: <count> are looked at`
 - `not a module: <file>: <why>`
 - `neither a wasm module nor a library`

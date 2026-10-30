@@ -151,7 +151,7 @@ A module states its manifest in its file, as words that each end with a zero byt
 | `pinned=true` or `pinned=false` | Needed. `true`: the systems of the module run on the thread that runs the phases. |
 | `reloadable=true` or `reloadable=false` | Needed. `true`: the host can replace the module while the run goes on. |
 | `settings=<names>` | The names of the settings, with a space between two names. |
-| `<key>=<value>` | The default of a key of the module, for example `scratch=65536`. |
+| `<key>=<value>` | The default of a key of the module, for example `scratch=65536` or `read=["game:Body"]`. |
 | `config.<name>=<value>` | The default of a setting. |
 
 Only the identity has a limit of length. No other word of the manifest has one.

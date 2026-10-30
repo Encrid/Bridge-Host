@@ -278,7 +278,7 @@ line = [
 
 [case.files]
 "{case}/wasm-only.toml" = '''
-presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml"]
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
 rounds = 8
 [content]
@@ -313,7 +313,7 @@ line = [
 
 [case.files]
 "{case}/formats.toml" = '''
-presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml"]
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
 rounds = 8
 [content]

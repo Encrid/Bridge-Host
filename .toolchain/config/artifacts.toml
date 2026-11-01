@@ -118,6 +118,7 @@ variants = [
     { name = "pe_shorttab" },
     { name = "pe_oob" },
     { name = "pe_bigsize" },
+    { name = "pe_virtual" },
     { name = "elf_farshoff" },
     { name = "elf_badcount" },
     { name = "elf_badstrndx" },

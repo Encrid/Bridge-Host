@@ -56,7 +56,8 @@ bool config_content(host_t *h)
         say("not stated: content.paths\n");
     h->files = calloc(h->d.files, sizeof(*h->files));
     h->found = calloc(h->d.files, sizeof(*h->found));
-    return (h->path_count > 0 && h->files && h->found);
+    h->watches = calloc(h->path_count, sizeof(*h->watches));
+    return (h->path_count > 0 && h->files && h->found && h->watches);
 }
 
 int config_load(const host_t *h, const char *identity, const char *prefix)

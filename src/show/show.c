@@ -69,7 +69,8 @@ int show_config(host_t *h, bool taken)
     if (!taken)
         return (1);
     say_world(h);
-    if (walk_content(h, show_module, h) < 0)
-        return (1);
+    for (uint32_t i = 0; i < h->path_count; i++)
+        if (walk_path(h, i, show_module, h) < 0)
+            return (1);
     return (h->counts.failed ? 1 : 0);
 }

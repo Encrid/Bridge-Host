@@ -55,6 +55,12 @@ def bins():
     pe_hdr(d, 0x40, nsec=1)
     pe_sec(d, 0x40 + 24, b".bridge", 0x40 + 24, 0x7f7f)
     out["pe_bigsize"] = d
+    d = make(0x40 + 24 + 80)
+    pe_hdr(d, 0x40, nsec=1)
+    pe_sec(d, 0x40 + 24, b".bridge", 0x40 + 24 + 40, 7)
+    d[0x40 + 24 + 8:0x40 + 24 + 12] = le(0x7f7f, 4)
+    d[0x40 + 24 + 40:0x40 + 24 + 47] = b"pv:x@1\x00"
+    out["pe_virtual"] = d
     d = make(64)
     d[0:6] = b"\x7fELF\x02\x01"
     d[0x28:0x30] = le(0x200, 8)

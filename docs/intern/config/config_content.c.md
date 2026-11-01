@@ -7,6 +7,8 @@ This file gathers the content paths and reads `content.load`.
 `add_path` frees each path that it does not keep.
 `config_content` fills the path and ignore arrays, and prints `not stated: content.paths` when none exist.
 Then it allocates the slots of the files and the list of the found files, `content.files` of each.
+It also allocates a slot of a watch for each content path.
+
 `config_load` reads `content.load.<identity>`, and falls back to `content.load.all`.
 
 ## Functions

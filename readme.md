@@ -141,6 +141,17 @@ At each round, it loads a new module and unloads the module of a removed file.
 It replaces the module of a changed file only if the manifest states `reloadable=true` and the deployment states `hot_reload = true`.
 Else it keeps the old module, and writes why.
 
+At its first look, the host reads every file of each path.
+After it, the system tells the host which entries of each folder of `paths` changed, and the host reads only those files.
+A change shows in the round after the system tells it. On macOS, the system tells it a few milliseconds after the change.
+If the system loses changes, or names an entry that does not read as a file, the host reads that whole folder again.
+Thus a removed file, a folder that comes in, and a file that another program holds are all found.
+
+For a folder that the system does not watch, the host writes `cannot watch '<path>': read at each round` one time.
+Then it reads that folder at each round, as it reads a path of `paths` that is a file.
+A file that did not read is read again at each round, until it reads.
+On Linux, the system does not tell the changes that another machine makes on a network file system. On macOS, it can miss them.
+
 ### The modules
 
 Three kinds of table hold the keys of a module:
@@ -180,6 +191,7 @@ Only the settings that the manifest names are allowed, and each one needs a valu
 ## The end of a run
 
 A round is quiet if the look finds no change in the content and no phase writes a record.
+Before a quiet round ends a run with `live = false`, the host reads every file of the content again. If that read finds a change, the run goes on.
 The run also ends at the limit of `rounds`, and when Bridge refuses a call.
 A system or an observer that gives `BRIDGE_END` ends the run after its round, with each value of `live`.
 The document of the header `bridge_abi.h` of Bridge tells the status `BRIDGE_END`.
@@ -273,6 +285,7 @@ Holding one instance:
 Finding the modules:
 
 - `cannot look in '<path>'`
+- `cannot watch '<path>': read at each round`
 - `cannot read '<file>'`
 - `too many files: <count> are looked at`
 - `not a module: <file>: <why>`

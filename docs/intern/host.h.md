@@ -1,17 +1,17 @@
 # src/host.h
 
 This private header gathers the whole host.
-It sets the `arrive` choices, the outcomes of a replacement, and the structs that one run shares.
+It sets the `arrive` choices, the outcomes of a replacement, the kinds of a look, and the structs that one run shares.
 It then declares the functions that the other sources of `src` define.
 
 ## The data
 
 `host_t` holds one run: the parsed `config_t`, the `deployment_t`, the backends, the content paths and the `bridge_world_t`.
-It also holds the array of the `file_t` slots, and the found files of a look.
+It also holds the array of the `file_t` slots, the found files of a look, and a watch for each content path.
 Of the run, it keeps the count `round` of the rounds that ran, and `ended`: whether a module asked for the end.
 It also keeps `full`: whether the last look found a path with no free slot.
 
-A `file_t` records one known file by its path, its hash mark, and the module behind it.
+A `file_t` records one known file by its path, its hash mark, the module behind it, and in `at` the content path that holds it.
 Its `unread` notes that the last read of the file failed.
 A `handed_t` keeps the bytes of a file together with the manifest that the host read from them.
 A `held_t` names a backend, its library path, its start rule and its arrive rule, and the array of its settings.
@@ -38,8 +38,10 @@ The host fixes these parts. A deployment cannot state them, for the reason that 
 | --- | --- |
 | `config_world`, `config_order`, `config_backends`, `config_content` | Take the world, order, backend and content keys. |
 | `config_load`, `config_unfound`, `get_held` | Read `content.load`, report named modules that no look finds, and find a backend. |
-| `run`, `say_end`, `look`, `walk_content` | Run the world, write the lines of its end, do one look, and walk the content paths. |
-| `find_file`, `keep_path` | Find the slot of a path, and keep a path in its slot. |
+| `run`, `say_end`, `look` | Run the world, write the lines of its end, and do one look. |
+| `walk_path`, `walk_name`, `is_ignored`, `join_path` | Walk one content path, read one file, test an ignored path, and join a path. |
+| `see_file`, `read_path`, `look_path`, `retry_unread`, `stop_watches` | Read one file, read a path whole, look at one path, read again the files that failed, and stop the watches. |
+| `find_file`, `keep_path`, `drop_gone` | Find the slot of a path, keep a path in its slot, and free the slots of the files that are gone. |
 | `meet`, `may_arrive`, `load_found`, `make_artifact` | Read a met file, ask to trust it, load it, and build its artifact. |
 | `show_config`, `show_module`, `take_lock` | Show a configuration, show one module, and take the run lock. |
 | `state_*`, `read_own` | State the keys, lists, phases and settings of a module. |

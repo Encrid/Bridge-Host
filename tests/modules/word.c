@@ -16,9 +16,9 @@ BRIDGE_EXPORT(say) int say(void)
     if (!bridge_has(word, 0) || said)
         return (0);
     while (len < sizeof(text)
-        && acc_ld_u8(word, BRIDGE_AT(0, 0),
+        && acc_get_u8(word, BRIDGE_AT(0, 0),
             (uint32_t)offsetof(word_t, word) + len)) {
-        text[len] = (char)acc_ld_u8(word, BRIDGE_AT(0, 0),
+        text[len] = (char)acc_get_u8(word, BRIDGE_AT(0, 0),
             (uint32_t)offsetof(word_t, word) + len);
         len++;
     }

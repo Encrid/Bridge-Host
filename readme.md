@@ -165,6 +165,10 @@ If the manifest gives none, the host writes `not stated: <key>`, and does not lo
 | `losses` | A list of names, or `"none"`. |
 | `read`, `write` | The lists of the component names that the module may read and write. |
 
+For a module of BB-Wasm, a work limit and each timeout slow every call, and not only the call that they bound.
+A deployment that states `"none"` for `work_limit` and the 3 timeouts runs such a module at full speed.
+BB-Wasm gives the measured price: https://github.com/Encrid/BB-Wasm/blob/v0.5.0/readme.md#limits
+
 Each key fills the field of the same name of `bridge_module_config_t` of Bridge.
 Only the manifest states `abi`, `config`, `settings`, `pinned` and `reloadable`. The host refuses them in a deployment.
 

@@ -26,6 +26,7 @@ void host_free(host_t *h)
     for (uint32_t i = 0; i < h->ignore_count; i++)
         free(h->ignore[i]);
     free_files(h);
+    stop_watches(h);
     free(h->held);
     free(h->backends);
     free(h->phases);

@@ -4,10 +4,10 @@ system_defines = []
 system_libraries = []
 binaryen_archive = "binaryen-version_133-x86_64-windows.tar.gz"
 binaryen_sha256 = "17a2cbeac6b5693c5fbafab3838d3c65fd9c1eb38b05f5baec6c657e8c84995b"
-bridge_sha256 = "80e0876cfcd73c734b2168c77fc88a74342d916cf608725d2c26f06eee53b56f"
-bridge_os_sha256 = "6739e884ddb04b85ae075cf410ba1e5d92c2a563182acd176baf110b8bd0b4db"
-bb_native_sha256 = "e964e55051f6a982be20eb8d69d3e4c1354c45ac84b0c05a385963d9626bdf57"
-bb_wasm_sha256 = "7e8643f52e0aa4d5bc049e96e3bad3337b26983c1bcdf41a33098b3a0bbbe618"
+bridge_sha256 = "16f5c178f4818d500849d08ca9ac716ed8d38fae8bb44c30643cd19d9fdea41f"
+bridge_os_sha256 = "fe89b1dc13813417c1f11827163287d292cbe0658c0eeeece275e02bebc3506f"
+bb_native_sha256 = "1e4299ead15de44030ad65353612565774d5d2f3efcc6cfc48e04243ae57e9a0"
+bb_wasm_sha256 = "4b41b66a81324660e28fc8d1721df9affe9aae5846253939b07009f35c909cfa"
 
 [targets.x86_64-linux-gnu]
 section = ".bridge"
@@ -15,10 +15,10 @@ system_defines = []
 system_libraries = ["-lm", "-lpthread", "-ldl"]
 binaryen_archive = "binaryen-version_133-x86_64-linux.tar.gz"
 binaryen_sha256 = "2dc9c7813f5375db93d96ead4b78222fcc3e2677bbb832297af4797782a37489"
-bridge_sha256 = "bc277aea7133c5194a27005e65efc7be47339dd40ab20f177811d77e9822a847"
-bridge_os_sha256 = "36726d787d3f7bbdcf2ce64d33111fd0ad77cfd6d0ce01557aa48d3de68889b7"
-bb_native_sha256 = "0a92e60a507da6248220db11d26fb8f37c16553add1654a45f3a35b4c761d02f"
-bb_wasm_sha256 = "208cd94aab56893c69b4d109e48cf46c47a2f031bc242f5f362e1554ee500967"
+bridge_sha256 = "f581f98e32c01e38c407b551478e2655c0050adec145b6946db545078ae6b3fe"
+bridge_os_sha256 = "040d8e2ff61aa742de13cded0e1fdb9506d152b310c467e83ea4c922229db441"
+bb_native_sha256 = "8c813b5bc0f841422890239d3b5e92d38656f97ceb509c454186b248373c7d27"
+bb_wasm_sha256 = "cefe87719eb421b5b1a77d4d7f56c40e4949514cae56d8b5cc884988ce037204"
 
 [targets.aarch64-macos]
 section = "__TEXT,.bridge"
@@ -26,10 +26,10 @@ system_defines = ["-D_DARWIN_C_SOURCE"]
 system_libraries = []
 binaryen_archive = "binaryen-version_133-arm64-macos.tar.gz"
 binaryen_sha256 = "ad66da82ac13f163e424b1643f16c6dfcccc98b5966296b43e52d3cab04f84a8"
-bridge_sha256 = "c53b3435239c786ce8fcc26d84ac895b32887156ae302f569c2cc03767fc813c"
-bridge_os_sha256 = "44d723ac3ba6607a941925382d282b972a789d054251442c0b0494e9ed9f1233"
-bb_native_sha256 = "55777a5b2a318e60e80699b9ff3ed886f3538bcd3ccc7b52ab24f3fa96df3f15"
-bb_wasm_sha256 = "8fad72531eb2fa53181bdeb14027de6fe5ad3d1e028017e562df13415536e85e"
+bridge_sha256 = "ecc5bf63c6dfd758cb33ffe80671f09ebf5ea66adfb2bee1fc95a3a1b90fc22a"
+bridge_os_sha256 = "17fc2b42748bbb94e7a73a808965374008a83472a4bc930d45093d54d2242393"
+bb_native_sha256 = "7570146afbad2e026d1262df2d37099e017a65be847accf54326461a64bd0518"
+bb_wasm_sha256 = "22c03bc2e3313ede65ed7ba6c45b8bf79df75dbfb317f7931c46cb73df1e7870"
 
 [targets.aarch64-linux-gnu]
 section = ".bridge"
@@ -37,10 +37,10 @@ system_defines = []
 system_libraries = ["-lm", "-lpthread", "-ldl"]
 binaryen_archive = "binaryen-version_133-aarch64-linux.tar.gz"
 binaryen_sha256 = "89c07ea56faf38d0fbecf36ca8ec0721756716185f265b568e133d427f299bf8"
-bridge_sha256 = "87ae82c9768502b562a1d9fd848602597387e4abfcd940a569e5d2d3b74496d5"
-bridge_os_sha256 = "56fc140bc4ac70b25267758b981eb05950bb9ebacede418c5cfd1015daa00fe9"
-bb_native_sha256 = "420dca7279dd4460b5d555b599de9bfb68961e225765e760fc3539d03f14dd16"
-bb_wasm_sha256 = "c4c6a00aa65601667e35243a98a7e11e4befb0b53b5bc8b86e010e506b3476bb"
+bridge_sha256 = "a5460f86abf9c0d16a9d6bad734b9af45b0b6506022eb9073d4558f3a8e6fb20"
+bridge_os_sha256 = "867f3e8bb2311559cc410f8ecf78a07701704709419dfeb1888d620e4319773e"
+bb_native_sha256 = "c9f533568fd681162611b13445a2b62df53dfc69a0e6f3955acddf21d9f11c5d"
+bb_wasm_sha256 = "06e3a1849d67df90ee67dc7dc090a834139fa22ddf30fcfbc34cada0b6d722d4"
 
 [targets.x86_64-macos]
 section = "__TEXT,.bridge"
@@ -48,10 +48,10 @@ system_defines = ["-D_DARWIN_C_SOURCE"]
 system_libraries = []
 binaryen_archive = "binaryen-version_133-x86_64-macos.tar.gz"
 binaryen_sha256 = "13a9b90be775c6389ce3d1f879cb8627bea56708ba8c122983941d53a8199b95"
-bridge_sha256 = "e349254f621e0849825422cb4143c56294b594cc921d7ad1c0cebf9479edb6e8"
-bridge_os_sha256 = "eeb06b9f73c3683870e527847824b54f36237b5811c85bbf4183a2b4a22409d4"
-bb_native_sha256 = "1da9ded6feca333e12e5845a5a64ccbdcbae37bfff70eab8539e74e5fb9d80fe"
-bb_wasm_sha256 = "ea7b668b04adaf388f88bbfa57f846974bac2c6ccf6cb520268802272c6f70ee"
+bridge_sha256 = "7ca92164f67c4fc9d233246c97f225108627af7e88524ab79174672ba10cf9d1"
+bridge_os_sha256 = "6ee6ce000bb0bd7ce9b4ac65259694236a978c82cdc74d41949950ee938f37fa"
+bb_native_sha256 = "a4dae0f138c26cfba74a33dfb1fd862748d01c2fba067f09e5988026ebf9f7cf"
+bb_wasm_sha256 = "434efa5db365cac8f772ba4bbba5bd72afaad4bf81ecf07ed68cd397ab0143d2"
 
 [targets.aarch64-windows-gnu]
 section = ".bridge"
@@ -59,7 +59,7 @@ system_defines = []
 system_libraries = []
 binaryen_archive = "binaryen-version_133-arm64-windows.tar.gz"
 binaryen_sha256 = "492a8e1847a0be1554bb9a7f384227981d60bc013aedc02d8ba1372c3943178c"
-bridge_sha256 = "c41d1edde4d3fd859908aea7b60c32eff5aebd31b68e0efa5c483e6a51ad85bb"
-bridge_os_sha256 = "6d10dd4ea5d76b3ad2a620db8e7013f35c51fc48d21190760069421065774d11"
-bb_native_sha256 = "e0bca50e96c33756cd95404e6a571e71e0d903406f35c4963b1b1a28f665eb3f"
-bb_wasm_sha256 = "dad8b6547d60518edf2d5a9a9fd1dcbd54ad6edba2f9a5c485848525da071ca3"
+bridge_sha256 = "26290f7b96ba6f4787e1547065dc5c6e02ec98c7a9f6443d07a7ee5e7520e9ce"
+bridge_os_sha256 = "9375de9f9fc939ed7a9bb6fbe4369e1f8b0efa889675de917abdb4ce034df4fa"
+bb_native_sha256 = "fb20ba2464bc031b87bc576512f016765ae7408aa809c58d74bff88c42cc4600"
+bb_wasm_sha256 = "6784abb7a22466f0a5880fe38e15d16de58ed40d280ca3241120d6e0df56f1a4"

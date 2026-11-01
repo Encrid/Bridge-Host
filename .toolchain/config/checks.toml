@@ -313,7 +313,7 @@ side = "false"
 why = "a stored file's whole path is null only when os_path_whole could not resolve it, which the tests do not force."
 
 [[branches.exception]]
-path = "src/host_walk.c"
+path = "src/host_path.c"
 line = 15
 col = 26
 side = "false"
@@ -321,7 +321,7 @@ system = "windows"
 why = "On Windows, os_path_whole gives a whole path for each path that the walk finds, so whole is never null; on Linux and macOS, realpath gives null for the path past PATH_MAX of the deep case."
 
 [[branches.exception]]
-path = "src/host_walk.c"
+path = "src/host_path.c"
 line = 17
 col = 15
 side = "false"
@@ -329,7 +329,7 @@ system = "windows"
 why = "an ignore entry's whole path from os_path_whole is null only for an unparseable path, which the tests do not provide."
 
 [[branches.exception]]
-path = "src/host_walk.c"
+path = "src/host_path.c"
 line = 18
 col = 14
 side = "false"
@@ -337,7 +337,7 @@ system = "windows"
 why = "the ignore path is null only when os_path_whole could not resolve it, which the tests do not force."
 
 [[branches.exception]]
-path = "src/host_walk.c"
+path = "src/host_path.c"
 line = 19
 col = 32
 side = "true"
@@ -437,7 +437,7 @@ system = "posix"
 why = "A colon at the second character marks a Windows drive path; the tests give no such path on this system."
 
 [[branches.exception]]
-path = "src/host_walk.c"
+path = "src/host_path.c"
 line = 19
 col = 53
 side = "true"
@@ -445,8 +445,8 @@ system = "posix"
 why = "On this host os_path_whole yields forward-slash separators, so the character after an ignored prefix is never a backslash."
 
 [[branches.exception]]
-path = "src/host_look.c"
-line = 66
+path = "src/host_slot.c"
+line = 38
 col = 26
 side = "false"
 why = "bridge_unload fails only when the engine cannot unload a module the host recorded as loaded. The host records a file as loaded after the engine loaded it, so unloading a file that is gone always succeeds."

@@ -1,7 +1,8 @@
 [variables]
-own = ["abi=2", "pinned=false", "reloadable=false", "config=none"]
+own = ["abi=3", "pinned=false", "reloadable=false", "config=none"]
 binaryen_top = "binaryen-version_133"
-features = ["--enable-multimemory", "--enable-bulk-memory", "--enable-sign-ext", "--enable-nontrapping-float-to-int", "--enable-mutable-globals"]
+simd = "-msimd128"
+features = ["--enable-multimemory", "--enable-bulk-memory", "--enable-sign-ext", "--enable-nontrapping-float-to-int", "--enable-mutable-globals", "--enable-simd"]
 
 [tools]
 wasm_merge = "{binaryen}/bin/wasm-merge"

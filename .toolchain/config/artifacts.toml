@@ -95,8 +95,8 @@ sources = ["tests/modules/knock.c"]
 include = ["{bridge}/include", "{bb_native}/include", "tests/modules"]
 manifest = ["bridge-host:knock@1.0.0", "{own}"]
 variants = [
-    { name = "wait", defines = ["WAIT"], manifest = ["bridge-host:wait@1.0.0", "{own}"] },
-    { name = "asker", defines = ["WAIT_EACH"], manifest = ["bridge-host:asker@1.0.0", "{own}"] },
+    { name = "wait", defines = ["WAIT", "_POSIX_C_SOURCE=200809L"], manifest = ["bridge-host:wait@1.0.0", "{own}"] },
+    { name = "asker", defines = ["WAIT_EACH", "_POSIX_C_SOURCE=200809L"], manifest = ["bridge-host:asker@1.0.0", "{own}"] },
     { name = "nender", defines = ["END_AT=3"], manifest = ["bridge-host:nender@1.0.0", "{own}"] },
     { name = "twice", manifest = ["bridge-host:twice@1.0.0", "abi=3", "pinned=false", "reloadable=false", "reloadable=true", "config=none"] },
     { name = "granted", manifest = ["bridge-host:granted@1.0.0", "{own}", "read=['a:A']", "write=['b:B']"] },

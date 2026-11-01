@@ -4,6 +4,11 @@
 ** Under the GNU Affero General Public License, version 3 only: see license.
 */
 #include <stdio.h>
+#ifdef _WIN32
+    #include <windows.h>
+#else
+    #include <time.h>
+#endif
 
 #include "bridge_native.h"
 
@@ -18,6 +23,15 @@ static uint32_t rounds;
 
 #if defined(WAIT) || defined(WAIT_EACH)
 
+static void wait_for_notices(void)
+{
+#ifdef _WIN32
+    Sleep(250);
+#else
+    nanosleep(&(struct timespec){ .tv_nsec = 250000000 }, nullptr);
+#endif
+}
+
 static void go_on(void)
 {
     char answer[64];
@@ -26,6 +40,7 @@ static void go_on(void)
     fflush(stdout);
     if (!fgets(answer, sizeof(answer), stdin))
         answer[0] = 0;
+    wait_for_notices();
 }
 
 #endif

@@ -277,7 +277,7 @@ library = "{bb_native}/bridge_native"
 [[case]]
 name = "a path that finds no memory is not looked at, and the walk goes on"
 run = ["{out}/bridge-host{exe}", "{case}/j.toml"]
-fail = { calloc = 10 }
+fail = { calloc = 11 }
 
 [case.claims]
 status = 0
@@ -639,7 +639,7 @@ library = "{bb_native}/bridge_native"
 [[case]]
 name = "a content path of a file that finds no memory cannot be looked in"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/m.toml"]
-fail = { calloc = 10 }
+fail = { calloc = 11 }
 
 [case.claims]
 status = 1

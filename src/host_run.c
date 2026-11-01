@@ -24,7 +24,7 @@ static int run_round(host_t *h, int *did)
     int refused;
     int result = 0;
 
-    *did = look(h, !h->looked);
+    *did = look(h, h->looked ? LOOK_NOTICES : LOOK_FIRST);
     if (!h->looked && *did >= 0)
         h->counts.failed += (int)config_unfound(h);
     h->looked = true;
@@ -77,8 +77,13 @@ int run(host_t *h)
         return (1);
     while (!refused && !h->ended && !os_signal_is_caught()
         && (h->d.live == BRIDGE_TRUE || did || h->counts.said)
-        && (!h->d.rounds || left--))
+        && (!h->d.rounds || left--)) {
         refused = run_round(h, &did);
+        if (!refused && h->d.live != BRIDGE_TRUE && !did && !h->counts.said) {
+            did = look(h, LOOK_ALL);
+            refused = did < 0;
+        }
+    }
     say_ended(h, refused, left);
     say_end(h);
     say("destroyed: %d\n", bridge_destroy(h->w));

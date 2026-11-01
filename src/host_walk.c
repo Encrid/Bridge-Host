@@ -5,36 +5,6 @@
 */
 #include "host.h"
 
-static bool is_ignored(const host_t *h, const char *path)
-{
-    char *whole = os_path_whole(path);
-    char *ignored = nullptr;
-    size_t len = 0;
-    bool is = false;
-
-    for (uint32_t i = 0; whole && !is && i < h->ignore_count; i++) {
-        ignored = os_path_whole(h->ignore[i]);
-        len = ignored ? strlen(ignored) : 0;
-        is = ignored && !strncmp(whole, ignored, len)
-            && (!whole[len] || whole[len] == '/' || whole[len] == '\\');
-        free(ignored);
-    }
-    free(whole);
-    return (is);
-}
-
-static char *join_path(const char *path, const char *name)
-{
-    size_t len = strlen(path);
-    const char *between = config_folder_size(path) == len ? "" : "/";
-    size_t size = len + strlen(name) + 2;
-    char *full = calloc(size, 1);
-
-    if (full)
-        snprintf(full, size, "%s%s%s", path, between, name);
-    return (full);
-}
-
 static void walk_folder(const walk_t *w, os_folder_t *in, const char *path,
     uint32_t levels)
 {
@@ -57,7 +27,7 @@ static void walk_folder(const walk_t *w, os_folder_t *in, const char *path,
     }
 }
 
-static int walk_file(const walk_t *w, const char *path)
+bool walk_name(const char *path, see_fn *see, void *ud)
 {
     size_t cut = config_folder_size(path);
     char *folder = calloc(cut + 1, 1);
@@ -71,28 +41,28 @@ static int walk_file(const walk_t *w, const char *path)
         in = os_folder_open(cut ? folder : ".");
     seen = in && os_folder_read_file(in, path + cut, &len);
     if (seen)
-        w->see(w->ud, path, in, path + cut);
-    else
-        say("cannot look in '%s'\n", path);
+        see(ud, path, in, path + cut);
     os_folder_close(in);
     free(folder);
-    return (seen ? 0 : -1);
+    return (seen);
 }
 
-int walk_content(const host_t *h, see_fn *see, void *ud)
+static int walk_file(const walk_t *w, const char *path)
+{
+    if (walk_name(path, w->see, w->ud))
+        return (0);
+    say("cannot look in '%s'\n", path);
+    return (-1);
+}
+
+int walk_path(const host_t *h, uint32_t at, see_fn *see, void *ud)
 {
     const walk_t w = { h, see, ud };
-    os_folder_t *in = nullptr;
-    bool folder = false;
+    os_folder_t *in = os_folder_open(h->paths[at]);
 
-    for (uint32_t i = 0; i < h->path_count; i++) {
-        in = os_folder_open(h->paths[i]);
-        folder = in != nullptr;
-        if (folder)
-            walk_folder(&w, in, h->paths[i], h->d.depth);
-        os_folder_close(in);
-        if (!folder && walk_file(&w, h->paths[i]) < 0)
-            return (-1);
-    }
-    return (0);
+    if (!in)
+        return (walk_file(&w, h->paths[at]));
+    walk_folder(&w, in, h->paths[at], h->d.depth);
+    os_folder_close(in);
+    return (1);
 }

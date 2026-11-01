@@ -26,3 +26,21 @@ bool keep_path(file_t *f, const char *path)
         strcpy(f->path, path);
     return (f->path != nullptr);
 }
+
+void drop_gone(host_t *h, look_t *lk)
+{
+    file_t *f = nullptr;
+
+    for (uint32_t i = 0; i < h->d.files; i++) {
+        f = &h->files[i];
+        if (!f->path || f->seen)
+            continue;
+        if (f->loaded && !bridge_unload(h->w, f->of->who.identity))
+            say("unloaded: %s: %s is gone\n", f->of->who.identity,
+                f->path);
+        lk->did += f->loaded;
+        free(f->path);
+        free(f->of);
+        *f = (file_t){};
+    }
+}

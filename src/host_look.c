@@ -33,8 +33,7 @@ static void read_file(seeing_t *s, file_t *f, const char *path,
     s->lk->did++;
 }
 
-static void see_file(void *ud, const char *path, os_folder_t *in,
-    const char *name)
+void see_file(void *ud, const char *path, os_folder_t *in, const char *name)
 {
     seeing_t *s = ud;
     file_t *f = find_file(s->h, path);
@@ -51,45 +50,42 @@ static void see_file(void *ud, const char *path, os_folder_t *in,
         s->lk->did += !f->unread;
         f->unread = keep_path(f, path);
     }
-    if (f)
-        f->seen = true;
+    if (!f)
+        return;
+    f->at = s->at;
+    f->seen = true;
 }
 
-static void drop_gone(host_t *h, look_t *lk)
+int read_path(host_t *h, seeing_t *s)
 {
-    file_t *f = nullptr;
-
-    for (uint32_t i = 0; i < h->d.files; i++) {
-        f = &h->files[i];
-        if (!f->path || f->seen)
-            continue;
-        if (f->loaded && !bridge_unload(h->w, f->of->who.identity))
-            say("unloaded: %s: %s is gone\n", f->of->who.identity,
-                f->path);
-        lk->did += f->loaded;
-        free(f->path);
-        free(f->of);
-        *f = (file_t){};
-    }
-}
-
-int look(host_t *h, bool first)
-{
-    look_t lk = { .found = h->found };
-    seeing_t s = { h, &lk };
+    int read = 0;
 
     for (uint32_t i = 0; i < h->d.files; i++)
-        h->files[i].seen = false;
-    if (walk_content(h, see_file, &s) < 0)
-        return (-1);
+        if (h->files[i].at == s->at)
+            h->files[i].seen = false;
+    read = walk_path(h, s->at, see_file, s);
+    if (read >= 0)
+        drop_gone(h, s->lk);
+    s->lk->whole++;
+    return (read);
+}
+
+int look(host_t *h, enum look_kind kind)
+{
+    look_t lk = { .found = h->found };
+    seeing_t s = { h, &lk, 0 };
+
+    for (s.at = 0; s.at < h->path_count; s.at++)
+        if (look_path(h, kind, &s) < 0)
+            return (-1);
+    retry_unread(h, &s);
     if (lk.full && !h->full) {
         say("too many files: %u are looked at\n", h->d.files);
         lk.did++;
     }
-    h->full = lk.full;
-    drop_gone(h, &lk);
+    h->full = lk.whole == h->path_count ? lk.full : h->full || lk.full;
     qsort(lk.found, (size_t)lk.count, sizeof(lk.found[0]), order_files);
     for (int i = 0; i < lk.count; i++)
-        load_found(h, lk.found[i], first);
+        load_found(h, lk.found[i], kind == LOOK_FIRST);
     return (lk.did);
 }

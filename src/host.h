@@ -32,6 +32,12 @@ enum replaced : uint8_t {
     REPLACE_KEPT
 };
 
+enum look_kind : uint8_t {
+    LOOK_FIRST,
+    LOOK_NOTICES,
+    LOOK_ALL
+};
+
 typedef struct {
     int failed;
     int said;
@@ -47,6 +53,7 @@ typedef struct {
     char *path;
     uint64_t mark;
     handed_t *of;
+    uint32_t at;
     bool loaded;
     bool seen;
     bool unread;
@@ -74,6 +81,7 @@ typedef struct {
     uint32_t order_count;
     char **paths;
     uint32_t path_count;
+    os_watch_t **watches;
     char **ignore;
     uint32_t ignore_count;
     bridge_world_t *w;
@@ -103,12 +111,14 @@ typedef struct {
     file_t **found;
     int count;
     int did;
+    uint32_t whole;
     bool full;
 } look_t;
 
 typedef struct {
     host_t *h;
     look_t *lk;
+    uint32_t at;
 } seeing_t;
 
 typedef void see_fn(void *ud, const char *path, os_folder_t *in,
@@ -184,7 +194,14 @@ typedef struct {
 
 void state_free(made_t *m);
 
-[[nodiscard]] int walk_content(const host_t *h, see_fn *see, void *ud);
+[[nodiscard]] bool is_ignored(const host_t *h, const char *path);
+
+[[nodiscard]] char *join_path(const char *path, const char *name);
+
+[[nodiscard]] int walk_path(const host_t *h, uint32_t at, see_fn *see,
+    void *ud);
+
+[[nodiscard]] bool walk_name(const char *path, see_fn *see, void *ud);
 
 [[nodiscard]] int show_config(host_t *h, bool taken);
 
@@ -199,11 +216,24 @@ void host_free(host_t *h);
 
 void say_end(const host_t *h);
 
-[[nodiscard]] int look(host_t *h, bool first);
+void see_file(void *ud, const char *path, os_folder_t *in,
+    const char *name);
+
+[[nodiscard]] int read_path(host_t *h, seeing_t *s);
+
+[[nodiscard]] int look(host_t *h, enum look_kind kind);
+
+[[nodiscard]] int look_path(host_t *h, enum look_kind kind, seeing_t *s);
+
+void retry_unread(host_t *h, seeing_t *s);
+
+void stop_watches(host_t *h);
 
 [[nodiscard]] file_t *find_file(host_t *h, const char *path);
 
 [[nodiscard]] bool keep_path(file_t *f, const char *path);
+
+void drop_gone(host_t *h, look_t *lk);
 
 [[nodiscard]] bool meet(host_t *h, file_t *f, const char *path,
     handed_t *now);

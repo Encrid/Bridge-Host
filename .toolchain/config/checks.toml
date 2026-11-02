@@ -429,14 +429,6 @@ side = "true"
 why = "read_own reads a module's own bytes, whose format manifest_find already recognized, so it never fails to find it."
 
 [[branches.exception]]
-path = "src/config/config_path.c"
-line = 16
-col = 24
-side = "true"
-system = "posix"
-why = "A colon at the second character marks a Windows drive path; the tests give no such path on this system."
-
-[[branches.exception]]
 path = "src/host_path.c"
 line = 19
 col = 53

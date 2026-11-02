@@ -136,8 +136,19 @@ library = "{bb_native}/bridge_native"
 "{case}/heap/f33.txt" = "x"
 "{case}/heap/f34.txt" = "x"
 
-[case.false]
-run = ["{out}/bridge-host{exe}", "{case}/none.toml"]
+[case.false.files]
+"{case}/mny.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 1
+[content]
+paths = ["heap"]
+files = 34
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
 
 [[case]]
 name = "the line of a full room comes each time that the room becomes full"
@@ -505,16 +516,7 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
-"{case}/e.toml" = '''
-presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
-phases = ["update"]
-rounds = 8
-[content]
-paths = ["other"]
-[backend.native]
-library = "{bb_native}/bridge_native"
-'''
-"{case}/other/x.txt" = ""
+"{case}/mods/e.txt" = "\u0000asm\u0001\u0000\u0000\u0000"
 
 [[case]]
 name = "a folder of the content that does not open is left out of the walk"
@@ -624,17 +626,8 @@ paths = ["mods/"]
 library = "{bb_native}/bridge_native"
 '''
 
-[case.false.files]
-"{case}/t.toml" = '''
-presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
-phases = ["update"]
-rounds = 8
-[content]
-paths = ["other/"]
-[backend.native]
-library = "{bb_native}/bridge_native"
-'''
-"{case}/other/x.txt" = "x"
+[case.false.folders]
+"{case}/mods" = ["quiet"]
 
 [[case]]
 name = "a content path of a file that finds no memory cannot be looked in"

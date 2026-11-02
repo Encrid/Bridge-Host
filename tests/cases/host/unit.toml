@@ -2,4 +2,4 @@
 name = "the toml parser and the value rules, every branch"
 run = ["{out}/host-unit{exe}"]
 claims = { has = ["unit ok"], line = ['["hi", 42, 3.5, true, [100, 200, 300]]'], status = 0 }
-false = { run = ["{out}/host-unit{exe}", "fail"] }
+false = { run = ["{out}/host-unit{exe}", "ho"] }

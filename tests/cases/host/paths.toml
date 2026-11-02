@@ -4,7 +4,7 @@ run = ["{out}/bridge-host{exe}", "{case}/whole.toml"]
 
 [case.claims]
 status = 1
-has = ["cannot look in '"]
+has = ["cannot look in '/no-such-abs-one'"]
 
 [case.files]
 "{case}/whole.toml" = '''
@@ -25,13 +25,12 @@ presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
 rounds = 8
 [content]
-paths = ["cq"]
+paths = ['no-such-abs-one', '\no-such-abs-two']
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
 [backend.native]
 library = "{bb_native}/bridge_native"
 '''
-"{case}/cq/quiet.wasm" = "x"
 
 [[case]]
 name = "a preset whose name is empty"
@@ -48,13 +47,7 @@ presets = [""]
 
 [case.false.files]
 "{case}/emptypre.toml" = '''
-rounds = 1
-phases = ["update"]
-threads = 1
-[content]
-paths = ["x"]
-[backend.wasm]
-library = "y"
+presets = ["{root}/tests/presets/world.toml"]
 '''
 
 [[case]]
@@ -70,20 +63,10 @@ has = ["not stated: phases"]
 rounds = 1
 '''
 
-[case.false]
-run = ["{out}/bridge-host{exe}", "{case}/sub\\y.toml"]
-
 [case.false.files]
-"{case}/sub/y.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
-phases = ["update"]
+"{case}/sub/x.toml" = '''
 rounds = 1
-[content]
-paths = ["z"]
-[backend.wasm]
-library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
+phases = ["update"]
 '''
 
 [[case]]
@@ -95,12 +78,7 @@ status = 1
 has = ["cannot read '"]
 
 [case.false]
-run = ["{out}/bridge-host{exe}", "--show-config", "{case}/none.toml"]
-
-[case.false.files]
-"{case}/none.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
-'''
+run = ["{out}/bridge-host{exe}", "project.py"]
 
 [[case]]
 name = "a config named from the root of the drive"
@@ -111,12 +89,7 @@ status = 1
 has = ["cannot read '"]
 
 [case.false]
-run = ["{out}/bridge-host{exe}", "--show-config", "{case}/none.toml"]
-
-[case.false.files]
-"{case}/none.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
-'''
+run = ["{out}/bridge-host{exe}", "/no-such-root-dir-12345/no-such-root-config-12345.toml"]
 
 [[case]]
 name = "presets whose folders use backslashes"
@@ -124,33 +97,21 @@ run = ["{out}/bridge-host{exe}", "{case}/gf.toml"]
 
 [case.claims]
 status = 1
-
-[case.folders]
-"{case}/cq" = ["quiet"]
+has = ["not stated: phases"]
+lacks = ["cannot read"]
 
 [case.files]
-"{case}/d/sub/q.toml" = '''
+'{case}/d/sub\q.toml' = '''
 '''
-"{case}/sub/q2.toml" = '''
+'{case}/sub\q2.toml' = '''
 '''
-"{case}/a/b/q3.toml" = '''
+'{case}/a\b/q3.toml' = '''
 '''
 "{case}/gf.toml" = '''
 presets = ['d/sub\q.toml', 'sub\q2.toml', 'a\b/q3.toml']
 '''
 
-[case.false]
-run = ["{out}/bridge-host{exe}", "{case}/good.toml"]
-
 [case.false.files]
-"{case}/good.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
-phases = ["update"]
-rounds = 8
-[content]
-paths = ["cq"]
-[backend.wasm]
-library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
+"{case}/gf.toml" = '''
+presets = ['d/sub\q.toml', 'sub\q9.toml', 'a\b/q3.toml']
 '''

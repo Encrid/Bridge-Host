@@ -28,17 +28,8 @@ paths = ["cq"]
 
 [case.false.files]
 "{case}/bc2.toml" = '''
-'''
-"{case}/bconf.toml" = '''
-presets = ["{root}/tests/presets/test.toml", "bc2.toml"]
-phases = ["update"]
-rounds = 8
-[content]
-paths = ["cq"]
 [backend.wasm]
-library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
+library = "a"
 '''
 
 [[case]]
@@ -65,15 +56,13 @@ library = "/x"
 
 [case.false.files]
 "{case}/bshort.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml"]
 phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -107,15 +96,21 @@ library = "y"
 
 [case.false.files]
 "{case}/bfo.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
+presets = ["{root}/tests/presets/world.toml"]
 phases = ["update"]
 rounds = 8
 [content]
 paths = ["cq"]
-[backend.wasm]
-library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
+[content.start]
+aa = "load"
+zz = "load"
+[content.arrive]
+aa = "load"
+zz = "load"
+[backend.aa]
+library = "x"
+[backend.zz]
+library = "y"
 '''
 
 [[case]]

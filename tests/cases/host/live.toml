@@ -69,7 +69,7 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
-"{case}/cw" = ["hello"]
+"{case}/cw" = ["wender5"]
 
 [[case]]
 name = "a live run goes on through quiet rounds to its limit"

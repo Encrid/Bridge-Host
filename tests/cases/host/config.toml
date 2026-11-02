@@ -462,22 +462,10 @@ library = "{bb_native}/bridge_native"
 word = "local"
 '''
 
-[case.false]
-run = ["{out}/bridge-host{exe}", "{case}/unlocal.toml"]
-
 [case.false.files]
-"{case}/unlocal.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
-phases = ["late"]
-rounds = 8
+"{case}/local.toml.d/local.toml" = '''
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
-[content]
-paths = ["config-word"]
-[backend.wasm]
-library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -770,15 +758,11 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
-"{case}/peer1.toml" = '''
-rounds = 3
-'''
-"{case}/peer2.toml" = '''
-rounds = 4
-'''
 "{case}/shown.toml" = '''
-presets = ["{root}/tests/presets/test.toml", "peer1.toml", "peer2.toml"]
+presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+rounds = 8
+threads = 2
 [content]
 paths = ["config-quiet"]
 [backend.wasm]

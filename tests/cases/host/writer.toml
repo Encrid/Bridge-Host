@@ -29,8 +29,8 @@ run = ["{out}/bridge-host{exe}", "{case}/gone/deep.toml"]
 status = 1
 has = ["cannot go into '"]
 
-[case.false]
-run = ["{out}/bridge-host{exe}", "{case}/none.toml"]
+[case.false.folders]
+"{case}/gone" = []
 
 [[case]]
 name = "a config that cannot be read"
@@ -40,8 +40,10 @@ run = ["{out}/bridge-host{exe}", "{case}/missing.toml"]
 status = 1
 has = ["cannot read '"]
 
-[case.false]
-run = ["{out}/bridge-host{exe}"]
+[case.false.files]
+"{case}/missing.toml" = '''
+rounds = 1
+'''
 
 [[case]]
 name = "presets that are not a list of files"
@@ -58,8 +60,12 @@ presets = "nope"
 paths = ["cq"]
 '''
 
-[case.false]
-run = ["{out}/bridge-host{exe}", "{case}/none.toml"]
+[case.false.files]
+"{case}/plist.toml" = '''
+presets = ["nope"]
+[content]
+paths = ["cq"]
+'''
 
 [[case]]
 name = "no backend is stated"
@@ -83,15 +89,13 @@ paths = ["cq"]
 
 [case.false.files]
 "{case}/noback.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
+presets = ["{root}/tests/presets/world.toml"]
 phases = ["update"]
 rounds = 1
 [content]
 paths = ["cq"]
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
@@ -140,18 +144,20 @@ library = "{bb_wasm}/bridge_wasm"
 library = "{bb_native}/bridge_native"
 '''
 
-[case.false]
-run = ["{out}/bridge-host{exe}", "--show-config", "{case}/plain.toml"]
-
 [case.false.files]
-"{case}/plain.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
-phases = ["update"]
-rounds = 1
+"{case}/show.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "peer.toml"]
+phases = ["late"]
+[module."bridge-host:word@1.0.0".phases]
+late = "update"
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
+bogus = 1
 [content]
 paths = ["cw"]
+ignore = ["skip-me"]
+[order]
+before = [["bridge-host:word:say", "bridge-host:other:say"]]
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
 [backend.native]
@@ -184,7 +190,20 @@ library = "{bb_native}/bridge_native"
 "{case}/lf.toml.d" = "x"
 
 [case.false]
-run = ["{out}/bridge-host{exe}", "{case}/none.toml"]
+run = ["{out}/bridge-host{exe}", "{case}/lf2.toml"]
+
+[case.false.files]
+"{case}/lf2.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 1
+[content]
+paths = ["cq"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
 
 [[case]]
 name = "the lock cannot be taken"
@@ -212,7 +231,20 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false]
-run = ["{out}/bridge-host{exe}", "{case}/none.toml"]
+run = ["{out}/bridge-host{exe}", "{case}/cl2.toml"]
+
+[case.false.files]
+"{case}/cl2.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 1
+[content]
+paths = ["cq"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
 
 [[case]]
 name = "too many files in a folder"
@@ -267,8 +299,19 @@ library = "{bb_native}/bridge_native"
 "{case}/many/f32.txt" = "x"
 "{case}/many/f33.txt" = "x"
 
-[case.false]
-run = ["{out}/bridge-host{exe}", "{case}/none.toml"]
+[case.false.files]
+"{case}/many.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 1
+[content]
+paths = ["many"]
+files = 33
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
 
 [[case]]
 name = "a reload that is refused"
@@ -465,4 +508,4 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
-"{case}/bs" = ["quiet"]
+"{case}/bs" = ["owned"]

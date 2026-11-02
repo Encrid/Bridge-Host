@@ -40,7 +40,24 @@ y = 1
 
 [case.false.files]
 "{case}/mod.toml" = '''
-rounds = 1
+module.zz = 1
+[module."foo:bar@1"]
+trusted = true
+[module.baz]
+trusted = true
+[module."x:y@1"]
+nokey = 1
+[module.all.config]
+foo = 1
+[module."p:q@1".config.aa]
+path = "p"
+bad = 1
+[module."t:u@1".config.d.e]
+f = 1
+[module."v:w@1".thing]
+k = 1
+[module."c:d@1".more.sub]
+y = 1
 '''
 
 [[case]]
@@ -71,6 +88,11 @@ checks = 5
 [case.false.files]
 "{case}/bw.toml" = '''
 rounds = 1
+budget = 1
+backend = 2
+content = 3
+order = 4
+checks = 5
 '''
 
 [[case]]
@@ -97,7 +119,11 @@ checks.bogus = 1
 
 [case.false.files]
 "{case}/bk.toml" = '''
-rounds = 1
+content.load.all.deep = 1
+content.files = 2
+order.after = 3
+checks.bogus = 1
+[empty]
 '''
 
 [[case]]
@@ -133,8 +159,14 @@ profile = true
 
 [case.false.files]
 "{case}/lcl.toml.d/local.toml" = '''
-[module."bridge-host:word@1.0.0".config]
-word = "local"
+rounds = 1
+live = true
+[budget]
+entities = 1
+[backend.wasm]
+library = "y"
+[checks]
+profile = true
 '''
 
 [[case]]
@@ -232,9 +264,18 @@ library = "{bb_native}/bridge_native"
 
 [case.false.files]
 "{case}/wp.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
-phases = ["update"]
 rounds = 8
+phases = ["update"]
+[budget]
+tables = 8
+types = 16
+systems = 16
+terms = 8
+modules = 8
+persistent = 262144
+columns = 1048576
+sparse_sets = "none"
+direct_indexed = "none"
 [content]
 paths = ["cq"]
 [backend.wasm]

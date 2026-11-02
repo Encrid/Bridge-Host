@@ -41,7 +41,7 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
-"{case}/bin" = ["quiet"]
+"{case}/bin" = ["pe", "pe_edge", "pe_nosig", "pe_notbridge", "pe_shorttab", "pe_oob", "pe_bigsize", "pe_virtual", "elf_farshoff", "elf_badcount", "elf_badstrndx", "elf_nobridge", "elf_oob", "elf_bigsize", "elf_nameoob", "elf_nameedge", "elf_namesoob", "macho_oob", "macho_bigsize", "macho_notext", "macho_nosec", "macho_notseg", "macho_secoob", "macho_secedge", "macho_cmd0", "macho_manycmd", "wasm_bigsec", "wasm_badname", "wasm_longleb", "wasm_cutleb", "wasm_emptyman", "wasm_nulfirst"]
 
 [[case]]
 name = "a manifest whose last word has no zero byte is refused"
@@ -120,17 +120,4 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
-"{case}/mb.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
-phases = ["update"]
-rounds = 8
-[content]
-paths = ["mods"]
-[backend.wasm]
-library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
-'''
-
-[case.false.folders]
-"{case}/mods" = ["quiet"]
+"{case}/odd/note.txt" = "\u0000asm\u0001\u0000\u0000\u0000"

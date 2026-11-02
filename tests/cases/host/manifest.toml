@@ -31,7 +31,7 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
-"{case}/bad" = ["quiet"]
+"{case}/bad" = ["quiet", "nocat", "firsteq", "bareword", "longid", "emptyabi", "badabi", "negabi", "relfirst", "badflag"]
 
 [[case]]
 name = "an identity of 127 bytes is read"
@@ -112,7 +112,7 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
-"{case}/bad" = ["quiet"]
+"{case}/bad" = ["badabi"]
 
 [[case]]
 name = "an author word that the manifest states twice is refused"

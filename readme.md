@@ -48,6 +48,7 @@ A deployment is a TOML file. The document of the header `bridge.h` of Bridge tel
 | `<file>.d/lock` | The host holds it during a run, so only one run of a deployment goes on at a time. |
 
 - A path counts from the folder of the file that states it: a preset, a path of `[content]`, the `library` of a backend, and `{ path = "..." }`.
+- The host uses as it is a path that starts with `/` or `\`, or whose second character is `:`.
 - A file is over the files that it names. If two presets of one file give different values for a key, the host refuses the key.
 - The paths of `[content]` and the pairs of `[order]` of all the files add up.
 - For `read` and `write`, the first file that states the list gives the whole list. If a file states no list, the lists of the presets that it names add up.

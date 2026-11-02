@@ -100,15 +100,12 @@ status = 1
 has = ["not stated: phases"]
 lacks = ["cannot read"]
 
-[case.folders]
-"{case}/cq" = ["quiet"]
-
 [case.files]
-"{case}/d/sub/q.toml" = '''
+'{case}/d/sub\q.toml' = '''
 '''
-"{case}/sub/q2.toml" = '''
+'{case}/sub\q2.toml' = '''
 '''
-"{case}/a/b/q3.toml" = '''
+'{case}/a\b/q3.toml' = '''
 '''
 "{case}/gf.toml" = '''
 presets = ['d/sub\q.toml', 'sub\q2.toml', 'a\b/q3.toml']

@@ -108,8 +108,28 @@ library = "{bb_wasm}/bridge_wasm"
 library = "{bb_native}/bridge_native"
 '''
 
-[case.false.folders]
-"{case}/mods" = ["quiet"]
+[case.false.files]
+"{case}/st.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml", "grants.toml"]
+phases = ["update", "late"]
+rounds = 8
+[content]
+paths = ["mods"]
+[module."bridge-host:multi@1.0.0".config]
+w = { path = "p" }
+x = 6
+y = 1.5
+z = true
+[module."bridge-host:word@1.0.0"]
+write = ["c:d@1"]
+losses = ["e:f@1"]
+[module."bridge-host:word@1.0.0".config]
+word = "hi"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
 
 [[case]]
 name = "on_error fail and a module key stated two ways"
@@ -199,24 +219,67 @@ library = "{bb_wasm}/bridge_wasm"
 '''
 
 [case.false.files]
-"{case}/ta.toml" = '''
-[module."bridge-host:quiet@1.0.0"]
-hot_reload = true
-'''
-"{case}/tb.toml" = '''
-[module."bridge-host:quiet@1.0.0"]
-hot_reload = true
-'''
 "{case}/sk.toml" = '''
-presets = ["{root}/tests/presets/test.toml", "ta.toml", "tb.toml"]
+presets = ["ta.toml", "tb.toml"]
+threads = 1
+live = false
+stack = 1048576
+observer_passes = 1
+table_growth = 150
+table_hash_fill = 50
+table_retry = 50
 phases = ["update"]
 rounds = 8
+[budget]
+entities = 8192
+tables = 8
+types = 16
+systems = 16
+terms = 8
+modules = 8
+persistent = 262144
+columns = 1048576
+sparse_sets = "none"
+direct_indexed = "none"
+[checks]
+profile = false
+validate = false
+usage = false
+[records]
+written = 6
+failing = 3
 [content]
 paths = ["mods"]
+files = 32
+depth = 1
+[content.load]
+all = true
+[content.start]
+wasm = "load"
+[content.arrive]
+wasm = "load"
+[module.all]
+hot_reload = true
+on_error = "fail"
+max_system_failures = 3
+log_level = 7
+scratch = 65536
+log_ring = 6144
+spans = 16384
+spawns = "none"
+persistent = "none"
+changes = 1048576
+losses = "none"
+work_limit = "none"
+memory_limit = "none"
+init_timeout = "none"
+reload_timeout = "none"
+shutdown_timeout = "none"
+element_limit = "none"
+read = []
+write = []
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
 '''
 
 [[case]]

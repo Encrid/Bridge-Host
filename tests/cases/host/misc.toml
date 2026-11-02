@@ -96,11 +96,57 @@ library = "{bb_native}/bridge_native"
 
 [case.false.files]
 "{case}/sm.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
+threads = 1
+live = false
+stack = 1048576
+observer_passes = 1
+table_growth = 150
+table_hash_fill = 50
+table_retry = 50
 phases = ["update"]
 rounds = 8
+[budget]
+entities = 8192
+tables = 8
+types = 16
+systems = 16
+terms = 8
+modules = 8
+persistent = 262144
+columns = 1048576
+sparse_sets = "none"
+direct_indexed = "none"
+[checks]
+profile = false
+validate = false
+usage = false
+[records]
+written = 6
+failing = 3
 [content]
 paths = ["sm"]
+files = 32
+depth = 1
+[content.load]
+all = true
+[content.start]
+wasm = "load"
+native = "load"
+[content.arrive]
+wasm = "load"
+native = "ask"
+[module.all]
+hot_reload = false
+on_error = "skip"
+max_system_failures = 3
+log_level = 7
+scratch = 65536
+log_ring = 6144
+spans = 16384
+spawns = "none"
+persistent = "none"
+changes = 1048576
+losses = "none"
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
 [backend.native]
@@ -132,8 +178,20 @@ library = "{bb_wasm}/bridge_wasm"
 library = "{bb_native}/bridge_native"
 '''
 
-[case.false.folders]
-"{case}/mods" = ["hello"]
+[case.false.files]
+"{case}/dbg.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+[records]
+written = 7
+'''
 
 [[case]]
 name = "a record of a level above the written level is not written"

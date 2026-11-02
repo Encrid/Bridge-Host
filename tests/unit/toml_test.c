@@ -179,12 +179,12 @@ static void do_same(void)
     ck(!toml_is_same(&la, &ld), "diff count");
 }
 
-static void do_say(void)
+static void do_say(const char *word)
 {
     value_t items[3] = { { .kind = VALUE_WHOLE, .whole = 100 },
         { .kind = VALUE_WHOLE, .whole = 200 },
         { .kind = VALUE_WHOLE, .whole = 300 } };
-    value_t all[5] = { { .kind = VALUE_TEXT, .text = (char *)"hi" },
+    value_t all[5] = { { .kind = VALUE_TEXT, .text = (char *)word },
         { .kind = VALUE_WHOLE, .whole = 42 },
         { .kind = VALUE_REAL, .real = 3.5 },
         { .kind = VALUE_FLAG, .flag = true },
@@ -286,17 +286,14 @@ static void value_list(void)
 
 int main(int argc, char **argv)
 {
-    (void)argv;
     setvbuf(stdout, nullptr, _IONBF, 0);
-    if (argc > 1)
-        return (1);
     do_scalars();
     do_numbers();
     do_text();
     do_structure();
     do_refusals();
     do_same();
-    do_say();
+    do_say(argc > 1 ? argv[1] : "hi");
     do_prefix();
     value_whole();
     value_text();

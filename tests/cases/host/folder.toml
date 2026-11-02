@@ -28,7 +28,7 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
-"{case}/folder-found" = ["wait"]
+"{case}/folder-found" = ["wait", "hello"]
 
 [[case]]
 name = "not loaded, and why"
@@ -59,7 +59,7 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false.folders]
-"{case}/folder-why" = ["wait", "quiet"]
+"{case}/folder-why" = ["wait", "quiet", "quiet2", "mute"]
 
 [[case]]
 name = "taken in while it runs"

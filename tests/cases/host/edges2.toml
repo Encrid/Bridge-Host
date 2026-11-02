@@ -23,8 +23,18 @@ library = "{bb_wasm}/bridge_wasm"
 library = "{bb_native}/bridge_native"
 '''
 
-[case.false.folders]
-"{case}/cq" = ["mute"]
+[case.false.files]
+"{case}/zero.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+rounds = 1
+[content]
+paths = ["cq"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
 
 [[case]]
 name = "the config shown when it is refused"
@@ -39,8 +49,10 @@ has = ["bogus: no key of Bridge-Host's or Bridge's"]
 bogus = 1
 '''
 
-[case.false]
-run = ["{out}/bridge-host{exe}", "--show-config", "{case}/none.toml"]
+[case.false.files]
+"{case}/bad.toml" = '''
+rounds = 1
+'''
 
 [[case]]
 name = "the config shown with a content path that is not there"

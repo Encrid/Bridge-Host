@@ -7,7 +7,7 @@ status = 1
 has = ["cannot go into '"]
 
 [case.false]
-run = ["{out}/bridge-host{exe}", "--show-config", "{case}/none.toml"]
+run = ["{out}/bridge-host{exe}", "no-such-dir-98765_deep.toml"]
 
 [[case]]
 name = "a config whose backslash comes before a slash"
@@ -17,8 +17,8 @@ run = ["{out}/bridge-host{exe}", "{case}/no\\such/deep.toml"]
 status = 1
 has = ["cannot go into '"]
 
-[case.false]
-run = ["{out}/bridge-host{exe}", "--show-config", "{case}/none.toml"]
+[case.false.folders]
+"{case}/no\\such" = []
 
 [[case]]
 name = "a world that states no phases but states its counts"

@@ -1,5 +1,5 @@
 [[case]]
-name = "content paths that are whole, by slash and by backslash"
+name = "a content path that starts with a slash is used as it is"
 run = ["{out}/bridge-host{exe}", "{case}/whole.toml"]
 
 [case.claims]
@@ -8,28 +8,81 @@ has = ["cannot look in '/no-such-abs-one'"]
 
 [case.files]
 "{case}/whole.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
+presets = ["{root}/tests/presets/test.toml", "d/paths.toml"]
 phases = ["update"]
 rounds = 8
-[content]
-paths = ['/no-such-abs-one', '\no-such-abs-two']
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
 [backend.native]
 library = "{bb_native}/bridge_native"
 '''
+"{case}/d/paths.toml" = '''
+[content]
+paths = ['/no-such-abs-one']
+'''
 
 [case.false.files]
+"{case}/d/paths.toml" = '''
+[content]
+paths = ['no-such-abs-one']
+'''
+
+[[case]]
+name = "a content path that starts with a backslash is used as it is"
+run = ["{out}/bridge-host{exe}", "{case}/whole.toml"]
+
+[case.claims]
+status = 1
+has = ["cannot look in '\\no-such-abs-two'"]
+
+[case.files]
 "{case}/whole.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
+presets = ["{root}/tests/presets/test.toml", "d/paths.toml"]
 phases = ["update"]
 rounds = 8
-[content]
-paths = ['no-such-abs-one', '\no-such-abs-two']
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
 [backend.native]
 library = "{bb_native}/bridge_native"
+'''
+"{case}/d/paths.toml" = '''
+[content]
+paths = ['\no-such-abs-two']
+'''
+
+[case.false.files]
+"{case}/d/paths.toml" = '''
+[content]
+paths = ['no-such-abs-two']
+'''
+
+[[case]]
+name = "a content path whose second character is a colon is used as it is"
+run = ["{out}/bridge-host{exe}", "{case}/whole.toml"]
+
+[case.claims]
+status = 1
+has = ["cannot look in 'Q:/no-such-abs-three'"]
+
+[case.files]
+"{case}/whole.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "d/paths.toml"]
+phases = ["update"]
+rounds = 8
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+"{case}/d/paths.toml" = '''
+[content]
+paths = ['Q:/no-such-abs-three']
+'''
+
+[case.false.files]
+"{case}/d/paths.toml" = '''
+[content]
+paths = ['Q/no-such-abs-three']
 '''
 
 [[case]]

@@ -1,6 +1,8 @@
 [[case]]
 name = "a first signal stops the run after its round, and the host ends its work"
-run = ["{python}", "tests/signal_driver.py", "{out}/bridge-host{exe}", "{case}/sig.toml", "interrupt"]
+run = ["{out}/bridge-host{exe}", "{case}/sig.toml"]
+stdin = "go\n"
+script = [{ wait = "? go on", signal = "interrupt" }, { wait = "a signal stops the host: a second one ends it at once" }]
 
 [case.claims]
 status = 0
@@ -27,11 +29,13 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false]
-run = ["{python}", "tests/signal_driver.py", "{out}/bridge-host{exe}", "{case}/sig.toml", "interrupt twice"]
+script = [{ wait = "? go on", signal = "interrupt" }, { wait = "a signal stops the host: a second one ends it at once", signal = "interrupt", pause = 1 }]
 
 [[case]]
 name = "a second signal ends the host at once, with the status 1"
-run = ["{python}", "tests/signal_driver.py", "{out}/bridge-host{exe}", "{case}/sig.toml", "interrupt twice"]
+run = ["{out}/bridge-host{exe}", "{case}/sig.toml"]
+stdin = "go\n"
+script = [{ wait = "? go on", signal = "interrupt" }, { wait = "a signal stops the host: a second one ends it at once", signal = "interrupt", pause = 1 }]
 
 [case.claims]
 status = 1
@@ -53,7 +57,7 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false]
-run = ["{python}", "tests/signal_driver.py", "{out}/bridge-host{exe}", "{case}/sig.toml", "interrupt"]
+script = [{ wait = "? go on", signal = "interrupt" }, { wait = "a signal stops the host: a second one ends it at once" }]
 
 [[case]]
 name = "a host that cannot catch the signals does not run"

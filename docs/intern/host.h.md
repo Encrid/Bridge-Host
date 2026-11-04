@@ -27,7 +27,7 @@ The host fixes these parts. A deployment cannot state them, for the reason that 
 | --- | --- | --- |
 | The output | The host writes its lines to the standard output. | It is no number and no flag. |
 | The end that a module or a signal asks for | The run ends after the round that runs. | It is no number and no flag. |
-| The word of trust | `yes` | It is no number and no flag. |
+| The answer that loads a module | `yes` | It is no number and no flag. |
 | The names of the overlay and of the lock | `<file>.d/local.toml` and `<file>.d/lock` | They are no number and no flag. |
 | The order of the loads | By identity, then by path. | The host has one implementation of it. |
 | The pace of the rounds | A round starts when the round before it ends. | The host reads no clock. |
@@ -42,7 +42,7 @@ The host fixes these parts. A deployment cannot state them, for the reason that 
 | `walk_path`, `walk_name`, `is_ignored`, `join_path` | Walk one content path, read one file, test an ignored path, and join a path. |
 | `see_file`, `read_path`, `look_path`, `retry_unread`, `stop_watches` | Read one file, read a path whole, look at one path, read again the files that failed, and stop the watches. |
 | `find_file`, `keep_path`, `drop_gone` | Find the slot of a path, keep a path in its slot, and free the slots of the files that are gone. |
-| `meet`, `may_arrive`, `load_found`, `make_artifact` | Read a met file, ask to trust it, load it, and build its artifact. |
+| `meet`, `may_arrive`, `load_found`, `make_artifact` | Read a met file, ask whether it may load, load it, and build its artifact. |
 | `show_config`, `show_module`, `take_lock` | Show a configuration, show one module, and take the run lock. |
 | `state_*`, `read_own` | State the keys, lists, phases and settings of a module. |
 | `state_keep_prefix`, `state_keep`, `state_keep_value`, `state_free` | Make the prefix of a statement, add a block or a value to the `made_t` of a module, and free the list. |

@@ -239,7 +239,7 @@ void drop_gone(host_t *h, look_t *lk);
     handed_t *now);
 
 [[nodiscard]] bool may_arrive(const file_t *f, const held_t *held,
-    enum arrive rule);
+    bool first);
 
 void load_found(host_t *h, file_t *f, bool first);
 

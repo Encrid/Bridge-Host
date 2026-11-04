@@ -150,7 +150,7 @@ script = [{ wait = "? go on", put = { "{case}/d/knock.dll" = "knock" }, type = "
 
 [case.claims]
 status = 0
-has = ["not loaded: d/knock.dll: bridge-host:knock@1.0.0, native, not trusted"]
+has = ["not loaded: d/knock.dll: bridge-host:knock@1.0.0, native, the answer was not yes"]
 
 [case.folders]
 "{case}/d" = ["wait"]

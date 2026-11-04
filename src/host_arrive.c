@@ -18,20 +18,26 @@ static bool is_yes(void)
     return (same && at == sizeof(YES) - 1);
 }
 
-static bool is_trusted(const file_t *f, const char *backend)
+static bool ask_load(const file_t *f, const char *backend)
 {
-    say("? trust %s, %s, %s\n", f->of->who.identity, backend, f->path);
+    say("? load %s, %s, %s\n", f->of->who.identity, backend, f->path);
     return (is_yes());
 }
 
-bool may_arrive(const file_t *f, const held_t *held, enum arrive rule)
+bool may_arrive(const file_t *f, const held_t *held, bool first)
 {
+    enum arrive rule = first ? held->start : held->arrive;
+    const char *why = "as content.arrive says";
     bool may = rule == ARRIVE_LOAD;
 
-    if (rule == ARRIVE_ASK)
-        may = is_trusted(f, held->name);
+    if (first)
+        why = "as content.start says";
+    if (rule == ARRIVE_ASK) {
+        may = ask_load(f, held->name);
+        why = "the answer was not yes";
+    }
     if (!may)
-        say("not loaded: %s: %s, %s, not trusted\n", f->path,
-            f->of->who.identity, held->name);
+        say("not loaded: %s: %s, %s, %s\n", f->path, f->of->who.identity,
+            held->name, why);
     return (may);
 }

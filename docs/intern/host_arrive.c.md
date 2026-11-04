@@ -4,8 +4,10 @@ This file asks whether an arriving module may load.
 
 `may_arrive` gets the rule of the backend: its start rule at the first look, and else its arrive rule.
 It loads at once when the rule is `load`, and asks when the rule is `ask`.
-`is_trusted` prints `? trust <identity>, <backend>, <file>`, and `is_yes` reads the answer.
-A refusal prints `not loaded: <file>: <identity>, <backend>, not trusted`.
+`ask_load` prints `? load <identity>, <backend>, <file>`, and `is_yes` reads the answer.
+A refusal prints `not loaded: <file>: <identity>, <backend>, <why>`.
+`<why>` is `the answer was not yes` when the answer is not `yes`.
+For the rule `leave`, it is `as content.start says` at the first look, and `as content.arrive says` after it.
 
 ## The answer
 

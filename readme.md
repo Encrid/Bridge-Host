@@ -125,7 +125,7 @@ The readme of a backend gives its settings.
 
 A module asks for the backend `native` or `wasm` by the format of its file.
 Each backend needs its keys of `[content.start]` and `[content.arrive]`.
-With `"ask"`, the host writes `? trust <identity>, <backend>, <file>`, and reads one whole line.
+With `"ask"`, the host writes `? load <identity>, <backend>, <file>`, and reads one whole line.
 It loads the module only if the line is `yes`.
 
 At a depth of 1, the host reads only the files of a folder of `paths`. At 2, it also reads the files of each folder in it.
@@ -304,10 +304,12 @@ Finding the modules:
 Loading a module:
 
 - `loaded: <identity>, <backend>, <file>`
-- `? trust <identity>, <backend>, <file>`
+- `? load <identity>, <backend>, <file>`
 - `not loaded: <file>: <identity> is <file>`
 - `not loaded: <file>: <identity> <why>`
-- `not loaded: <file>: <identity>, <backend>, not trusted`
+- `not loaded: <file>: <identity>, <backend>, the answer was not yes`
+- `not loaded: <file>: <identity>, <backend>, as content.start says`
+- `not loaded: <file>: <identity>, <backend>, as content.arrive says`
 - `not loaded: <file>: <identity> was built against another ABI`
 - `not loaded: <file>: <identity> asks for <backend>, which the host was not given`
 - `not loaded: <file>: <identity>, as content.load says`

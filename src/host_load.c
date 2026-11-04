@@ -69,7 +69,7 @@ void load_found(host_t *h, file_t *f, bool first)
     bool go = !is_left(h, f) && is_stated(h, f, &a, &made);
 
     if (go)
-        go = may_arrive(f, held, first ? held->start : held->arrive);
+        go = may_arrive(f, held, first);
     if (go && bridge_load(h->w, &a)) {
         say("not loaded: %s: %s was refused\n", f->path, who);
         go = false;

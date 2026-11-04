@@ -5,8 +5,8 @@ run = ["{out}/bridge-host{exe}", "{case}/mod.toml"]
 [case.claims]
 status = 1
 has = [
-    'module."foo:bar".trusted: a module is named with its version',
-    "module.baz.trusted: no backend of that name",
+    'module."foo:bar".nokey: a module is named with its version',
+    "module.baz.nokey: no backend of that name",
     'module."x:y@1".nokey: no key of a module',
     "module.all.config.foo: a setting is stated for one module, by its identity",
     'module."p:q@1".config.aa.bad: a setting is a value, or { path = "..." }',
@@ -20,9 +20,9 @@ has = [
 "{case}/mod.toml" = '''
 module.zz = 1
 [module."foo:bar"]
-trusted = true
+nokey = 1
 [module.baz]
-trusted = true
+nokey = 1
 [module."x:y@1"]
 nokey = 1
 [module.all.config]
@@ -42,9 +42,9 @@ y = 1
 "{case}/mod.toml" = '''
 module.zz = 1
 [module."foo:bar@1"]
-trusted = true
+nokey = 1
 [module.baz]
-trusted = true
+nokey = 1
 [module."x:y@1"]
 nokey = 1
 [module.all.config]

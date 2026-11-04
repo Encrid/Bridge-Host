@@ -9,7 +9,7 @@ line = [
     "loaded: bridge-host:wait@1.0.0, native, folder-found/wait{library}",
     "not a module: folder-found/plain.wasm: no manifest",
 ]
-lacks = ["? trust"]
+lacks = ["? load"]
 
 [case.folders]
 "{case}/folder-found" = ["wait", "plain"]
@@ -193,13 +193,13 @@ name = "a native one arrives, asked: yes"
 run = ["{out}/bridge-host{exe}", "{case}/folder-yes.toml"]
 script = [
     { wait = "? go on", put = { "{case}/folder-yes/knock{library}" = "knock" }, type = "go" },
-    { wait = "? trust bridge-host:knock@1.0.0, native, folder-yes/knock{library}", type = "yes" },
+    { wait = "? load bridge-host:knock@1.0.0, native, folder-yes/knock{library}", type = "yes" },
 ]
 
 [case.claims]
 status = 0
 order = [
-    "? trust bridge-host:knock@1.0.0, native, folder-yes/knock{library}",
+    "? load bridge-host:knock@1.0.0, native, folder-yes/knock{library}",
     "loaded: bridge-host:knock@1.0.0, native, folder-yes/knock{library}",
     "record[6] bridge-host:knock@1.0.0/say: knock 0 0",
 ]
@@ -223,7 +223,7 @@ library = "{bb_native}/bridge_native"
 [case.false]
 script = [
     { wait = "? go on", put = { "{case}/folder-yes/knock{library}" = "knock" }, type = "go" },
-    { wait = "? trust bridge-host:knock@1.0.0, native, folder-yes/knock{library}", type = "no" },
+    { wait = "? load bridge-host:knock@1.0.0, native, folder-yes/knock{library}", type = "no" },
 ]
 
 [[case]]
@@ -231,12 +231,12 @@ name = "a native one arrives, asked: no"
 run = ["{out}/bridge-host{exe}", "{case}/folder-no.toml"]
 script = [
     { wait = "? go on", put = { "{case}/folder-no/knock{library}" = "knock" }, type = "go" },
-    { wait = "? trust bridge-host:knock@1.0.0, native, folder-no/knock{library}", type = "no" },
+    { wait = "? load bridge-host:knock@1.0.0, native, folder-no/knock{library}", type = "no" },
 ]
 
 [case.claims]
 status = 0
-line = ["not loaded: folder-no/knock{library}: bridge-host:knock@1.0.0, native, not trusted"]
+line = ["not loaded: folder-no/knock{library}: bridge-host:knock@1.0.0, native, the answer was not yes"]
 lacks = ["knock@1.0.0/say"]
 
 [case.folders]
@@ -258,7 +258,7 @@ library = "{bb_native}/bridge_native"
 [case.false]
 script = [
     { wait = "? go on", put = { "{case}/folder-no/knock{library}" = "knock" }, type = "go" },
-    { wait = "? trust bridge-host:knock@1.0.0, native, folder-no/knock{library}", type = "yes" },
+    { wait = "? load bridge-host:knock@1.0.0, native, folder-no/knock{library}", type = "yes" },
 ]
 
 [[case]]
@@ -269,7 +269,7 @@ script = [{ wait = "? go on", put = { "{case}/folder-load/knock{library}" = "kno
 [case.claims]
 status = 0
 line = ["loaded: bridge-host:knock@1.0.0, native, folder-load/knock{library}"]
-lacks = ["? trust"]
+lacks = ["? load"]
 
 [case.folders]
 "{case}/folder-load" = ["wait"]
@@ -309,8 +309,8 @@ script = [{ wait = "? go on", put = { "{case}/folder-leave/knock{library}" = "kn
 
 [case.claims]
 status = 0
-line = ["not loaded: folder-leave/knock{library}: bridge-host:knock@1.0.0, native, not trusted"]
-lacks = ["? trust"]
+line = ["not loaded: folder-leave/knock{library}: bridge-host:knock@1.0.0, native, as content.arrive says"]
+lacks = ["? load"]
 
 [case.folders]
 "{case}/folder-leave" = ["wait"]
@@ -346,19 +346,19 @@ library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
-name = "the answer to a question of trust is its whole line"
+name = "the answer to a question to load is its whole line"
 run = ["{out}/bridge-host{exe}", "{case}/folder-long.toml"]
 script = [
     { wait = "? go on", put = { "{case}/folder-long/knock{library}" = "knock", "{case}/folder-long/nender{library}" = "nender" }, type = "go" },
-    { wait = "? trust bridge-host:knock@1.0.0, native, folder-long/knock{library}", type = "yesssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssyes" },
-    { wait = "? trust bridge-host:nender@1.0.0, native, folder-long/nender{library}", type = "no" },
+    { wait = "? load bridge-host:knock@1.0.0, native, folder-long/knock{library}", type = "yesssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssyes" },
+    { wait = "? load bridge-host:nender@1.0.0, native, folder-long/nender{library}", type = "no" },
 ]
 
 [case.claims]
 status = 0
 line = [
-    "not loaded: folder-long/knock{library}: bridge-host:knock@1.0.0, native, not trusted",
-    "not loaded: folder-long/nender{library}: bridge-host:nender@1.0.0, native, not trusted",
+    "not loaded: folder-long/knock{library}: bridge-host:knock@1.0.0, native, the answer was not yes",
+    "not loaded: folder-long/nender{library}: bridge-host:nender@1.0.0, native, the answer was not yes",
 ]
 
 [case.folders]
@@ -380,18 +380,18 @@ library = "{bb_native}/bridge_native"
 [case.false]
 script = [
     { wait = "? go on", put = { "{case}/folder-long/knock{library}" = "knock", "{case}/folder-long/nender{library}" = "nender" }, type = "go" },
-    { wait = "? trust bridge-host:knock@1.0.0, native, folder-long/knock{library}", type = "no" },
-    { wait = "? trust bridge-host:nender@1.0.0, native, folder-long/nender{library}", type = "yes" },
+    { wait = "? load bridge-host:knock@1.0.0, native, folder-long/knock{library}", type = "no" },
+    { wait = "? load bridge-host:nender@1.0.0, native, folder-long/nender{library}", type = "yes" },
 ]
 
 [[case]]
 name = "a module of the first look is asked about when the start rule of its backend is ask"
 run = ["{out}/bridge-host{exe}", "{case}/s.toml"]
-script = [{ wait = "? trust bridge-host:knock@1.0.0, native, mods/knock{library}", type = "yes" }]
+script = [{ wait = "? load bridge-host:knock@1.0.0, native, mods/knock{library}", type = "yes" }]
 
 [case.claims]
 status = 0
-order = ["? trust bridge-host:knock@1.0.0, native, mods/knock{library}", "loaded: bridge-host:knock@1.0.0, native, mods/knock{library}"]
+order = ["? load bridge-host:knock@1.0.0, native, mods/knock{library}", "loaded: bridge-host:knock@1.0.0, native, mods/knock{library}"]
 
 [case.folders]
 "{case}/mods" = ["knock"]
@@ -410,7 +410,7 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false]
-script = [{ wait = "? trust bridge-host:knock@1.0.0, native, mods/knock{library}", type = "no" }]
+script = [{ wait = "? load bridge-host:knock@1.0.0, native, mods/knock{library}", type = "no" }]
 
 [[case]]
 name = "a module of the first look is left when the start rule of its backend is leave"
@@ -418,8 +418,8 @@ run = ["{out}/bridge-host{exe}", "{case}/s.toml"]
 
 [case.claims]
 status = 0
-line = ["not loaded: mods/knock{library}: bridge-host:knock@1.0.0, native, not trusted"]
-lacks = ["? trust"]
+line = ["not loaded: mods/knock{library}: bridge-host:knock@1.0.0, native, as content.start says"]
+lacks = ["? load"]
 
 [case.folders]
 "{case}/mods" = ["knock"]

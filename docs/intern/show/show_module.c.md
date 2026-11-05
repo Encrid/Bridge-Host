@@ -3,7 +3,7 @@
 This file prints one module while the host shows a configuration.
 
 `show_module` reads the bytes of a file from the folder that the walk opened, and its manifest.
-It prints `cannot read '<file>'` when Bridge-OS does not read the file.
+It prints `cannot read '<file>'` when mosl does not read the file.
 
 It prints `not a module: <file>: <reason>` when the file carries no module.
 Otherwise it prints the identity, the backend and the path, then the keys through `config_load` and `state_found`.

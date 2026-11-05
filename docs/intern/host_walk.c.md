@@ -4,7 +4,7 @@ This file walks a content path, and offers each file to a callback.
 
 ## The walk
 
-`walk_path` opens a content path as a folder with `os_folder_open` of Bridge-OS, and gives the folder to `walk_folder`.
+`walk_path` opens a content path as a folder with `os_folder_open` of mosl, and gives the folder to `walk_folder`.
 A path that is no folder goes to `walk_file`.
 
 `walk_folder` reads the entries of a folder with `os_folder_read_entry`.

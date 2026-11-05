@@ -11,7 +11,7 @@ It links the library of Bridge, and opens each backend that the deployment names
 ## Install
 
 1. Install Python 3.11 or a later version.
-2. Run `python project.py fetch`. It downloads zig, Bridge, Bridge-OS, BB-Native, BB-Wasm and binaryen.
+2. Run `python project.py fetch`. It downloads zig, Bridge, mosl, BB-Native, BB-Wasm and binaryen.
 
 ## Usage
 
@@ -131,7 +131,7 @@ It loads the module only if the line is `yes`.
 At a depth of 1, the host reads only the files of a folder of `paths`. At 2, it also reads the files of each folder in it.
 It opens each folder by its path, and reads each file by its name in that folder. Thus a file of the content can be at each depth.
 A native module loads by its path, so the loader of the system keeps its limit of length.
-Bridge-OS gives that limit in the document of its header `os.h`.
+mosl gives that limit in the document of its header `os.h`.
 
 For a file that the system does not open, the host writes `cannot read '<file>'` one time. The file keeps its place in the room.
 An empty file is a file too: `not a module: <file>: neither a wasm module nor a library`.
@@ -214,7 +214,7 @@ The document of the header `bridge.h` of Bridge tells what each number counts.
 ### The signals
 
 An interrupt, a termination or a hang-up stops the host.
-The document of the header `os.h` of Bridge-OS tells which events of each system are such signals.
+The document of the header `os.h` of mosl tells which events of each system are such signals.
 
 At the first signal, the host writes `a signal stops the host: a second one ends it at once`.
 It finishes the round that runs, and starts no other round: `ended at round <round>: a signal stopped the run`.

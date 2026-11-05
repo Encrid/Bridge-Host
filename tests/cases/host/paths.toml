@@ -10,6 +10,7 @@ has = ["cannot look in '/no-such-abs-one'"]
 "{case}/whole.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "d/paths.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
@@ -39,6 +40,7 @@ has = ["cannot look in '\\no-such-abs-two'"]
 "{case}/whole.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "d/paths.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
@@ -68,6 +70,7 @@ has = ["cannot look in 'Q:/no-such-abs-three'"]
 "{case}/whole.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "d/paths.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
@@ -120,6 +123,7 @@ rounds = 1
 "{case}/sub/x.toml" = '''
 rounds = 1
 phases = ["update"]
+again = {}
 '''
 
 [[case]]

@@ -14,6 +14,7 @@ lacks = ["loaded: guest:word@1.0.0, wasm, guest/guest.wasm"]
 "{case}/guest.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [content]
 paths = ["guest"]
@@ -27,6 +28,7 @@ library = "{bb_native}/bridge_native"
 "{case}/guest.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [module."guest:word@1.0.0"]
 read = ["bridge-host:Word"]
@@ -53,6 +55,7 @@ line = ["loaded: guest:word@1.0.0, wasm, guest/guest.wasm"]
 "{case}/guest.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [module."guest:word@1.0.0"]
 read = ["bridge-host:Word"]
@@ -68,6 +71,7 @@ library = "{bb_native}/bridge_native"
 "{case}/guest.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [content]
 paths = ["guest"]

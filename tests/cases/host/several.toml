@@ -24,6 +24,7 @@ has = ["destroyed: 0"]
 "{case}/one.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["together-one"]
@@ -35,6 +36,7 @@ library = "{bb_native}/bridge_native"
 "{case}/two.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["together-two"]
@@ -72,6 +74,7 @@ status = 0
 "{case}/one.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["together-one"]
@@ -83,6 +86,7 @@ library = "{bb_native}/bridge_native"
 "{case}/two.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["together-two"]

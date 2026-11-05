@@ -25,6 +25,7 @@ table_growth = 150
 table_hash_fill = 50
 table_retry = 50
 phases = ["update"]
+again = {}
 rounds = 8
 [budget]
 entities = 8192
@@ -89,6 +90,7 @@ read = ["bridge-host:Word", "a:b@1"]
 "{case}/st.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml", "grants.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -112,6 +114,7 @@ library = "{bb_native}/bridge_native"
 "{case}/st.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml", "grants.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -165,6 +168,7 @@ table_growth = 150
 table_hash_fill = 50
 table_retry = 50
 phases = ["update"]
+again = {}
 rounds = 8
 [budget]
 entities = 8192
@@ -229,6 +233,7 @@ table_growth = 150
 table_hash_fill = 50
 table_retry = 50
 phases = ["update"]
+again = {}
 rounds = 8
 [budget]
 entities = 8192
@@ -305,6 +310,7 @@ late = "early"
 "{case}/sp.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "pa.toml", "pb.toml"]
 phases = ["update", "late", "early"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -328,6 +334,7 @@ late = "update"
 "{case}/sp.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "pa.toml", "pb.toml"]
 phases = ["update", "late", "early"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -358,6 +365,7 @@ read = ["bridge-host:Word"]
 "{case}/lg.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -389,6 +397,7 @@ matches = ["config = \"c{200}\"  its file"]
 "{case}/lc.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -415,6 +424,7 @@ matches = ["config\\.n{200} = \"its own\"  its file"]
 "{case}/ln.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -441,6 +451,7 @@ matches = ["config\\.n{200} = \"hi\"  ln\\.toml:[0-9]+"]
 "{case}/ln.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -456,6 +467,7 @@ library = "{bb_native}/bridge_native"
 "{case}/ln.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -481,6 +493,7 @@ has = ["config.word = \"x=y\"  its file"]
 "{case}/eq.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -507,6 +520,7 @@ has = ["settings = \"\"  its file"]
 "{case}/no.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -533,6 +547,7 @@ matches = ["config\\.word = \"v{600}\"  lv\\.toml:[0-9]+"]
 "{case}/lv.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -548,6 +563,7 @@ library = "{bb_native}/bridge_native"
 "{case}/lv.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -575,6 +591,7 @@ line = ["not stated: read", "not stated: write"]
 "{case}/p.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -601,6 +618,7 @@ line = ["  refused: not stated: read", '  write = ["b:B"]  its file']
 "{case}/d.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]

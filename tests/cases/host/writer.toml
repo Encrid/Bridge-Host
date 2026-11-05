@@ -82,6 +82,7 @@ has = ["not stated: backend"]
 "{case}/noback.toml" = '''
 presets = ["{root}/tests/presets/world.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["cq"]
@@ -91,6 +92,7 @@ paths = ["cq"]
 "{case}/noback.toml" = '''
 presets = ["{root}/tests/presets/world.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["cq"]
@@ -127,6 +129,7 @@ word = "local"
 "{case}/show.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "peer.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [module."bridge-host:word@1.0.0".phases]
 late = "update"
@@ -148,6 +151,7 @@ library = "{bb_native}/bridge_native"
 "{case}/show.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "peer.toml"]
 phases = ["late"]
+again = {}
 [module."bridge-host:word@1.0.0".phases]
 late = "update"
 [module."bridge-host:word@1.0.0".config]
@@ -179,6 +183,7 @@ has = [".d is no folder"]
 "{case}/lf.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["cq"]
@@ -196,6 +201,7 @@ run = ["{out}/bridge-host{exe}", "{case}/lf2.toml"]
 "{case}/lf2.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["cq"]
@@ -221,6 +227,7 @@ has = ["cannot lock '", ".d/lock"]
 "{case}/cl.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["cq"]
@@ -237,6 +244,7 @@ run = ["{out}/bridge-host{exe}", "{case}/cl2.toml"]
 "{case}/cl2.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["cq"]
@@ -257,6 +265,7 @@ has = ["too many files: 32 are looked at"]
 "{case}/many.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["many"]
@@ -303,6 +312,7 @@ library = "{bb_native}/bridge_native"
 "{case}/many.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["many"]
@@ -332,6 +342,7 @@ has = [
 "{case}/fr.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [module."bridge-host:swap@1.0.0"]
 hot_reload = true
@@ -363,6 +374,7 @@ has = ["bridge-host:abifour@1.0.0 was built against another ABI"]
 "{case}/abifour.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["ab"]
@@ -390,6 +402,7 @@ has = ["bridge-host:badabi@1.0.0 states a abi that cannot be"]
 "{case}/badabi.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["ba"]
@@ -417,6 +430,7 @@ has = ["it names no component, and settings"]
 "{case}/nocomp.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["nc"]
@@ -444,6 +458,7 @@ has = ["its file states no config"]
 "{case}/noconfig.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["ncf"]
@@ -471,6 +486,7 @@ has = ["its file states no reloadable"]
 "{case}/noreload.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["nr"]
@@ -498,6 +514,7 @@ has = ["its file states config.word: text, a number"]
 "{case}/badset.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["bs"]

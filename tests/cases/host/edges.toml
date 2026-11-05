@@ -47,6 +47,7 @@ library = "{bb_native}/bridge_native"
 "{case}/np.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["cq"]
@@ -63,7 +64,7 @@ run = ["{out}/bridge-host{exe}", "{case}/uf.toml"]
 [case.claims]
 status = 1
 has = [
-    "refused: uf.toml:4: bridge-host:nobody@1.0.0: no module found is it",
+    "refused: uf.toml:5: bridge-host:nobody@1.0.0: no module found is it",
     "found: bridge-host:quiet@1.0.0",
 ]
 
@@ -75,6 +76,7 @@ has = [
 "{case}/uf.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [module."bridge-host:nobody@1.0.0"]
 hot_reload = false
@@ -90,6 +92,7 @@ library = "{bb_native}/bridge_native"
 "{case}/uf.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["cq"]

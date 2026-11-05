@@ -15,6 +15,7 @@ lacks = ["ended after"]
 "{case}/live.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 live = true
 [content]
@@ -31,6 +32,7 @@ library = "{bb_native}/bridge_native"
 "{case}/live.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 live = false
 [content]
@@ -59,6 +61,7 @@ has = ["record[6] bridge-host:wender@1.0.0/say: system 'say' asks for the end of
 "{case}/end.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["cw"]
@@ -86,6 +89,7 @@ line = ["ended after 4 rounds, as many as it was given"]
 "{case}/quiet.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 4
 live = true
 [content]
@@ -100,6 +104,7 @@ library = "{bb_native}/bridge_native"
 "{case}/quiet.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 4
 live = false
 [content]
@@ -125,6 +130,7 @@ has = ["live: true or false"]
 "{case}/three.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 4
 live = 3
 [content]
@@ -139,6 +145,7 @@ library = "{bb_native}/bridge_native"
 "{case}/three.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 4
 live = true
 [content]
@@ -161,6 +168,7 @@ has = ["not stated: live"]
 "{case}/nolive.toml" = '''
 threads = 1
 phases = ["update"]
+again = {}
 rounds = 4
 '''
 
@@ -168,6 +176,7 @@ rounds = 4
 "{case}/nolive.toml" = '''
 threads = 1
 phases = ["update"]
+again = {}
 rounds = 4
 live = false
 '''
@@ -187,6 +196,7 @@ matches = ["still loaded: bridge-host:knock@1\\.0\\.0\nprofile bridge-host:knock
 "{case}/e.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 3
 [checks]
 profile = true
@@ -200,6 +210,7 @@ library = "{bb_native}/bridge_native"
 "{case}/e.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 3
 [checks]
 profile = false
@@ -225,6 +236,7 @@ lacks = ["profile "]
 "{case}/e.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 3
 [checks]
 profile = true
@@ -260,6 +272,7 @@ order = [
 "{case}/e.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 3
 [checks]
 usage = true
@@ -273,6 +286,7 @@ library = "{bb_native}/bridge_native"
 "{case}/e.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 3
 [checks]
 usage = false
@@ -298,6 +312,7 @@ lacks = ["persistent,"]
 "{case}/e.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 3
 [checks]
 usage = true

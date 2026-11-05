@@ -8,7 +8,7 @@ One argument runs a configuration; `--show-config` with a path shows one.
 
 ## The signals
 
-Before it reads a file, `main` gives the line `STOP` to `os_signal_catch` of Bridge-OS.
+Before it reads a file, `main` gives the line `STOP` to `os_signal_catch` of mosl.
 At the first signal, the layer writes that line at once, and sets a flag. A second signal ends the process with the status 1.
 `run` reads the flag between two rounds: `docs/intern/host_run.c.md`.
 If the host cannot catch the signals, `main` writes `cannot catch the signals`, and gives 1.

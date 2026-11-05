@@ -20,7 +20,7 @@ Then it walks the path with `see_file`, and `drop_gone` drops the files of that 
 Thus a file of another path is not taken for gone.
 
 `see_file` finds the slot of a path first. A path with no slot is not read, and the look notes that the room is full.
-Then it reads the file by its name in its folder, with `os_folder_read_file` of Bridge-OS.
+Then it reads the file by its name in its folder, with `os_folder_read_file` of mosl.
 It notes in `at` of the slot the content path that holds the file.
 
 The bytes belong to the folder, so `read_file` copies them when it meets a file whose hash mark changed.
@@ -29,7 +29,7 @@ It allocates one block for the `handed_t` and its bytes, so one `free` gives bot
 
 ## A file that the system does not open
 
-When Bridge-OS does not read a file, `see_file` writes `cannot read '<file>'`, and the work of the look grows by one.
+When mosl does not read a file, `see_file` writes `cannot read '<file>'`, and the work of the look grows by one.
 The slot keeps the path with `keep_path`, and `unread` of the slot notes the failure, so the next look writes no line for it.
 The slot stays seen, so a loaded module stays loaded. A read that works again clears `unread`.
 

@@ -4,7 +4,7 @@ This file looks at one content path. It takes the changes that the system tells,
 
 ## The watch
 
-Each content path has a slot in `watches` of `host_t`: the watch of Bridge-OS on that folder, or null.
+Each content path has a slot in `watches` of `host_t`: the watch of mosl on that folder, or null.
 At the first look, `look_path` starts a watch of the path with `os_watch_start`, at `content.depth`.
 Then it reads the path whole. The watch starts first, so a change during that read is told after it.
 A path that is a file gets no watch.

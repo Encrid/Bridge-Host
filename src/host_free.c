@@ -30,6 +30,7 @@ void host_free(host_t *h)
     free(h->held);
     free(h->backends);
     free(h->phases);
+    free(h->again);
     free(h->order);
     free(h->paths);
     free(h->ignore);

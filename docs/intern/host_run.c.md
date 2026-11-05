@@ -14,11 +14,7 @@ This file makes the Bridge world and runs the rounds.
 `run_round` does the first look at the first round, and a look of the notices after it.
 It checks the named modules after the first look, runs each phase with `run_phase`, and counts the round in `round`.
 
-`run_phase` runs a phase while Bridge gives 3 and the phase ran fewer times than its cap in `again`.
-A phase that `again` does not name has the cap 1.
-If the last run still gave 3, `say_again` writes the warning of the cap, or the warning of a phase that `again` does not name.
-`say_again` treats each warning as a record of the level `BRIDGE_WARN`.
-It writes the line if `written` allows it, and counts a failure if `failing` does.
+`run_phase` of `src/host_again.c` runs each phase: `docs/intern/host_again.c.md`.
 
 When a round is quiet and `live` is `false`, `run` reads every path whole with a look of `LOOK_ALL`.
 If that look did work, the run goes on. A path that fails then refuses the run.
@@ -34,5 +30,4 @@ After the line of the end, `run` calls `say_end` of `src/host_end.c`, then `brid
 | Function | Result |
 | --- | --- |
 | `run` | Runs the world to its end. Gives 0, or 1 on a failure. |
-| `run_phase` | Runs one phase, again while it asks and its cap allows. Gives the last result of Bridge. |
-| `say_again` | Writes the warning of a phase that still asks again. |
+

@@ -43,6 +43,7 @@ bool config_world(host_t *h)
 {
     bool taken = take_phases(h);
 
+    taken = config_again(h) && taken;
     taken = take_rules(h, WORLD_KEYS, WORLD_KEY_COUNT, &h->d) && taken;
     taken = take_rules(h, BUDGET_KEYS, BUDGET_KEY_COUNT, &h->d.world.budget)
         && taken;

@@ -14,7 +14,8 @@ enum value_kind : uint8_t {
     VALUE_WHOLE,
     VALUE_REAL,
     VALUE_FLAG,
-    VALUE_LIST
+    VALUE_LIST,
+    VALUE_TABLE
 };
 
 typedef struct value value_t;

@@ -9,6 +9,7 @@ It then declares the functions that the other sources of `src` define.
 `host_t` holds one run: the parsed `config_t`, the `deployment_t`, the backends, the content paths and the `bridge_world_t`.
 It also holds the array of the `file_t` slots, the found files of a look, and a watch for each content path.
 Of the run, it keeps the count `round` of the rounds that ran, and `ended`: whether a module asked for the end.
+`again` holds the cap of each phase, in the order of `phases`. A phase that the key `again` does not name has 0.
 It also keeps `full`: whether the last look found a path with no free slot.
 
 A `file_t` records one known file by its path, its hash mark, the module behind it, and in `at` the content path that holds it.

@@ -1,7 +1,7 @@
 # src/toml/toml.h
 
 This header defines the values and statements of the TOML reader and declares its functions.
-A `value_t` is tagged by `value_kind` and holds a flag, a whole number, a real number, a text, or a list.
+A `value_t` is tagged by `value_kind` and holds a flag, a whole number, a real number, a text, a list, or an empty table.
 An `entry_t` is one statement: a key of several names, a line, and a value.
 A `toml_t` owns the entries, and keeps the first reason with its line when the reader refuses.
 A `reading_t` is the cursor: the text position, the current table, and the output.

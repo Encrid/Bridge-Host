@@ -16,6 +16,7 @@ order = [
 "{case}/word.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
@@ -31,6 +32,7 @@ library = "{bb_native}/bridge_native"
 "{case}/word.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
@@ -58,6 +60,7 @@ lacks = ["record[6] bridge-host:word@1.0.0/say: hi 0 0"]
 "{case}/word.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [content]
 paths = ["word"]
@@ -71,6 +74,7 @@ library = "{bb_native}/bridge_native"
 "{case}/word.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
@@ -97,6 +101,7 @@ line = ["record[6] bridge-host:word@1.0.0/say: hi 0 0"]
 "{case}/word.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [module."bridge-host:word@1.0.0".phases]
 late = "update"
@@ -114,6 +119,7 @@ library = "{bb_native}/bridge_native"
 "{case}/word.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
@@ -140,6 +146,7 @@ line = ["record[6] bridge-host:owned@1.0.0/say: its own 0 0"]
 "{case}/owned.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [content]
 paths = ["owned"]
@@ -153,6 +160,7 @@ library = "{bb_native}/bridge_native"
 "{case}/owned.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [module."bridge-host:owned@1.0.0".config]
 word = "hi"

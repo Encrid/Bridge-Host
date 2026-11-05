@@ -18,6 +18,7 @@ lacks = ["? load"]
 "{case}/folder-found.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["folder-found"]
@@ -49,6 +50,7 @@ line = [
 "{case}/folder-why.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["folder-why"]
@@ -81,6 +83,7 @@ order = [
 "{case}/folder-in.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["folder-in"]
@@ -113,6 +116,7 @@ order = [
 "{case}/folder-out.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["folder-out"]
@@ -146,6 +150,7 @@ lacks = ["swapped"]
 "{case}/folder-replaced.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [module."bridge-host:swap@1.0.0"]
 hot_reload = true
@@ -176,6 +181,7 @@ line = ["not replaced: bridge-host:quiet@1.0.0: it does not say it can be"]
 "{case}/folder-left.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["folder-left"]
@@ -211,6 +217,7 @@ order = [
 "{case}/folder-yes.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["folder-yes"]
@@ -246,6 +253,7 @@ lacks = ["knock@1.0.0/say"]
 "{case}/folder-no.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["folder-no"]
@@ -278,6 +286,7 @@ lacks = ["? load"]
 "{case}/folder-load.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content.arrive]
 native = "load"
@@ -293,6 +302,7 @@ library = "{bb_native}/bridge_native"
 "{case}/folder-load.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["folder-load"]
@@ -319,6 +329,7 @@ lacks = ["? load"]
 "{case}/folder-leave.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content.arrive]
 native = "leave"
@@ -334,6 +345,7 @@ library = "{bb_native}/bridge_native"
 "{case}/folder-leave.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content.arrive]
 native = "load"
@@ -368,6 +380,7 @@ line = [
 "{case}/folder-long.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["folder-long"]
@@ -400,6 +413,7 @@ order = ["? load bridge-host:knock@1.0.0, native, mods/knock{library}", "loaded:
 "{case}/s.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -428,6 +442,7 @@ lacks = ["? load"]
 "{case}/s.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -441,6 +456,7 @@ library = "{bb_native}/bridge_native"
 "{case}/s.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]

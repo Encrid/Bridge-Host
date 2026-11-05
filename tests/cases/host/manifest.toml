@@ -21,6 +21,7 @@ has = [
 "{case}/mf.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["bad"]
@@ -48,6 +49,7 @@ matches = ["loaded: i:d{123}@1, wasm, ids/id127\\.wasm"]
 "{case}/id.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["ids"]
@@ -75,6 +77,7 @@ has = ["not a module: ids/longbare.wasm: its manifest does not begin with who it
 "{case}/id.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["ids"]
@@ -102,6 +105,7 @@ matches = ["lw:x@1 states a w{60} that cannot be"]
 "{case}/lw.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["bad"]
@@ -130,6 +134,7 @@ lacks = ["loaded: bridge-host:twice@1.0.0"]
 "{case}/tw.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -157,6 +162,7 @@ line = ["  refused: its file states config.word twice"]
 "{case}/td.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -184,6 +190,7 @@ line = ['  config.word = "hi"  td.toml:5']
 "{case}/td.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [module."bridge-host:twiceset@1.0.0".config]
 word = "hi"
@@ -199,6 +206,7 @@ library = "{bb_native}/bridge_native"
 "{case}/td.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]

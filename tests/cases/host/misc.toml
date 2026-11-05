@@ -47,6 +47,7 @@ table_growth = 150
 table_hash_fill = 50
 table_retry = 50
 phases = ["update"]
+again = {}
 rounds = 8
 [budget]
 entities = 8192
@@ -104,6 +105,7 @@ table_growth = 150
 table_hash_fill = 50
 table_retry = 50
 phases = ["update"]
+again = {}
 rounds = 8
 [budget]
 entities = 8192
@@ -169,6 +171,7 @@ lacks = ["deep"]
 "{case}/dbg.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -182,6 +185,7 @@ library = "{bb_native}/bridge_native"
 "{case}/dbg.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -209,6 +213,7 @@ lacks = ["record[6] bridge-host:knock@1.0.0/say: knock 0 0"]
 "{case}/rec.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [records]
 written = 5
@@ -222,6 +227,7 @@ library = "{bb_native}/bridge_native"
 "{case}/rec.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [records]
 written = 6
@@ -246,6 +252,7 @@ line = ["record[6] bridge-host:knock@1.0.0/say: knock 0 0"]
 "{case}/rec.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [records]
 failing = 6
@@ -259,6 +266,7 @@ library = "{bb_native}/bridge_native"
 "{case}/rec.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [records]
 failing = 3

@@ -19,6 +19,7 @@ order = [
 "{case}/unwatched.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["unwatched"]
@@ -49,6 +50,7 @@ lacks = ["cannot watch"]
 "{case}/stopped.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["stopped"]
@@ -82,6 +84,7 @@ order = [
 "{case}/again.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["again"]
@@ -111,6 +114,7 @@ lacks = ["loaded: bridge-host:quiet@1.0.0"]
 "{case}/ignoring.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["ignoring"]
@@ -125,6 +129,7 @@ library = "{bb_native}/bridge_native"
 "{case}/ignoring.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["ignoring"]
@@ -156,6 +161,7 @@ order = [
 "{case}/ending.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["first", "second"]
@@ -186,6 +192,7 @@ order = ["? go on", "loaded: bridge-host:quiet@1.0.0, wasm, short/quiet.wasm"]
 "{case}/short.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 live = true
 [content]
@@ -215,6 +222,7 @@ lacks = ["still loaded:"]
 "{case}/w.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]

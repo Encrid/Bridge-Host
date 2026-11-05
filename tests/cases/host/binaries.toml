@@ -31,6 +31,7 @@ has = [
 "{case}/mb.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["bin"]
@@ -58,6 +59,7 @@ has = ["not loaded: bin/wasm_nozero.bin: nz:x@1 its manifest has a word with no 
 "{case}/mb.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["bin"]
@@ -85,6 +87,7 @@ has = ["not a module: bin/wasm_emptyman.bin: its manifest is empty"]
 "{case}/mb.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["bin"]
@@ -110,6 +113,7 @@ has = ["not a module: odd/note.txt: neither a wasm module nor a library"]
 "{case}/mb.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["odd"]

@@ -14,6 +14,7 @@ has = ["not replaced: d/swap.wasm: its manifest does not begin with who it is"]
 "{case}/r.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [module."bridge-host:swap@1.0.0"]
 hot_reload = true
@@ -44,6 +45,7 @@ has = ["not replaced: bridge-host:quiet@1.0.0: it does not say it can be"]
 "{case}/r.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["d"]
@@ -72,6 +74,7 @@ has = ["not replaced: d/swap.wasm: bridge-host:abifour@1.0.0 was refused"]
 "{case}/r.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [module."bridge-host:swap@1.0.0"]
 hot_reload = true
@@ -104,6 +107,7 @@ has = [
 "{case}/r.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["d"]
@@ -131,6 +135,7 @@ has = ["unloaded: bridge-host:quiet@1.0.0: "]
 "{case}/r.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["d"]
@@ -159,6 +164,7 @@ has = ["not loaded: d/knock.dll: bridge-host:knock@1.0.0, native, the answer was
 "{case}/r.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["d"]
@@ -187,6 +193,7 @@ has = ["not replaced: d/swap.wasm: bw:x@1 states a bareword that cannot be"]
 "{case}/r.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [module."bridge-host:swap@1.0.0"]
 hot_reload = true
@@ -217,6 +224,7 @@ has = ["not replaced: d/swap.wasm: bridge-host:word@1.0.0"]
 "{case}/r.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 16
 [module."bridge-host:swap@1.0.0"]
 hot_reload = true
@@ -264,6 +272,7 @@ order = [
 "{case}/r.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [module."bridge-host:swap@1.0.0"]
 hot_reload = true
@@ -295,6 +304,7 @@ lacks = ["replaced: bridge-host:swap@1.0.0 by"]
 "{case}/r.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["d"]
@@ -308,6 +318,7 @@ library = "{bb_native}/bridge_native"
 "{case}/r.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [module."bridge-host:swap@1.0.0"]
 hot_reload = true

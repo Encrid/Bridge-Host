@@ -1,0 +1,403 @@
+[[case]]
+name = "a module that asks again 2 times runs its phase 3 times in one round"
+run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
+
+[case.claims]
+status = 0
+has = ["record[6] bridge-host:again2@1.0.0/say: run 3 0"]
+lacks = ["asked again"]
+
+[case.folders]
+"{case}/ca" = ["again2"]
+
+[case.files]
+"{case}/a.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+again = { update = 8 }
+rounds = 1
+[content]
+paths = ["ca"]
+[content.arrive]
+native = "load"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/a.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["ca"]
+[content.arrive]
+native = "load"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "the cap of a phase stops its runs, with a warning"
+run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
+
+[case.claims]
+status = 0
+line = ["phase update asked again past its 2 runs"]
+lacks = ["run 3"]
+
+[case.folders]
+"{case}/ca" = ["again2"]
+
+[case.files]
+"{case}/a.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+again = { update = 2 }
+rounds = 1
+[content]
+paths = ["ca"]
+[content.arrive]
+native = "load"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/a.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+again = { update = 8 }
+rounds = 1
+[content]
+paths = ["ca"]
+[content.arrive]
+native = "load"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a phase that again does not name runs one time, with a warning"
+run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
+
+[case.claims]
+status = 0
+line = ["phase update asked again, and again does not name it"]
+
+[case.folders]
+"{case}/ca" = ["again2"]
+
+[case.files]
+"{case}/a.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["ca"]
+[content.arrive]
+native = "load"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/a.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+again = { update = 8 }
+rounds = 1
+[content]
+paths = ["ca"]
+[content.arrive]
+native = "load"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "again with no phase runs each phase one time"
+run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
+
+[case.claims]
+status = 0
+lacks = ["asked again"]
+
+[case.folders]
+"{case}/ca" = ["knock"]
+
+[case.files]
+"{case}/a.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["ca"]
+[content.arrive]
+native = "load"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/ca" = ["again2"]
+
+[[case]]
+name = "an end in the same run as an again ends the run after its round"
+run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
+
+[case.claims]
+status = 0
+has = ["record[6] bridge-host:again2@1.0.0/say: run 3 0"]
+line = ["ended at round 1: a module asked for the end"]
+
+[case.folders]
+"{case}/ca" = ["again2", "nender1"]
+
+[case.files]
+"{case}/a.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+again = { update = 8 }
+rounds = 4
+[content]
+paths = ["ca"]
+[content.arrive]
+native = "load"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/ca" = ["again2"]
+
+[[case]]
+name = "a key of again that is no phase is refused"
+run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
+
+[case.claims]
+status = 1
+has = ["again.nophase: not a name of phases"]
+
+[case.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+phases = ["update"]
+again = { nophase = 2 }
+rounds = 1
+'''
+
+[case.false.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+phases = ["update"]
+again = { update = 2 }
+rounds = 1
+'''
+
+[[case]]
+name = "a cap of 0 is refused"
+run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
+
+[case.claims]
+status = 1
+line = ["refused: k.toml:3: again.update: a whole number, from 1"]
+
+[case.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+phases = ["update"]
+again = { update = 0 }
+rounds = 1
+'''
+
+[case.false.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+phases = ["update"]
+again = { update = 1 }
+rounds = 1
+'''
+
+[[case]]
+name = "a cap that is a text is refused"
+run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
+
+[case.claims]
+status = 1
+line = ["refused: k.toml:3: again.update: a whole number, from 1"]
+
+[case.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+phases = ["update"]
+again = { update = "x" }
+rounds = 1
+'''
+
+[case.false.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+phases = ["update"]
+again = { update = 1 }
+rounds = 1
+'''
+
+[[case]]
+name = "again that is not a table is refused"
+run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
+
+[case.claims]
+status = 1
+line = ["refused: k.toml:3: again: {} or a table of phases and their caps"]
+
+[case.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+phases = ["update"]
+again = 3
+rounds = 1
+'''
+
+[case.false.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+'''
+
+[[case]]
+name = "a world that states no again"
+run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
+
+[case.claims]
+status = 1
+line = ["not stated: again"]
+
+[case.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+phases = ["update"]
+rounds = 1
+'''
+
+[case.false.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+'''
+
+[[case]]
+name = "an empty table is refused at each key but again"
+run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
+
+[case.claims]
+status = 1
+line = ["refused: k.toml:4: rounds: a whole number, from 0 to 4294967295"]
+
+[case.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+phases = ["update"]
+again = {}
+rounds = {}
+'''
+
+[case.false.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+'''
+
+[[case]]
+name = "the local file cannot state again"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/rl.toml"]
+
+[case.claims]
+status = 1
+has = ["again: fixed when the world is made: not in the local file"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/rl.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+'''
+"{case}/rl.toml.d/local.toml" = '''
+again = { update = 2 }
+'''
+
+[case.false.files]
+"{case}/rl.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+'''
+"{case}/rl.toml.d/local.toml" = '''
+[records]
+written = 7
+'''
+
+[[case]]
+name = "the config said holds the caps of again"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/s.toml"]
+
+[case.claims]
+status = 0
+line = ["again.update = 8  s.toml:3"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/s.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = { update = 8 }
+rounds = 8
+[content]
+paths = ["mods"]
+'''
+
+[case.false.files]
+"{case}/s.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = { update = 9 }
+rounds = 8
+[content]
+paths = ["mods"]
+'''

@@ -4,7 +4,7 @@ run = ["{out}/bridge-host{exe}", "{case}/twice.toml"]
 
 [case.claims]
 status = 1
-has = ["twice.toml:5: a key stated twice"]
+has = ["twice.toml:6: a key stated twice"]
 
 [case.folders]
 "{case}/config-quiet" = ["quiet"]
@@ -13,6 +13,7 @@ has = ["twice.toml:5: a key stated twice"]
 "{case}/twice.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 threads = 1
 threads = 1
@@ -28,6 +29,7 @@ library = "{bb_native}/bridge_native"
 "{case}/twice.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -52,6 +54,7 @@ line = ["not stated: content.paths"]
 "{case}/unstated.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
@@ -63,6 +66,7 @@ library = "{bb_native}/bridge_native"
 "{case}/unstated.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -96,6 +100,7 @@ rounds = 3
 "{case}/peers.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "peer1.toml", "peer2.toml"]
 phases = ["update"]
+again = {}
 [content]
 paths = ["config-quiet"]
 [backend.wasm]
@@ -108,6 +113,7 @@ library = "{bb_native}/bridge_native"
 "{case}/peers.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "peer1.toml", "peer3.toml"]
 phases = ["update"]
+again = {}
 [content]
 paths = ["config-quiet"]
 [backend.wasm]
@@ -135,6 +141,7 @@ presets = ["cycle.toml"]
 "{case}/cycle.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "loop.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -148,6 +155,7 @@ library = "{bb_native}/bridge_native"
 "{case}/cycle.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "plain.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -227,6 +235,7 @@ has = ["records.written = 7  rl.toml.d/local.toml:2"]
 "{case}/rl.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -250,7 +259,7 @@ run = ["{out}/bridge-host{exe}", "{case}/nobody.toml"]
 
 [case.claims]
 status = 1
-line = ["refused: nobody.toml:5: budgett.entities: no key of Bridge-Host's or Bridge's"]
+line = ["refused: nobody.toml:6: budgett.entities: no key of Bridge-Host's or Bridge's"]
 
 [case.folders]
 "{case}/config-quiet" = ["quiet"]
@@ -259,6 +268,7 @@ line = ["refused: nobody.toml:5: budgett.entities: no key of Bridge-Host's or Br
 "{case}/nobody.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [budgett]
 entities = 1
@@ -274,6 +284,7 @@ library = "{bb_native}/bridge_native"
 "{case}/nobody.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -289,7 +300,7 @@ run = ["{out}/bridge-host{exe}", "{case}/author.toml"]
 
 [case.claims]
 status = 1
-line = ["refused: author.toml:5: module.all.pinned: only a module's author states it, in its file"]
+line = ["refused: author.toml:6: module.all.pinned: only a module's author states it, in its file"]
 
 [case.folders]
 "{case}/config-quiet" = ["quiet"]
@@ -298,6 +309,7 @@ line = ["refused: author.toml:5: module.all.pinned: only a module's author state
 "{case}/author.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [module.all]
 pinned = false
@@ -313,6 +325,7 @@ library = "{bb_native}/bridge_native"
 "{case}/author.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -345,6 +358,7 @@ paths = ["elsewhere"]
 "{case}/beside.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "{case}/beside/beside.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
@@ -356,6 +370,7 @@ library = "{bb_native}/bridge_native"
 "{case}/beside.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "{case}/beside/elsewhere.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [backend.wasm]
 library = "{bb_wasm}/bridge_wasm"
@@ -381,6 +396,7 @@ line = [
 "{case}/wasm-only.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-knock"]
@@ -392,6 +408,7 @@ library = "{bb_wasm}/bridge_wasm"
 "{case}/wasm-only.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-knock"]
@@ -416,6 +433,7 @@ line = [
 "{case}/formats.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-formats"]
@@ -427,6 +445,7 @@ library = "{bb_wasm}/bridge_wasm"
 "{case}/formats.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-formats"]
@@ -447,6 +466,7 @@ line = ["record[6] bridge-host:word@1.0.0/say: local 0 0"]
 "{case}/local.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [module."bridge-host:word@1.0.0".config]
 word = "hi"
@@ -475,7 +495,7 @@ run = ["{out}/bridge-host{exe}", "{case}/unfound.toml"]
 [case.claims]
 status = 1
 line = [
-    "refused: unfound.toml:4: bridge-host:nobody@1.0.0: no module found is it",
+    "refused: unfound.toml:5: bridge-host:nobody@1.0.0: no module found is it",
     "found: bridge-host:quiet@1.0.0",
 ]
 
@@ -486,6 +506,7 @@ line = [
 "{case}/unfound.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [module."bridge-host:nobody@1.0.0"]
 hot_reload = false
@@ -501,6 +522,7 @@ library = "{bb_native}/bridge_native"
 "{case}/unfound.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -526,6 +548,7 @@ line = ["not loaded: config-mute/mute.wasm: bridge-host:mute@1.0.0: its file sta
 "{case}/mute.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-mute"]
@@ -539,6 +562,7 @@ library = "{bb_native}/bridge_native"
 "{case}/mute.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -609,6 +633,7 @@ losses = "none"
 "{case}/terse.toml" = '''
 presets = ["{case}/terse-world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -622,6 +647,7 @@ library = "{bb_native}/bridge_native"
 "{case}/terse.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -647,6 +673,7 @@ lacks = ["record[6] bridge-host:quiet@1.0.0/say: said once 1 0"]
 "{case}/unloaded.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content.load]
 "bridge-host:quiet@1.0.0" = false
@@ -662,6 +689,7 @@ library = "{bb_native}/bridge_native"
 "{case}/unloaded.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -698,6 +726,7 @@ before = [["bridge-host:hello:say", "bridge-host:quiet:say"]]
 "{case}/order.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "first.toml", "back.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -711,6 +740,7 @@ library = "{bb_native}/bridge_native"
 "{case}/order.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "first.toml", "again.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -727,6 +757,7 @@ run = ["{out}/bridge-host{exe}", "--show-config", "{case}/shown.toml"]
 [case.claims]
 status = 0
 line = [
+    "again = {}  shown.toml:3",
     "threads = 1  {root}/tests/presets/world.toml:1",
     "live = false  {root}/tests/presets/world.toml:2",
     "stack = 1048576  {root}/tests/presets/world.toml:3",
@@ -748,6 +779,7 @@ line = [
 "{case}/shown.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -761,6 +793,7 @@ library = "{bb_native}/bridge_native"
 "{case}/shown.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 threads = 2
 [content]
@@ -786,6 +819,7 @@ line = ["record[6] bridge-host:quiet@1.0.0/say: said once 1 0"]
 "{case}/checks.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [checks]
 profile = true
@@ -802,6 +836,7 @@ library = "{bb_native}/bridge_native"
 "{case}/checks.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [checks]
 profile = "nope"
@@ -836,6 +871,7 @@ profile = false
 "{case}/both.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "ca.toml", "cb.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["config-quiet"]
@@ -867,6 +903,7 @@ line = ["bridge_create refused"]
 "{case}/range.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 table_growth = 50
 [content]
@@ -879,6 +916,7 @@ library = "{bb_native}/bridge_native"
 "{case}/range.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]

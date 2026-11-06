@@ -2,9 +2,9 @@
 
 This file takes the world keys: the phases, the keys of `WORLD_KEYS`, the budget and the order.
 
-`take_phases` reads `phases` into an array of names.
+`take_phases` reads `phases` into an array of names. The same block holds the caps of `again`, set to 0.
 
-`config_again` of `src/config/config_again.c` reads `again`.
+`config_again` of `src/config/config_again.c` reads `again`, after `take_phases` made the phases.
 
 `take_rules` takes each rule of a table with a width: it finds the key over the files, and writes the value with `config_put`.
 `config_world` takes `WORLD_KEYS` into the `deployment_t` of the host, and `BUDGET_KEYS` into its `bridge_budget_t`.

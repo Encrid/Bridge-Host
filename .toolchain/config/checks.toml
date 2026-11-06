@@ -235,9 +235,9 @@ why = "config_get_folder's folder is null only when its malloc ran out of memory
 
 [[branches.exception]]
 path = "src/config/config_world.c"
-line = 16
-col = 26
-side = "false"
+line = 17
+col = 9
+side = "true"
 why = "take_phases allocates with malloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
@@ -371,13 +371,6 @@ line = 27
 col = 31
 side = "false"
 why = "content.arrive is checked to be ask, load, or leave, so get_arrive always matches before its index reaches four."
-
-[[branches.exception]]
-path = "src/config/config_find.c"
-line = 60
-col = 9
-side = "true"
-why = "config_say_value prints a found value. The state callers reach it only past config_say_found, which is true when the value is non-null. show reaches it only when the world loaded, which needs phases, threads, rounds and the budget stated, and shows other keys only when config_names lists them, so every key it prints is found."
 
 [[branches.exception]]
 path = "src/config/config_find.c"

@@ -181,7 +181,7 @@ run = ["{out}/bridge-host{exe}", "--show-config", "{case}/td.toml"]
 
 [case.claims]
 status = 0
-line = ['  config.word = "hi"  td.toml:5']
+line = ['  config.word = "hi"  td.toml:6']
 
 [case.folders]
 "{case}/mods" = ["twiceset"]

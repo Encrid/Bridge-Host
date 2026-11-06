@@ -423,7 +423,7 @@ run = ["{out}/bridge-host{exe}", "--show-config", "{case}/bw.toml"]
 
 [case.claims]
 status = 0
-line = ['backend.native.colour = "blue"  bw.toml:8', 'backend.native.library = "{bb_native}/bridge_native"  bw.toml:7']
+line = ['backend.native.colour = "blue"  bw.toml:9', 'backend.native.library = "{bb_native}/bridge_native"  bw.toml:8']
 
 [case.folders]
 "{case}/mods" = ["knock"]

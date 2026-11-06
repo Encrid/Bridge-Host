@@ -12,13 +12,13 @@ into = "{build}/third_party/bridge_os/{target}"
 
 [[source]]
 name = "bb_native"
-url = "https://github.com/Encrid/BB-Native/releases/download/v0.4.0/BB-Native-{target}.zip"
+url = "https://github.com/Encrid/BB-Native/releases/download/v0.5.0/BB-Native-{target}.zip"
 sha256 = "{bb_native_sha256}"
 into = "{build}/third_party/bb_native/{target}"
 
 [[source]]
 name = "bb_wasm"
-url = "https://github.com/Encrid/BB-Wasm/releases/download/v0.5.0/BB-Wasm-{target}.zip"
+url = "https://github.com/Encrid/BB-Wasm/releases/download/v0.6.0/BB-Wasm-{target}.zip"
 sha256 = "{bb_wasm_sha256}"
 into = "{build}/third_party/bb_wasm/{target}"
 

@@ -1,6 +1,7 @@
 # src/config/config_again.c
 
 This file reads the key `again` of the world into the caps of the phases, in the order of `phases`.
+The caps are in the block that `take_phases` of `src/config/config_world.c` makes.
 
 `config_again` takes each name under `again` with `config_names`, and the cap of each one with `take_cap`.
 A file that states `again` with no phase, as `again = {}`, states the key.

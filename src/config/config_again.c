@@ -42,9 +42,8 @@ bool config_again(host_t *h)
 
     if (!names.count && !none.at.value)
         say("not stated: again\n");
-    h->again = calloc(h->phase_count + 1, sizeof(*h->again));
-    taken = h->again != nullptr && (names.count || none.at.value);
-    for (uint32_t i = 0; h->again && i < names.count; i++)
+    taken = names.count || none.at.value;
+    for (uint32_t i = 0; i < names.count; i++)
         taken = take_cap(h, names.names[i]) && taken;
     free(names.names);
     return (taken);

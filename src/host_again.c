@@ -24,7 +24,8 @@ int run_phase(host_t *h, uint32_t p)
 
     while (result == 3 && runs < cap) {
         result = bridge_run_phase(h->w, h->phases[p]);
-        h->ended = h->ended || result == 2;
+        if (result == 2)
+            h->ended = true;
         runs++;
     }
     if (result == 3)

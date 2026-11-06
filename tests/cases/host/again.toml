@@ -202,7 +202,7 @@ has = ["again.nophase: not a name of phases"]
 "{case}/k.toml" = '''
 presets = ["{root}/tests/presets/world.toml"]
 phases = ["update"]
-again = { nophase = 2 }
+again = { nophase = 2, update = 2 }
 rounds = 1
 '''
 
@@ -408,4 +408,91 @@ rounds = 8
 paths = ["mods"]
 [backend.native]
 library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "two files that state a cap with 2 values are refused"
+run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
+
+[case.claims]
+status = 1
+line = ["refused: again.update: 2 in peer1.toml:1, 3 in peer2.toml:1"]
+
+[case.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "peer1.toml", "peer2.toml"]
+phases = ["update"]
+rounds = 1
+'''
+"{case}/peer1.toml" = '''
+again = { update = 2 }
+'''
+"{case}/peer2.toml" = '''
+again = { update = 3 }
+'''
+
+[case.false.files]
+"{case}/peer2.toml" = '''
+again = { update = 2 }
+'''
+
+[[case]]
+name = "a key below a cap of again is refused"
+run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
+
+[case.claims]
+status = 1
+line = ["refused: k.toml:3: again.update.x: no key of Bridge-Host's or Bridge's"]
+
+[case.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+phases = ["update"]
+again = { update = { x = 1 } }
+rounds = 1
+'''
+
+[case.false.files]
+"{case}/k.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+phases = ["update"]
+again = { update = 1 }
+rounds = 1
+'''
+
+[[case]]
+name = "the warnings of again are records of the level 4, not written below it"
+run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
+
+[case.claims]
+status = 0
+lacks = ["asked again"]
+
+[case.folders]
+"{case}/ca" = ["again2"]
+
+[case.files]
+"{case}/a.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+again = { update = 2 }
+rounds = 1
+[content]
+paths = ["ca"]
+[content.arrive]
+native = "load"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+"{case}/a.toml.d/local.toml" = '''
+[records]
+written = 3
+'''
+
+[case.false.files]
+"{case}/a.toml.d/local.toml" = '''
+[records]
+written = 4
 '''

@@ -53,8 +53,14 @@ static bool read_member(reading_t *r, char **key, uint32_t depth)
 bool toml_read_inline(reading_t *r, char **key, uint32_t depth)
 {
     bool more = true;
+    value_t empty = { .kind = VALUE_TABLE };
 
     r->at++;
+    toml_skip(r);
+    if (*r->at == '}') {
+        r->at++;
+        return (toml_add(r, key, depth, &empty));
+    }
     while (more) {
         if (!read_member(r, key, depth))
             return (false);

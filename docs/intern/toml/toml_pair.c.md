@@ -8,6 +8,8 @@ This file reads a statement and an inline table.
 An inline table is a brace that carries members which commas separate.
 `read_member` handles one member: it copies the outer key, adds the member name, and stores the value.
 A member can itself be an inline table, so `toml_read_inline` nests.
+
+An inline table with no member, `{}`, gives one value of the kind `VALUE_TABLE` at its key. Each check but `again` refuses it.
 `toml_read_pair` and `read_member` free the array of their key at the end. The names stay in the `toml_t`.
 
 ## Functions

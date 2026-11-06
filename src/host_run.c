@@ -31,10 +31,8 @@ static int run_round(host_t *h, int *did)
     h->counts.said = 0;
     refused = *did < 0;
     for (uint32_t p = 0; p < h->phase_count && !refused; p++) {
-        result = bridge_run_phase(h->w, h->phases[p]);
+        result = run_phase(h, p);
         refused = result == 1;
-        if (result == 2)
-            h->ended = true;
     }
     h->round++;
     return (refused);

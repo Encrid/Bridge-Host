@@ -31,20 +31,23 @@ static void say_key(const config_t *c, const char *const *names,
 static void say_under(const config_t *c, const char *top, const char *next)
 {
     const char *key[3] = { top, next, nullptr };
-    const keyed_t k = { key, 2 };
+    uint32_t depth = next ? 2 : 1;
+    const keyed_t k = { key, depth };
     names_t names = config_names(c, &k);
 
     for (uint32_t i = 0; i < names.count; i++) {
-        key[2] = names.names[i];
-        say_key(c, key, 3);
+        key[depth] = names.names[i];
+        say_key(c, key, depth + 1);
     }
     free(names.names);
 }
 
 static void say_world(const host_t *h)
 {
-    const char *names[2] = {};
+    const char *names[2] = { "again" };
 
+    say_key(&h->config, names, 1);
+    say_under(&h->config, "again", nullptr);
     for (uint32_t i = 0; i < WORLD_KEY_COUNT; i++)
         say_key(&h->config, names, config_get_names(&WORLD_KEYS[i], names));
     for (uint32_t i = 0; i < BUDGET_KEY_COUNT; i++)

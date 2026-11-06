@@ -21,6 +21,7 @@ lacks = ["skip.wasm"]
 "{case}/ig.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["base", "pre", "prex"]
@@ -35,6 +36,7 @@ library = "{bb_native}/bridge_native"
 "{case}/ig.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["base"]
@@ -60,6 +62,7 @@ has = ["record[6] bridge-host:quiet@1.0.0/say: said once 1 0"]
 "{case}/sf.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods/quiet.wasm"]
@@ -73,6 +76,7 @@ library = "{bb_native}/bridge_native"
 "{case}/sf.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods/none.wasm"]
@@ -93,6 +97,7 @@ has = ["too many files: 32 are looked at"]
 "{case}/mny.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["heap"]
@@ -140,6 +145,7 @@ library = "{bb_native}/bridge_native"
 "{case}/mny.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 1
 [content]
 paths = ["heap"]
@@ -170,6 +176,7 @@ order = ["too many files: 32 are looked at", "too many files: 32 are looked at"]
 "{case}/full.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 live = true
 [content]
@@ -229,6 +236,7 @@ has = ["too many files: 32 are looked at"]
 "{case}/room.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["heap"]
@@ -275,6 +283,7 @@ library = "{bb_native}/bridge_native"
 "{case}/room.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["heap"]
@@ -302,6 +311,7 @@ lacks = ["loaded: bridge-host:knock@1.0.0"]
 "{case}/j.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -327,6 +337,7 @@ line = ["loaded: bridge-host:knock@1.0.0, native, mods/below/knock{library}"]
 "{case}/c.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -339,6 +350,7 @@ library = "{bb_native}/bridge_native"
 "{case}/c.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -362,6 +374,7 @@ line = ["too many files: 1 are looked at"]
 "{case}/c.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -377,6 +390,7 @@ a note
 "{case}/c.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -401,6 +415,7 @@ lacks = ["still loaded:"]
 "{case}/c.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -427,6 +442,7 @@ lacks = ["still loaded:"]
 "{case}/c.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -453,6 +469,7 @@ has = ["loaded: bridge-host:quiet@1.0.0, wasm, deep/dddddddddddddddddddddddddddd
 "{case}/deep.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["deep"]
@@ -484,6 +501,7 @@ matches_not = ["cannot read.*cannot read"]
 "{case}/u.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["a", "b"]
@@ -508,6 +526,7 @@ line = ["not a module: mods/e.txt: neither a wasm module nor a library"]
 "{case}/e.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -534,6 +553,7 @@ lacks = ["module bridge-host:knock@1.0.0"]
 "{case}/s.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -561,6 +581,7 @@ line = ["cannot read 'mods/knock{library}'"]
 "{case}/r.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -586,6 +607,7 @@ line = ["module bridge-host:knock@1.0.0, native, knock{library}"]
 "{case}/n.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["knock{library}"]
@@ -597,6 +619,7 @@ library = "{bb_native}/bridge_native"
 "{case}/n.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["none{library}"]
@@ -619,6 +642,7 @@ line = ["module bridge-host:knock@1.0.0, native, mods/knock{library}"]
 "{case}/t.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods/"]
@@ -645,6 +669,7 @@ line = ["cannot look in 'mods/knock{library}'"]
 "{case}/m.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods/knock{library}"]

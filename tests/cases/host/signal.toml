@@ -21,6 +21,7 @@ order = [
 "{case}/sig.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["mods"]
@@ -49,6 +50,7 @@ lacks = ["destroyed:"]
 "{case}/sig.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["mods"]
@@ -76,6 +78,7 @@ lacks = ["loaded:"]
 "{case}/sig.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 16
 [content]
 paths = ["mods"]

@@ -72,6 +72,7 @@ typedef struct {
     deployment_t d;
     const char **phases;
     uint32_t phase_count;
+    uint32_t *again;
     bool ended;
     int round;
     held_t *held;
@@ -131,6 +132,8 @@ typedef struct {
 } walk_t;
 
 [[nodiscard]] bool config_world(host_t *h);
+
+[[nodiscard]] bool config_again(host_t *h);
 
 [[nodiscard]] bool config_order(host_t *h);
 
@@ -213,6 +216,8 @@ void show_module(void *ud, const char *path, os_folder_t *in,
 void host_free(host_t *h);
 
 [[nodiscard]] int run(host_t *h);
+
+[[nodiscard]] int run_phase(host_t *h, uint32_t p);
 
 void say_end(const host_t *h);
 

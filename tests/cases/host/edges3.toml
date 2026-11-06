@@ -13,6 +13,7 @@ has = ["not stated: config.z"]
 "{case}/us.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -30,6 +31,7 @@ library = "{bb_native}/bridge_native"
 "{case}/us.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -67,6 +69,7 @@ foo = "late"
 "{case}/pp.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "pa.toml", "pb.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [module.all.phases]
 bar = "update"
@@ -92,6 +95,7 @@ foo = "update"
 "{case}/pp.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "pa.toml", "pb.toml"]
 phases = ["update", "late"]
+again = {}
 rounds = 8
 [module.all.phases]
 bar = "update"

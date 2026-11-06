@@ -21,6 +21,10 @@ static bool said;
 static uint32_t rounds;
 #endif
 
+#ifdef AGAIN_TIMES
+static uint32_t runs;
+#endif
+
 #if defined(WAIT) || defined(WAIT_EACH)
 
 static void wait_for_notices(void)
@@ -49,6 +53,12 @@ BRIDGE_NATIVE(say)
 {
     bridge_line_t line = { "knock", 5, 0, 0 };
 
+#ifdef AGAIN_TIMES
+    runs++;
+    line = (bridge_line_t){ "run", 3, runs, 0 };
+    bridge_native_log(api, BRIDGE_LOG_INFO, &line);
+    return (runs <= AGAIN_TIMES ? BRIDGE_AGAIN : 0);
+#endif
 #ifdef END_AT
     rounds++;
     if (rounds == END_AT)

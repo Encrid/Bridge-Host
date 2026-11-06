@@ -12,11 +12,16 @@ static bool take_phases(host_t *h)
 
     if (!v)
         return (false);
-    h->phases = malloc(sizeof(*h->phases) * (v->count + 1));
-    for (uint32_t i = 0; h->phases && i < v->count; i++)
+    h->phases = malloc((sizeof(*h->phases) + sizeof(*h->again))
+        * (v->count + 1));
+    if (!h->phases)
+        return (false);
+    h->again = (uint32_t *)(h->phases + v->count + 1);
+    memset(h->again, 0, sizeof(*h->again) * (v->count + 1));
+    for (uint32_t i = 0; i < v->count; i++)
         h->phases[i] = v->items[i].text;
     h->phase_count = v->count;
-    return (h->phases != nullptr);
+    return (true);
 }
 
 static bool take_rules(host_t *h, const key_rule_t *rules, uint32_t count,
@@ -41,7 +46,7 @@ static bool take_rules(host_t *h, const key_rule_t *rules, uint32_t count,
 
 bool config_world(host_t *h)
 {
-    bool taken = take_phases(h);
+    bool taken = take_phases(h) && config_again(h);
 
     taken = take_rules(h, WORLD_KEYS, WORLD_KEY_COUNT, &h->d) && taken;
     taken = take_rules(h, BUDGET_KEYS, BUDGET_KEY_COUNT, &h->d.world.budget)

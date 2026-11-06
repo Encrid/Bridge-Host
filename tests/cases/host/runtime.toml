@@ -21,6 +21,7 @@ library = "b"
 "{case}/bconf.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "bc1.toml", "bc2.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["cq"]
@@ -47,6 +48,7 @@ has = ["cannot open backend library"]
 "{case}/bshort.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["cq"]
@@ -58,6 +60,7 @@ library = "/x"
 "{case}/bshort.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["cq"]
@@ -80,6 +83,7 @@ has = ["not stated: content.arrive.aa"]
 "{case}/bfo.toml" = '''
 presets = ["{root}/tests/presets/world.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["cq"]
@@ -98,6 +102,7 @@ library = "y"
 "{case}/bfo.toml" = '''
 presets = ["{root}/tests/presets/world.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["cq"]
@@ -170,6 +175,7 @@ losses = "none"
 "{case}/noload.toml" = '''
 presets = ["{case}/nolworld.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["cq"]
@@ -183,6 +189,7 @@ library = "{bb_native}/bridge_native"
 "{case}/noload.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["cq"]
@@ -219,6 +226,7 @@ presets = ["ncb.toml", "ncc.toml", "ncsilent.toml"]
 "{case}/nc.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml", "nca.toml"]
 phases = ["update"]
+again = {}
 [content]
 paths = ["cq"]
 [backend.wasm]
@@ -243,6 +251,7 @@ presets = ["ncb.toml", "ncc.toml", "ncsilent.toml"]
 "{case}/nc.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml", "nca.toml"]
 phases = ["update"]
+again = {}
 [content]
 paths = ["cq"]
 [backend.wasm]
@@ -286,6 +295,7 @@ line = ["bridge_create refused"]
 "{case}/bs.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -298,6 +308,7 @@ colour = "blue"
 "{case}/bs.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -329,6 +340,7 @@ size = 1
 "{case}/bt.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml", "ba.toml", "bb.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -358,6 +370,7 @@ lacks = ["backend.native.library"]
 "{case}/so.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -383,6 +396,7 @@ line = ["not stated: backend.native.library"]
 "{case}/bn.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -394,6 +408,7 @@ colour = "blue"
 "{case}/bn.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -408,7 +423,7 @@ run = ["{out}/bridge-host{exe}", "--show-config", "{case}/bw.toml"]
 
 [case.claims]
 status = 0
-line = ['backend.native.colour = "blue"  bw.toml:8', 'backend.native.library = "{bb_native}/bridge_native"  bw.toml:7']
+line = ['backend.native.colour = "blue"  bw.toml:9', 'backend.native.library = "{bb_native}/bridge_native"  bw.toml:8']
 
 [case.folders]
 "{case}/mods" = ["knock"]
@@ -417,6 +432,7 @@ line = ['backend.native.colour = "blue"  bw.toml:8', 'backend.native.library = "
 "{case}/bw.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -429,6 +445,7 @@ colour = "blue"
 "{case}/bw.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]

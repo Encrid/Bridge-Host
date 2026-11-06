@@ -39,6 +39,10 @@ static void say_scalar(const value_t *v)
 
 void toml_say(const value_t *v)
 {
+    if (v->kind == VALUE_TABLE) {
+        say_part("{}");
+        return;
+    }
     if (v->kind != VALUE_LIST) {
         say_scalar(v);
         return;

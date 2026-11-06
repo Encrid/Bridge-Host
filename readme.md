@@ -63,6 +63,7 @@ A deployment is a TOML file. The document of the header `bridge.h` of Bridge tel
 | --- | --- |
 | `presets` | A list of files. |
 | `phases` | The names of the phases. A round runs them in this order. |
+| `again` | The phases that a round can run again, each with its cap: `{ <phase> = <cap> }`, or `{}` for no phase. |
 | `threads` | How many threads run a phase, from 1. |
 | `stack` | The bytes of the stack of each thread of the world. |
 | `observer_passes` | The most barriers that one call of Bridge runs in a row. |
@@ -74,6 +75,7 @@ A deployment is a TOML file. The document of the header `bridge.h` of Bridge tel
 
 Each key but `presets` is needed.
 `stack`, `observer_passes`, `table_growth`, `table_hash_fill` and `table_retry` take a whole number from 1.
+Each key of `again` is a name of `phases`, and its cap is a whole number from 1 to 4294967295.
 Bridge refuses a value outside the range that it allows.
 
 `[budget]` holds the 10 limits of the world, and each one is needed.
@@ -195,7 +197,16 @@ A round is quiet if the look finds no change in the content and no phase writes 
 Before a quiet round ends a run with `live = false`, the host reads every file of the content again. If that read finds a change, the run goes on.
 The run also ends at the limit of `rounds`, and when Bridge refuses a call.
 A system or an observer that gives `BRIDGE_END` ends the run after its round, with each value of `live`.
-The document of the header `bridge_abi.h` of Bridge tells the status `BRIDGE_END`.
+
+A system that gives `BRIDGE_AGAIN` asks for its phase again.
+If `again` names the phase, the host runs it again in the same round, until no system asks again.
+A phase runs at most as many times as its cap in one round. Then the next phase runs.
+
+At the cap, the host writes `phase <phase> asked again past its <cap> runs`.
+For a phase that `again` does not name, the host writes `phase <phase> asked again, and again does not name it`.
+Each of these lines is a warning, of the level 4. The host writes it and counts it as a record of that level: `[records]`.
+An end that comes in the same run of a phase as `BRIDGE_AGAIN` reaches the host at a later run of a phase.
+The document of the header `bridge_abi.h` of Bridge tells the statuses `BRIDGE_END` and `BRIDGE_AGAIN`.
 
 The host writes each record whose level is `[records] written` or lower.
 A record whose level is `[records] failing` or lower is a failure, and the host then exits with 1.
@@ -265,11 +276,13 @@ Reading the deployment:
 - `cannot read '<file>'`
 - `not stated: backend`
 - `not stated: content.paths`
+- `not stated: again`
 - `not stated: <key>`
 - `refused: <file>:<line>: <why>`
 - `refused: <file>:<line>: <key>: <why>`
 - `refused: <file>:<line>: <identity>: no module found is it`
 - `refused: <file>:<line>: presets: a list of files`
+- `refused: <file>:<line>: again.<name>: not a name of phases`
 - `refused: <file> names itself:`
 - `refused: <key>: <value> in <file>:<line>, <value> in <file>:<line>`
 - `, over <file>:<line>`
@@ -328,6 +341,8 @@ Replacing a module:
 Running the rounds:
 
 - `bridge_create refused`
+- `phase <phase> asked again past its <cap> runs`
+- `phase <phase> asked again, and again does not name it`
 - `record[<level>] <identity>/<system>: <text> <number> <number>`
 - `ended after <rounds> rounds, as many as it was given`
 - `ended at round <round>: a module asked for the end`

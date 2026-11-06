@@ -4,7 +4,7 @@ run = ["{out}/bridge-host{exe}", "--show-config", "{case}/tables.toml"]
 
 [case.claims]
 status = 0
-has = ["log_ring = 111  tables.toml:7", "log_ring = 222  tables.toml:9"]
+has = ["log_ring = 111  tables.toml:8", "log_ring = 222  tables.toml:10"]
 lacks = ["log_ring = 333"]
 
 [case.folders]
@@ -14,6 +14,7 @@ lacks = ["log_ring = 333"]
 "{case}/tables.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -33,6 +34,7 @@ library = "{bb_native}/bridge_native"
 "{case}/tables.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -52,7 +54,7 @@ run = ["{out}/bridge-host{exe}", "--show-config", "{case}/over.toml"]
 
 [case.claims]
 status = 1
-line = ["  scratch = 200  over.toml:39"]
+line = ["  scratch = 200  over.toml:40"]
 
 [case.folders]
 "{case}/mods" = ["owns"]
@@ -67,6 +69,7 @@ table_growth = 150
 table_hash_fill = 50
 table_retry = 50
 phases = ["update"]
+again = {}
 rounds = 8
 [budget]
 entities = 8192
@@ -112,6 +115,7 @@ table_growth = 150
 table_hash_fill = 50
 table_retry = 50
 phases = ["update"]
+again = {}
 rounds = 8
 [budget]
 entities = 8192
@@ -160,6 +164,7 @@ line = ["record[6] bridge-host:owned@1.0.0/say: hi 0 0"]
 "{case}/owned.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [module."bridge-host:owned@1.0.0".config]
 word = "hi"
@@ -175,6 +180,7 @@ library = "{bb_native}/bridge_native"
 "{case}/owned.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [content]
 paths = ["owned"]
@@ -203,6 +209,7 @@ word = { path = "x" }
 "{case}/path.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "sub/word.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -234,6 +241,7 @@ library = "nothere"
 "{case}/back.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "sub/back.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -243,6 +251,7 @@ paths = ["mods"]
 "{case}/back.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "sub/back.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -327,7 +336,7 @@ run = ["{out}/bridge-host{exe}", "--show-config", "{case}/r.toml"]
 
 [case.claims]
 status = 0
-line = ["rounds = 4294967295  r.toml:3"]
+line = ["rounds = 4294967295  r.toml:4"]
 
 [case.folders]
 "{case}/mods" = ["knock"]
@@ -336,6 +345,7 @@ line = ["rounds = 4294967295  r.toml:3"]
 "{case}/r.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 4294967295
 [content]
 paths = ["mods"]
@@ -347,6 +357,7 @@ library = "{bb_native}/bridge_native"
 "{case}/r.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 4294967296
 [content]
 paths = ["mods"]
@@ -377,6 +388,7 @@ paths = ["two"]
 "{case}/both.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "more.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["one"]
@@ -415,6 +427,7 @@ read = ["b:B"]
 "{case}/grants.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "ra.toml", "rb.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -455,6 +468,7 @@ read = ["b:B"]
 "{case}/grants.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "ra.toml", "rb.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -472,6 +486,7 @@ library = "{bb_native}/bridge_native"
 "{case}/grants.toml" = '''
 presets = ["{root}/tests/presets/test.toml", "ra.toml", "rb.toml"]
 phases = ["late"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -500,6 +515,7 @@ lacks = ["bridge-host:hello@1.0.0"]
 "{case}/deep.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -513,6 +529,7 @@ library = "{bb_native}/bridge_native"
 "{case}/deep.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -538,6 +555,7 @@ has = ["loaded: bridge-host:unknownkey@1.0.0, wasm, mods/"]
 "{case}/words.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -566,6 +584,7 @@ lacks = ["loaded: bridge-host:knock@1.0.0"]
 "{case}/limit.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -581,6 +600,7 @@ library = "{bb_native}/bridge_native"
 "{case}/limit.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -611,6 +631,7 @@ lacks = ["loaded: bridge-host:knock@1.0.0"]
 "{case}/ng.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -624,6 +645,7 @@ library = "{bb_native}/bridge_native"
 "{case}/ng.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -648,6 +670,7 @@ line = ['  read = ["a:A"]  its file', '  write = ["b:B"]  its file']
 "{case}/dg.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/wasm.toml", "{root}/tests/presets/native.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [content]
 paths = ["mods"]
@@ -676,6 +699,7 @@ lacks = ["loaded: bridge-host:knock@1.0.0"]
 "{case}/el.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [module."bridge-host:knock@1.0.0"]
 element_limit = 5
@@ -689,6 +713,7 @@ library = "{bb_native}/bridge_native"
 "{case}/el.toml" = '''
 presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
 phases = ["update"]
+again = {}
 rounds = 8
 [module."bridge-host:knock@1.0.0"]
 element_limit = "none"

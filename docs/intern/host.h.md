@@ -9,6 +9,7 @@ It then declares the functions that the other sources of `src` define.
 `host_t` holds one run: the parsed `config_t`, the `deployment_t`, the backends, the content paths and the `bridge_world_t`.
 It also holds the array of the `file_t` slots, the found files of a look, and a watch for each content path.
 Of the run, it keeps the count `round` of the rounds that ran, and `ended`: whether a module asked for the end.
+`again` holds the cap of each phase, in the order of `phases`. A phase that the key `again` does not name has 0.
 It also keeps `full`: whether the last look found a path with no free slot.
 
 A `file_t` records one known file by its path, its hash mark, the module behind it, and in `at` the content path that holds it.
@@ -36,9 +37,9 @@ The host fixes these parts. A deployment cannot state them, for the reason that 
 
 | Function | Result |
 | --- | --- |
-| `config_world`, `config_order`, `config_backends`, `config_content` | Take the world, order, backend and content keys. |
+| `config_world`, `config_again`, `config_order`, `config_backends`, `config_content` | Take the world, the caps of `again`, the order, the backend and the content keys. |
 | `config_load`, `config_unfound`, `get_held` | Read `content.load`, report named modules that no look finds, and find a backend. |
-| `run`, `say_end`, `look` | Run the world, write the lines of its end, and do one look. |
+| `run`, `run_phase`, `say_end`, `look` | Run the world, run one phase as often as it asks and its cap allows, write the lines of its end, and do one look. |
 | `walk_path`, `walk_name`, `is_ignored`, `join_path` | Walk one content path, read one file, test an ignored path, and join a path. |
 | `see_file`, `read_path`, `look_path`, `retry_unread`, `stop_watches` | Read one file, read a path whole, look at one path, read again the files that failed, and stop the watches. |
 | `find_file`, `keep_path`, `drop_gone` | Find the slot of a path, keep a path in its slot, and free the slots of the files that are gone. |

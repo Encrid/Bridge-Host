@@ -339,7 +339,7 @@ run = ["{out}/bridge-host{exe}", "--show-config", "{case}/rl.toml"]
 
 [case.claims]
 status = 1
-has = ["again: fixed when the world is made: not in the local file"]
+has = ["again.update: fixed when the world is made: not in the local file"]
 
 [case.folders]
 "{case}/mods" = ["knock"]
@@ -352,6 +352,8 @@ again = {}
 rounds = 8
 [content]
 paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 "{case}/rl.toml.d/local.toml" = '''
 again = { update = 2 }
@@ -365,6 +367,8 @@ again = {}
 rounds = 8
 [content]
 paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 "{case}/rl.toml.d/local.toml" = '''
 [records]
@@ -390,6 +394,8 @@ again = { update = 8 }
 rounds = 8
 [content]
 paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''
 
 [case.false.files]
@@ -400,4 +406,6 @@ again = { update = 9 }
 rounds = 8
 [content]
 paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
 '''

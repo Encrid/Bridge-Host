@@ -6,7 +6,7 @@ A host links `manifest.a`, and gives the keys of a module through the functions 
 ## The manifest
 
 `manifest_read` finds the manifest in the bytes of a file, and reads its words into a `manifest_t`.
-The form of the file gives the backend: `bridge_native` for a library, and `bridge_wasm` for a module of wasm.
+The form of the file gives the backend: `native` for a library, and `wasm` for a module of wasm.
 The words, their places in each format and their checks are in `docs/extern/host/readme.md`, *The manifest of a module*.
 
 | Field of `manifest_t` | Value |
@@ -63,6 +63,9 @@ The texts point into the bytes of the file, so the bytes must stay while the hos
 `manifest_check_value` gives no text for a value that the rule allows. Else it gives `why` of the rule.
 `manifest_check_key` checks the value of a key of a module, as `docs/extern/host/readme.md`, *The modules*, gives each key.
 For a name that is no key of a module, it gives `no key of a module`. For a key that only the manifest states, for example `abi`, it gives `only a module's author states it, in its file`.
+
+`manifest_get_setting` makes the `bridge_setting_t` of a value: a whole number, a real number or a flag by its kind, and `text` for each other value.
+The host gives as `text` the text of the value, or the whole path of a setting of the form `{ path = "..." }`.
 
 `manifest_get_rule` gives the rule of a check of the keys of a module. A host can check its own keys with these rules too.
 
@@ -134,7 +137,8 @@ A `manifest_made_t` starts with each field at 0.
 | `manifest_check_value` | No text, or the reason why a rule does not allow a value. |
 | `manifest_check_key` | No text, or the reason why a key of a module does not allow a value. |
 | `manifest_get_rule` | The rule of a check. |
+| `manifest_get_setting` | The setting of a value. |
 | `manifest_state` | `true` when the config holds each key of the module. |
 | `manifest_state_key` | The value of one key of a module, or no value. |
 | `manifest_free` | Frees the memory of the states of a module. |
-| `manifest_free_value` | Frees the texts and the items of a value. |
+| `manifest_free_value` | Frees what a value holds. |

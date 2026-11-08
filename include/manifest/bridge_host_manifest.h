@@ -146,6 +146,9 @@ typedef struct {
 [[nodiscard]] const manifest_rule_t *manifest_get_rule(
     enum manifest_check check);
 
+[[nodiscard]] bridge_setting_t manifest_get_setting(const char *key,
+    const manifest_value_t *v, const char *text);
+
 [[nodiscard]] bool manifest_state(const manifest_module_t *m,
     bridge_module_config_t *cfg);
 

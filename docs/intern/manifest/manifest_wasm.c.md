@@ -1,4 +1,4 @@
-# src/host/manifest/manifest_wasm.c
+# src/manifest/manifest_wasm.c
 
 This file finds the manifest of a wasm module.
 

@@ -15,7 +15,7 @@ A bad manifest prints `not a module` or `not loaded`.
 
 1. `keep_old` keeps the old module when the new manifest is refused, or when the old manifest does not state `reloadable=true`.
 2. `reload_found` refuses a module whose ABI differs.
-3. It takes `hot_reload` of the new module through `state_find_key`, from the files or from the manifest.
+3. It takes `hot_reload` of the new module through `state_find_key`, from the files or from the manifest, with the library.
 4. If `hot_reload` is `false`, the old module stays, and no failure counts. The host asks Bridge for nothing.
 5. Else it states the new module, and calls `bridge_reload`. Then it frees the memory of the statement.
 

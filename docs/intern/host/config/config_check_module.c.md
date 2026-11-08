@@ -4,7 +4,7 @@ This file checks a key under `module`.
 
 `check_table` accepts `all`, a backend name, or an identity with `:` and `@`, and turns down a bare version.
 It frees the list of the backend names that it compares.
-`check_rule` finds the rule of the third name with `config_get_rule`, and checks its value.
+`manifest_check_key` of the library checks the value of the third name, a key of a module.
 `check_setting` checks a key under `config`: a setting value, or a `path` text.
 `config_check_module` refuses a key with too few names and routes the rest to these checks.
 

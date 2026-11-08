@@ -1,4 +1,4 @@
-# src/host/manifest/manifest_find.c
+# src/manifest/manifest_find.c
 
 This file picks the file format and finds the manifest section of a PE library.
 

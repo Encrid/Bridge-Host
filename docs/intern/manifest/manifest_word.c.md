@@ -1,4 +1,4 @@
-# src/host/manifest/manifest_word.c
+# src/manifest/manifest_word.c
 
 This file reads one word of a manifest.
 

@@ -13,15 +13,16 @@ A `found_t` holds the chosen value beside a peer that clashes with it.
 
 A `keyed_t` and a `module_key_t` name a key to search for.
 A `names_t` gathers names without a repeat.
-`enum check` names the kind of a key.
-`value_rule_t` and `key_rule_t` drive the checks and the copy into Bridge.
+`enum check` names the kind of a key. Its first names are those of `manifest_check` of the library of the part `manifest`.
+The host adds the checks that only a deployment needs, from `CHECK_ARRIVE`. `key_rule_t` drives the checks and the copy into Bridge.
 
 ## The rules of the keys
 
 A `key_rule_t` names a key, its check, the width and the offset of its field, and the value of `none`.
 It also names the table of the key, and tells whether the key is fixed.
 `table` is null for a key at the top of a file, and `fixed` marks a key that the local file cannot state.
-`MODULE_KEYS`, `WORLD_KEYS` and `BUDGET_KEYS` hold the rules, and `docs/intern/host/config/config_keys.c.md` tells them.
+`WORLD_KEYS` and `BUDGET_KEYS` hold the rules, and `docs/intern/host/config/config_keys.c.md` tells them.
+The library holds the keys of a module: `docs/intern/manifest/manifest_keys.c.md`.
 
 A `deployment_t` holds what the host takes of the world. It holds the `bridge_config_t` of Bridge, `rounds`, `live` and the check `usage`.
 It also holds the levels `written` and `failing` of the records, and the `files` and the `depth` of the content.
@@ -34,7 +35,6 @@ It also holds the levels `written` and `failing` of the records, and the `files`
 | `config_free`, `config_free_file` | Free a configuration, and free one file. |
 | `config_check`, `config_check_*`, `config_check_value` | Check a statement against the rule of its key. |
 | `config_get_rule`, `config_get_names`, `config_put` | Find a rule by its table and its name, give the names of its key, and write a value by its rule. |
-| `config_get_setting` | Make a setting of Bridge of a value. |
 | `config_find`, `config_find_key`, `config_states_key`, `config_states_module` | Resolve a key over the files. |
 | `config_names`, `names_add` | List the names under a key. |
 | `config_say_*`, `config_path`, `config_get_folder`, `config_folder_size`, `config_go_beside` | Print a key or a problem, and build paths. |

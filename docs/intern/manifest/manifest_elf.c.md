@@ -1,4 +1,4 @@
-# src/host/manifest/manifest_elf.c
+# src/manifest/manifest_elf.c
 
 This file finds the `.bridge` section of an ELF library.
 

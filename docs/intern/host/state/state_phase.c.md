@@ -1,14 +1,13 @@
 # src/host/state/state_phase.c
 
-This file takes the phase map of a module.
+This file gives the function `phases` of the host to the library: the names of the phases that the deployment maps for a module.
 
 `add_phase_names` lists the phase names under one table of the module.
-`state_take_phases` gathers the names from the three tables, then resolves each name.
-`take_phase` finds the value of a phase name and pairs the name with it.
-The phase map goes into the `made_t` of the module. `state_take_phases` frees the list of the names.
+`state_phases` gathers the names from the tables of the identity, of the backend and of `all`, each name one time.
+The library finds the value of each name with `find`, and frees the block of the names.
 
 ## Functions
 
 | Function | Result |
 | --- | --- |
-| `state_take_phases` | Fills the phase map. Gives true when every phase resolves. |
+| `state_phases` | The count of the names, and their block. |

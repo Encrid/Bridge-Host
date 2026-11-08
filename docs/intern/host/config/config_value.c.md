@@ -4,11 +4,9 @@ This file checks a value against the rule of its key.
 
 ## The rules
 
-`RULES` holds one `value_rule_t` per `enum check`: the allowed kinds, the bounds, the words, and the reason.
-`is_allowed` branches on the kind of the value and weighs it against the rule.
-`is_word` accepts a text that matches one of a space-parted word list, such as `none` or `ask`.
-`is_names` accepts a list of texts that are not empty. `is_pairs` accepts a list of two-name pairs.
-`config_check_value` returns the reason of the rule when the value is not allowed.
+A check of `manifest_check` takes its rule from `manifest_get_rule` of the library of the part `manifest`.
+`RULES` holds one `manifest_rule_t` for each check that only the host has, from `CHECK_ARRIVE`: the allowed kinds, the bounds, the words, and the reason.
+`config_check_value` gives the value and the rule to `manifest_check_value`, which gives the reason of the rule when the value is not allowed.
 
 ## Functions
 

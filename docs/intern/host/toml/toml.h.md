@@ -1,7 +1,7 @@
 # src/host/toml/toml.h
 
 This header defines the values and statements of the TOML reader and declares its functions.
-A `value_t` is tagged by `value_kind` and holds a flag, a whole number, a real number, a text, a list, or an empty table.
+A `value_t` is the `manifest_value_t` of the library. Its kind tells whether it holds a flag, a whole number, a real number, a text, a list, or an empty table.
 An `entry_t` is one statement: a key of several names, a line, and a value.
 A `toml_t` owns the entries, and keeps the first reason with its line when the reader refuses.
 A `reading_t` is the cursor: the text position, the current table, and the output.
@@ -22,4 +22,4 @@ The cursor owns the array of the current table, and the reader frees it.
 | `toml_read_pair`, `toml_read_inline`, `toml_read_key`, `toml_read_value`, `toml_read_text`, `toml_read_number` | Read one part of the grammar. |
 | `toml_add`, `toml_has_prefix` | Add a statement, and test a key prefix. |
 | `toml_is_same`, `toml_say` | Compare two values, and print one. |
-| `toml_free`, `toml_free_value` | Free a `toml_t` with its names, and free a value with its texts and items. |
+| `toml_free` | Free a `toml_t` with its names and values. |

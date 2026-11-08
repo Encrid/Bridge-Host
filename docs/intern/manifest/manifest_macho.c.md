@@ -1,4 +1,4 @@
-# src/host/manifest/manifest_macho.c
+# src/manifest/manifest_macho.c
 
 This file locates the `.bridge` section of a Mach-O library.
 

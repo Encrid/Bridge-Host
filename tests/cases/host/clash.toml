@@ -1,0 +1,99 @@
+[[case]]
+name = "a module key that two presets state two ways is refused"
+run = ["{out}/bridge-host{exe}", "{case}/mt.toml"]
+
+[case.claims]
+status = 1
+has = ["refused: scratch: 65536 in {root}/tests/presets/world.toml:42, 1024 in ma.toml:2"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/ma.toml" = '''
+[module."bridge-host:knock@1.0.0"]
+scratch = 1024
+'''
+"{case}/mt.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml", "ma.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/ma.toml" = '''
+[module."bridge-host:knock@1.0.0"]
+scratch = 65536
+'''
+
+[[case]]
+name = "a setting that two presets state two ways is refused"
+run = ["{out}/bridge-host{exe}", "{case}/wt.toml"]
+
+[case.claims]
+status = 1
+has = ["refused: config.word: \"a\" in wa.toml:2, \"b\" in wb.toml:2"]
+
+[case.folders]
+"{case}/words" = ["word"]
+
+[case.files]
+"{case}/wa.toml" = '''
+[module."bridge-host:word@1.0.0".config]
+word = "a"
+'''
+"{case}/wb.toml" = '''
+[module."bridge-host:word@1.0.0".config]
+word = "b"
+'''
+"{case}/wt.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "wa.toml", "wb.toml"]
+phases = ["late"]
+again = {}
+rounds = 8
+[content]
+paths = ["words"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/wb.toml" = '''
+[module."bridge-host:word@1.0.0".config]
+word = "a"
+'''
+
+[[case]]
+name = "a setting that the manifest names twice is taken one time"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/dt.toml"]
+
+[case.claims]
+status = 1
+has = ["not stated: config.dup"]
+
+[case.folders]
+"{case}/dups" = ["dupset"]
+
+[case.files]
+"{case}/dt.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["late"]
+again = {}
+rounds = 1
+[content]
+paths = ["dups"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/dups" = ["word"]

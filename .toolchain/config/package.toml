@@ -1,2 +1,9 @@
+[parts.host]
+name = "Bridge-Host"
+folder = "host"
+uses = []
+third_party = []
+
 [compose.base]
+part = "host"
 headers = []

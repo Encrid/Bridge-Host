@@ -533,3 +533,7 @@ line = 80
 col = 21
 side = "false"
 why = "kept is false only when the malloc of keep_path ran out of memory, which the tests do not force."
+
+[[dup.exception]]
+paths = ["docs/contributing/coding_style.md", "docs/contributing/coding_style_cxx.md"]
+why = "Each coding guide states each of its rules in full, for a reader of one language."

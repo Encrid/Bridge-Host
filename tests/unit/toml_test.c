@@ -150,30 +150,30 @@ static void do_refusals(void)
 
 static void do_same(void)
 {
-    value_t two[2] = { { .kind = VALUE_WHOLE, .whole = 5 },
-        { .kind = VALUE_WHOLE, .whole = 6 } };
-    value_t three[2] = { { .kind = VALUE_WHOLE, .whole = 5 },
-        { .kind = VALUE_WHOLE, .whole = 7 } };
-    value_t la = { .kind = VALUE_LIST, .items = two, .count = 2 };
-    value_t lb = { .kind = VALUE_LIST, .items = two, .count = 2 };
-    value_t lc = { .kind = VALUE_LIST, .items = three, .count = 2 };
-    value_t ld = { .kind = VALUE_LIST, .items = two, .count = 1 };
+    value_t two[2] = { { .kind = MANIFEST_WHOLE, .whole = 5 },
+        { .kind = MANIFEST_WHOLE, .whole = 6 } };
+    value_t three[2] = { { .kind = MANIFEST_WHOLE, .whole = 5 },
+        { .kind = MANIFEST_WHOLE, .whole = 7 } };
+    value_t la = { .kind = MANIFEST_LIST, .items = two, .count = 2 };
+    value_t lb = { .kind = MANIFEST_LIST, .items = two, .count = 2 };
+    value_t lc = { .kind = MANIFEST_LIST, .items = three, .count = 2 };
+    value_t ld = { .kind = MANIFEST_LIST, .items = two, .count = 1 };
 
-    ck(!toml_is_same(&(value_t){ .kind = VALUE_WHOLE },
-        &(value_t){ .kind = VALUE_TEXT, .text = (char *)"x" }), "same kind");
-    ck(toml_is_same(&(value_t){ .kind = VALUE_TEXT, .text = (char *)"x" },
-        &(value_t){ .kind = VALUE_TEXT, .text = (char *)"x" }), "same text");
-    ck(!toml_is_same(&(value_t){ .kind = VALUE_TEXT, .text = (char *)"x" },
-        &(value_t){ .kind = VALUE_TEXT, .text = (char *)"y" }), "diff text");
-    ck(!toml_is_same(&(value_t){ .kind = VALUE_FLAG, .flag = true },
-        &(value_t){ .kind = VALUE_FLAG, .flag = false }), "diff flag");
-    ck(toml_is_same(&two[0], &(value_t){ .kind = VALUE_WHOLE, .whole = 5 }),
+    ck(!toml_is_same(&(value_t){ .kind = MANIFEST_WHOLE },
+        &(value_t){ .kind = MANIFEST_TEXT, .text = (char *)"x" }), "same kind");
+    ck(toml_is_same(&(value_t){ .kind = MANIFEST_TEXT, .text = (char *)"x" },
+        &(value_t){ .kind = MANIFEST_TEXT, .text = (char *)"x" }), "same text");
+    ck(!toml_is_same(&(value_t){ .kind = MANIFEST_TEXT, .text = (char *)"x" },
+        &(value_t){ .kind = MANIFEST_TEXT, .text = (char *)"y" }), "diff text");
+    ck(!toml_is_same(&(value_t){ .kind = MANIFEST_FLAG, .flag = true },
+        &(value_t){ .kind = MANIFEST_FLAG, .flag = false }), "diff flag");
+    ck(toml_is_same(&two[0], &(value_t){ .kind = MANIFEST_WHOLE, .whole = 5 }),
         "same whole");
     ck(!toml_is_same(&two[0], &two[1]), "diff whole");
-    ck(toml_is_same(&(value_t){ .kind = VALUE_REAL, .real = 1.5 },
-        &(value_t){ .kind = VALUE_REAL, .real = 1.5 }), "same real");
-    ck(!toml_is_same(&(value_t){ .kind = VALUE_REAL, .real = 1.5 },
-        &(value_t){ .kind = VALUE_REAL, .real = 2.5 }), "diff real");
+    ck(toml_is_same(&(value_t){ .kind = MANIFEST_REAL, .real = 1.5 },
+        &(value_t){ .kind = MANIFEST_REAL, .real = 1.5 }), "same real");
+    ck(!toml_is_same(&(value_t){ .kind = MANIFEST_REAL, .real = 1.5 },
+        &(value_t){ .kind = MANIFEST_REAL, .real = 2.5 }), "diff real");
     ck(toml_is_same(&la, &lb), "same list");
     ck(!toml_is_same(&la, &lc), "diff item");
     ck(!toml_is_same(&la, &ld), "diff count");
@@ -181,16 +181,16 @@ static void do_same(void)
 
 static void do_say(const char *word)
 {
-    value_t items[3] = { { .kind = VALUE_WHOLE, .whole = 100 },
-        { .kind = VALUE_WHOLE, .whole = 200 },
-        { .kind = VALUE_WHOLE, .whole = 300 } };
-    value_t all[5] = { { .kind = VALUE_TEXT, .text = (char *)word },
-        { .kind = VALUE_WHOLE, .whole = 42 },
-        { .kind = VALUE_REAL, .real = 3.5 },
-        { .kind = VALUE_FLAG, .flag = true },
-        { .kind = VALUE_LIST, .items = items, .count = 3 } };
+    value_t items[3] = { { .kind = MANIFEST_WHOLE, .whole = 100 },
+        { .kind = MANIFEST_WHOLE, .whole = 200 },
+        { .kind = MANIFEST_WHOLE, .whole = 300 } };
+    value_t all[5] = { { .kind = MANIFEST_TEXT, .text = (char *)word },
+        { .kind = MANIFEST_WHOLE, .whole = 42 },
+        { .kind = MANIFEST_REAL, .real = 3.5 },
+        { .kind = MANIFEST_FLAG, .flag = true },
+        { .kind = MANIFEST_LIST, .items = items, .count = 3 } };
 
-    toml_say(&(value_t){ .kind = VALUE_LIST, .items = all, .count = 5 });
+    toml_say(&(value_t){ .kind = MANIFEST_LIST, .items = all, .count = 5 });
     say("\n");
 }
 
@@ -210,11 +210,11 @@ static void do_prefix(void)
 
 static void value_whole(void)
 {
-    value_t five = { .kind = VALUE_WHOLE, .whole = 5 };
-    value_t zero = { .kind = VALUE_WHOLE, .whole = 0 };
-    value_t big = { .kind = VALUE_WHOLE, .whole = 5000000000 };
-    value_t flag = { .kind = VALUE_FLAG, .flag = true };
-    value_t real = { .kind = VALUE_REAL, .real = 1.5 };
+    value_t five = { .kind = MANIFEST_WHOLE, .whole = 5 };
+    value_t zero = { .kind = MANIFEST_WHOLE, .whole = 0 };
+    value_t big = { .kind = MANIFEST_WHOLE, .whole = 5000000000 };
+    value_t flag = { .kind = MANIFEST_FLAG, .flag = true };
+    value_t real = { .kind = MANIFEST_REAL, .real = 1.5 };
 
     ck(!config_check_value(&five, CHECK_COUNT), "count ok");
     ck(config_check_value(&zero, CHECK_COUNT), "count low");
@@ -225,55 +225,55 @@ static void value_whole(void)
     ck(config_check_value(&real, CHECK_COUNT), "real no");
     ck(!config_check_value(&real, CHECK_SETTING), "real ok");
     ck(config_check_value(&zero, CHECK_LEVEL), "level low");
-    ck(config_check_value(&(value_t){ .kind = VALUE_WHOLE, .whole = 8 },
+    ck(config_check_value(&(value_t){ .kind = MANIFEST_WHOLE, .whole = 8 },
         CHECK_LEVEL), "level high");
 }
 
 static void value_text(void)
 {
-    value_t word = { .kind = VALUE_TEXT, .text = (char *)"x" };
-    value_t empty = { .kind = VALUE_TEXT, .text = (char *)"" };
+    value_t word = { .kind = MANIFEST_TEXT, .text = (char *)"x" };
+    value_t empty = { .kind = MANIFEST_TEXT, .text = (char *)"" };
 
     ck(!config_check_value(&word, CHECK_TEXT), "text ok");
     ck(config_check_value(&empty, CHECK_TEXT), "text empty");
     ck(!config_check_value(&empty, CHECK_SETTING), "setting empty");
-    ck(!config_check_value(&(value_t){ .kind = VALUE_TEXT,
+    ck(!config_check_value(&(value_t){ .kind = MANIFEST_TEXT,
         .text = (char *)"none" }, CHECK_LIMIT), "limit word");
-    ck(config_check_value(&(value_t){ .kind = VALUE_TEXT,
+    ck(config_check_value(&(value_t){ .kind = MANIFEST_TEXT,
         .text = (char *)"other" }, CHECK_LIMIT), "limit other");
-    ck(config_check_value(&(value_t){ .kind = VALUE_TEXT,
+    ck(config_check_value(&(value_t){ .kind = MANIFEST_TEXT,
         .text = (char *)"ail" }, CHECK_ERROR), "error ail");
-    ck(config_check_value(&(value_t){ .kind = VALUE_TEXT,
+    ck(config_check_value(&(value_t){ .kind = MANIFEST_TEXT,
         .text = (char *)"fai" }, CHECK_ERROR), "error fai");
     ck(config_check_value(&empty, CHECK_ERROR), "error empty");
     ck(config_check_value(&word, CHECK_ERROR), "error word");
-    ck(!config_check_value(&(value_t){ .kind = VALUE_TEXT,
+    ck(!config_check_value(&(value_t){ .kind = MANIFEST_TEXT,
         .text = (char *)"fail" }, CHECK_ERROR), "error fail");
-    ck(config_check_value(&(value_t){ .kind = VALUE_FLAG, .flag = true },
+    ck(config_check_value(&(value_t){ .kind = MANIFEST_FLAG, .flag = true },
         CHECK_AUTHOR), "author");
 }
 
 static void value_list(void)
 {
-    value_t names[2] = { { .kind = VALUE_TEXT, .text = (char *)"a" },
-        { .kind = VALUE_TEXT, .text = (char *)"b" } };
-    value_t bad[1] = { { .kind = VALUE_WHOLE, .whole = 1 } };
-    value_t miss[2] = { { .kind = VALUE_TEXT, .text = (char *)"a" },
-        { .kind = VALUE_TEXT, .text = (char *)"" } };
-    value_t good = { .kind = VALUE_LIST, .items = names, .count = 2 };
-    value_t none = { .kind = VALUE_LIST, .items = bad, .count = 1 };
-    value_t gap = { .kind = VALUE_LIST, .items = miss, .count = 2 };
-    value_t pair = { .kind = VALUE_LIST, .items = &good, .count = 1 };
+    value_t names[2] = { { .kind = MANIFEST_TEXT, .text = (char *)"a" },
+        { .kind = MANIFEST_TEXT, .text = (char *)"b" } };
+    value_t bad[1] = { { .kind = MANIFEST_WHOLE, .whole = 1 } };
+    value_t miss[2] = { { .kind = MANIFEST_TEXT, .text = (char *)"a" },
+        { .kind = MANIFEST_TEXT, .text = (char *)"" } };
+    value_t good = { .kind = MANIFEST_LIST, .items = names, .count = 2 };
+    value_t none = { .kind = MANIFEST_LIST, .items = bad, .count = 1 };
+    value_t gap = { .kind = MANIFEST_LIST, .items = miss, .count = 2 };
+    value_t pair = { .kind = MANIFEST_LIST, .items = &good, .count = 1 };
     value_t trio[3] = { names[0], names[1], names[0] };
-    value_t wide = { .kind = VALUE_LIST, .items = trio, .count = 3 };
-    value_t pair3 = { .kind = VALUE_LIST, .items = &wide, .count = 1 };
-    value_t empty = { .kind = VALUE_LIST };
+    value_t wide = { .kind = MANIFEST_LIST, .items = trio, .count = 3 };
+    value_t pair3 = { .kind = MANIFEST_LIST, .items = &wide, .count = 1 };
+    value_t empty = { .kind = MANIFEST_LIST };
     value_t nothing = {};
 
     ck(!config_check_value(&good, CHECK_NAMES), "names ok");
     ck(config_check_value(&none, CHECK_NAMES), "names whole");
     ck(config_check_value(&gap, CHECK_NAMES), "names empty");
-    ck(config_check_value(&(value_t){ .kind = VALUE_WHOLE, .whole = 1 },
+    ck(config_check_value(&(value_t){ .kind = MANIFEST_WHOLE, .whole = 1 },
         CHECK_NAMES), "names scalar");
     ck(!config_check_value(&pair, CHECK_PAIRS), "pairs ok");
     ck(config_check_value(&empty, CHECK_PAIRS), "pairs empty");

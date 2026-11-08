@@ -7,3 +7,15 @@ third_party = []
 [compose.base]
 part = "host"
 headers = []
+
+[parts.manifest]
+name = "BL-Bridge-Host-Manifest"
+folder = "manifest"
+uses = []
+third_party = []
+
+[compose.manifest]
+part = "manifest"
+from = "include/manifest"
+headers = ["*.h"]
+into = "include"

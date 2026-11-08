@@ -47,37 +47,31 @@ static void say_names(const stating_t *s, const char *key,
     say("]\n");
 }
 
-static void put_names(bridge_module_config_t *cfg, const char *key,
-    const names_t *got, bool none)
+static value_t *make_list(const stating_t *s, const names_t *got)
 {
-    if (key[0] == 'r') {
-        cfg->read = got->names;
-        cfg->read_count = got->count;
-    } else if (key[0] == 'w') {
-        cfg->write = got->names;
-        cfg->write_count = got->count;
-    } else {
-        cfg->losses = got->names;
-        cfg->loss_count = none ? BRIDGE_NONE : got->count;
-    }
+    value_t *v = state_keep(s, calloc(1, sizeof(*v)));
+    value_t *items = state_keep(s, calloc(got->count + 1, sizeof(*items)));
+
+    if (!v || !items)
+        return (nullptr);
+    for (uint32_t i = 0; i < got->count; i++)
+        items[i] = (value_t){ .kind = MANIFEST_TEXT,
+            .text = (char *)got->names[i] };
+    *v = (value_t){ .kind = MANIFEST_LIST, .items = items,
+        .count = got->count };
+    return (v);
 }
 
-bool state_take_list(const stating_t *s, const key_rule_t *rule,
-    bridge_module_config_t *cfg)
+bool state_find_grant(const stating_t *s, const char *name,
+    manifest_found_t *found)
 {
     names_t got = {};
-    bool stated = rule->check == CHECK_NAMES && find_names(s, rule->name,
-        &got);
-    const value_t *v = stated ? nullptr : state_find_key(s, rule);
+    bool stated = find_names(s, name, &got);
 
-    if (stated)
-        say_names(s, rule->name, &got);
-    if (!stated && !v)
-        return (false);
-    for (uint32_t i = 0; v && v->kind == VALUE_LIST && i < v->count; i++)
-        names_add(&got, v->items[i].text);
-    got.names = state_keep(s, got.names);
-    got.count = got.names ? got.count : 0;
-    put_names(cfg, rule->name, &got, v && v->kind != VALUE_LIST);
-    return (true);
+    if (stated) {
+        say_names(s, name, &got);
+        *found = (manifest_found_t){ make_list(s, &got), nullptr };
+    }
+    free(got.names);
+    return (stated);
 }

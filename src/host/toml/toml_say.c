@@ -12,9 +12,9 @@ bool toml_is_same(const value_t *a, const value_t *b)
 {
     if (a->kind != b->kind)
         return (false);
-    if (a->kind == VALUE_TEXT)
+    if (a->kind == MANIFEST_TEXT)
         return (!strcmp(a->text, b->text));
-    if (a->kind != VALUE_LIST)
+    if (a->kind != MANIFEST_LIST)
         return (a->flag == b->flag && a->whole == b->whole
             && a->real == b->real);
     if (a->count != b->count)
@@ -27,23 +27,23 @@ bool toml_is_same(const value_t *a, const value_t *b)
 
 static void say_scalar(const value_t *v)
 {
-    if (v->kind == VALUE_TEXT)
+    if (v->kind == MANIFEST_TEXT)
         say_part("\"%s\"", v->text);
-    if (v->kind == VALUE_WHOLE)
+    if (v->kind == MANIFEST_WHOLE)
         say_part("%lld", (long long)v->whole);
-    if (v->kind == VALUE_REAL)
+    if (v->kind == MANIFEST_REAL)
         say_part("%g", v->real);
-    if (v->kind == VALUE_FLAG)
+    if (v->kind == MANIFEST_FLAG)
         say_part("%s", v->flag ? "true" : "false");
 }
 
 void toml_say(const value_t *v)
 {
-    if (v->kind == VALUE_TABLE) {
+    if (v->kind == MANIFEST_TABLE) {
         say_part("{}");
         return;
     }
-    if (v->kind != VALUE_LIST) {
+    if (v->kind != MANIFEST_LIST) {
         say_scalar(v);
         return;
     }

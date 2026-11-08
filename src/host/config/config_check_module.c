@@ -27,16 +27,6 @@ static const char *check_table(const config_t *c, const char *table)
     return (why);
 }
 
-static const char *check_rule(const entry_t *e)
-{
-    const key_rule_t *rule = config_get_rule(MODULE_KEYS, MODULE_KEY_COUNT,
-        nullptr, e->key[2]);
-
-    if (!rule)
-        return ("no key of a module");
-    return (config_check_value(&e->value, rule->check));
-}
-
 static const char *check_setting(const entry_t *e)
 {
     if (!strchr(e->key[1], ':'))
@@ -56,7 +46,7 @@ const char *config_check_module(const config_t *c, const entry_t *e)
         return ("no key of Bridge-Host's or Bridge's");
     why = check_table(c, e->key[1]);
     if (why || e->depth == 3)
-        return (why ? why : check_rule(e));
+        return (why ? why : manifest_check_key(e->key[2], &e->value));
     if (!strcmp(e->key[2], "config"))
         return (check_setting(e));
     if (e->depth == 4 && !strcmp(e->key[2], "phases"))

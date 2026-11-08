@@ -40,25 +40,10 @@ void *state_keep(const stating_t *s, void *block)
     return (block);
 }
 
-value_t *state_keep_value(const stating_t *s, value_t *v)
-{
-    made_t *m = s->made;
-
-    if (v && !add_one(&m->values, &m->value_count, v)) {
-        free(v);
-        return (nullptr);
-    }
-    return (v);
-}
-
 void state_free(made_t *m)
 {
     for (uint32_t i = 0; i < m->block_count; i++)
         free(m->blocks[i]);
-    for (uint32_t i = 0; i < m->value_count; i++) {
-        toml_free_value(m->values[i]);
-        free(m->values[i]);
-    }
     free(m->blocks);
-    free(m->values);
+    manifest_free(&m->lib);
 }

@@ -5,22 +5,26 @@
 */
 #include "host.h"
 
-static enum bridge_flag get_flag(bool yes)
+static manifest_module_t get_module(const stating_t *s, manifest_host_t *host)
 {
-    return (yes ? BRIDGE_TRUE : BRIDGE_FALSE);
+    *host = (manifest_host_t){ (void *)s, state_parse, state_find,
+        state_phases, state_undeclared, state_tell };
+    return ((manifest_module_t){ host, &s->of->who,
+        (const unsigned char *)s->of->bytes, s->of->len, &s->made->lib });
 }
 
 bool state_found(const stating_t *s, bridge_module_config_t *cfg)
 {
-    const manifest_t *who = &s->of->who;
-    bool taken = state_own_keys(s);
+    manifest_host_t host = {};
+    const manifest_module_t m = get_module(s, &host);
 
-    *cfg = (bridge_module_config_t){ .identity = who->identity,
-        .abi = BRIDGE_ABI, .config = who->config,
-        .pinned = get_flag(who->pinned),
-        .reloadable = get_flag(who->reloadable) };
-    for (uint32_t i = 0; i < MODULE_KEY_COUNT; i++)
-        taken = state_take_key(s, &MODULE_KEYS[i], cfg) && taken;
-    taken = state_take_phases(s, cfg) && taken;
-    return (state_settings(s, cfg) && taken);
+    return (manifest_state(&m, cfg));
+}
+
+const value_t *state_find_key(const stating_t *s, const char *name)
+{
+    manifest_host_t host = {};
+    const manifest_module_t m = get_module(s, &host);
+
+    return (manifest_state_key(&m, name));
 }

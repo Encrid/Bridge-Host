@@ -37,7 +37,8 @@ static bool read_whole(const char *digits, value_t *v)
     char *end = nullptr;
 
     errno = 0;
-    *v = (value_t){ .kind = VALUE_WHOLE, .whole = strtoll(digits, &end, 10) };
+    *v = (value_t){ .kind = MANIFEST_WHOLE,
+        .whole = strtoll(digits, &end, 10) };
     return (end != digits && !*end && !errno);
 }
 
@@ -45,7 +46,7 @@ static bool read_real(const char *digits, value_t *v)
 {
     char *end = nullptr;
 
-    *v = (value_t){ .kind = VALUE_REAL, .real = strtod(digits, &end) };
+    *v = (value_t){ .kind = MANIFEST_REAL, .real = strtod(digits, &end) };
     return (end != digits && !*end && isdigit((unsigned char)end[-1]));
 }
 

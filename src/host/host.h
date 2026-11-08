@@ -14,7 +14,7 @@
     #include "bridge_abi.h"
     #include "config.h"
     #include "file_bytes.h"
-    #include "manifest.h"
+    #include "bridge_host_manifest.h"
     #include "os.h"
     #include "say.h"
 
@@ -96,8 +96,7 @@ typedef struct {
 typedef struct {
     void **blocks;
     uint32_t block_count;
-    void **values;
-    uint32_t value_count;
+    manifest_made_t lib;
 } made_t;
 
 typedef struct {
@@ -153,27 +152,23 @@ typedef struct {
 [[nodiscard]] bool state_found(const stating_t *s,
     bridge_module_config_t *cfg);
 
-[[nodiscard]] bool read_own(const stating_t *s, const char *key, value_t *v);
-
-[[nodiscard]] const value_t *state_find_own(const stating_t *s,
-    const key_rule_t *rule);
-
-[[nodiscard]] bool state_own_keys(const stating_t *s);
-
 [[nodiscard]] const value_t *state_find_key(const stating_t *s,
-    const key_rule_t *rule);
+    const char *name);
 
-[[nodiscard]] bool state_take_key(const stating_t *s,
-    const key_rule_t *rule, bridge_module_config_t *cfg);
+[[nodiscard]] bool state_parse(void *ud, const char *raw, value_t *v);
 
-[[nodiscard]] bool state_take_list(const stating_t *s,
-    const key_rule_t *rule, bridge_module_config_t *cfg);
+[[nodiscard]] int state_find(void *ud, const char *const *names,
+    uint32_t depth, manifest_found_t *found);
 
-[[nodiscard]] bool state_take_phases(const stating_t *s,
-    bridge_module_config_t *cfg);
+[[nodiscard]] bool state_find_grant(const stating_t *s, const char *name,
+    manifest_found_t *found);
 
-[[nodiscard]] bool state_settings(const stating_t *s,
-    bridge_module_config_t *cfg);
+[[nodiscard]] uint32_t state_phases(void *ud, const char ***names);
+
+[[nodiscard]] uint32_t state_undeclared(void *ud, const char *const *names,
+    uint32_t count);
+
+void state_tell(void *ud, const manifest_told_t *told);
 
 [[nodiscard]] bool state_is_setting(const entry_t *e,
     const char *const *two);
@@ -183,17 +178,10 @@ typedef struct {
 
 [[nodiscard]] bool state_is_path(const config_t *c, const said_t *said);
 
-[[nodiscard]] said_t state_own_setting(const stating_t *s, const char *key);
-
-[[nodiscard]] uint32_t state_undeclared(const stating_t *s,
-    const names_t *declared);
-
 [[nodiscard]] const char *state_keep_prefix(made_t *m, const char *what,
     const char *path, const char *who);
 
 [[nodiscard]] void *state_keep(const stating_t *s, void *block);
-
-[[nodiscard]] value_t *state_keep_value(const stating_t *s, value_t *v);
 
 void state_free(made_t *m);
 

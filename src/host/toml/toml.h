@@ -9,26 +9,9 @@
     #include <stddef.h>
     #include <stdint.h>
 
-enum value_kind : uint8_t {
-    VALUE_TEXT = 1,
-    VALUE_WHOLE,
-    VALUE_REAL,
-    VALUE_FLAG,
-    VALUE_LIST,
-    VALUE_TABLE
-};
+    #include "bridge_host_manifest.h"
 
-typedef struct value value_t;
-
-struct value {
-    enum value_kind kind;
-    bool flag;
-    int64_t whole;
-    double real;
-    char *text;
-    value_t *items;
-    uint32_t count;
-};
+typedef manifest_value_t value_t;
 
 typedef struct {
     char **key;
@@ -85,7 +68,5 @@ void toml_skip(reading_t *r);
 void toml_say(const value_t *v);
 
 void toml_free(toml_t *t);
-
-void toml_free_value(value_t *v);
 
 #endif

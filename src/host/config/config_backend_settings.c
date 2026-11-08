@@ -11,7 +11,8 @@ static bool take_setting(host_t *h, const char *const *key,
     said_t said = config_find_key(&h->config, key, 3);
 
     if (said.value)
-        *set = config_get_setting(key[2], said.value, said.value->text);
+        *set = manifest_get_setting(key[2], said.value,
+            said.value->text);
     return (said.value != nullptr);
 }
 

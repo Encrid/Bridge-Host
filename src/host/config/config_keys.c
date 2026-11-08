@@ -9,60 +9,6 @@
 #include "bridge.h"
 #include "config.h"
 
-const key_rule_t MODULE_KEYS[] = {
-    { "hot_reload", CHECK_FLAG, 1,
-        offsetof(bridge_module_config_t, hot_reload), 0, nullptr, false },
-    { "on_error", CHECK_ERROR, 1,
-        offsetof(bridge_module_config_t, on_error), 0, nullptr, false },
-    { "element_limit", CHECK_LIMIT, 8,
-        offsetof(bridge_module_config_t, element_limit), BRIDGE_NO_LIMIT,
-        nullptr, false },
-    { "max_system_failures", CHECK_LIMIT, 8,
-        offsetof(bridge_module_config_t, max_system_failures), BRIDGE_NO_LIMIT,
-        nullptr, false },
-    { "work_limit", CHECK_LIMIT, 8,
-        offsetof(bridge_module_config_t, work_limit), BRIDGE_NO_LIMIT,
-        nullptr, false },
-    { "memory_limit", CHECK_LIMIT, 8,
-        offsetof(bridge_module_config_t, memory_limit), BRIDGE_NO_LIMIT,
-        nullptr, false },
-    { "init_timeout", CHECK_LIMIT, 8,
-        offsetof(bridge_module_config_t, init_timeout), BRIDGE_NO_LIMIT,
-        nullptr, false },
-    { "reload_timeout", CHECK_LIMIT, 8,
-        offsetof(bridge_module_config_t, reload_timeout), BRIDGE_NO_LIMIT,
-        nullptr, false },
-    { "shutdown_timeout", CHECK_LIMIT, 8,
-        offsetof(bridge_module_config_t, shutdown_timeout), BRIDGE_NO_LIMIT,
-        nullptr, false },
-    { "log_level", CHECK_LEVEL, 1,
-        offsetof(bridge_module_config_t, log_level), 0, nullptr, false },
-    { "scratch", CHECK_COUNT, 4,
-        offsetof(bridge_module_config_t, scratch), 0, nullptr, false },
-    { "log_ring", CHECK_COUNT, 4,
-        offsetof(bridge_module_config_t, log_ring), 0, nullptr, false },
-    { "spans", CHECK_COUNT, 4,
-        offsetof(bridge_module_config_t, spans), 0, nullptr, false },
-    { "spawns", CHECK_LIMIT, 8,
-        offsetof(bridge_module_config_t, spawns), BRIDGE_NONE, nullptr, false },
-    { "persistent", CHECK_LIMIT, 8,
-        offsetof(bridge_module_config_t, persistent), BRIDGE_NONE,
-        nullptr, false },
-    { "changes", CHECK_LIMIT, 8,
-        offsetof(bridge_module_config_t, changes), BRIDGE_NONE,
-        nullptr, false },
-    { "losses", CHECK_NAMES_NONE, 0, 0, BRIDGE_NONE, nullptr, false },
-    { "read", CHECK_NAMES, 0, 0, 0, nullptr, false },
-    { "write", CHECK_NAMES, 0, 0, 0, nullptr, false },
-    { "abi", CHECK_AUTHOR, 0, 0, 0, nullptr, false },
-    { "config", CHECK_AUTHOR, 0, 0, 0, nullptr, false },
-    { "settings", CHECK_AUTHOR, 0, 0, 0, nullptr, false },
-    { "pinned", CHECK_AUTHOR, 0, 0, 0, nullptr, false },
-    { "reloadable", CHECK_AUTHOR, 0, 0, 0, nullptr, false }
-};
-
-const uint32_t MODULE_KEY_COUNT = sizeof(MODULE_KEYS) / sizeof(MODULE_KEYS[0]);
-
 const key_rule_t WORLD_KEYS[] = {
     { "phases", CHECK_NAMES, 0, 0, 0, nullptr, true },
     { "threads", CHECK_COUNT, 4, offsetof(deployment_t, world.threads), 0,
@@ -149,37 +95,16 @@ uint32_t config_get_names(const key_rule_t *rule, const char **names)
 
 void config_put(void *into, const key_rule_t *rule, const value_t *v)
 {
-    int64_t n = v->kind == VALUE_WHOLE ? v->whole : rule->none;
+    int64_t n = v->kind == MANIFEST_WHOLE ? v->whole : rule->none;
     uint8_t one = (uint8_t)n;
     uint32_t four = (uint32_t)n;
 
     if (rule->check == CHECK_FLAG)
         one = v->flag ? BRIDGE_TRUE : BRIDGE_FALSE;
-    if (rule->check == CHECK_ERROR)
-        one = v->text[0] == 'f' ? BRIDGE_FAIL : BRIDGE_SKIP;
     if (rule->width == 1)
         memcpy((char *)into + rule->at, &one, 1);
     if (rule->width == 4)
         memcpy((char *)into + rule->at, &four, 4);
     if (rule->width == 8)
         memcpy((char *)into + rule->at, &n, 8);
-}
-
-bridge_setting_t config_get_setting(const char *key, const value_t *v,
-    const char *text)
-{
-    switch (v->kind) {
-        case VALUE_WHOLE:
-            return ((bridge_setting_t){ .key = key, .kind = BRIDGE_INT,
-                .v.i = v->whole });
-        case VALUE_REAL:
-            return ((bridge_setting_t){ .key = key, .kind = BRIDGE_FLOAT,
-                .v.f = v->real });
-        case VALUE_FLAG:
-            return ((bridge_setting_t){ .key = key, .kind = BRIDGE_BOOL,
-                .v.b = v->flag });
-        default:
-            return ((bridge_setting_t){ .key = key, .kind = BRIDGE_STRING,
-                .v.s = text });
-    }
 }

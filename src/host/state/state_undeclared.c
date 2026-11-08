@@ -31,11 +31,13 @@ static uint32_t say_undeclared_in(const stating_t *s, const cfile_t *f,
     return (count);
 }
 
-uint32_t state_undeclared(const stating_t *s, const names_t *declared)
+uint32_t state_undeclared(void *ud, const char *const *names, uint32_t count)
 {
-    uint32_t count = 0;
+    const stating_t *s = ud;
+    const names_t declared = { (const char **)names, count };
+    uint32_t found = 0;
 
     for (uint32_t i = 0; i < s->h->config.count; i++)
-        count += say_undeclared_in(s, &s->h->config.files[i], declared);
-    return (count);
+        found += say_undeclared_in(s, &s->h->config.files[i], &declared);
+    return (found);
 }

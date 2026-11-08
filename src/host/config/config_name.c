@@ -16,10 +16,10 @@ static const keyed_t PRESETS = { PRESET, 1 };
 
 static bool is_paths(const value_t *v)
 {
-    bool paths = v->kind == VALUE_LIST;
+    bool paths = v->kind == MANIFEST_LIST;
 
     for (uint32_t i = 0; paths && i < v->count; i++)
-        paths = v->items[i].kind == VALUE_TEXT;
+        paths = v->items[i].kind == MANIFEST_TEXT;
     return (paths);
 }
 

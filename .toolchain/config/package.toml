@@ -1,7 +1,7 @@
 [parts.host]
 name = "Bridge-Host"
 folder = "host"
-uses = []
+uses = ["manifest"]
 third_party = []
 
 [compose.base]

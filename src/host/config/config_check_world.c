@@ -26,7 +26,7 @@ static const char *check_again(const entry_t *e, bool local)
 {
     if (local)
         return ("fixed when the world is made: not in the local file");
-    if (e->depth == 1 && e->value.kind != VALUE_TABLE)
+    if (e->depth == 1 && e->value.kind != MANIFEST_TABLE)
         return ("{} or a table of phases and their caps");
     if (e->depth == 1)
         return (nullptr);

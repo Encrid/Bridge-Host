@@ -31,7 +31,7 @@ static bool read_assigned(reading_t *r, char **key, uint32_t depth,
         return (toml_read_inline(r, key, depth));
     if (toml_read_value(r, &v) && toml_add(r, key, depth, &v))
         return (true);
-    toml_free_value(&v);
+    manifest_free_value(&v);
     return (false);
 }
 
@@ -53,7 +53,7 @@ static bool read_member(reading_t *r, char **key, uint32_t depth)
 bool toml_read_inline(reading_t *r, char **key, uint32_t depth)
 {
     bool more = true;
-    value_t empty = { .kind = VALUE_TABLE };
+    value_t empty = { .kind = MANIFEST_TABLE };
 
     r->at++;
     toml_skip(r);

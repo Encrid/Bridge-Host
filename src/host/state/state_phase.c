@@ -17,38 +17,14 @@ static void add_phase_names(const host_t *h, const char *table,
     free(found.names);
 }
 
-static bool take_phase(const stating_t *s, const char *name,
-    bridge_phase_name_t *into)
+uint32_t state_phases(void *ud, const char ***names)
 {
-    const char *const names[] = { "phases", name };
-    const module_key_t k = { { s->of->who.identity, s->of->who.backend,
-        "all" }, { names, 2 } };
-    const shown_t how = { "  ", config_states_module, &k };
-    found_t f = config_find(&s->h->config, config_states_module, &k);
+    const stating_t *s = ud;
+    names_t got = {};
 
-    if (!config_say_found(&s->h->config, &k.key, &f, s->prefix))
-        return (false);
-    if (s->show)
-        config_say_value(&s->h->config, &k.key, &f, &how);
-    *into = (bridge_phase_name_t){ name, f.at.value->text };
-    return (true);
-}
-
-bool state_take_phases(const stating_t *s, bridge_module_config_t *cfg)
-{
-    names_t names = {};
-    bridge_phase_name_t *map = nullptr;
-    bool taken = true;
-
-    add_phase_names(s->h, s->of->who.identity, &names);
-    add_phase_names(s->h, s->of->who.backend, &names);
-    add_phase_names(s->h, "all", &names);
-    if (names.count)
-        map = state_keep(s, malloc(sizeof(*map) * names.count));
-    for (uint32_t i = 0; map && i < names.count; i++)
-        taken = take_phase(s, names.names[i], &map[i]) && taken;
-    free(names.names);
-    cfg->phases = map;
-    cfg->phase_count = map ? names.count : 0;
-    return (taken);
+    add_phase_names(s->h, s->of->who.identity, &got);
+    add_phase_names(s->h, s->of->who.backend, &got);
+    add_phase_names(s->h, "all", &got);
+    *names = got.names;
+    return (got.count);
 }

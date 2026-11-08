@@ -66,42 +66,23 @@ typedef struct {
 } shown_t;
 
 enum check : uint8_t {
-    CHECK_FLAG = 1,
-    CHECK_COUNT,
-    CHECK_LIMIT,
-    CHECK_LEVEL,
-    CHECK_NAMES,
-    CHECK_NAMES_NONE,
-    CHECK_ERROR,
-    CHECK_ARRIVE,
-    CHECK_TEXT,
+    CHECK_FLAG = MANIFEST_CHECK_FLAG,
+    CHECK_COUNT = MANIFEST_CHECK_COUNT,
+    CHECK_LIMIT = MANIFEST_CHECK_LIMIT,
+    CHECK_LEVEL = MANIFEST_CHECK_LEVEL,
+    CHECK_NAMES = MANIFEST_CHECK_NAMES,
+    CHECK_NAMES_NONE = MANIFEST_CHECK_NAMES_NONE,
+    CHECK_ERROR = MANIFEST_CHECK_ERROR,
+    CHECK_TEXT = MANIFEST_CHECK_TEXT,
+    CHECK_SETTING = MANIFEST_CHECK_SETTING,
+    CHECK_AUTHOR = MANIFEST_CHECK_AUTHOR,
+    CHECK_ARRIVE = MANIFEST_CHECK_AUTHOR + 1,
     CHECK_ROUNDS,
-    CHECK_SETTING,
     CHECK_PAIRS,
-    CHECK_AUTHOR,
     CHECK_SIZE,
     CHECK_VALUE,
     CHECK_RECORD
 };
-
-enum allow : uint8_t {
-    ALLOW_FLAG = 1,
-    ALLOW_WHOLE = 2,
-    ALLOW_REAL = 4,
-    ALLOW_WORD = 8,
-    ALLOW_TEXT = 16,
-    ALLOW_EMPTY = 32,
-    ALLOW_NAMES = 64,
-    ALLOW_PAIRS = 128
-};
-
-typedef struct {
-    uint8_t allow;
-    int64_t least;
-    int64_t most;
-    const char *words;
-    const char *why;
-} value_rule_t;
 
 typedef struct {
     const char *name;
@@ -124,8 +105,6 @@ typedef struct {
     uint32_t depth;
 } deployment_t;
 
-extern const key_rule_t MODULE_KEYS[];
-extern const uint32_t MODULE_KEY_COUNT;
 extern const key_rule_t WORLD_KEYS[];
 extern const uint32_t WORLD_KEY_COUNT;
 extern const key_rule_t BUDGET_KEYS[];
@@ -137,9 +116,6 @@ extern const uint32_t BUDGET_KEY_COUNT;
 uint32_t config_get_names(const key_rule_t *rule, const char **names);
 
 void config_put(void *into, const key_rule_t *rule, const value_t *v);
-
-[[nodiscard]] bridge_setting_t config_get_setting(const char *key,
-    const value_t *v, const char *text);
 
 [[nodiscard]] size_t config_folder_size(const char *path);
 

@@ -23,6 +23,8 @@ The value of a take of `memory` or of a pair is its result, and the value of a g
 `realloc` adds 1 when its pointer is null and its result is not null.
 `realloc` with 0 bytes is a fault, because C23 does not define it.
 
+A pair of `[leaks.pairs]` also counts the calls through pointer variables of those names: `.toolchain/docs/rewrite.py.md`, *The pointer variables*.
+
 ## The places
 
 A function of a kind takes or gives back a resource at a place:

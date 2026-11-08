@@ -1,22 +1,33 @@
 [[artifact]]
+name = "manifest"
+part = "manifest"
+kind = "archive"
+sources = ["src/manifest/*.c"]
+include = ["{bridge}/include", "include/manifest", "src/manifest"]
+
+[[artifact]]
 name = "bridge-host"
+part = "host"
 kind = "program"
-sources = ["src/**/*.c"]
-include = ["{bridge}/include", "src", "src/config", "src/manifest", "src/state", "src/toml", "src/show", "{bridge_os}/include"]
+sources = ["src/host/**/*.c"]
+include = ["{bridge}/include", "include/manifest", "src/host", "src/host/config", "src/host/state", "src/host/toml", "src/host/show", "{bridge_os}/include"]
 defines = ['LIBRARY_SUFFIX="{library}"']
 flags = ["{system_defines}", "{system_libraries}"]
-link = ["{bridge}/bridge.a", "{bridge_os}/os.a"]
+link = ["{out}/manifest.a", "{bridge}/bridge.a", "{bridge_os}/os.a"]
 
 [[artifact]]
 name = "host-unit"
+part = "host"
 kind = "program"
 test = true
-sources = ["tests/unit/*.c", "src/toml/*.c", "src/config/config_value.c", "src/say.c"]
-include = ["{bridge}/include", "src", "src/config", "src/manifest", "src/state", "src/toml", "src/show"]
+sources = ["tests/unit/*.c", "src/host/toml/*.c", "src/host/config/config_value.c", "src/host/say.c"]
+include = ["{bridge}/include", "include/manifest", "src/host", "src/host/config", "src/host/state", "src/host/toml", "src/host/show"]
 flags = ["{system_defines}", "{system_libraries}"]
+link = ["{out}/manifest.a"]
 
 [[artifact]]
 name = "hello"
+part = "host"
 kind = "host_wasm"
 test = true
 folder = "fixtures"
@@ -34,6 +45,7 @@ variants = [
 
 [[artifact]]
 name = "quiet"
+part = "host"
 kind = "host_wasm"
 test = true
 folder = "fixtures"
@@ -70,6 +82,7 @@ variants = [
 
 [[artifact]]
 name = "word"
+part = "host"
 kind = "host_wasm"
 test = true
 folder = "fixtures"
@@ -80,6 +93,7 @@ variants = [
     { name = "guest", manifest = ["guest:word@1.0.0", "{own}"] },
     { name = "owned", manifest = ["bridge-host:owned@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=word", 'config.word="its own"'] },
     { name = "nocomp", manifest = ["bridge-host:nocomp@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=none", "settings=word"] },
+    { name = "dupset", manifest = ["bridge-host:dupset@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=dup dup"] },
     { name = "badset", manifest = ["bridge-host:badset@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=word", 'config.word=[1, 2]'] },
     { name = "multi", manifest = ["bridge-host:multi@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=w x y z"] },
     { name = "owns", manifest = ["bridge-host:owns@1.0.0", "abi=1", "pinned=true", "reloadable=true", "config=bridge-host:Word", "settings=own", "scratch=100", "log_level=9", "on_error=@", "spans=1\nx=2", ""] },
@@ -90,6 +104,7 @@ variants = [
 
 [[artifact]]
 name = "knock"
+part = "host"
 kind = "host_native"
 test = true
 folder = "fixtures"
@@ -111,6 +126,7 @@ variants = [
 
 [[artifact]]
 name = "pe_farhdr"
+part = "host"
 kind = "madebin"
 test = true
 folder = "fixtures"

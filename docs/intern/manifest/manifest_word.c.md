@@ -14,7 +14,7 @@ Then it points `identity` at the word.
 A word with no `=` is refused, and so is a word whose value cannot be.
 The reason of such a word shows the part before its first `=`, and at most 60 bytes of that part.
 A word whose key `manifest_take` took before gives the reason `states <key> twice`.
-`readme.md`, *Messages*, quotes each reason of a refusal.
+`docs/extern/host/readme.md`, *Messages*, quotes each reason of a refusal.
 
 ## Functions
 

@@ -178,7 +178,7 @@ script = [{ wait = "? go on", type = "go" }]
 [[case]]
 name = "a name that finds no memory makes the look read its whole folder"
 run = ["{out}/bridge-host{exe}", "{case}/short.toml"]
-fail = { calloc = 17 }
+fail = { calloc = 21 }
 script = [{ wait = "? go on", put = { "{case}/short/quiet.wasm" = "quiet" }, type = "go" }]
 
 [case.claims]

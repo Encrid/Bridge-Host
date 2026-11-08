@@ -1,22 +1,25 @@
 [[artifact]]
 name = "bridge-host"
+part = "host"
 kind = "program"
-sources = ["src/**/*.c"]
-include = ["{bridge}/include", "src", "src/config", "src/manifest", "src/state", "src/toml", "src/show", "{bridge_os}/include"]
+sources = ["src/host/**/*.c"]
+include = ["{bridge}/include", "src/host", "src/host/config", "src/host/manifest", "src/host/state", "src/host/toml", "src/host/show", "{bridge_os}/include"]
 defines = ['LIBRARY_SUFFIX="{library}"']
 flags = ["{system_defines}", "{system_libraries}"]
 link = ["{bridge}/bridge.a", "{bridge_os}/os.a"]
 
 [[artifact]]
 name = "host-unit"
+part = "host"
 kind = "program"
 test = true
-sources = ["tests/unit/*.c", "src/toml/*.c", "src/config/config_value.c", "src/say.c"]
-include = ["{bridge}/include", "src", "src/config", "src/manifest", "src/state", "src/toml", "src/show"]
+sources = ["tests/unit/*.c", "src/host/toml/*.c", "src/host/config/config_value.c", "src/host/say.c"]
+include = ["{bridge}/include", "src/host", "src/host/config", "src/host/manifest", "src/host/state", "src/host/toml", "src/host/show"]
 flags = ["{system_defines}", "{system_libraries}"]
 
 [[artifact]]
 name = "hello"
+part = "host"
 kind = "host_wasm"
 test = true
 folder = "fixtures"
@@ -34,6 +37,7 @@ variants = [
 
 [[artifact]]
 name = "quiet"
+part = "host"
 kind = "host_wasm"
 test = true
 folder = "fixtures"
@@ -70,6 +74,7 @@ variants = [
 
 [[artifact]]
 name = "word"
+part = "host"
 kind = "host_wasm"
 test = true
 folder = "fixtures"
@@ -90,6 +95,7 @@ variants = [
 
 [[artifact]]
 name = "knock"
+part = "host"
 kind = "host_native"
 test = true
 folder = "fixtures"
@@ -111,6 +117,7 @@ variants = [
 
 [[artifact]]
 name = "pe_farhdr"
+part = "host"
 kind = "madebin"
 test = true
 folder = "fixtures"

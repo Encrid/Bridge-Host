@@ -62,6 +62,19 @@ enum manifest_allow : uint8_t {
     MANIFEST_ALLOW_PAIRS = 128
 };
 
+enum manifest_check : uint8_t {
+    MANIFEST_CHECK_FLAG = 1,
+    MANIFEST_CHECK_COUNT,
+    MANIFEST_CHECK_LIMIT,
+    MANIFEST_CHECK_LEVEL,
+    MANIFEST_CHECK_NAMES,
+    MANIFEST_CHECK_NAMES_NONE,
+    MANIFEST_CHECK_ERROR,
+    MANIFEST_CHECK_TEXT,
+    MANIFEST_CHECK_SETTING,
+    MANIFEST_CHECK_AUTHOR
+};
+
 typedef struct {
     uint8_t allow;
     int64_t least;
@@ -130,7 +143,8 @@ typedef struct {
 [[nodiscard]] const char *manifest_check_key(const char *name,
     const manifest_value_t *v);
 
-[[nodiscard]] const char *manifest_check_setting(const manifest_value_t *v);
+[[nodiscard]] const manifest_rule_t *manifest_get_rule(
+    enum manifest_check check);
 
 [[nodiscard]] bool manifest_state(const manifest_module_t *m,
     bridge_module_config_t *cfg);

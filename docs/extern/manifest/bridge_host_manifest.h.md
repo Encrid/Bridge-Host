@@ -63,7 +63,21 @@ The texts point into the bytes of the file, so the bytes must stay while the hos
 `manifest_check_value` gives no text for a value that the rule allows. Else it gives `why` of the rule.
 `manifest_check_key` checks the value of a key of a module, as `docs/extern/host/readme.md`, *The modules*, gives each key.
 For a name that is no key of a module, it gives `no key of a module`. For a key that only the manifest states, for example `abi`, it gives `only a module's author states it, in its file`.
-`manifest_check_setting` checks the value of a setting: `text, a number, true or false, or { path = "..." }`.
+
+`manifest_get_rule` gives the rule of a check of the keys of a module. A host can check its own keys with these rules too.
+
+| `manifest_check` | `why` of the rule |
+| --- | --- |
+| `MANIFEST_CHECK_FLAG` | `true or false` |
+| `MANIFEST_CHECK_COUNT` | `a whole number, from 1` |
+| `MANIFEST_CHECK_LIMIT` | `a whole number, from 1, or "none"` |
+| `MANIFEST_CHECK_LEVEL` | `a level, from 1 to 7` |
+| `MANIFEST_CHECK_NAMES` | `a list of names` |
+| `MANIFEST_CHECK_NAMES_NONE` | `a list of names, or "none"` |
+| `MANIFEST_CHECK_ERROR` | `"fail" or "skip"` |
+| `MANIFEST_CHECK_TEXT` | `text` |
+| `MANIFEST_CHECK_SETTING` | `text, a number, true or false, or { path = "..." }` |
+| `MANIFEST_CHECK_AUTHOR` | `only a module's author states it, in its file` |
 
 ## The host
 
@@ -119,7 +133,7 @@ A `manifest_made_t` starts with each field at 0.
 | `manifest_get_value` | The count of the words of a key, and the value of the first one. |
 | `manifest_check_value` | No text, or the reason why a rule does not allow a value. |
 | `manifest_check_key` | No text, or the reason why a key of a module does not allow a value. |
-| `manifest_check_setting` | No text, or the reason why a setting does not allow a value. |
+| `manifest_get_rule` | The rule of a check. |
 | `manifest_state` | `true` when the config holds each key of the module. |
 | `manifest_state_key` | The value of one key of a module, or no value. |
 | `manifest_free` | Frees the memory of the states of a module. |

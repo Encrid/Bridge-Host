@@ -10,8 +10,8 @@ It links the library of Bridge, and opens each backend that the deployment names
 
 ## Install
 
-Each release of the part `host` holds `bridge-host` for each target, in `Bridge-Host-<target>.zip`. Its `sha256.txt` gives the digest of each zip.
-Download the zip of the target of your machine, and compare its digest with `sha256.txt`.
+Each release of the part `host` holds `Bridge-Host.zip`, with a folder for each target that holds `bridge-host`.
+Download it, and compare its digest with `sha256.txt` of the release. Then run the program of the folder of the target of your machine.
 
 ## Usage
 

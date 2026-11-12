@@ -11,7 +11,7 @@ Bridge-Host links it, and so can any other host.
 ## Install
 
 Each release of the part `manifest` holds the archive `manifest.a` and the header `bridge_host_manifest.h` for each target.
-The zip of a target is `BL-Bridge-Host-Manifest-<target>.zip`, and the digest of each zip is in `sha256.txt` of the release.
+The release has one zip, `BL-Bridge-Host-Manifest.zip`, with a folder for each target, for example `x86_64-linux-gnu`. Its digest is in `sha256.txt` of the release.
 The header includes `bridge.h`, so the host also gets the release of Bridge that it links.
 
 ## Usage

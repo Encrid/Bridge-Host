@@ -30,7 +30,8 @@ void host_free(host_t *h)
     free(h->held);
     free(h->backends);
     free(h->phases);
-    free(h->order);
+    free(h->orders[ORDER_SYSTEMS].pairs);
+    free(h->orders[ORDER_UNLOADS].pairs);
     free(h->paths);
     free(h->ignore);
     config_free(&h->config);

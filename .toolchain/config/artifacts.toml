@@ -117,6 +117,8 @@ variants = [
     { name = "nender", defines = ["END_AT=3"], manifest = ["bridge-host:nender@1.0.0", "{own}"] },
     { name = "nender1", defines = ["END_AT=1"], manifest = ["bridge-host:nender1@1.0.0", "{own}"] },
     { name = "again2", defines = ["AGAIN_TIMES=2"], manifest = ["bridge-host:again2@1.0.0", "{own}"] },
+    { name = "stopa", defines = ['STOP="a"'], manifest = ["bridge-host:stopa@1.0.0", "{own}"] },
+    { name = "stopb", defines = ['STOP="b"'], manifest = ["bridge-host:stopb@1.0.0", "{own}"] },
     { name = "twice", manifest = ["bridge-host:twice@1.0.0", "abi=1", "pinned=false", "reloadable=false", "reloadable=true", "config=none"] },
     { name = "granted", manifest = ["bridge-host:granted@1.0.0", "{own}", "read=['a:A']", "write=['b:B']"] },
     { name = "pe", target = "x86_64-windows-gnu", manifest = ["bridge-host:pe@1.0.0", "{own}"] },

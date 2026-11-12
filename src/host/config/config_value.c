@@ -19,7 +19,9 @@ static const manifest_rule_t RULES[] = {
         | MANIFEST_ALLOW_EMPTY, INT64_MIN, INT64_MAX, "",
         "text, a number, true or false" },
     [CHECK_RECORD - CHECK_ARRIVE] = { MANIFEST_ALLOW_WHOLE, 0, 7, "",
-        "a level, from 0 to 7" }
+        "a level, from 0 to 7" },
+    [CHECK_MODULE_PAIRS - CHECK_ARRIVE] = { MANIFEST_ALLOW_PAIRS, 0, 0, "",
+        "a list of pairs of modules" }
 };
 
 const char *config_check_value(const value_t *v, enum check check)

@@ -7,7 +7,7 @@ It frees the path and the `handed_t` of each file, the array of the slots, and t
 It calls `stop_watches` of `src/host/host_watch.c`.
 Then it frees the arrays of the host, and the configuration.
 
-The phases and the order point into the configuration, so `host_free` frees only their arrays.
+The phases and the 2 arrays of pairs point into the configuration, so `host_free` frees only their arrays.
 The caps of `again` are in the block of the phases.
 A `handed_t` and its bytes are one block, so one `free` gives both back.
 

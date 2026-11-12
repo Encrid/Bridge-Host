@@ -10,9 +10,11 @@
 
 static const char *check_order(const entry_t *e)
 {
-    if (e->depth != 2 || strcmp(e->key[1], "before"))
-        return ("no key of Bridge-Host's or Bridge's");
-    return (config_check_value(&e->value, CHECK_PAIRS));
+    if (e->depth == 2 && !strcmp(e->key[1], "before"))
+        return (config_check_value(&e->value, CHECK_PAIRS));
+    if (e->depth == 2 && !strcmp(e->key[1], "unload_before"))
+        return (config_check_unloads(&e->value));
+    return ("no key of Bridge-Host's or Bridge's");
 }
 
 static const char *check_entry(const config_t *c, const entry_t *e,

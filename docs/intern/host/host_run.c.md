@@ -23,7 +23,7 @@ A run of a phase that gives 2 sets `ended`, and the other phases of the round st
 After the loop, `say_ended` writes the line of an end that a module asked for, of a signal, or of the round limit.
 A signal stops the run only between two rounds, so the round that runs finishes.
 `say_record` prints a record of the level `written` or lower, and counts a failure for a record of the level `failing` or lower.
-After the line of the end, `run` calls `say_end` of `src/host/host_end.c`, then `bridge_destroy`.
+After the line of the end, `run` calls `say_end` of `src/host/host_end.c`, then `host_unload_all` of `src/host/host_stop.c`, then `bridge_destroy`.
 
 ## Functions
 

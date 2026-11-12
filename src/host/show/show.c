@@ -61,9 +61,6 @@ static void say_world(const host_t *h)
         say("content.paths: %s\n", h->paths[i]);
     for (uint32_t i = 0; i < h->ignore_count; i++)
         say("content.ignore: %s\n", h->ignore[i]);
-    for (uint32_t i = 0; i < h->order_count; i++)
-        say("order: %s before %s\n", h->order[i].before,
-            h->order[i].after);
 }
 
 int show_config(host_t *h, bool taken)
@@ -72,6 +69,10 @@ int show_config(host_t *h, bool taken)
     if (!taken)
         return (1);
     say_world(h);
+    for (uint32_t k = 0; k < 2; k++)
+        for (uint32_t i = 0; i < h->orders[k].count; i++)
+            say("%s: %s before %s\n", k ? "unload" : "order",
+                h->orders[k].pairs[i].before, h->orders[k].pairs[i].after);
     for (uint32_t i = 0; i < h->path_count; i++)
         if (walk_path(h, i, show_module, h) < 0)
             return (1);

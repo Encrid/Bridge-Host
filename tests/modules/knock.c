@@ -88,6 +88,10 @@ BRIDGE_NATIVE(init)
 
 BRIDGE_NATIVE(shutdown)
 {
+#ifdef STOP
+    printf("shutdown %s\n", STOP);
+    fflush(stdout);
+#endif
     return (0);
 }
 

@@ -47,8 +47,8 @@ static bool make_world(host_t *h)
     cfg.backend_count = h->backend_count;
     cfg.phases = h->phases;
     cfg.phase_count = h->phase_count;
-    cfg.order = h->order;
-    cfg.order_count = h->order_count;
+    cfg.order = h->orders[ORDER_SYSTEMS].pairs;
+    cfg.order_count = h->orders[ORDER_SYSTEMS].count;
     h->w = bridge_create(&cfg, say_record, h);
     if (!h->w)
         say("bridge_create refused\n");
@@ -84,6 +84,7 @@ int run(host_t *h)
     }
     say_ended(h, refused, left);
     say_end(h);
+    host_unload_all(h);
     say("destroyed: %d\n", bridge_destroy(h->w));
     return (refused || h->counts.failed ? 1 : 0);
 }

@@ -81,7 +81,8 @@ enum check : uint8_t {
     CHECK_PAIRS,
     CHECK_SIZE,
     CHECK_VALUE,
-    CHECK_RECORD
+    CHECK_RECORD,
+    CHECK_MODULE_PAIRS
 };
 
 typedef struct {
@@ -155,6 +156,8 @@ void config_free_file(cfile_t *f);
 
 [[nodiscard]] const char *config_check_value(const value_t *v,
     enum check check);
+
+[[nodiscard]] const char *config_check_unloads(const value_t *v);
 
 [[nodiscard]] found_t config_find(const config_t *c, states_fn *states,
     const void *asked);

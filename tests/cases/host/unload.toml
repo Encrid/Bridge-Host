@@ -1,0 +1,441 @@
+[[case]]
+name = "with no pair, the modules shut down by identity"
+run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
+
+[case.claims]
+status = 0
+order = ["still loaded: bridge-host:stopa@1.0.0, bridge-host:stopb@1.0.0", "shutdown a", "shutdown b", "destroyed: 0"]
+
+[case.folders]
+"{case}/mods" = ["stopa", "stopb"]
+
+[case.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["bridge-host:stopb", "bridge-host:stopa"]]
+'''
+
+[[case]]
+name = "a pair makes a module shut down before a module that comes first by identity"
+run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
+
+[case.claims]
+status = 0
+order = ["shutdown b", "shutdown a", "destroyed: 0"]
+
+[case.folders]
+"{case}/mods" = ["stopa", "stopb"]
+
+[case.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["bridge-host:stopb", "bridge-host:stopa"]]
+'''
+
+[case.false.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a pair that a preset states counts"
+run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
+
+[case.claims]
+status = 0
+order = ["shutdown b", "shutdown a", "destroyed: 0"]
+
+[case.folders]
+"{case}/mods" = ["stopa", "stopb"]
+
+[case.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml", "p.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+"{case}/p.toml" = '''
+[order]
+unload_before = [["bridge-host:stopb", "bridge-host:stopa"]]
+'''
+
+[case.false.files]
+"{case}/p.toml" = '''
+[order]
+unload_before = [["bridge-host:stopa", "bridge-host:stopb"]]
+'''
+
+[[case]]
+name = "a pair with a module that is not loaded does nothing, also a name that starts the name of a loaded module"
+run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
+
+[case.claims]
+status = 0
+order = ["shutdown a", "shutdown b", "destroyed: 0"]
+
+[case.folders]
+"{case}/mods" = ["stopa", "stopb"]
+
+[case.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["bridge-host:gone", "bridge-host:stopa"], ["bridge-host:stop", "bridge-host:stopa"]]
+'''
+
+[case.false.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["bridge-host:stopb", "bridge-host:stopa"]]
+'''
+
+[[case]]
+name = "a cycle of the pairs of 2 files is refused, and a pair into it or out of it is not named"
+run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
+
+[case.claims]
+status = 1
+has = ["order.unload_before: n:x and n:y make a cycle"]
+lacks = ["n:w and n:x make a cycle", "n:z and n:v make a cycle"]
+
+[case.folders]
+"{case}/mods" = ["stopa"]
+
+[case.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml", "p.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["n:w", "n:x"], ["n:x", "n:y"]]
+'''
+"{case}/p.toml" = '''
+[order]
+unload_before = [["n:y", "n:z"], ["n:z", "n:x"], ["n:z", "n:v"]]
+'''
+
+[case.false.files]
+"{case}/p.toml" = '''
+[order]
+unload_before = [["n:y", "n:z"], ["n:z", "n:v"]]
+'''
+
+[[case]]
+name = "a pair and its reverse in 2 presets of one file are refused"
+run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
+
+[case.claims]
+status = 1
+has = ["order.unload_before"]
+lacks = ["destroyed:"]
+
+[case.folders]
+"{case}/mods" = ["stopa"]
+
+[case.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml", "p.toml", "q.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+"{case}/q.toml" = '''
+[order]
+unload_before = [["n:x", "n:y"]]
+'''
+"{case}/p.toml" = '''
+[order]
+unload_before = [["n:y", "n:x"]]
+'''
+
+[case.false.files]
+"{case}/p.toml" = '''
+[order]
+unload_before = [["n:x", "n:y"]]
+'''
+
+[[case]]
+name = "a pair that names one module twice is refused"
+run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
+
+[case.claims]
+status = 1
+has = ["order.unload_before: a pair names one module twice"]
+
+[case.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["n:x", "n:x"]]
+'''
+
+[case.false.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["n:x", "n:y"]]
+'''
+
+[[case]]
+name = "a module of a pair with no namespace is refused"
+run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
+
+[case.claims]
+status = 1
+has = ["order.unload_before: a module of a pair is no <namespace>:<name>"]
+
+[case.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["n:x", "y"]]
+'''
+
+[case.false.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["n:x", "n:y"]]
+'''
+
+[[case]]
+name = "a module of a pair with a version is refused"
+run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
+
+[case.claims]
+status = 1
+has = ["order.unload_before: a module of a pair is no <namespace>:<name>"]
+
+[case.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["n:x@1.0.0", "n:y"]]
+'''
+
+[case.false.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["n:x", "n:y"]]
+'''
+
+[[case]]
+name = "--show-config writes each pair of unload_before"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/u.toml"]
+
+[case.claims]
+status = 0
+line = ["unload: bridge-host:stopb before bridge-host:stopa"]
+
+[case.folders]
+"{case}/mods" = ["stopa", "stopb"]
+
+[case.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["bridge-host:stopb", "bridge-host:stopa"]]
+'''
+
+[case.false.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "after a signal, the pairs still order the shutdowns"
+run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
+stdin = "go\n"
+script = [{ wait = "? go on", signal = "interrupt" }, { wait = "a signal stops the host: a second one ends it at once" }]
+
+[case.claims]
+status = 0
+order = ["ended at round 1: a signal stopped the run", "shutdown b", "shutdown a", "destroyed: 0"]
+
+[case.folders]
+"{case}/mods" = ["wait", "stopa", "stopb"]
+
+[case.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 16
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["bridge-host:stopb", "bridge-host:stopa"]]
+'''
+
+[case.false.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 16
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["bridge-host:stopa", "bridge-host:stopb"]]
+'''
+
+[[case]]
+name = "unload_before that is no list of pairs is refused"
+run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
+
+[case.claims]
+status = 1
+has = ["order.unload_before: a list of pairs of modules"]
+
+[case.files]
+"{case}/u.toml" = """
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = "n:x"
+"""
+
+[case.false.files]
+"{case}/u.toml" = """
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["n:x", "n:y"]]
+"""

@@ -93,6 +93,14 @@ Each one is needed. A lower level is worse, and Bridge gives the level 3 to an e
 In one phase, the first system of a pair runs before the second.
 Two systems of two modules that conflict in one phase need a pair, or Bridge refuses the second module.
 
+`[order] unload_before` is a list of pairs of modules, each with its name `<namespace>:<name>`, with no version.
+At the end of a run, the first module of a pair unloads before the second.
+Thus a module that holds objects that it made from the handles of another module stops before that module.
+
+A pair holds for each version of its modules. A pair whose module is not loaded at the end has no effect.
+The host refuses a name with no `:` or with `@`, and a pair that names one module twice. It also refuses a cycle of the pairs of all the files.
+Bridge states no order between modules, so a deployment with no pair unloads its modules by identity.
+
 ### The content and the backends
 
 | Key | Value |
@@ -204,7 +212,8 @@ After the last round, the host writes these lines:
 2. With `profile = true`, one line for each system and observer: `profile <name>: <calls> calls, <nanos> ns`.
 3. With `usage = true`, one line for each key of `[budget]`: `usage <key>: <used> now, <most> at most`.
 4. With `usage = true`, one line for each loaded module: `usage <identity>: <bytes> persistent, <count> systems, <count> observers, <count> entities`.
-5. `destroyed: <count>`, after Bridge destroyed the world.
+5. The host unloads each loaded module, by the pairs of `[order] unload_before`, then by identity. Bridge runs the `shutdown` of each module.
+6. `destroyed: <count>`, after Bridge destroyed the world.
 
 Bridge gives each number, and the host reads no clock.
 The document of the header `bridge.h` of Bridge tells what each number counts.
@@ -216,7 +225,7 @@ The document of the header `os.h` of mosl tells which events of each system are 
 
 At the first signal, the host writes `a signal stops the host: a second one ends it at once`.
 It finishes the round that runs, and starts no other round: `ended at round <round>: a signal stopped the run`.
-Then it writes the lines of the end, and Bridge calls the `shutdown` of each module. The exit status is the status of a run.
+Then it writes the lines of the end, and unloads each module in its order, as *The end of a run* tells. The exit status is the status of a run.
 Before the run, and with `--show-config`, the host also finishes its work after the first signal.
 A second signal ends the host at once, with the status 1.
 
@@ -270,6 +279,7 @@ Reading the deployment:
 - `refused: <file>:<line>: <identity>: no module found is it`
 - `refused: <file>:<line>: presets: a list of files`
 - `refused: <file>:<line>: again.<name>: not a name of phases`
+- `refused: <file>:<line>: order.unload_before: <module> and <module> make a cycle`
 - `refused: <file> names itself:`
 - `refused: <key>: <value> in <file>:<line>, <value> in <file>:<line>`
 - `, over <file>:<line>`
@@ -354,6 +364,7 @@ Showing the deployment:
 - `content.paths: <path>`
 - `content.ignore: <path>`
 - `order: <system> before <system>`
+- `unload: <module> before <module>`
 - `<key> = [<names>]`
 - `config = "<component>"  its file`
 - `settings = "<names>"  its file`

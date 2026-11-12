@@ -8,7 +8,7 @@ This file checks every statement of every file and counts the refusals.
 `check_entry` sends a statement to the checker of its top name: module, content, order, backend, or the world.
 The world takes each other name, also `budget` and `checks`.
 `check_header` refuses a table header that holds nothing.
-`check_order` requires that an order key is `order.before` with a list of pairs.
+`check_order` requires that an order key is `order.before` with a list of pairs, or `order.unload_before`, which `config_check_unloads` checks.
 
 ## Functions
 

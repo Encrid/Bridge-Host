@@ -38,6 +38,21 @@ enum look_kind : uint8_t {
     LOOK_ALL
 };
 
+enum order_kind : uint8_t {
+    ORDER_SYSTEMS,
+    ORDER_UNLOADS
+};
+
+typedef struct {
+    bridge_order_t *pairs;
+    uint32_t count;
+} pairs_t;
+
+typedef struct {
+    const keyed_t *key;
+    const char *const *two;
+} pair_asked_t;
+
 typedef struct {
     int failed;
     int said;
@@ -78,8 +93,7 @@ typedef struct {
     held_t *held;
     bridge_backend_t *backends;
     uint32_t backend_count;
-    bridge_order_t *order;
-    uint32_t order_count;
+    pairs_t orders[2];
     char **paths;
     uint32_t path_count;
     os_watch_t **watches;
@@ -134,7 +148,14 @@ typedef struct {
 
 [[nodiscard]] bool config_again(host_t *h);
 
+extern const keyed_t ORDER_KEYS[];
+
 [[nodiscard]] bool config_order(host_t *h);
+
+[[nodiscard]] bool config_states_pair(const cfile_t *f, const void *asked,
+    said_t *said);
+
+[[nodiscard]] bool config_cycle(host_t *h);
 
 [[nodiscard]] bool config_backends(host_t *h);
 
@@ -208,6 +229,8 @@ void host_free(host_t *h);
 [[nodiscard]] int run_phase(host_t *h, uint32_t p);
 
 void say_end(const host_t *h);
+
+void host_unload_all(host_t *h);
 
 void see_file(void *ud, const char *path, os_folder_t *in,
     const char *name);

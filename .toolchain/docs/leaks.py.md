@@ -14,7 +14,7 @@ Each resource has a kind. Functions of the code take a resource of a kind, and f
 - `[leaks] with` names more files, which add `memory`, `pairs` and `kinds`, for example a file of a package.
 
 `.toolchain/docs/project.toml.md`, *[leaks]*, gives the keys.
-A function that takes a resource of a pair gives a pointer. The function that gives it back gets that pointer as its first argument.
+A function that takes a resource of a pair gives a pointer. The function that gives it back gets that pointer as its first argument. A qualifier after the pointer, such as `restrict` or `const`, changes nothing.
 A `typedef` of a pointer is a pointer, for example `typedef struct instance *instance_t`.
 
 A take adds 1 when its value is not zero, and a give subtracts 1 when its value is not zero.

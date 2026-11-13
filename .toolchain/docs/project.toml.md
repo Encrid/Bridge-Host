@@ -10,6 +10,7 @@ The tools read every file as one configuration.
 - If two files give the same list of tables, for example `[[source]]` or `[[artifact]]`, the list holds the tables of the two files.
 - If two files give the same key, the tools stop: `<file> states <key>, and <file> states it too`.
 - A file of a project cannot change a value of `.toolchain/toolchain.toml`. Do not change `.toolchain/toolchain.toml`.
+- `[project] targets` picks the targets of the project from `.toolchain/toolchain.toml`. It changes no value of that file.
 
 Each section of this document gives the keys of one table.
 For example, these lines make a program from the sources of `src`:
@@ -63,8 +64,20 @@ They also stop if a list variable is a part of a text, and has no separator.
 | Key | Value |
 | --- | --- |
 | `name` | The name of the project. The title of `readme.md`, `package.txt` and the zip of `pack` take it. |
+| `targets` | The targets of the project: a list of names of `[targets]` of `.toolchain/toolchain.toml`, for example `["x86_64-windows-gnu", "x86_64-linux-gnu"]`. |
 
 If `name` is empty, the tools that need it stop: `.toolchain/project.toml: write the name of the project in [project] name`.
+
+The tools see only the targets of `targets`. Thus a build, a fetch, the matrices of the workflows and the zips of a release have only these targets.
+A port to one more target is one more name in `targets`, and one more row in each matrix: `.toolchain/docs/workflows.py.md`, *The check*.
+Each project states its targets. A folder with no `.toolchain/project.toml` is no project, and the tools see each target there.
+The tools stop with these faults:
+
+- `.toolchain/project.toml: write the targets of the project in [project] targets`, if the project has no `targets`.
+- `[project] targets: <name> is not a target of the toolchain`, for a name that `[targets]` does not have.
+- `[project] targets: <name> comes 2 times`, for a name 2 times in the list.
+
+`test --toolchain` and `fetch --toolchain` see each target of `.toolchain/toolchain.toml`, because they test the toolchain itself.
 
 ## [variables]
 
@@ -234,7 +247,7 @@ A kind with no `each` is one step of the graph, and a header is no input of it.
 
 ## [targets.\<target\>]
 
-`.toolchain/toolchain.toml` gives six targets, and `.toolchain/docs/toolchain.toml.md` describes their keys.
+`.toolchain/toolchain.toml` gives six targets, and `.toolchain/docs/toolchain.toml.md` describes their keys. `[project] targets` picks the targets of the project.
 `.toolchain/project.toml` can add more keys to a target. Each key of a target is a variable.
 
 ## [build]
@@ -258,6 +271,7 @@ An artifact is a file that the build makes, for example a program, a library or 
 | `defines` | Optional. The macros, without `-D`. |
 | `flags` | Optional. More flags of the compiler, for example `-fvisibility=hidden` or `-lm`. They come after the sources and the files of `link`. They can contain variables. |
 | `link` | Optional. The files that the artifact links. |
+| `inputs` | Optional. The files that another artifact of the build makes, which the sources read, for example with `#embed`. `{inputs}` holds each folder after `--embed-dir=`, the search path of `#embed`, and `zig build` makes each one before this artifact. An input is no file of `link`, and the deliverable does not hold it. |
 | `beside` | Optional. The files to copy into the folder of the artifact. |
 | `manifest` | Optional. A list of texts for the steps. |
 | `folder` | Optional. The folder of the artifact, in the output folder of the target. |
@@ -322,7 +336,7 @@ A project can have parts, for example a family of modules in one repository.
 Each part builds, tests, packs and releases alone, with `--part <part>`: `.toolchain/docs/project.py.md`, *Parts*.
 `[parts.<part>]` states the part `<part>`. The name `<part>` is in snake_case.
 Its key `folder` gives the folder of the part in `src`, `include`, `docs/extern`, `docs/intern`, `tests` and `tests/cases`.
-Each part has a readme, `docs/extern/<folder>/readme.md`, and the release of the part holds it.
+Each part has a readme, `docs/usage/<folder>.md`, and the release of the part holds it as `readme.md`.
 
 | Key | Value |
 | --- | --- |

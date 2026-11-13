@@ -8,7 +8,7 @@ The project has these parts. Each part has its own releases: `docs/contributing/
 
 | Part | Folder | Content |
 | --- | --- | --- |
-| `host` | `host` | The program `bridge-host`, which runs a deployment of modules: `docs/extern/host/readme.md`. |
+| `host` | `host` | The program `bridge-host`, which runs a deployment of modules: `docs/usage/host.md`. |
 
 ## Install
 

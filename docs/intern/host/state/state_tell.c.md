@@ -11,7 +11,7 @@ This file gives the function `tell` of the host to the library: the lines of a v
 | `MANIFEST_TOLD_NO_WORD` | `its file states no <word>`, after the prefix. |
 | `MANIFEST_TOLD_NO_COMPONENT` | `it names no component, and settings`, after the prefix. |
 
-The prefix is the prefix of the `stating_t`. `docs/extern/host/readme.md`, *Messages*, quotes each line.
+The prefix is the prefix of the `stating_t`. `docs/usage/host.md`, *Messages*, quotes each line.
 
 ## Functions
 

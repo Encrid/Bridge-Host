@@ -7,7 +7,7 @@ The caps are in the block that `take_phases` of `src/host/config/config_world.c`
 A file that states `again` with no phase, as `again = {}`, states the key.
 With no file that states it, `config_again` writes `not stated: again`.
 `take_cap` finds the phase of a name with `get_phase`.
-A name that is not a name of `phases` gives its refusal of `docs/extern/host/readme.md`, *Messages*.
+A name that is not a name of `phases` gives its refusal of `docs/usage/host.md`, *Messages*.
 Two files that state one cap with 2 values give the refusal of `config_say_found`.
 
 ## Functions

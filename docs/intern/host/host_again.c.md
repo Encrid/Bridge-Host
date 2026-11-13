@@ -9,7 +9,7 @@ If the last run still gave 3, `say_again` writes the warning of the cap, or the 
 
 `say_again` treats each warning as a record of the level `BRIDGE_WARN`.
 It writes the line if `written` allows it, and counts a failure if `failing` does.
-The lines are in `docs/extern/host/readme.md`, *Messages*.
+The lines are in `docs/usage/host.md`, *Messages*.
 
 ## Functions
 

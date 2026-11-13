@@ -1,6 +1,6 @@
 # src/host/config/config_unloads.c
 
-This file checks the pairs of modules of `order.unload_before`: `docs/extern/host/readme.md`, *The world*.
+This file checks the pairs of modules of `order.unload_before`: `docs/usage/host.md`, *The world*.
 
 ## The check of a value
 

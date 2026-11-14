@@ -16,6 +16,26 @@ flags = ["{system_defines}", "{system_libraries}"]
 link = ["{out}/manifest.a", "{bridge}/bridge.a", "{bridge_os}/os.a"]
 
 [[artifact]]
+name = "manifest-unit"
+part = "manifest"
+kind = "program"
+test = true
+sources = ["tests/manifest/*.c"]
+include = ["{bridge}/include", "include/manifest", "src/manifest"]
+flags = ["{system_defines}", "{system_libraries}"]
+link = ["{out}/manifest.a"]
+
+[[artifact]]
+name = "stated"
+part = "manifest"
+kind = "host_native"
+test = true
+folder = "fixtures"
+sources = ["tests/modules/knock.c"]
+include = ["{bridge}/include", "{bb_native}/include", "tests/modules"]
+manifest = ["bridge-host:stated@1.0.0", "{own}", "hot_reload=true", "top.sub=true", "scratch=1", "scratch=2", "log_level=true"]
+
+[[artifact]]
 name = "host-unit"
 part = "host"
 kind = "program"

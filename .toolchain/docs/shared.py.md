@@ -97,14 +97,14 @@ A variable that `UNSET` names stops the tool with its reason: `{macos_sdk} needs
 
 ## The options
 
-`arguments` reads the options `--root`, `--target`, `--part`, `--tag`, `--debug`, `--out` and `--set`.
+`arguments` reads the options `--root`, `--target`, `--part`, `--group`, `--tag`, `--debug`, `--out` and `--set`.
 A tool adds its own options:
 
 - `arguments('--commits')` adds the option `--commits <value>`. Its value is in `args.commits`, or `None` if the option is not given.
 - `arguments(pack='--pack')` adds the option `--pack`, with no value. `args.pack` tells if the option is given.
 
 The default of `--root` is `HERE`. `arguments` makes the root an absolute path.
-`--part` can be given more than one time. `args.part` is the list of its values, or `None`.
+`--part` can be given more than one time. `args.part` is the list of its values, or `None`. `--group` and `args.group` act the same way.
 
 `--tag <tag>` takes the tag of a release, and matches it with `TAG`.
 A tag `<part>-v<major>.<minor>.<patch>` adds `<part>` to `args.part`. A tag `v<major>.<minor>.<patch>` adds no part.

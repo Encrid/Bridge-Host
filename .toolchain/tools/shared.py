@@ -198,6 +198,7 @@ def arguments(*valued, **flags):
     ap.add_argument('--root', type=Path, default=HERE)
     ap.add_argument('--target')
     ap.add_argument('--part', action='append')
+    ap.add_argument('--group', action='append')
     ap.add_argument('--tag')
     ap.add_argument('--debug', action='store_true')
     ap.add_argument('--out', type=Path)

@@ -6,7 +6,7 @@ This file gives the function `find` of the host to the library: a key of a modul
 
 1. `config.<setting>` goes to `find_setting`, which finds `module."<identity>".config.<setting>` in the files.
 2. A grant, `read` or `write`, goes first to `state_find_grant` of `state_list.c`.
-3. Each other key goes to `find_key`, which finds it in the 3 tables of the module: `docs/extern/host/readme.md`, *The modules*.
+3. Each other key goes to `find_key`, which finds it in the 3 tables of the module: `docs/usage/host.md`, *The modules*.
 
 Each search gives 0 when no file states the key, and the library then takes the default of the manifest.
 A clash of 2 files gives its lines with `config_say_found`, then -1. Else the search gives 1 and the value.

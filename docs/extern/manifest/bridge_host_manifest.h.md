@@ -7,7 +7,7 @@ A host links `manifest.a`, and gives the keys of a module through the functions 
 
 `manifest_read` finds the manifest in the bytes of a file, and reads its words into a `manifest_t`.
 The form of the file gives the backend: `native` for a library, and `wasm` for a module of wasm.
-The words, their places in each format and their checks are in `docs/extern/host/readme.md`, *The manifest of a module*.
+The words, their places in each format and their checks are in `docs/usage/host.md`, *The manifest of a module*.
 
 | Field of `manifest_t` | Value |
 | --- | --- |
@@ -61,7 +61,7 @@ The texts point into the bytes of the file, so the bytes must stay while the hos
 | `MANIFEST_ALLOW_PAIRS` | A list, not empty, of lists of 2 such texts. |
 
 `manifest_check_value` gives no text for a value that the rule allows. Else it gives `why` of the rule.
-`manifest_check_key` checks the value of a key of a module, as `docs/extern/host/readme.md`, *The modules*, gives each key.
+`manifest_check_key` checks the value of a key of a module, as `docs/usage/host.md`, *The modules*, gives each key.
 For a name that is no key of a module, it gives `no key of a module`. For a key that only the manifest states, for example `abi`, it gives `only a module's author states it, in its file`.
 
 `manifest_get_setting` makes the `bridge_setting_t` of a value: a whole number, a real number or a flag by its kind, and `text` for each other value.
@@ -117,7 +117,7 @@ The texts of a `manifest_told_t` live only during the call of `tell`.
 `manifest_state` fills a `bridge_module_config_t` with each key of the module, in this order:
 
 1. The identity, the ABI of Bridge, `config`, `pinned` and `reloadable` come from the manifest.
-2. Each key of `docs/extern/host/readme.md`, *The modules*, comes from `find`, else from the default of the manifest.
+2. Each key of `docs/usage/host.md`, *The modules*, comes from `find`, else from the default of the manifest.
 3. The phases come from `phases` and `find`.
 4. The settings come from `find`, else from the defaults of the manifest. `undeclared` comes before them.
 

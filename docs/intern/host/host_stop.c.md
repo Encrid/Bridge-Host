@@ -1,7 +1,7 @@
 # src/host/host_stop.c
 
 This file unloads each loaded module at the end of a run, in the order of the pairs of `order.unload_before`.
-Bridge states no order between modules, so the host gives it: `docs/extern/host/readme.md`, *The end of a run*.
+Bridge states no order between modules, so the host gives it: `docs/usage/host.md`, *The end of a run*.
 
 ## The steps
 

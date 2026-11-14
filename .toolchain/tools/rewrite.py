@@ -26,8 +26,10 @@ RENAME = '''[[maybe_unused]] static typeof(*%(n)s) %(p)s%(n)s;
 WRITER = r'''#include <stdlib.h>
 #include <string.h>
 #ifdef _WIN32
+#include <errno.h>
 #include <fcntl.h>
 #include <io.h>
+#include <share.h>
 #include <sys/stat.h>
 #else
 #include <fcntl.h>
@@ -44,7 +46,9 @@ WRITER = r'''#include <stdlib.h>
     if (!%(p)spath)
         return;
 #ifdef _WIN32
-    %(p)sfd = _open(%(p)spath, _O_WRONLY | _O_CREAT | _O_APPEND | _O_BINARY, _S_IREAD | _S_IWRITE);
+    do
+        %(p)sfd = _sopen(%(p)spath, _O_WRONLY | _O_CREAT | _O_APPEND | _O_BINARY, _SH_DENYRW, _S_IREAD | _S_IWRITE);
+    while (%(p)sfd < 0 && errno == EACCES);
 #else
     %(p)sfd = open(%(p)spath, O_WRONLY | O_CREAT | O_APPEND, 0644);
 #endif
@@ -130,6 +134,15 @@ def dumped(command, root):
     return found
 
 
+def stood_in(artifact, mine):
+    folder = Path(mine['work'] + '.inputs')
+    names = [Path(file).name for file in build.read(artifact, mine)]
+    for name in names:
+        folder.mkdir(parents=True, exist_ok=True)
+        (folder / name).write_bytes(b'\0')
+    return ['--embed-dir=' + folder.as_posix()] if names else []
+
+
 def sources(config, values):
     jobs = {}
     for artifact in build.artifacts(config):
@@ -137,9 +150,12 @@ def sources(config, values):
             continue
         _, mine = build.planned(config, values, artifact)
         Path(mine['work']).parent.mkdir(parents=True, exist_ok=True)
+        mine['inputs'] = stood_in(artifact, mine)
         for source in mine['sources']:
             if source.startswith('src/') and source.endswith('.c') and source not in jobs:
-                jobs[source] = expanded(config['rewrite']['dump'], dict(mine, source=source))
+                jobs[source] = expanded(config['rewrite']['dump'], dict(mine, source=source)), set()
+            if source in jobs and 'part' in artifact:
+                jobs[source][1].add(artifact['part'])
     return jobs
 
 
@@ -147,7 +163,8 @@ def each(config, values, use):
     root = Path(values['root'])
     jobs = sources(config, values)
     with concurrent.futures.ThreadPoolExecutor(min(8, os.cpu_count() or 1)) as pool:
-        return list(pool.map(lambda job: use(root, job[0], dumped(job[1], root)), jobs.items()))
+        return list(pool.map(lambda job: (use(root, job[0], dumped(job[1][0], root)), sorted(job[1][1])),
+                             jobs.items()))
 
 
 def copied(root, where):

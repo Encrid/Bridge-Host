@@ -1,0 +1,49 @@
+code = ["include/**", "src/host/config/config.h", "src/host/file_bytes.h", "src/host/host.h", "src/host/say.h", "src/host/toml/toml.h", "src/manifest/manifest.c", "src/manifest/manifest_check.c", "src/manifest/manifest_find.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_keys.c", "src/manifest/manifest_made.c", "src/manifest/manifest_own.c", "src/manifest/manifest_rules.c", "src/manifest/manifest_take.c", "src/manifest/manifest_word.c", "tests/manifest/**", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+
+[[case]]
+name = "the manifest finds a key that a module states"
+run = ["{out}/manifest-unit{exe}", "{case}/mods/stated{library}", "hot_reload"]
+claims = { status = 0, line = ["found: hot_reload"] }
+false = { run = ["{out}/manifest-unit{exe}", "{case}/mods/stated{library}", "on_error"] }
+
+[case.folders]
+"{case}/mods" = ["stated"]
+
+[[case]]
+name = "the manifest finds a key of 2 names"
+run = ["{out}/manifest-unit{exe}", "{case}/mods/stated{library}", "top.sub"]
+claims = { status = 0, line = ["found: sub"] }
+false = { run = ["{out}/manifest-unit{exe}", "{case}/mods/stated{library}", "top.other"] }
+
+[case.folders]
+"{case}/mods" = ["stated"]
+
+[[case]]
+name = "a key that a module states 2 times is told, and not found"
+run = ["{out}/manifest-unit{exe}", "{case}/mods/stated{library}", "scratch"]
+claims = { status = 0, order = ["twice: scratch", "none: scratch"] }
+false = { run = ["{out}/manifest-unit{exe}", "{case}/mods/stated{library}", "hot_reload"] }
+
+[case.folders]
+"{case}/mods" = ["stated"]
+
+[[case]]
+name = "a key with a value that its rule refuses is told, and not found"
+run = ["{out}/manifest-unit{exe}", "{case}/mods/stated{library}", "log_level"]
+claims = { status = 0, order = ["wrong: log_level", "none: log_level"] }
+false = { run = ["{out}/manifest-unit{exe}", "{case}/mods/stated{library}", "hot_reload"] }
+
+[case.folders]
+"{case}/mods" = ["stated"]
+
+[[case]]
+name = "a key whose name finds no memory is not found"
+run = ["{out}/manifest-unit{exe}", "{case}/mods/stated{library}", "hot_reload"]
+fail = { calloc = 2 }
+claims = { status = 0, line = ["none: hot_reload"] }
+
+[case.folders]
+"{case}/mods" = ["stated"]
+
+[case.false]
+fail = {}

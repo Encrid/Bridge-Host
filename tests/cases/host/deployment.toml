@@ -1,3 +1,5 @@
+code = ["include/**", "src/host/**", "src/manifest/manifest.c", "src/manifest/manifest_check.c", "src/manifest/manifest_find.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_keys.c", "src/manifest/manifest_list.c", "src/manifest/manifest_made.c", "src/manifest/manifest_own.c", "src/manifest/manifest_phase.c", "src/manifest/manifest_rules.c", "src/manifest/manifest_setting.c", "src/manifest/manifest_state.c", "src/manifest/manifest_take.c", "src/manifest/manifest_wasm.c", "src/manifest/manifest_word.c", "src/manifest/manifest_words.c", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+
 [[case]]
 name = "in one file the table of the identity is over the table of the backend, and that one is over all"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/tables.toml"]

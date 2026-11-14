@@ -21,7 +21,7 @@ static bool parse(void *ud, const char *text, manifest_value_t *v)
     return (true);
 }
 
-static void tell(void *ud, const manifest_told_t *told)
+static void write_told(void *ud, const manifest_told_t *told)
 {
     static const char *const KINDS[] = { "", "value", "not stated", "twice",
         "wrong", "no word", "no component" };
@@ -66,7 +66,7 @@ static void find_one(const manifest_module_t *m, char *key)
 
 int main(int argc, char **argv)
 {
-    const manifest_host_t host = { .parse = parse, .tell = tell };
+    const manifest_host_t host = { .parse = parse, .tell = write_told };
     manifest_made_t made = {};
     manifest_t who = {};
     size_t len = 0;

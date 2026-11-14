@@ -83,7 +83,12 @@ jobs:
           INTO: ${{ github.base_ref }}
         run: |
           git diff --name-only "$BASE...$HEAD" > "$RUNNER_TEMP/changed.txt"
-          python project.py ${{ matrix.gate.run }} $(python .toolchain/tools/scope.py --changed "$RUNNER_TEMP/changed.txt" --into "$INTO")
+          groups=$(python .toolchain/tools/scope.py --changed "$RUNNER_TEMP/changed.txt" --into "$INTO")
+          if [ -z "$groups" ]; then
+            echo "no case group tests this change"
+          else
+            python project.py ${{ matrix.gate.run }} $groups
+          fi
       - name: Pack
         if: matrix.gate.name == 'test'
         run: python project.py pack --target ${{ matrix.platform.target }}

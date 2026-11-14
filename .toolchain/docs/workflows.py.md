@@ -7,7 +7,7 @@ The command `check` runs it.
 
 | Workflow | When it runs | What it does |
 | --- | --- | --- |
-| `ci.yml` | On each pull request. | On each target, it runs `check`, the 4 test commands and `pack`, as *The jobs of ci.yml* tells. `docs/contributing/pull_request.md`, *Before you open a pull request*, gives the commands. |
+| `ci.yml` | On each pull request. | On each target, it runs the five commands and `pack`, as *The jobs of ci.yml* tells. `docs/contributing/pull_request.md`, *Before you open a pull request*, gives the five commands. |
 | `cla.yml` | On each pull request, and on each new comment of a pull request. | It runs `cla`, which asks the author to sign `cla.md`, and sets the status `cla`. |
 | `release.yml` | On each push of a tag `v*` or `*-v*`. | It makes the release of the project or of a part, as *The release* tells. |
 | `warm.yml` | On each push to `dev`. | On each target, it runs `fetch` and `build`, and saves the cache of zig: *The cache of zig*. |
@@ -21,12 +21,15 @@ The step `Runner` of `ci.yml` and of `release.yml` gives the runner what the cas
 The job `gate` has a job for each target and each gate: `test`, `test --break`, `test --branches` and `test --leaks`. Thus a job runs 1 gate, and stays far under its limit of 60 minutes.
 Each such job prepares its runner with `runner.py`, then runs `fetch` and its gate. The job of `test` also runs `check` before its gate, and `pack` after it.
 
-The gate runs only for the parts that the pull request changes, and for the parts that use them: `.toolchain/docs/scope.py.md`. A pull request into `main` runs it for the whole project.
+The gate runs only for the groups that `scope.py` gives for the pull request: `.toolchain/docs/scope.py.md`. A pull request into `main` runs it for the groups that state `whole = true`.
+If no group tests the change, the step writes `no case group tests this change`, and runs no case.
+
 `git diff --name-only` of the base and the head of the pull request gives the changed paths. `check` and `pack` always run for the whole project.
+The step keeps the output of `scope.py` in a variable first. Thus a fault of the tool stops the step.
 
 The variable `PYTHONUNBUFFERED` makes the runner write each line at once. Thus a job that stops at its limit still shows its last case.
 
-The job `check` has a job for each target, with the name `check (<target>, <runner>, <architecture>)`. The rules of the branches `dev` and `main` ask for these names.
+The job `check` has a job for each target, with the name `check (<target>, <runner>, <architecture>)`. The rules of the branches `dev` and `main` ask for these 6 names.
 Each such job waits for all the jobs of `gate`, and passes only if each of them passed.
 
 ## The cache of zig

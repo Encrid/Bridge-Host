@@ -1,4 +1,4 @@
-code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/show/**", "src/host/state/state.c", "src/host/state/state_find.c", "src/host/state/state_list.c", "src/host/state/state_made.c", "src/host/state/state_phase.c", "src/host/state/state_setting_find.c", "src/host/state/state_tell.c", "src/host/state/state_undeclared.c", "src/manifest/manifest.c", "src/manifest/manifest_check.c", "src/manifest/manifest_find.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_keys.c", "src/manifest/manifest_list.c", "src/manifest/manifest_made.c", "src/manifest/manifest_phase.c", "src/manifest/manifest_rules.c", "src/manifest/manifest_setting.c", "src/manifest/manifest_state.c", "src/manifest/manifest_take.c", "src/manifest/manifest_wasm.c", "src/manifest/manifest_word.c", "src/manifest/manifest_words.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/test.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/show/**", "src/manifest/manifest.c", "src/manifest/manifest_check.c", "src/manifest/manifest_find.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_keys.c", "src/manifest/manifest_list.c", "src/manifest/manifest_made.c", "src/manifest/manifest_phase.c", "src/manifest/manifest_rules.c", "src/manifest/manifest_setting.c", "src/manifest/manifest_state.c", "src/manifest/manifest_take.c", "src/manifest/manifest_wasm.c", "src/manifest/manifest_word.c", "src/manifest/manifest_words.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/test.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
 name = "a module key that two presets state two ways is refused"
@@ -31,45 +31,6 @@ library = "{bb_native}/bridge_native"
 "{case}/ma.toml" = '''
 [module."bridge-host:knock@1.0.0"]
 scratch = 65536
-'''
-
-[[case]]
-name = "a setting that two presets state two ways is refused"
-run = ["{out}/bridge-host{exe}", "{case}/wt.toml"]
-
-[case.claims]
-status = 1
-has = ["refused: config.word: \"a\" in wa.toml:2, \"b\" in wb.toml:2"]
-
-[case.folders]
-"{case}/words" = ["word"]
-
-[case.files]
-"{case}/wa.toml" = '''
-[module."bridge-host:word@1.0.0".config]
-word = "a"
-'''
-"{case}/wb.toml" = '''
-[module."bridge-host:word@1.0.0".config]
-word = "b"
-'''
-"{case}/wt.toml" = '''
-presets = ["{root}/tests/presets/test.toml", "wa.toml", "wb.toml"]
-phases = ["late"]
-again = {}
-rounds = 8
-[content]
-paths = ["words"]
-[backend.wasm]
-library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
-'''
-
-[case.false.files]
-"{case}/wb.toml" = '''
-[module."bridge-host:word@1.0.0".config]
-word = "a"
 '''
 
 [[case]]

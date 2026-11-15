@@ -603,3 +603,70 @@ library = "{bb_native}/bridge_native"
 
 [case.false]
 fail = {}
+
+[[case]]
+name = "a setting that two presets state two ways is refused"
+run = ["{out}/bridge-host{exe}", "{case}/wt.toml"]
+
+[case.claims]
+status = 1
+has = ["refused: config.word: \"a\" in wa.toml:2, \"b\" in wb.toml:2"]
+
+[case.folders]
+"{case}/words" = ["word"]
+
+[case.files]
+"{case}/wa.toml" = '''
+[module."bridge-host:word@1.0.0".config]
+word = "a"
+'''
+"{case}/wb.toml" = '''
+[module."bridge-host:word@1.0.0".config]
+word = "b"
+'''
+"{case}/wt.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "wa.toml", "wb.toml"]
+phases = ["late"]
+again = {}
+rounds = 8
+[content]
+paths = ["words"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/wb.toml" = '''
+[module."bridge-host:word@1.0.0".config]
+word = "a"
+'''
+
+[[case]]
+name = "a default that the manifest states twice is refused when the host reads it"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/td.toml"]
+
+[case.claims]
+status = 1
+line = ["  refused: its file states config.word twice"]
+
+[case.folders]
+"{case}/mods" = ["twiceset"]
+
+[case.files]
+"{case}/td.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update", "late"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["owned"]

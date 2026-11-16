@@ -3,7 +3,7 @@ name = "manifest"
 part = "manifest"
 kind = "archive"
 sources = ["src/manifest/*.c"]
-include = ["{bridge}/include", "include/manifest", "src/manifest"]
+include = ["{bridge}/include", "include/manifest", "src/manifest", "tests/manifest", "{toolchain}/runtime"]
 
 [[artifact]]
 name = "bridge-host"
@@ -21,7 +21,7 @@ part = "manifest"
 kind = "program"
 test = true
 sources = ["tests/manifest/*.c"]
-include = ["{bridge}/include", "include/manifest", "src/manifest"]
+include = ["{bridge}/include", "include/manifest", "src/manifest", "tests/manifest", "{toolchain}/runtime"]
 flags = ["{system_defines}", "{system_libraries}"]
 link = ["{out}/manifest.a"]
 

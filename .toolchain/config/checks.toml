@@ -387,13 +387,6 @@ side = "false"
 why = "config_check refuses a depth-five setting whose fifth key is not path, so it is always path here."
 
 [[branches.exception]]
-path = "src/manifest/manifest.c"
-line = 60
-col = 9
-side = "true"
-why = "read_own reads a module's own bytes, whose format manifest_find already recognized, so it never fails to find it."
-
-[[branches.exception]]
 path = "src/host/host_path.c"
 line = 19
 col = 53
@@ -503,93 +496,3 @@ col = 9
 side = "true"
 why = "state_parse gets its text from calloc, which returns null only when memory runs out, which the tests do not force."
 
-[[branches.exception]]
-path = "src/manifest/manifest_list.c"
-line = 19
-col = 9
-side = "true"
-why = "manifest_add_name grows the list with realloc, which returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/manifest/manifest_made.c"
-line = 14
-col = 9
-side = "true"
-why = "add_one grows the list with realloc, which returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/manifest/manifest_made.c"
-line = 25
-col = 18
-side = "true"
-why = "add_one fails only when its realloc runs out of memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/manifest/manifest_made.c"
-line = 37
-col = 9
-side = "false"
-why = "manifest_keep_value gets null only when calloc runs out of memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/manifest/manifest_made.c"
-line = 37
-col = 14
-side = "true"
-why = "add_one fails only when its realloc runs out of memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/manifest/manifest_own.c"
-line = 38
-col = 27
-side = "false"
-why = "parse of a host gives false only with no memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/manifest/manifest_own.c"
-line = 48
-col = 9
-side = "true"
-why = "manifest_find_own gets its value from calloc, which returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/manifest/manifest_phase.c"
-line = 18
-col = 9
-side = "true"
-why = "the host gives only the names of phases that its files state, so find gives each one a value or a clash."
-
-[[branches.exception]]
-path = "src/manifest/manifest_setting.c"
-line = 52
-col = 9
-side = "false"
-why = "split_names copies with malloc, which returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/manifest/manifest_setting.c"
-line = 54
-col = 12
-side = "false"
-why = "copy is the result of malloc for the settings string; it is null only when the allocation fails."
-
-[[branches.exception]]
-path = "src/manifest/manifest_setting.c"
-line = 69
-col = 28
-side = "false"
-why = "set is the result of calloc for the settings array; it is null only when the allocation fails."
-
-[[branches.exception]]
-path = "src/manifest/manifest_setting.c"
-line = 75
-col = 26
-side = "false"
-why = "set is the result of calloc for the settings array; it is null only when the allocation fails, and it does not change inside the loop."
-
-[[branches.exception]]
-path = "src/manifest/manifest_state.c"
-line = 68
-col = 9
-side = "true"
-why = "Bridge-Host asks manifest_state_key only for hot_reload, which is a key of a module."

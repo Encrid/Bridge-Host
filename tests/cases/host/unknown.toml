@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "a module, a setting, a phase"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/word.toml"]
 
 [case.claims]
@@ -48,6 +49,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a setting nobody gave"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/word.toml"]
 
 [case.claims]
@@ -90,6 +92,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a phase it names, the world's"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/word.toml"]
 
 [case.claims]
@@ -135,6 +138,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a setting its own file states"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/owned.toml"]
 
 [case.claims]

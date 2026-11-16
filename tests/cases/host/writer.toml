@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "usage when no config is named"
+process = "command"
 run = ["{out}/bridge-host{exe}"]
 
 [case.claims]
@@ -13,6 +14,7 @@ run = ["{out}/bridge-host{exe}", "{case}/none.toml"]
 
 [[case]]
 name = "a line that finds no memory still comes whole"
+process = "command"
 run = ["{out}/bridge-host{exe}"]
 fail = { realloc = 1 }
 
@@ -25,6 +27,7 @@ run = ["{out}/bridge-host{exe}", "{case}/none.toml"]
 
 [[case]]
 name = "a config whose folder is not there"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/gone/deep.toml"]
 
 [case.claims]
@@ -36,6 +39,7 @@ has = ["cannot go into '"]
 
 [[case]]
 name = "a config that cannot be read"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/missing.toml"]
 
 [case.claims]
@@ -49,6 +53,7 @@ rounds = 1
 
 [[case]]
 name = "presets that are not a list of files"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/plist.toml"]
 
 [case.claims]
@@ -71,6 +76,7 @@ paths = ["cq"]
 
 [[case]]
 name = "no backend is stated"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/noback.toml"]
 
 [case.claims]
@@ -104,6 +110,7 @@ library = "{bb_wasm}/bridge_wasm"
 
 [[case]]
 name = "the lock folder is a file"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/lf.toml"]
 
 [case.claims]
@@ -147,6 +154,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the lock cannot be taken"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/cl.toml"]
 
 [case.claims]
@@ -190,6 +198,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "too many files in a folder"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/many.toml"]
 
 [case.claims]
@@ -259,6 +268,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a reload that is refused"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/fr.toml"]
 script = [{ wait = "? go on", put = { "{case}/fr/swap.wasm" = "word" }, type = "go" }]
 
@@ -295,6 +305,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a module built against another ABI"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/abifour.toml"]
 
 [case.claims]
@@ -323,6 +334,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a manifest word that cannot be"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/badabi.toml"]
 
 [case.claims]
@@ -351,6 +363,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "settings without a component"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/nocomp.toml"]
 
 [case.claims]
@@ -379,6 +392,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a manifest that states no config"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/noconfig.toml"]
 
 [case.claims]
@@ -407,6 +421,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a manifest that states no reloadable"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/noreload.toml"]
 
 [case.claims]
@@ -435,6 +450,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a manifest that states a setting that cannot be"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/badset.toml"]
 
 [case.claims]

@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "config.h"
+#include "rows.h"
 #include "say.h"
 #include "toml.h"
 
@@ -291,9 +292,9 @@ static void value_list(void)
     ck(!config_check_value(&good, CHECK_NAMES_NONE), "names none list");
 }
 
-int main(int argc, char **argv)
+static int run(int argc, char **argv)
 {
-    setvbuf(stdout, nullptr, _IONBF, 0);
+    fails = 0;
     do_scalars();
     do_numbers();
     do_text();
@@ -307,4 +308,10 @@ int main(int argc, char **argv)
     value_list();
     printf("%s\n", fails ? "unit broken" : "unit ok");
     return (fails ? 1 : 0);
+}
+
+int main(int argc, char **argv)
+{
+    setvbuf(stdout, nullptr, _IONBF, 0);
+    return (argc > 1 ? run(argc, argv) : rows_run(run));
 }

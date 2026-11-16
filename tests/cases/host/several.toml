@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "two configs at once"
+process = "helper"
 run = ["{out}/bridge-host{exe}", "{case}/two.toml"]
 stdin = "go\n"
 
@@ -53,6 +54,7 @@ run = ["{out}/bridge-host{exe}", "{case}/one.toml"]
 
 [[case]]
 name = "one config twice"
+process = "helper"
 run = ["{out}/bridge-host{exe}", "{case}/one.toml"]
 stdin = "go\n"
 

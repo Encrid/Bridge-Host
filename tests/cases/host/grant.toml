@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "another namespace, refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/guest.toml"]
 
 [case.claims]
@@ -44,6 +45,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "another namespace, granted"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/guest.toml"]
 
 [case.claims]

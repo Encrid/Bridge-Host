@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "a module that asks again 2 times runs its phase 3 times in one round"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
 
 [case.claims]
@@ -46,6 +47,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the cap of a phase stops its runs, with a warning"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
 
 [case.claims]
@@ -90,6 +92,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a phase that again does not name runs one time, with a warning"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
 
 [case.claims]
@@ -133,6 +136,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "again with no phase runs each phase one time"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
 
 [case.claims]
@@ -163,6 +167,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "an end in the same run as an again ends the run after its round"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
 
 [case.claims]
@@ -194,6 +199,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a key of again that is no phase is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -218,6 +224,7 @@ rounds = 1
 
 [[case]]
 name = "a cap of 0 is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -242,6 +249,7 @@ rounds = 1
 
 [[case]]
 name = "a cap that is a text is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -266,6 +274,7 @@ rounds = 1
 
 [[case]]
 name = "again that is not a table is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -290,6 +299,7 @@ rounds = 1
 
 [[case]]
 name = "a world that states no again"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -313,6 +323,7 @@ rounds = 1
 
 [[case]]
 name = "an empty table is refused at each key but again"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -337,6 +348,7 @@ rounds = 1
 
 [[case]]
 name = "the local file cannot state again"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/rl.toml"]
 
 [case.claims]
@@ -379,6 +391,7 @@ written = 7
 
 [[case]]
 name = "two files that state a cap with 2 values are refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -405,6 +418,7 @@ again = { update = 2 }
 
 [[case]]
 name = "a key below a cap of again is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -429,6 +443,7 @@ rounds = 1
 
 [[case]]
 name = "the warnings of again are records of the level 4, not written below it"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
 
 [case.claims]

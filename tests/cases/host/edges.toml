@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "a config named with only a backslash"
+process = "command"
 run = ["{out}/bridge-host{exe}", "no-such-dir-98765\\deep.toml"]
 
 [case.claims]
@@ -13,6 +14,7 @@ run = ["{out}/bridge-host{exe}", "no-such-dir-98765_deep.toml"]
 
 [[case]]
 name = "a config whose backslash comes before a slash"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/no\\such/deep.toml"]
 
 [case.claims]
@@ -24,6 +26,7 @@ has = ["cannot go into '"]
 
 [[case]]
 name = "a world that states no phases but states its counts"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/np.toml"]
 
 [case.claims]
@@ -61,6 +64,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a table for an unfound module, beside a non-module file"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/uf.toml"]
 
 [case.claims]

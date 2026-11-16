@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "a native module ends a live run at the round that it chose"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/live.toml"]
 
 [case.claims]
@@ -49,6 +50,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a wasm module ends a run that is not live at the round that it chose"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/end.toml"]
 
 [case.claims]
@@ -78,6 +80,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a live run goes on through quiet rounds to its limit"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/quiet.toml"]
 
 [case.claims]
@@ -119,6 +122,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "live takes only true or false"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/three.toml"]
 
 [case.claims]
@@ -160,6 +164,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a world that states threads and rounds, and no live"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/nolive.toml"]
 
 [case.claims]
@@ -185,6 +190,7 @@ live = false
 
 [[case]]
 name = "the profile of each system comes at the end of the run, before the world is destroyed"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/e.toml"]
 
 [case.claims]
@@ -224,6 +230,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a world with no system writes no line of profile"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/e.toml"]
 
 [case.claims]
@@ -253,6 +260,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the usage of the budget and of each module comes at the end of the run"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/e.toml"]
 
 [case.claims]
@@ -300,6 +308,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a world with no module writes no line of the usage of a module"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/e.toml"]
 
 [case.claims]

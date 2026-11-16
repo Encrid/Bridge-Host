@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "malformed libraries of each format, read for a manifest"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/mb.toml"]
 
 [case.claims]
@@ -48,6 +49,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a manifest whose last word has no zero byte is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/mb.toml"]
 
 [case.claims]
@@ -76,6 +78,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "an empty manifest is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/mb.toml"]
 
 [case.claims]
@@ -104,6 +107,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a file of no known format is not a module"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/mb.toml"]
 
 [case.claims]

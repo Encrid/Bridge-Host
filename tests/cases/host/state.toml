@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "a module that states keys and settings in its own file"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/owns.toml"]
 
 [case.claims]
@@ -66,6 +67,7 @@ library = "{bb_wasm}/bridge_wasm"
 
 [[case]]
 name = "settings of every kind, grants, losses, and an own setting"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/st.toml"]
 
 [case.claims]
@@ -138,6 +140,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "on_error fail and a module key stated two ways"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/sk.toml"]
 
 [case.claims]
@@ -291,6 +294,7 @@ library = "{bb_wasm}/bridge_wasm"
 
 [[case]]
 name = "a phase stated two ways"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/sp.toml"]
 
 [case.claims]
@@ -350,6 +354,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a grant stated in the local file"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/lg.toml"]
 
 [case.claims]
@@ -387,6 +392,7 @@ word = "local"
 
 [[case]]
 name = "a config word of 200 bytes is read whole"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/lc.toml"]
 
 [case.claims]
@@ -414,6 +420,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a setting name of 200 bytes takes its default from the manifest"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/ln.toml"]
 
 [case.claims]
@@ -441,6 +448,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a setting name of 200 bytes is named whole in the lines of the host"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/ln.toml"]
 
 [case.claims]
@@ -483,6 +491,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a manifest value keeps each = after the first"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/eq.toml"]
 
 [case.claims]
@@ -510,6 +519,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a word that the manifest does not state is an empty text"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/no.toml"]
 
 [case.claims]
@@ -537,6 +547,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "--show-config prints a value of 600 bytes whole"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/lv.toml"]
 
 [case.claims]
@@ -579,6 +590,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a statement whose prefix finds no memory writes its lines with no prefix"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/p.toml"]
 fail = { calloc = 11 }
 
@@ -606,6 +618,7 @@ fail = {}
 
 [[case]]
 name = "a setting that two presets state two ways is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/wt.toml"]
 
 [case.claims]
@@ -645,6 +658,7 @@ word = "a"
 
 [[case]]
 name = "a default that the manifest states twice is refused when the host reads it"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/td.toml"]
 
 [case.claims]

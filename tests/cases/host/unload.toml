@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "with no pair, the modules shut down by identity"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -39,6 +40,7 @@ unload_before = [["bridge-host:stopb", "bridge-host:stopa"]]
 
 [[case]]
 name = "a pair makes a module shut down before a module that comes first by identity"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -76,6 +78,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a pair that a preset states counts"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -109,6 +112,7 @@ unload_before = [["bridge-host:stopa", "bridge-host:stopb"]]
 
 [[case]]
 name = "a pair with a module that is not loaded does nothing, also a name that starts the name of a loaded module"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -148,6 +152,7 @@ unload_before = [["bridge-host:stopb", "bridge-host:stopa"]]
 
 [[case]]
 name = "a cycle of the pairs of 2 files is refused, and a pair into it or out of it is not named"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -184,6 +189,7 @@ unload_before = [["n:y", "n:z"], ["n:z", "n:v"]]
 
 [[case]]
 name = "a pair and its reverse in 2 presets of one file are refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -222,6 +228,7 @@ unload_before = [["n:x", "n:y"]]
 
 [[case]]
 name = "a pair that names one module twice is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -258,6 +265,7 @@ unload_before = [["n:x", "n:y"]]
 
 [[case]]
 name = "a module of a pair with no namespace is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -294,6 +302,7 @@ unload_before = [["n:x", "n:y"]]
 
 [[case]]
 name = "a module of a pair with a version is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -330,6 +339,7 @@ unload_before = [["n:x", "n:y"]]
 
 [[case]]
 name = "after a signal, the pairs still order the shutdowns"
+process = "signal"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 stdin = "go\n"
 script = [{ wait = "? go on", signal = "interrupt" }, { wait = "a signal stops the host: a second one ends it at once" }]
@@ -371,6 +381,7 @@ unload_before = [["bridge-host:stopa", "bridge-host:stopb"]]
 
 [[case]]
 name = "unload_before that is no list of pairs is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]

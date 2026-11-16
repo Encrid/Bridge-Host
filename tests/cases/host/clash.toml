@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "a module key that two presets state two ways is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/mt.toml"]
 
 [case.claims]
@@ -35,6 +36,7 @@ scratch = 65536
 
 [[case]]
 name = "a setting that the manifest names twice is taken one time"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/dt.toml"]
 
 [case.claims]

@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/config.c", "src/host/config/config.h", "s
 
 [[case]]
 name = "a content path that starts with a slash is used as it is"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/whole.toml"]
 
 [case.claims]
@@ -32,6 +33,7 @@ paths = ['no-such-abs-one']
 
 [[case]]
 name = "a content path that starts with a backslash is used as it is"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/whole.toml"]
 
 [case.claims]
@@ -62,6 +64,7 @@ paths = ['no-such-abs-two']
 
 [[case]]
 name = "a content path whose second character is a colon is used as it is"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/whole.toml"]
 
 [case.claims]
@@ -92,6 +95,7 @@ paths = ['Q/no-such-abs-three']
 
 [[case]]
 name = "a preset whose name is empty"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/emptypre.toml"]
 
 [case.claims]
@@ -110,6 +114,7 @@ presets = ["{root}/tests/presets/world.toml"]
 
 [[case]]
 name = "a config named with a backslash in the path"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/sub\\x.toml"]
 
 [case.claims]
@@ -130,6 +135,7 @@ again = {}
 
 [[case]]
 name = "a config named with no folder at all"
+process = "command"
 run = ["{out}/bridge-host{exe}", "no-such-bare-config-12345.toml"]
 
 [case.claims]
@@ -141,6 +147,7 @@ run = ["{out}/bridge-host{exe}", "project.py"]
 
 [[case]]
 name = "a config named from the root of the drive"
+process = "command"
 run = ["{out}/bridge-host{exe}", "/no-such-root-config-12345.toml"]
 
 [case.claims]
@@ -152,6 +159,7 @@ run = ["{out}/bridge-host{exe}", "/no-such-root-dir-12345/no-such-root-config-12
 
 [[case]]
 name = "presets whose folders use backslashes"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/gf.toml"]
 
 [case.claims]

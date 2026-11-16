@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "it runs"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/hello.toml"]
 
 [case.claims]
@@ -35,6 +36,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "no backend"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/nothing.toml"]
 
 [case.claims]
@@ -74,6 +76,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "no module"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/no-such-folder.toml"]
 
 [case.claims]
@@ -99,6 +102,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a file over the files it names"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/over.toml"]
 
 [case.claims]

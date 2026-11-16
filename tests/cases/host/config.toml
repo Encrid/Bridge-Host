@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "a key stated twice in a file"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/twice.toml"]
 
 [case.claims]
@@ -43,6 +44,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a key nobody states"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/unstated.toml"]
 
 [case.claims]
@@ -80,6 +82,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "two peers that differ"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/peers.toml"]
 
 [case.claims]
@@ -126,6 +129,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a file that names itself"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/cycle.toml"]
 
 [case.claims]
@@ -169,6 +173,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a key of 300 bytes is named whole in the line that refuses it"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/long.toml"]
 
 [case.claims]
@@ -187,6 +192,7 @@ short = 1
 
 [[case]]
 name = "a key of a table that a file states outside its table is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -206,6 +212,7 @@ written = 6
 
 [[case]]
 name = "the local file can state the levels of the records"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/rl.toml"]
 
 [case.claims]
@@ -239,6 +246,7 @@ written = 5
 
 [[case]]
 name = "a key that is nobody's"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/nobody.toml"]
 
 [case.claims]
@@ -280,6 +288,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a key only a module's author states"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/author.toml"]
 
 [case.claims]
@@ -321,6 +330,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a path from the folder of the file that states it"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/beside.toml"]
 
 [case.claims]
@@ -364,6 +374,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a backend not given"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/wasm-only.toml"]
 
 [case.claims]
@@ -400,6 +411,7 @@ paths = ["config-knock"]
 
 [[case]]
 name = "a library of each format, read"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/formats.toml"]
 
 [case.claims]
@@ -437,6 +449,7 @@ paths = ["config-formats"]
 
 [[case]]
 name = "the local file over every other"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/local.toml"]
 
 [case.claims]
@@ -474,6 +487,7 @@ word = "hi"
 
 [[case]]
 name = "a table for a module not found"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/unfound.toml"]
 
 [case.claims]
@@ -518,6 +532,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a module its own file says too little of"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/mute.toml"]
 
 [case.claims]
@@ -558,6 +573,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a key of a module nobody states"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/terse.toml"]
 
 [case.claims]
@@ -643,6 +659,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a module the config does not load"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/unloaded.toml"]
 
 [case.claims]
@@ -685,6 +702,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the order of two systems, stated two ways"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/order.toml"]
 
 [case.claims]
@@ -736,6 +754,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the checks table turns the profile on"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/checks.toml"]
 
 [case.claims]
@@ -780,6 +799,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "two files that differ on a check are refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/both.toml"]
 
 [case.claims]
@@ -819,6 +839,7 @@ profile = false
 
 [[case]]
 name = "a key of the world goes to Bridge, which refuses it outside its range"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/range.toml"]
 
 [case.claims]

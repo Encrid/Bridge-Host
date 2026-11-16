@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "a reload to a file with a bad manifest"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "nocolon" }, type = "go" }]
 
@@ -33,6 +34,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a reload of a module that does not say it can be"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/quiet.wasm" = "quiet2" }, type = "go" }]
 
@@ -62,6 +64,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a reload to a file built against another ABI"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "abifour" }, type = "go" }]
 
@@ -93,6 +96,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a file seen but not loaded, then changed"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/mute.wasm" = "quiet2" }, type = "go" }]
 
@@ -124,6 +128,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a loaded module and a failed one both gone"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", remove = ["{case}/d/quiet.wasm", "{case}/d/mute.wasm"], type = "go" }]
 
@@ -152,6 +157,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a module that arrives on a later round and is asked about"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/knock.dll" = "knock" }, type = "go" }]
 
@@ -181,6 +187,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a reload to a file whose manifest names it but has a bad word"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "bareword" }, type = "go" }]
 
@@ -212,6 +219,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a reload the engine refuses"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "word" }, type = "go" }]
 
@@ -247,6 +255,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a module replaced five times, each time by its other build"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [
     { wait = "? go on", put = { "{case}/d/swap.wasm" = "swap2" }, type = "go" },
@@ -291,6 +300,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a module whose hot_reload is false keeps its old build, with no failure"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "swap2" }, type = "go" }]
 

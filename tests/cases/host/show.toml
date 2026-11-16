@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/config.c", "src/host/config/config.h", "s
 
 [[case]]
 name = "the config shown when it is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/bad.toml"]
 
 [case.claims]
@@ -20,6 +21,7 @@ rounds = 1
 
 [[case]]
 name = "the config shown with a content path that is not there"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/gone.toml"]
 
 [case.claims]
@@ -45,6 +47,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the config shown with an empty file, a non-module, and a module with no load"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/sm.toml"]
 
 [case.claims]
@@ -180,6 +183,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "--show-config writes each pair of unload_before"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/u.toml"]
 
 [case.claims]
@@ -217,6 +221,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the config said"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/shown.toml"]
 
 [case.claims]
@@ -271,6 +276,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the config said holds the caps of again"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/s.toml"]
 
 [case.claims]
@@ -306,6 +312,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the settings of a backend are shown with their places"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/bw.toml"]
 
 [case.claims]
@@ -342,6 +349,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a module that declares a setting the config does not give"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/us.toml"]
 
 [case.claims]
@@ -390,6 +398,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the config said, in full"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/show.toml"]
 
 [case.claims]
@@ -458,6 +467,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a file that the system does not open is named when the host shows the deployment"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/r.toml"]
 fail = { os_folder_read_file = 1 }
 

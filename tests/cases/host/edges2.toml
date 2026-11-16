@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "a world that runs for as long as there is work"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/zero.toml"]
 
 [case.claims]

@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "a first signal stops the run after its round, and the host ends its work"
+process = "signal"
 run = ["{out}/bridge-host{exe}", "{case}/sig.toml"]
 stdin = "go\n"
 script = [{ wait = "? go on", signal = "interrupt" }, { wait = "a signal stops the host: a second one ends it at once" }]
@@ -36,6 +37,7 @@ script = [{ wait = "? go on", signal = "interrupt" }, { wait = "a signal stops t
 
 [[case]]
 name = "a second signal ends the host at once, with the status 1"
+process = "signal"
 run = ["{out}/bridge-host{exe}", "{case}/sig.toml"]
 stdin = "go\n"
 script = [{ wait = "? go on", signal = "interrupt" }, { wait = "a signal stops the host: a second one ends it at once", signal = "interrupt", pause = 1 }]
@@ -65,6 +67,7 @@ script = [{ wait = "? go on", signal = "interrupt" }, { wait = "a signal stops t
 
 [[case]]
 name = "a host that cannot catch the signals does not run"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/sig.toml"]
 fail = { os_signal_catch = 1 }
 

@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/config.c", "src/host/config/config.h", "s
 
 [[case]]
 name = "a phase taken after a conflicting one is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/pp.toml"]
 
 [case.claims]

@@ -2,6 +2,7 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "a folder that the system does not watch is read at each round, after one line"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/unwatched.toml"]
 fail = { os_watch_start = 1 }
 script = [{ wait = "? go on", put = { "{case}/unwatched/quiet.wasm" = "quiet" }, type = "go" }]
@@ -36,6 +37,7 @@ fail = {}
 
 [[case]]
 name = "a watch that stops starts again, after a read of its whole folder"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/stopped.toml"]
 fail = { os_watch_take = 1 }
 script = [{ wait = "? go on", put = { "{case}/stopped/quiet.wasm" = "quiet" }, type = "go" }]
@@ -67,6 +69,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a watch that cannot start again leaves its folder read at each round, after one line"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/again.toml"]
 fail = { os_watch_take = 1, os_watch_start = 2 }
 script = [{ wait = "? go on", put = { "{case}/again/quiet.wasm" = "quiet" }, type = "go" }]
@@ -101,6 +104,7 @@ fail = { os_watch_take = 1 }
 
 [[case]]
 name = "a name that the system tells and that content.ignore holds is not read"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/ignoring.toml"]
 script = [{ wait = "? go on", put = { "{case}/ignoring/quiet.wasm" = "quiet" }, type = "go" }]
 
@@ -143,6 +147,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a run with live = false reads every file before it ends, and loads a module that got a free slot"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/ending.toml"]
 script = [{ wait = "? go on", remove = ["{case}/first/quiet.wasm"], type = "go" }]
 
@@ -179,6 +184,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a name that finds no memory makes the look read its whole folder"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/short.toml"]
 fail = { calloc = 21 }
 script = [{ wait = "? go on", put = { "{case}/short/quiet.wasm" = "quiet" }, type = "go" }]
@@ -210,6 +216,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "the slots of the watches that find no memory refuse the run"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/w.toml"]
 fail = { calloc = 10 }
 

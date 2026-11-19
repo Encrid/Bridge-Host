@@ -1,3 +1,2 @@
 [variables]
 own = ["abi=1", "pinned=false", "reloadable=false", "config=none"]
-binaryen_top = "binaryen-version_133"

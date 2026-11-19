@@ -48,11 +48,12 @@ link = ["{out}/manifest.a"]
 [[artifact]]
 name = "hello"
 part = "host"
-kind = "host_wasm"
+kind = "wasm_module"
 test = true
 folder = "fixtures"
 sources = ["tests/modules/hello.c"]
 include = ["{bridge}/include", "{bb_wasm}/include", "tests/modules"]
+link = ["{bb_wasm}/acc.wasm"]
 defines = ['SAY="hello from the host"']
 manifest = ["bridge-host:hello@1.0.0", "{own}"]
 variants = [
@@ -66,11 +67,12 @@ variants = [
 [[artifact]]
 name = "quiet"
 part = "host"
-kind = "host_wasm"
+kind = "wasm_module"
 test = true
 folder = "fixtures"
 sources = ["tests/modules/hello.c"]
 include = ["{bridge}/include", "{bb_wasm}/include", "tests/modules"]
+link = ["{bb_wasm}/acc.wasm"]
 defines = ["ONCE", 'SAY="said once"']
 manifest = ["bridge-host:quiet@1.0.0", "{own}"]
 variants = [
@@ -103,11 +105,12 @@ variants = [
 [[artifact]]
 name = "word"
 part = "host"
-kind = "host_wasm"
+kind = "wasm_module"
 test = true
 folder = "fixtures"
 sources = ["tests/modules/word.c"]
 include = ["{bridge}/include", "{bb_wasm}/include", "tests/modules"]
+link = ["{bb_wasm}/acc.wasm"]
 manifest = ["bridge-host:word@1.0.0", "abi=1", "pinned=false", "reloadable=false", "config=bridge-host:Word", "settings=word"]
 variants = [
     { name = "guest", manifest = ["guest:word@1.0.0", "{own}"] },

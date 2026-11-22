@@ -53,10 +53,10 @@ bool config_backends(host_t *h)
 {
     static const char *const BACKEND[] = { "backend" };
     const keyed_t under = { BACKEND, 1 };
-    names_t names = config_names(&h->config, &under);
-    bool taken = names.count > 0;
+    manifest_names_t names = config_names(&h->config, &under);
+    bool taken = !names.lost && names.count > 0;
 
-    if (!names.count)
+    if (!names.lost && !names.count)
         say("not stated: backend\n");
     h->held = host_calloc(names.count + 1, sizeof(*h->held));
     h->backends = host_calloc(names.count + 1, sizeof(*h->backends));

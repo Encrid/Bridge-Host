@@ -15,7 +15,7 @@ static char *join_key(const manifest_module_t *m, const key_path_t *path)
 
     for (uint32_t i = 0; i < path->depth; i++)
         size += strlen(path->names[i]) + 1;
-    key = manifest_keep(m, calloc(size, 1));
+    key = manifest_keep(m->made, calloc(size, 1));
     for (uint32_t i = 0; key && i < path->depth; i++) {
         if (i)
             strcat(key, ".");

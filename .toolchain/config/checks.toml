@@ -344,20 +344,6 @@ side = "false"
 why = "state_is_path receives a value that points at an entry of the named file, so the scan always finds that entry and returns before the loop ends."
 
 [[branches.exception]]
-path = "src/host/state/state_made.c"
-line = 12
-col = 9
-side = "true"
-why = "add_one's realloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/state/state_made.c"
-line = 36
-col = 18
-side = "true"
-why = "add_one fails only when its realloc runs out of memory, which the tests do not force."
-
-[[branches.exception]]
 path = "src/host/toml/toml_key.c"
 line = 25
 col = 9
@@ -412,14 +398,14 @@ why = "config_find sets other only together with at, so other is null whenever a
 
 [[branches.exception]]
 path = "src/host/state/state_list.c"
-line = 55
+line = 56
 col = 9
 side = "true"
 why = "make_list gets its value from calloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/host/state/state_list.c"
-line = 55
+line = 56
 col = 15
 side = "true"
 why = "make_list gets its items from calloc, which returns null only when memory runs out, which the tests do not force."

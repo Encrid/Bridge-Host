@@ -126,6 +126,12 @@ typedef struct {
 } manifest_made_t;
 
 typedef struct {
+    const char **names;
+    uint32_t count;
+    bool lost;
+} manifest_names_t;
+
+typedef struct {
     const manifest_host_t *host;
     const manifest_t *who;
     const unsigned char *bytes;
@@ -157,7 +163,11 @@ typedef struct {
 [[nodiscard]] const manifest_value_t *manifest_state_key(
     const manifest_module_t *m, const char *name);
 
+[[nodiscard]] void *manifest_keep(manifest_made_t *made, void *block);
+
 void manifest_free(manifest_made_t *made);
+
+void manifest_add_name(manifest_names_t *into, const char *name);
 
 void manifest_free_value(manifest_value_t *v);
 

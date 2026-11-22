@@ -5,17 +5,6 @@
 */
 #include "host.h"
 
-static bool add_one(void ***list, uint32_t *count, void *one)
-{
-    void **more = host_realloc(*list, sizeof(*more) * (*count + 1));
-
-    if (!more)
-        return (false);
-    *list = more;
-    (*list)[(*count)++] = one;
-    return (true);
-}
-
 const char *state_keep_prefix(made_t *m, const char *what, const char *path,
     const char *who)
 {
@@ -31,19 +20,14 @@ const char *state_keep_prefix(made_t *m, const char *what, const char *path,
 
 void *state_keep(const stating_t *s, void *block)
 {
-    made_t *m = s->made;
+    void *kept = manifest_keep(&s->made->lib, block);
 
-    if (block && !add_one(&m->blocks, &m->block_count, block)) {
-        free(block);
-        return (nullptr);
-    }
-    return (block);
+    if (block && !kept)
+        say("no memory left to keep a block\n");
+    return (kept);
 }
 
 void state_free(made_t *m)
 {
-    for (uint32_t i = 0; i < m->block_count; i++)
-        free(m->blocks[i]);
-    free(m->blocks);
     manifest_free(&m->lib);
 }

@@ -5,6 +5,7 @@ The 5 words of `docs/intern/manifest/manifest_take.c.md` come last, with `MANIFE
 The grants and the losses have no width, since they fill a list and its count.
 
 `manifest_put` writes a value into the field of its key, at the offset and the width of the rule.
+It writes as `config_put` of the host does: `docs/intern/host/config/config_keys.c.md`.
 A flag gives `BRIDGE_TRUE` or `BRIDGE_FALSE`, and `on_error` gives `BRIDGE_FAIL` or `BRIDGE_SKIP`. The word `none` gives the value `none` of the rule.
 
 ## Functions

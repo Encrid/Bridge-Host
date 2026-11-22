@@ -6,7 +6,7 @@
 #include "host.h"
 
 static bool permit_in(const config_t *c, uint32_t file,
-    const module_key_t *k, names_t *into)
+    const module_key_t *k, manifest_names_t *into)
 {
     const cfile_t *f = &c->files[file];
     said_t said = {};
@@ -14,7 +14,7 @@ static bool permit_in(const config_t *c, uint32_t file,
 
     if (config_states_module(f, k, &said)) {
         for (uint32_t i = 0; i < said.value->count; i++)
-            names_add(into, said.value->items[i].text);
+            manifest_add_name(into, said.value->items[i].text);
         return (true);
     }
     for (uint32_t i = 0; i < f->named_count; i++)
@@ -22,7 +22,8 @@ static bool permit_in(const config_t *c, uint32_t file,
     return (stated);
 }
 
-static bool find_names(const stating_t *s, const char *name, names_t *got)
+static bool find_names(const stating_t *s, const char *name,
+    manifest_names_t *got)
 {
     const char *const names[] = { name };
     const module_key_t k = { { s->of->who.identity, s->of->who.backend,
@@ -37,7 +38,7 @@ static bool find_names(const stating_t *s, const char *name, names_t *got)
 }
 
 static void say_names(const stating_t *s, const char *key,
-    const names_t *got)
+    const manifest_names_t *got)
 {
     if (!s->show)
         return;
@@ -47,7 +48,7 @@ static void say_names(const stating_t *s, const char *key,
     say("]\n");
 }
 
-static value_t *make_list(const stating_t *s, const names_t *got)
+static value_t *make_list(const stating_t *s, const manifest_names_t *got)
 {
     value_t *v = state_keep(s, host_calloc(1, sizeof(*v)));
     value_t *items = state_keep(s, host_calloc(got->count + 1, sizeof(*items)));
@@ -65,7 +66,7 @@ static value_t *make_list(const stating_t *s, const names_t *got)
 int state_find_grant(const stating_t *s, const char *name,
     manifest_found_t *found)
 {
-    names_t got = {};
+    manifest_names_t got = {};
     bool stated = find_names(s, name, &got);
     const value_t *list = nullptr;
 

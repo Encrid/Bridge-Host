@@ -8,6 +8,8 @@
 
 #include "manifest_inside.h"
 
+static_assert(__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__);
+
 static const key_rule_t KEYS[] = {
     { "hot_reload", MANIFEST_CHECK_FLAG, 1,
         offsetof(bridge_module_config_t, hot_reload), 0 },
@@ -80,17 +82,10 @@ void manifest_put(bridge_module_config_t *cfg, const key_rule_t *rule,
     const manifest_value_t *v)
 {
     int64_t n = v->kind == MANIFEST_WHOLE ? v->whole : rule->none;
-    uint8_t one = (uint8_t)n;
-    uint32_t four = (uint32_t)n;
 
     if (rule->check == MANIFEST_CHECK_FLAG)
-        one = v->flag ? BRIDGE_TRUE : BRIDGE_FALSE;
+        n = v->flag ? BRIDGE_TRUE : BRIDGE_FALSE;
     if (rule->check == MANIFEST_CHECK_ERROR)
-        one = v->text[0] == 'f' ? BRIDGE_FAIL : BRIDGE_SKIP;
-    if (rule->width == 1)
-        memcpy((char *)cfg + rule->at, &one, 1);
-    if (rule->width == 4)
-        memcpy((char *)cfg + rule->at, &four, 4);
-    if (rule->width == 8)
-        memcpy((char *)cfg + rule->at, &n, 8);
+        n = v->text[0] == 'f' ? BRIDGE_FAIL : BRIDGE_SKIP;
+    memcpy((char *)cfg + rule->at, &n, rule->width);
 }

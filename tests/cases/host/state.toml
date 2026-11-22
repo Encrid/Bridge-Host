@@ -690,6 +690,7 @@ name = "a module whose phases find no memory is not loaded, with its line"
 process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
 fail = { realloc = 256 }
+fail_parts = ["host", "manifest"]
 
 [case.claims]
 status = 1
@@ -722,6 +723,7 @@ name = "a module whose read grant finds no memory is not loaded, with its line"
 process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
 fail = { realloc = 249 }
+fail_parts = ["host", "manifest"]
 
 [case.claims]
 status = 1

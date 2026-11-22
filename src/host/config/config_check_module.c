@@ -12,7 +12,7 @@ static const char *check_table(const config_t *c, const char *table)
 {
     static const char *const BACKEND[] = { "backend" };
     const keyed_t under = { BACKEND, 1 };
-    names_t backends = {};
+    manifest_names_t backends = {};
     const char *why = "no backend of that name";
 
     if (!strcmp(table, "all") || (strchr(table, ':') && strchr(table, '@')))
@@ -20,6 +20,8 @@ static const char *check_table(const config_t *c, const char *table)
     if (strchr(table, ':'))
         return ("a module is named with its version");
     backends = config_names(c, &under);
+    if (backends.lost)
+        why = "no memory left";
     for (uint32_t i = 0; why && i < backends.count; i++)
         if (!strcmp(backends.names[i], table))
             why = nullptr;

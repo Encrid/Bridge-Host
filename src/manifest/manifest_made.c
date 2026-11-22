@@ -18,10 +18,8 @@ static bool add_one(void ***list, uint32_t *count, void *one)
     return (true);
 }
 
-void *manifest_keep(const manifest_module_t *m, void *block)
+void *manifest_keep(manifest_made_t *made, void *block)
 {
-    manifest_made_t *made = m->made;
-
     if (block && !add_one(&made->blocks, &made->block_count, block)) {
         free(block);
         return (nullptr);

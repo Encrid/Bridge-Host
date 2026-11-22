@@ -20,10 +20,10 @@ bool config_backend_settings(host_t *h, uint32_t at)
 {
     const char *key[3] = { "backend", h->held[at].name, nullptr };
     const keyed_t under = { key, 2 };
-    names_t names = config_names(&h->config, &under);
+    manifest_names_t names = config_names(&h->config, &under);
     bridge_setting_t *set = host_calloc(names.count + 1, sizeof(*set));
     uint32_t count = 0;
-    bool taken = set != nullptr;
+    bool taken = set && !names.lost;
 
     for (uint32_t i = 0; set && i < names.count; i++) {
         key[2] = names.names[i];

@@ -32,7 +32,7 @@ bool manifest_take_phases(const manifest_module_t *m,
     bool taken = count != MANIFEST_NO_MEMORY;
 
     if (taken && count)
-        map = manifest_keep(m, malloc(sizeof(*map) * count));
+        map = manifest_keep(m->made, malloc(sizeof(*map) * count));
     taken = taken && (map || !count);
     for (uint32_t i = 0; map && i < count; i++)
         taken = take_phase(m, names[i], &map[i]) && taken;

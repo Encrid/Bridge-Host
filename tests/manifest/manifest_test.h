@@ -64,5 +64,7 @@ int test_run_allow(int argc, char **argv);
 int test_run_setting(int argc, char **argv);
 int test_run_state(int argc, char **argv);
 int test_run_key(int argc, char **argv);
+int test_run_names(int argc, char **argv);
+int test_run_keep(int argc, char **argv);
 
 #endif

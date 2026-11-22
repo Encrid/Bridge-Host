@@ -33,7 +33,7 @@ static void say_under(const config_t *c, const char *top, const char *next)
     const char *key[3] = { top, next, nullptr };
     uint32_t depth = next ? 2 : 1;
     const keyed_t k = { key, depth };
-    names_t names = config_names(c, &k);
+    manifest_names_t names = config_names(c, &k);
 
     for (uint32_t i = 0; i < names.count; i++) {
         key[depth] = names.names[i];

@@ -137,6 +137,18 @@ The config points into the memory of `manifest_made_t`, and Bridge reads it duri
 After that call, `manifest_free` frees that memory: the `block_count` blocks of `blocks`, and the `value_count` values of `values`.
 A `manifest_made_t` starts with each field at 0.
 
+A host can keep its own blocks in the same `manifest_made_t`, with `manifest_keep`, so 1 call of `manifest_free` frees them all.
+`manifest_keep` adds a block to `blocks` and gives the block. When no memory is left for the list, it frees the block and gives null.
+A null block gives null, and changes nothing.
+
+## The lists of names
+
+`manifest_names_t` is a list of names with no repeat: `names`, `count`, and `lost`.
+It starts with each field at 0, and its owner frees `names`, not the names themselves.
+`manifest_add_name` adds a name that the list does not hold yet.
+When no memory is left for the list, the name is not added, and `lost` becomes true. `lost` stays true after that.
+Thus a host that reads `lost` gives a stated failure, and never takes a list that lacks a name.
+
 ## Functions
 
 | Function | Result |
@@ -149,5 +161,7 @@ A `manifest_made_t` starts with each field at 0.
 | `manifest_get_setting` | The setting of a value. |
 | `manifest_state` | `true` when the config holds each key of the module. |
 | `manifest_state_key` | The value of one key of a module, or no value. |
+| `manifest_keep` | The block, kept in a `manifest_made_t`, or null with the block freed. |
 | `manifest_free` | Frees the memory of the states of a module. |
+| `manifest_add_name` | Adds a name to a `manifest_names_t`, with no repeat, or sets `lost`. |
 | `manifest_free_value` | Frees what a value holds. |

@@ -170,16 +170,14 @@ If the manifest gives none, the host writes `not stated: <key>`, and does not lo
 | `hot_reload` | `true` or `false`. A reload also needs `reloadable=true` in the manifest. |
 | `on_error` | `"fail"` or `"skip"`. |
 | `max_system_failures` | A whole number from 1, or `"none"`, which is no limit. |
-| `work_limit`, `memory_limit`, `element_limit`, `init_timeout`, `reload_timeout`, `shutdown_timeout` | A whole number from 1, or `"none"`, which is no limit. A limit asks a capability of the backend. The backend of BB-Native has none of them, so it needs `"none"`. |
+| `work_limit`, `memory_limit`, `element_limit`, `init_timeout`, `reload_timeout`, `shutdown_timeout` | A whole number from 1, or `"none"`, which is no limit. A limit asks a capability of the backend, and a backend that lacks it needs `"none"`. The readme of a backend gives its capabilities. |
 | `log_level` | A level, from 1 to 7. |
 | `scratch`, `log_ring`, `spans` | A whole number from 1. |
 | `spawns`, `persistent`, `changes` | A whole number from 1, or `"none"`, which is none at all. |
 | `losses` | A list of names, or `"none"`. |
 | `read`, `write` | The lists of the component names that the module may read and write. |
 
-For a module of BB-Wasm, a work limit and each timeout slow every call, and not only the call that they bound.
-A deployment that states `"none"` for `work_limit` and the 3 timeouts runs such a module at full speed.
-BB-Wasm gives the measured price: https://github.com/Encrid/BB-Wasm/blob/v0.7.0/readme.md#limits
+A limit can cost time in each call of a module, and not only in the call that it bounds. The readme of a backend gives the cost of its limits.
 
 Each key fills the field of the same name of `bridge_module_config_t` of Bridge.
 Only the manifest states `abi`, `config`, `settings`, `pinned` and `reloadable`. The host refuses them in a deployment.

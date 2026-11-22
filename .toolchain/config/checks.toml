@@ -279,14 +279,6 @@ why = "os_path_whole of a stored path returns null only for an unparseable path,
 [[branches.exception]]
 path = "src/host/config/config_file.c"
 line = 64
-col = 13
-side = "false"
-system = "windows"
-why = "config_find_whole's key from os_path_whole is null only for an unparseable path, which the tests do not provide."
-
-[[branches.exception]]
-path = "src/host/config/config_file.c"
-line = 64
 col = 22
 side = "false"
 why = "a stored file's whole path is null only when os_path_whole could not resolve it, which the tests do not force."

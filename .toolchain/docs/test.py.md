@@ -39,9 +39,6 @@
 | `verdict(config, values, outputs, group, index, case, broken, copies, counted, failing)` | Runs the copies of one case at the same time, and gives their verdict. |
 | `uses_of(config, values, running)` | Gives the uses of each group of `running`, as *The uses* tells. It stops for each fault of *The uses*. |
 | `test(config, values, outputs, groups, broken, said, copies, counted, failing, workers)` | Runs the cases of all the groups with `workers` threads, as *The workers* tells, and writes each verdict. With `said`, it writes `said.txt`. It gives the names of the cases that failed. |
-| `free_memory()` | Gives the bytes that the system can still commit. Windows: the free commit of `GlobalMemoryStatusEx`. Linux: `MemAvailable` of `/proc/meminfo`. macOS: the free, inactive, speculative and purgeable pages of `vm_stat`. It gives nothing on another system, or if the read fails. |
-| `floor_of(config)` | Gives `[test] memory_floor`, or 2 GiB. It stops if the value is not a count of bytes: `[test] memory_floor is a count of bytes, 0 or more`. |
-| `Room(floor)` | Lets a case start only when the free memory is at least the floor, or when no other case of the run runs. |
 | `lanes_of(jobs, uses)` | Gives the lanes of the cases. The cases of the groups with the same uses are 1 lane. Each case of a group with no use is 1 lane. |
 | `one(config, values, outputs, group, index, case, broken, copies, counted, failing)` | Runs one case or table, and gives the name, the verdict and the outputs of each case or row. |
 | `told(named, ends, broken)` | Writes the verdict of each case or row, and the output of a run that failed. |
@@ -131,6 +128,8 @@ With `counted`, the command and the helper get the variable `C23_LEAKS`: the pat
 If the case states `fail`, the command gets the variable `C23_FAIL`: `.toolchain/docs/fail.py.md`, *The layer*. Else `tried` removes `C23_FAIL` from the environment of the command.
 
 A case that states `fail` or `sweep` also gives the command `C23_FAIL_PART`, the part that `owner` gives for the group of the case. With no such part, `tried` removes `C23_FAIL_PART` too.
+A case that states `fail_parts` gives the parts that it names in place of its own: `.toolchain/docs/fail.py.md`, *The layer*.
+`groups_of` stops if `fail_parts` is empty or names no part of the project: `<file>: the case <name> states fail_parts <names>, and each must name a part of the project`.
 With `failing`, a case that states `fail` or `sweep` runs on the build of the run `fail`. Its folder, its `{out}` and its artifacts are those of that run.
 
 `tried` runs each command in the root, with a timer of `[test] timeout` seconds. For a table, the timer starts again at each answer: the time is for one row.
@@ -288,7 +287,8 @@ Each case takes the locks of the uses of its group: *The uses*. Thus 2 lanes tha
 Thus the output of a run with many workers has the same lines in the same order as a run with 1 worker.
 With `--workers 1`, the cases run one after the other.
 
-Each case also waits for room: it starts only when `free_memory` gives at least `[test] memory_floor`, or when no other case of the run runs. Thus the workers never take the last memory of the machine, also when another run holds it. A case still starts alone, so a run always ends.
+Each case also waits for room, in a `Room` of `shared.py`.
+It starts only when `free_memory` gives at least `[test] memory_floor`, or when no other case of the run runs. Thus the workers never take the last memory of the machine, also when another run holds it. A case still starts alone, so a run always ends.
 With no measure of the memory, on a system that none of these 3 reads covers, a case does not wait.
 
 A case can share a thing of the machine that no use names, for example the clipboard. It can then fail when another case runs at the same time. Such a case gets a use.

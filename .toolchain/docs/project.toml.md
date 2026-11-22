@@ -486,6 +486,7 @@ An exception lets a project keep a defensive branch that no case can reach, for 
 | `side` | `true`, `false`, `function`, `case` or `macro`: `.toolchain/docs/branches.py.md`, *Exemptions*. |
 | `why` | The reason the branch is unreachable. |
 | `system` | Optional. The system the exemption applies on, for a branch that only one platform has. |
+| `may_reach` | Optional, `true` or `false`. `true` for a branch that some runs reach, by an order outside the code: `.toolchain/docs/branches.py.md`, *Exemptions*. |
 
 For example:
 

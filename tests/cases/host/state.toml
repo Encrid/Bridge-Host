@@ -693,7 +693,7 @@ fail = { realloc = 256 }
 
 [case.claims]
 status = 1
-line = ["not loaded: mods/knock.dll: bridge-host:knock@1.0.0: no memory is left for its phases"]
+line = ["not loaded: mods/knock{library}: bridge-host:knock@1.0.0: no memory is left for its phases"]
 
 [case.folders]
 "{case}/mods" = ["knock"]
@@ -725,7 +725,7 @@ fail = { realloc = 249 }
 
 [case.claims]
 status = 1
-line = ["not loaded: mods/knock.dll: bridge-host:knock@1.0.0: no memory is left for its read"]
+line = ["not loaded: mods/knock{library}: bridge-host:knock@1.0.0: no memory is left for its read"]
 
 [case.folders]
 "{case}/mods" = ["knock"]

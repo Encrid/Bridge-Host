@@ -909,3 +909,30 @@ on_error = "skip"
 
 [case.false]
 fail = {}
+
+[[case]]
+name = "a config file whose folder finds no memory is refused, and the host does not crash"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { malloc = 2 }
+
+[case.claims]
+status = 1
+line = ["cannot read 'c.toml'"]
+
+[case.files]
+"{case}/mods/a.txt" = "a"
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+files = 2
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}

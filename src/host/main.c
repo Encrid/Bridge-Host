@@ -32,14 +32,17 @@ static int go(host_t *h, char *named, bool show)
 {
     const char *name = config_go_beside(named);
     bool taken = name && take_config(h, name);
+    os_lock_t *lock = nullptr;
+    int status = 1;
 
     if (!name)
         say("cannot go into '%s'\n", named);
     if (show)
         return (show_config(h, taken));
-    if (taken && take_lock(name))
-        return (run(h));
-    return (1);
+    if (taken && take_lock(name, &lock))
+        status = run(h);
+    os_unlock(lock);
+    return (status);
 }
 
 int main(int argc, char **argv)

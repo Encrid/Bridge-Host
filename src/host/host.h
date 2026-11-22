@@ -220,7 +220,7 @@ void state_free(made_t *m);
 void show_module(void *ud, const char *path, os_folder_t *in,
     const char *name);
 
-[[nodiscard]] bool take_lock(const char *name);
+[[nodiscard]] bool take_lock(const char *name, os_lock_t **lock);
 
 void host_free(host_t *h);
 

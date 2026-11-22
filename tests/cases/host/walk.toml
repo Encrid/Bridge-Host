@@ -671,3 +671,46 @@ library = "{bb_native}/bridge_native"
 
 [case.false]
 fail = {}
+
+[[case]]
+name = "the host looks at the files of a folder in the order of their names, so the room keeps the first ones"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+
+[case.claims]
+status = 0
+order = [
+    "not a module: mods/a.txt: neither a wasm module nor a library",
+    "not a module: mods/b.txt: neither a wasm module nor a library",
+    "too many files: 2 are looked at",
+]
+lacks = ["mods/c.txt"]
+
+[case.files]
+"{case}/mods/c.txt" = "c"
+"{case}/mods/a.txt" = "a"
+"{case}/mods/b.txt" = "b"
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+files = 2
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+files = 3
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''

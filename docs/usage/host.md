@@ -209,7 +209,7 @@ A record whose level is `[records] failing` or lower is a failure, and the host 
 
 After the last round, the host writes these lines:
 
-1. `still loaded:`, and each module that Bridge still holds. With no memory for the list, `still loaded: unknown, no memory`.
+1. `still loaded:`, and each module that Bridge still holds, or `still loaded: nothing` when Bridge holds none. With no memory for the list, `still loaded: unknown, no memory`.
 2. With `profile = true`, one line for each system and observer: `profile <name>: <calls> calls, <nanos> ns`.
 3. With `usage = true`, one line for each key of `[budget]`: `usage <key>: <used> now, <most> at most`.
 4. With `usage = true`, one line for each loaded module: `usage <identity>: <bytes> persistent, <count> systems, <count> observers, <count> entities`.
@@ -350,6 +350,7 @@ Running the rounds:
 - `ended at round <round>: a module asked for the end`
 - `ended at round <round>: a signal stopped the run`
 - `still loaded:`
+- `still loaded: nothing`
 - `still loaded: unknown, no memory`
 - `profile <name>: <calls> calls, <nanos> ns`
 - `usage <key>: <used> now, <most> at most`

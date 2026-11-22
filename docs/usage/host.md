@@ -133,6 +133,9 @@ mosl gives that limit in the document of its header `os.h`.
 For a file that the system does not open, the host writes `cannot read '<file>'` one time. The file keeps its place in the room.
 An empty file is a file too: `not a module: <file>: neither a wasm module nor a library`.
 
+In each folder, the host looks at the entries in the order of the bytes of their names, on each system.
+Thus the lines of a look, the files that get room, the reloads and the unloads come in the same order on each system.
+
 It looks at `[content] files` files at most, and it does not read a file for which it has no room.
 Each time its room becomes full, it writes `too many files: <count> are looked at`.
 At each round, it loads a new module and unloads the module of a removed file.

@@ -27,10 +27,12 @@ static char *read_text(const char *path)
 
 static bool take_text(cfile_t *f, char *text)
 {
-    bool taken = toml_read(text, &f->toml);
+    bool taken = f->folder && toml_read(text, &f->toml);
 
     free(text);
-    if (!taken)
+    if (!f->folder)
+        say("cannot read '%s'\n", f->path);
+    else if (!taken)
         say("refused: %s:%u: %s\n", f->path, f->toml.line, f->toml.why);
     return (taken);
 }

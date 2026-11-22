@@ -4,7 +4,9 @@ This file loads one file from disk and adds it to the `config_t`.
 
 `read_text` reads the whole file, and treats an empty file as empty text.
 `config_add_file` stores the path, the folder and the whole path, then parses the text with `toml_read`.
-It prints `cannot read '<path>'` when the load fails, and the reader's reason when the parse fails.
+It prints `cannot read '<path>'` when the load fails or no memory is left for the folder.
+It prints the reason of the reader when the parse fails.
+A file with no folder is not taken, since `config_path` joins the folder of a file to each path that the file names.
 
 `config_add_file` owns the path in each case. When the load or the parse fails, it frees the path and the parts of the file.
 `take_text` parses the text, frees it, and prints the reason of a refusal.

@@ -132,6 +132,7 @@ A change runs only the groups that test a changed file: `.toolchain/docs/scope.p
 | `folders` | The folders that `test` makes before the command starts. The key is the path. The value is a list of artifacts or files to place into the folder. A file of the build folder is linked, and each other file is copied. A file of the list with `*` is a pattern of the project. `test` places each file that the pattern matches, and stops if it matches none. |
 | `sweep` | The functions whose calls the command refuses one after the other: *A sweep*. |
 | `fail` | The calls that fail in the command. The key is a function, and the value is the number of its call that fails: *Failed calls*. |
+| `fail_parts` | The parts whose calls `fail` refuses, in place of the part of the case. Use it when a program links a library of another part. |
 | `claims` | The claims about the command. A case must make one claim or more. |
 | `false` | The false variant of the case. Each case must have one. |
 | `rows` | The rows of a table: *Tables*. A case with `rows` has no `false`, no `stdin` and no `script`. |

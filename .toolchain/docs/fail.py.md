@@ -29,6 +29,11 @@ Each function is in the list one time. `listed` stops if a table names a functio
 
 For each call that the key `fail` of the case states, `C23_FAIL` holds a space, then `<function>=<number>`.
 `C23_FAIL_PART` holds the part of the case, with a space before and after it. Thus a case refuses calls only in the programs of its own part, in each run.
+
+A case that states `fail_parts` names the parts itself, and `C23_FAIL_PART` holds each of them, with a space before and after each name.
+Thus a case of a program can refuse the calls of a library of another part that the program links. The files of 1 program share 1 count, so the number counts the calls of each named part.
+The constructor reads `C23_FAIL` if the text of the file holds 1 of the names.
+A run with `--part` also builds the layer for each part that a chosen case names in `fail_parts`.
 `test.py` gives the variables to the command of the case: `.toolchain/docs/test.py.md`, *A case*.
 
 `layer` stops if a listed function that a file uses has no result: `<name> gives no result`.

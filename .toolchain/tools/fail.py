@@ -69,9 +69,24 @@ static long long c23b_fget(const char *key)
 }
 static int c23b_fmine(const char *parts)
 {
-    const char *part = getenv("C23_FAIL_PART");
+    const char *at = getenv("C23_FAIL_PART");
+    char want[130];
+    size_t len = 0;
 
-    return (!part || strstr(parts, part) != nullptr);
+    if (!at)
+        return (1);
+    for (at += strspn(at, " "); *at; at += len + strspn(at + len, " ")) {
+        len = strcspn(at, " ");
+        if (len + 3 > sizeof(want))
+            continue;
+        want[0] = ' ';
+        memcpy(want + 1, at, len);
+        want[len + 1] = ' ';
+        want[len + 2] = '\0';
+        if (strstr(parts, want))
+            return (1);
+    }
+    return (0);
 }
 static long long c23b_ft;
 static void c23b_ftold(void)

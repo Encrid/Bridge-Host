@@ -386,4 +386,5 @@ Showing the deployment:
 - `it names no component, and settings`
 - `no memory is left for its phases`
 - `no memory is left for its <grant>`
+- `no memory is left for its <key>`
 - `phases.<name>`

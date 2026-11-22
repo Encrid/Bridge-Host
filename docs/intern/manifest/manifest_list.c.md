@@ -5,6 +5,7 @@ This file takes the list keys of a module: `read`, `write` and `losses`.
 `manifest_take_list` finds the value with `manifest_find_value`. A list gives its names, each name one time.
 For `losses`, the word `none` gives the count `BRIDGE_NONE`.
 `put_names` writes the names and their count into the fields of the key. The block of the names goes into the `manifest_made_t`.
+If the list finds no memory, `manifest_take_list` tells `MANIFEST_TOLD_NO_MEMORY` for the key 1 time.
 
 ## Functions
 

@@ -7,6 +7,8 @@
 
 #include "manifest_inside.h"
 
+static const char *const PHASES[] = { "phases" };
+
 static bool take_phase(const manifest_module_t *m, const char *name,
     bridge_phase_name_t *into)
 {
@@ -33,6 +35,9 @@ bool manifest_take_phases(const manifest_module_t *m,
 
     if (taken && count)
         map = manifest_keep(m->made, malloc(sizeof(*map) * count));
+    if (taken && count && !map)
+        manifest_tell(m, MANIFEST_TOLD_NO_MEMORY, &(key_path_t){ PHASES, 1 },
+            nullptr);
     taken = taken && (map || !count);
     for (uint32_t i = 0; map && i < count; i++)
         taken = take_phase(m, names[i], &map[i]) && taken;

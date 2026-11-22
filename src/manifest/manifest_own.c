@@ -16,6 +16,8 @@ static char *join_key(const manifest_module_t *m, const key_path_t *path)
     for (uint32_t i = 0; i < path->depth; i++)
         size += strlen(path->names[i]) + 1;
     key = manifest_keep(m->made, calloc(size, 1));
+    if (!key)
+        manifest_tell(m, MANIFEST_TOLD_NO_MEMORY, path, nullptr);
     for (uint32_t i = 0; key && i < path->depth; i++) {
         if (i)
             strcat(key, ".");
@@ -45,6 +47,8 @@ const manifest_value_t *manifest_find_own(const manifest_module_t *m,
     manifest_told_t told = { MANIFEST_TOLD_WRONG, path->names, path->depth,
         nullptr, nullptr };
 
+    if (!own)
+        manifest_tell(m, MANIFEST_TOLD_NO_MEMORY, path, nullptr);
     if (!own || !read_own(m, path, own))
         return (nullptr);
     told.value = own;

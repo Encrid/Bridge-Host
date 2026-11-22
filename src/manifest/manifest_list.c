@@ -54,8 +54,10 @@ bool manifest_take_list(const manifest_module_t *m, const key_rule_t *rule,
     if (got.lost)
         free(got.names);
     got.names = got.lost ? nullptr : manifest_keep(m->made, got.names);
-    if (got.lost || (got.count && !got.names))
+    if (got.lost || (got.count && !got.names)) {
+        manifest_tell(m, MANIFEST_TOLD_NO_MEMORY, &path, nullptr);
         return (false);
+    }
     put_names(cfg, rule->name, &got, v->kind != MANIFEST_LIST);
     return (true);
 }

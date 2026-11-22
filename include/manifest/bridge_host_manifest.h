@@ -89,7 +89,8 @@ enum manifest_told_kind : uint8_t {
     MANIFEST_TOLD_TWICE,
     MANIFEST_TOLD_WRONG,
     MANIFEST_TOLD_NO_WORD,
-    MANIFEST_TOLD_NO_COMPONENT
+    MANIFEST_TOLD_NO_COMPONENT,
+    MANIFEST_TOLD_NO_MEMORY
 };
 
 typedef struct {

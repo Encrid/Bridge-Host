@@ -45,27 +45,6 @@ side = "false"
 why = "whole is null only when copy_key's malloc runs out of memory, which the tests do not force."
 
 [[branches.exception]]
-path = "src/host/toml/toml_value.c"
-line = 38
-col = 9
-side = "true"
-why = "add_item's realloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/toml/toml_value.c"
-line = 53
-col = 43
-side = "true"
-why = "add_item fails only when its realloc runs out of memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/toml/toml_key.c"
-line = 63
-col = 13
-side = "true"
-why = "The key array's realloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
 path = "src/host/toml/toml_add.c"
 line = 40
 col = 9
@@ -78,20 +57,6 @@ line = 52
 col = 23
 side = "false"
 why = "whole is null only when whole_key's malloc runs out of memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/toml/toml_add.c"
-line = 59
-col = 16
-side = "true"
-why = "The entries realloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/toml/toml_add.c"
-line = 61
-col = 32
-side = "false"
-why = "why is null at this point only when the entries realloc ran out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/host/toml/toml_number.c"
@@ -148,20 +113,6 @@ line = 67
 col = 33
 side = "false"
 why = "h->backends is null only when its calloc ran out of memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/config/config_name.c"
-line = 32
-col = 9
-side = "true"
-why = "add_named's realloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/config/config_name.c"
-line = 56
-col = 25
-side = "true"
-why = "add_named fails only when its realloc runs out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/host/config/config_name.c"
@@ -344,13 +295,6 @@ side = "false"
 why = "state_is_path receives a value that points at an entry of the named file, so the scan always finds that entry and returns before the loop ends."
 
 [[branches.exception]]
-path = "src/host/toml/toml_key.c"
-line = 25
-col = 9
-side = "true"
-why = "keep_name's realloc of the names returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
 path = "src/host/config/config_say.c"
 line = 31
 col = 25
@@ -395,20 +339,6 @@ line = 35
 col = 24
 side = "false"
 why = "config_find sets other only together with at, so other is null whenever at is null; the right test runs only when at is null, where other is also null."
-
-[[branches.exception]]
-path = "src/host/state/state_list.c"
-line = 56
-col = 9
-side = "true"
-why = "make_list gets its value from calloc, which returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/state/state_list.c"
-line = 56
-col = 15
-side = "true"
-why = "make_list gets its items from calloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/host/state/state_parse.c"

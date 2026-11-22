@@ -16,35 +16,6 @@ static int say_usage(void)
     return (2);
 }
 
-static bool take_config(host_t *h, const char *name)
-{
-    bool taken = config_read(&h->config, name);
-
-    taken = taken && !config_check(&h->config);
-    if (!taken)
-        return (false);
-    taken = config_world(h);
-    taken = config_backends(h) && taken;
-    return (config_content(h) && taken);
-}
-
-static int go(host_t *h, char *named, bool show)
-{
-    const char *name = config_go_beside(named);
-    bool taken = name && take_config(h, name);
-    os_lock_t *lock = nullptr;
-    int status = 1;
-
-    if (!name)
-        say("cannot go into '%s'\n", named);
-    if (show)
-        return (show_config(h, taken));
-    if (taken && take_lock(name, &lock))
-        status = run(h);
-    os_unlock(lock);
-    return (status);
-}
-
 int main(int argc, char **argv)
 {
     static host_t h;
@@ -58,7 +29,7 @@ int main(int argc, char **argv)
         say("cannot catch the signals\n");
         return (1);
     }
-    status = go(&h, named, show);
+    status = host_go(&h, named, show);
     host_free(&h);
     return (status);
 }

@@ -46,6 +46,17 @@ flags = ["{system_defines}", "{system_libraries}"]
 link = ["{out}/manifest.a"]
 
 [[artifact]]
+name = "host-sweep"
+part = "host"
+kind = "program"
+test = true
+sources = ["tests/sweep/*.c", "src/host/host_*.c", "src/host/file_bytes.c", "src/host/config/*.c", "src/host/state/*.c", "src/host/toml/*.c", "src/host/show/*.c"]
+include = ["{bridge}/include", "include/manifest", "src/host", "src/host/config", "src/host/state", "src/host/toml", "src/host/show", "{bridge_os}/include", "tests/sweep", "{toolchain}/runtime"]
+defines = ['LIBRARY_SUFFIX="{library}"']
+flags = ["{system_defines}", "{system_libraries}"]
+link = ["{out}/manifest.a", "{bridge}/bridge.a", "{bridge_os}/os.a"]
+
+[[artifact]]
 name = "hello"
 part = "host"
 kind = "wasm_module"

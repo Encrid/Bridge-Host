@@ -235,6 +235,8 @@ void show_module(void *ud, const char *path, os_folder_t *in,
 
 [[nodiscard]] bool take_lock(const char *name, os_lock_t **lock);
 
+[[nodiscard]] int host_go(host_t *h, char *named, bool show);
+
 void host_free(host_t *h);
 
 [[nodiscard]] int run(host_t *h);

@@ -12,7 +12,7 @@ static bool take_phases(host_t *h)
 
     if (!v)
         return (false);
-    h->phases = malloc((sizeof(*h->phases) + sizeof(*h->again))
+    h->phases = host_malloc((sizeof(*h->phases) + sizeof(*h->again))
         * (v->count + 1));
     if (!h->phases)
         return (false);

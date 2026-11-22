@@ -49,8 +49,8 @@ static void say_names(const stating_t *s, const char *key,
 
 static value_t *make_list(const stating_t *s, const names_t *got)
 {
-    value_t *v = state_keep(s, calloc(1, sizeof(*v)));
-    value_t *items = state_keep(s, calloc(got->count + 1, sizeof(*items)));
+    value_t *v = state_keep(s, host_calloc(1, sizeof(*v)));
+    value_t *items = state_keep(s, host_calloc(got->count + 1, sizeof(*items)));
 
     if (!v || !items)
         return (nullptr);

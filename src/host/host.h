@@ -14,6 +14,7 @@
     #include "bridge_abi.h"
     #include "config.h"
     #include "file_bytes.h"
+    #include "host_alloc.h"
     #include "bridge_host_manifest.h"
     #include "os.h"
     #include "say.h"

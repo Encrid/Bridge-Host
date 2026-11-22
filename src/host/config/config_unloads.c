@@ -61,7 +61,7 @@ static void say_cycle(const host_t *h, const bridge_order_t *pair)
 bool config_cycle(host_t *h)
 {
     const pairs_t *p = &h->orders[ORDER_UNLOADS];
-    bool *kept = malloc(sizeof(*kept) * (p->count + 1));
+    bool *kept = host_malloc(sizeof(*kept) * (p->count + 1));
     uint32_t at = 0;
 
     if (!kept)

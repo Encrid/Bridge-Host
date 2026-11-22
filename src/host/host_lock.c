@@ -9,7 +9,7 @@
 bool take_lock(const char *name, os_lock_t **lock)
 {
     size_t len = strlen(name) + sizeof(".d/lock");
-    char *path = malloc(len);
+    char *path = host_malloc(len);
     int got = -1;
 
     if (path)

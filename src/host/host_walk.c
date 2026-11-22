@@ -40,7 +40,7 @@ static bool walk_folder(const walk_t *w, os_folder_t *in, const char *path,
 bool walk_name(const char *path, see_fn *see, void *ud)
 {
     size_t cut = config_folder_size(path);
-    char *folder = calloc(cut + 1, 1);
+    char *folder = host_calloc(cut + 1, 1);
     os_folder_t *in = nullptr;
     size_t len = 0;
     bool seen = false;

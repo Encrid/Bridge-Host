@@ -26,7 +26,8 @@ static bool is_paths(const value_t *v)
 static bool add_named(config_t *c, int32_t at, uint32_t named)
 {
     cfile_t *f = &c->files[at];
-    uint32_t *more = realloc(f->named, sizeof(*more) * (f->named_count + 1));
+    uint32_t *more = host_realloc(f->named,
+        sizeof(*more) * (f->named_count + 1));
 
     if (!more)
         return (false);

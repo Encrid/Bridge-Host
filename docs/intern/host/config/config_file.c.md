@@ -2,7 +2,7 @@
 
 This file loads one file from disk and adds it to the `config_t`.
 
-`read_text` reads the whole file, and treats an empty file as empty text.
+`read_text` reads the whole file with `read_whole`. An empty file gives an empty text, and a file that does not open, or finds no memory, gives null.
 `config_add_file` stores the path, the folder and the whole path, then parses the text with `toml_read`.
 It prints `cannot read '<path>'` when the load fails or no memory is left for the folder.
 It prints the reason of the reader when the parse fails.

@@ -13,7 +13,7 @@ static char *with_suffix(char *named)
 
     if (!named || (len >= end && !strcmp(named + len - end, LIBRARY_SUFFIX)))
         return (named);
-    whole = malloc(len + end + 1);
+    whole = host_malloc(len + end + 1);
     if (whole)
         snprintf(whole, len + end + 1, "%s%s", named, LIBRARY_SUFFIX);
     free(named);
@@ -58,8 +58,8 @@ bool config_backends(host_t *h)
 
     if (!names.count)
         say("not stated: backend\n");
-    h->held = calloc(names.count + 1, sizeof(*h->held));
-    h->backends = calloc(names.count + 1, sizeof(*h->backends));
+    h->held = host_calloc(names.count + 1, sizeof(*h->held));
+    h->backends = host_calloc(names.count + 1, sizeof(*h->backends));
     for (uint32_t i = 0; h->held && h->backends && i < names.count; i++)
         taken = take_backend(h, names.names[i], i) && taken;
     h->backend_count = names.count;

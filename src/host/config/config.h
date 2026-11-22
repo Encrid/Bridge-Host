@@ -10,6 +10,7 @@
     #include <stdint.h>
 
     #include "bridge.h"
+    #include "host_alloc.h"
     #include "toml.h"
 
 typedef struct {

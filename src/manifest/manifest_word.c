@@ -8,14 +8,15 @@
 
 #include "manifest_inside.h"
 
-constexpr size_t IDENTITY_MOST = 127;
 constexpr size_t WORD_SHOWN_MOST = 60;
+
+static_assert(BRIDGE_IDENTITY_MOST == 127);
 
 static const char *read_identity(manifest_t *m, const char *word)
 {
     if (!strchr(word, ':') || !strchr(word, '@') || strchr(word, '='))
         return ("its manifest does not begin with who it is");
-    if (strlen(word) > IDENTITY_MOST)
+    if (strlen(word) > BRIDGE_IDENTITY_MOST)
         return ("its identity has more than 127 bytes");
     m->identity = word;
     return (nullptr);

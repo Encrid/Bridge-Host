@@ -245,7 +245,7 @@ A module states its manifest in its file, as words that each end with a zero byt
 | Word | Value |
 | --- | --- |
 | The first word | The identity `<namespace>:<name>@<version>`, of at most 127 bytes, as Bridge takes it. |
-| `abi=<number>` | Needed. The ABI of Bridge that the module was built against. |
+| `abi=<number>` | Needed. The ABI of Bridge that the module was built against: a whole number from 1 to 4294967295. The host gives it to Bridge, which refuses a module of another ABI. |
 | `config=<component>` or `config=none` | Needed. The component that holds the settings. |
 | `pinned=true` or `pinned=false` | Needed. `true`: the systems of the module run on the thread that runs the phases. |
 | `reloadable=true` or `reloadable=false` | Needed. `true`: the host can replace the module while the run goes on. |
@@ -323,7 +323,6 @@ Loading a module:
 - `not loaded: <file>: <identity>, <backend>, the answer was not yes`
 - `not loaded: <file>: <identity>, <backend>, as content.start says`
 - `not loaded: <file>: <identity>, <backend>, as content.arrive says`
-- `not loaded: <file>: <identity> was built against another ABI`
 - `not loaded: <file>: <identity> asks for <backend>, which the host was not given`
 - `not loaded: <file>: <identity>, as content.load says`
 - `not loaded: <file>: <identity> was refused`

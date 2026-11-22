@@ -6,6 +6,7 @@ This file states a module into a `bridge_module_config_t`: `docs/extern/manifest
 With -1, the host told the fault, and the key has no value.
 `take_key` skips a key of `MANIFEST_CHECK_AUTHOR`, gives a key with no width to `manifest_take_list`, and puts each other value into its field.
 `get_flag` maps a boolean onto `BRIDGE_TRUE` or `BRIDGE_FALSE`.
+`abi` of the config is the `abi` that the manifest states, so `bridge_load` and `bridge_reload` refuse a module of another ABI.
 
 ## Functions
 

@@ -34,13 +34,10 @@ static bool is_left(const host_t *h, const file_t *f)
 
     if (same)
         say("not loaded: %s: %s is %s\n", f->path, who, same->path);
-    else if (f->of->who.abi != BRIDGE_ABI)
-        say("not loaded: %s: %s was built against another ABI\n",
-            f->path, who);
     else if (!held)
         say("not loaded: %s: %s asks for %s, which the host was not "
             "given\n", f->path, who, f->of->who.backend);
-    return (same || f->of->who.abi != BRIDGE_ABI || !held);
+    return (same || !held);
 }
 
 static bool is_stated(host_t *h, const file_t *f, bridge_artifact_t *a,

@@ -70,7 +70,7 @@ script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "abifour" }, type =
 
 [case.claims]
 status = 1
-has = ["not replaced: d/swap.wasm: bridge-host:abifour@1.0.0 was refused"]
+has = ["it wants ABI 4 and this is ABI 1", "not replaced: d/swap.wasm: bridge-host:abifour@1.0.0 was refused"]
 
 [case.folders]
 "{case}/d" = ["wait", "swap"]
@@ -82,6 +82,8 @@ phases = ["update"]
 again = {}
 rounds = 16
 [module."bridge-host:swap@1.0.0"]
+hot_reload = true
+[module."bridge-host:abifour@1.0.0"]
 hot_reload = true
 [content]
 paths = ["d"]

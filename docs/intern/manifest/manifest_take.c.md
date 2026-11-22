@@ -11,7 +11,7 @@ A key that is not there is unknown, and the library does not read it.
 `manifest_take` refuses a key whose mark is in `taken` already. Thus a manifest cannot state an author word twice.
 Then it sets the mark, and `take_value` reads the value:
 
-- `abi` is an integer that is not negative.
+- `abi` is an integer from 0 to `UINT32_MAX`, so it fits in `abi` of `bridge_module_config_t`. 0 is no ABI: `docs/intern/manifest/manifest.c.md`.
 - `config` and `settings` point at their value, in the bytes of the file, with no limit of length.
 - `take_flag` reads `pinned` or `reloadable` as `true` or `false`.
 

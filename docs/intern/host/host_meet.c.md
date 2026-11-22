@@ -14,10 +14,9 @@ A bad manifest prints `not a module` or `not loaded`.
 `replace` gives an `enum replaced` for each changed file of a loaded module, in these steps:
 
 1. `keep_old` keeps the old module when the new manifest is refused, or when the old manifest does not state `reloadable=true`.
-2. `reload_found` refuses a module whose ABI differs.
-3. It takes `hot_reload` of the new module through `state_find_key`, from the files or from the manifest, with the library.
-4. If `hot_reload` is `false`, the old module stays, and no failure counts. The host asks Bridge for nothing.
-5. Else it states the new module, and calls `bridge_reload`. Then it frees the memory of the statement.
+2. `reload_found` takes `hot_reload` of the new module through `state_find_key`, from the files or from the manifest, with the library.
+3. If `hot_reload` is `false`, the old module stays, and no failure counts. The host asks Bridge for nothing.
+4. Else it states the new module, and calls `bridge_reload`. Then it frees the memory of the statement. Bridge refuses a module of another ABI.
 
 Each line of the statement starts with `not replaced: <file>: <identity>: `, which `state_keep_prefix` makes.
 

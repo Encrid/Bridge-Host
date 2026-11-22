@@ -49,7 +49,7 @@ bool manifest_state(const manifest_module_t *m, bridge_module_config_t *cfg)
     bool taken = manifest_own_words(m);
 
     *cfg = (bridge_module_config_t){ .identity = who->identity,
-        .abi = BRIDGE_ABI, .config = who->config,
+        .abi = (uint32_t)who->abi, .config = who->config,
         .pinned = get_flag(who->pinned),
         .reloadable = get_flag(who->reloadable) };
     for (uint32_t i = 0; manifest_get_key(i); i++)

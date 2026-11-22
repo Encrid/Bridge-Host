@@ -304,13 +304,13 @@ library = "{bb_native}/bridge_native"
 script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
-name = "a module built against another ABI"
+name = "a module built against another ABI is refused by Bridge, from the abi of its manifest"
 process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/abifour.toml"]
 
 [case.claims]
-status = 0
-has = ["bridge-host:abifour@1.0.0 was built against another ABI"]
+status = 1
+has = ["module 'bridge-host:abifour@1.0.0' is refused: it wants ABI 4 and this is ABI 1", "not loaded: ab/abifour.wasm: bridge-host:abifour@1.0.0 was refused"]
 
 [case.folders]
 "{case}/ab" = ["abifour"]

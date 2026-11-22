@@ -23,12 +23,10 @@ static enum replaced reload_found(host_t *h, const file_t *f,
     const char *prefix = state_keep_prefix(&made, "not replaced", f->path,
         now->who.identity);
     const stating_t s = { h, now, prefix, false, &made };
-    const value_t *hot = nullptr;
+    const value_t *hot = state_find_key(&s, "hot_reload");
     bridge_artifact_t a;
     enum replaced got = REPLACE_REFUSED;
 
-    if (now->who.abi == BRIDGE_ABI)
-        hot = state_find_key(&s, "hot_reload");
     if (hot && !hot->flag)
         got = REPLACE_NOT_HOT;
     else if (hot && make_artifact(&s, f, &a) && !bridge_reload(h->w, &a, 1))

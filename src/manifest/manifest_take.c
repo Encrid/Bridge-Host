@@ -44,7 +44,7 @@ static bool take_value(manifest_t *m, uint8_t word, const char *value)
             return (true);
         default:
             m->abi = strtoll(value, &end, 10);
-            return (*value && !*end && m->abi >= 0);
+            return (*value && !*end && m->abi >= 0 && m->abi <= UINT32_MAX);
     }
 }
 

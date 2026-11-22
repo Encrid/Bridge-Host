@@ -10,7 +10,7 @@
 void test_tell(void *ud, const manifest_told_t *told)
 {
     static const char *const KINDS[] = { "", "value", "not stated", "twice",
-        "wrong", "no word", "no component" };
+        "wrong", "no word", "no component", "no memory" };
 
     (void)ud;
     printf("%s:", KINDS[told->kind]);

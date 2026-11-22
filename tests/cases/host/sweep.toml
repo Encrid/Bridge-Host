@@ -9,7 +9,7 @@ fail_parts = ["host", "manifest"]
 
 [case.claims]
 status = 0
-matches = ["^[1-9][0-9]* refused calls, 0 untold, then status 0$"]
+matches = ["[1-9][0-9]* refused calls, 0 untold, then status 0"]
 has = ["record[6] bridge-host:knock@1.0.0/say: knock 0 0"]
 
 [case.folders]

@@ -8,6 +8,8 @@
 
 #include "manifest_inside.h"
 
+static const char *const SETTINGS[] = { "settings" };
+
 bridge_setting_t manifest_get_setting(const char *key,
     const manifest_value_t *v, const char *text)
 {
@@ -68,6 +70,9 @@ bool manifest_take_settings(const manifest_module_t *m,
     bool taken = !declared.lost && !m->host->undeclared(m->host->ud,
         declared.names, declared.count) && set;
 
+    if (declared.lost || !set)
+        manifest_tell(m, MANIFEST_TOLD_NO_MEMORY,
+            &(key_path_t){ SETTINGS, 1 }, nullptr);
     if (declared.count && !strcmp(m->who->config, BRIDGE_NO_CONFIG)) {
         manifest_tell(m, MANIFEST_TOLD_NO_COMPONENT, &(key_path_t){}, nullptr);
         taken = false;

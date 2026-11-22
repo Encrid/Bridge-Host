@@ -105,6 +105,7 @@ No real count reaches it. The host tells the fault itself, and then `manifest_st
 With `MANIFEST_NO_MEMORY` from `phases`, the library frees `*names`, and a null `*names` is allowed.
 
 A block that the library itself cannot take ends the same way: `manifest_state` gives `false`, and the config holds no partial list.
+The library tells `MANIFEST_TOLD_NO_MEMORY` 1 time for each such block, with the key that needed it, so the host can name the fault.
 Thus a refused allocation never gives a module with fewer names, fewer phases or no settings.
 
 `names` and `depth` give the path of the key. `value` and `why` hold a value and a reason, when the kind has them.
@@ -117,6 +118,7 @@ Thus a refused allocation never gives a module with fewer names, fewer phases or
 | `MANIFEST_TOLD_WRONG` | The default of `names` has a form that its rule does not allow. `why` gives the reason. |
 | `MANIFEST_TOLD_NO_WORD` | The manifest does not state the word `names`: `config`, `pinned` or `reloadable`. |
 | `MANIFEST_TOLD_NO_COMPONENT` | The manifest names settings, and `config=none`. |
+| `MANIFEST_TOLD_NO_MEMORY` | The library cannot take a block for the key `names`: `phases`, `settings`, a list such as `read`, or the word of a key. |
 
 The texts of a `manifest_told_t` live only during the call of `tell`.
 

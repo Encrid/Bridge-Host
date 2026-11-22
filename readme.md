@@ -9,6 +9,7 @@ The project has these parts. Each part has its own releases: `docs/contributing/
 | Part | Folder | Content |
 | --- | --- | --- |
 | `host` | `host` | The program `bridge-host`, which runs a deployment of modules: `docs/usage/host.md`. |
+| `manifest` | `manifest` | The library BL-Bridge-Host-Manifest, which a host of Bridge links: `docs/usage/manifest.md`. |
 
 ## Install
 

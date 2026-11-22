@@ -20,7 +20,8 @@ static const test_mode_t MODES[] = {
     { "value", 3, test_run_value }, { "check", 4, test_run_check },
     { "rule", 4, test_run_rule }, { "allow", 4, test_run_allow },
     { "setting", 4, test_run_setting },
-    { "state", 2, test_run_state }, { "key", 3, test_run_key }
+    { "state", 2, test_run_state }, { "key", 3, test_run_key },
+    { "names", 2, test_run_names }, { "keep", 3, test_run_keep }
 };
 
 static int run_mode(int argc, char **argv)

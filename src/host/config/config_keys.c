@@ -9,6 +9,8 @@
 #include "bridge.h"
 #include "config.h"
 
+static_assert(__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__);
+
 const key_rule_t WORLD_KEYS[] = {
     { "phases", CHECK_NAMES, 0, 0, 0, nullptr, true },
     { "threads", CHECK_COUNT, 4, offsetof(deployment_t, world.threads), 0,
@@ -96,15 +98,8 @@ uint32_t config_get_names(const key_rule_t *rule, const char **names)
 void config_put(void *into, const key_rule_t *rule, const value_t *v)
 {
     int64_t n = v->kind == MANIFEST_WHOLE ? v->whole : rule->none;
-    uint8_t one = (uint8_t)n;
-    uint32_t four = (uint32_t)n;
 
     if (rule->check == CHECK_FLAG)
-        one = v->flag ? BRIDGE_TRUE : BRIDGE_FALSE;
-    if (rule->width == 1)
-        memcpy((char *)into + rule->at, &one, 1);
-    if (rule->width == 4)
-        memcpy((char *)into + rule->at, &four, 4);
-    if (rule->width == 8)
-        memcpy((char *)into + rule->at, &n, 8);
+        n = v->flag ? BRIDGE_TRUE : BRIDGE_FALSE;
+    memcpy((char *)into + rule->at, &n, rule->width);
 }

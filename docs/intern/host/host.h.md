@@ -22,7 +22,7 @@ A `held_t` names a backend, its library path, its start rule and its arrive rule
 
 `stating_t`, `look_t`, `seeing_t` and `walk_t` carry state while the host states a module or walks the content.
 `listing_t` holds the entries of 1 folder, each a `listed_t` with a copy of its name and whether it is a folder.
-A `made_t` lists what the host allocates for the config of one module, with the `manifest_made_t` of the library. A `stating_t` points at it.
+A `made_t` holds the `manifest_made_t` of the library, which keeps what the host and the library allocate for the config of one module. A `stating_t` points at it.
 
 ## What a deployment does not choose
 
@@ -54,5 +54,5 @@ The host fixes these parts. A deployment cannot state them, for the reason that 
 | `show_config`, `show_module`, `take_lock` | Show a configuration, show one module, and take the run lock. |
 | `state_found`, `state_find_key`, `state_parse`, `state_find`, `state_find_grant`, `state_phases`, `state_undeclared`, `state_tell` | State a module with the library, and give the library the keys of the deployment. |
 | `state_is_setting`, `state_states_setting`, `state_is_path` | Find a setting in a file. |
-| `state_keep_prefix`, `state_keep`, `state_free` | Make the prefix of a statement, add a block to the `made_t` of a module, and free it. |
+| `state_keep_prefix`, `state_keep`, `state_free` | Make the prefix of a statement, keep a block in the `made_t` of a module, and free it. |
 | `host_free` | Free the host. |

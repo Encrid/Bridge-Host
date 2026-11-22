@@ -42,12 +42,12 @@ static bool take_setting(const manifest_module_t *m, const char *name,
     return (true);
 }
 
-static name_list_t split_names(const manifest_module_t *m)
+static manifest_names_t split_names(const manifest_module_t *m)
 {
     const char *settings = m->who->settings;
-    char *copy = manifest_keep(m, malloc(strlen(settings) + 1));
+    char *copy = manifest_keep(m->made, malloc(strlen(settings) + 1));
     char *name = nullptr;
-    name_list_t got = { .lost = !copy };
+    manifest_names_t got = { .lost = !copy };
 
     if (copy)
         strcpy(copy, settings);
@@ -62,9 +62,9 @@ static name_list_t split_names(const manifest_module_t *m)
 bool manifest_take_settings(const manifest_module_t *m,
     bridge_module_config_t *cfg)
 {
-    name_list_t declared = split_names(m);
+    manifest_names_t declared = split_names(m);
     bridge_setting_t *set = declared.lost ? nullptr
-        : manifest_keep(m, calloc(declared.count + 1, sizeof(*set)));
+        : manifest_keep(m->made, calloc(declared.count + 1, sizeof(*set)));
     bool taken = !declared.lost && !m->host->undeclared(m->host->ud,
         declared.names, declared.count) && set;
 

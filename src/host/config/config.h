@@ -53,12 +53,6 @@ typedef struct {
     keyed_t key;
 } module_key_t;
 
-typedef struct {
-    const char **names;
-    uint32_t count;
-    bool lost;
-} names_t;
-
 typedef bool states_fn(const cfile_t *f, const void *asked, said_t *said);
 
 typedef struct {
@@ -173,9 +167,9 @@ void config_free_file(cfile_t *f);
 [[nodiscard]] bool config_states_module(const cfile_t *f, const void *asked,
     said_t *said);
 
-void names_add(names_t *into, const char *name);
 
-[[nodiscard]] names_t config_names(const config_t *c, const keyed_t *under);
+[[nodiscard]] manifest_names_t config_names(const config_t *c,
+    const keyed_t *under);
 
 void config_say_key(const char *const *names, uint32_t depth);
 

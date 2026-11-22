@@ -109,8 +109,6 @@ typedef struct {
 } host_t;
 
 typedef struct {
-    void **blocks;
-    uint32_t block_count;
     manifest_made_t lib;
 } made_t;
 

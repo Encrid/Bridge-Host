@@ -3,6 +3,7 @@
 This file keeps the memory that the library allocates while it states one module, in the `manifest_made_t` of the module.
 The config points into it, so it stays until `manifest_free`.
 
+`manifest_keep` is public, so a host keeps its blocks in the same list: `docs/extern/manifest/bridge_host_manifest.h.md`, *A module*.
 With no memory for the list, `manifest_keep` and `manifest_keep_value` free what they got, and give null.
 `manifest_free_value` also frees the items of each item.
 

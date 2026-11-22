@@ -5,7 +5,7 @@
 */
 #include "host.h"
 
-static bool has_declared(const names_t *declared, const char *name)
+static bool has_declared(const manifest_names_t *declared, const char *name)
 {
     for (uint32_t i = 0; i < declared->count; i++)
         if (!strcmp(declared->names[i], name))
@@ -14,7 +14,7 @@ static bool has_declared(const names_t *declared, const char *name)
 }
 
 static uint32_t say_undeclared_in(const stating_t *s, const cfile_t *f,
-    const names_t *declared)
+    const manifest_names_t *declared)
 {
     const char *const any[] = { s->of->who.identity, nullptr };
     const entry_t *e = nullptr;
@@ -34,7 +34,7 @@ static uint32_t say_undeclared_in(const stating_t *s, const cfile_t *f,
 uint32_t state_undeclared(void *ud, const char *const *names, uint32_t count)
 {
     const stating_t *s = ud;
-    const names_t declared = { (const char **)names, count, false };
+    const manifest_names_t declared = { (const char **)names, count, false };
     uint32_t found = 0;
 
     for (uint32_t i = 0; i < s->h->config.count; i++)

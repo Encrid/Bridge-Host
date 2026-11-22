@@ -14,7 +14,7 @@ It offers each file to the callback, with the open folder and the name of the fi
 It opens a folder in it only if more than one level is left, so `content.depth` bounds the walk.
 A folder in it that does not open is left out.
 
-When no memory is left for the list of a folder or for the path of an entry, the walk stops.
+A list of a folder or a path of an entry that finds no memory stops the walk.
 Then `walk_path` prints its line of no memory, which `docs/usage/host.md`, *Messages* quotes, and gives -1, so the look stops.
 Thus no file is left out of a look with no word.
 

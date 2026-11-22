@@ -880,6 +880,7 @@ name = "a module that no look finds is refused at each entry when its list finds
 process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
 fail = { realloc = 248 }
+fail_parts = ["host", "manifest"]
 
 [case.claims]
 status = 1

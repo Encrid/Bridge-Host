@@ -144,6 +144,16 @@ typedef struct {
     void *ud;
 } walk_t;
 
+typedef struct {
+    char *name;
+    bool is_folder;
+} listed_t;
+
+typedef struct {
+    listed_t *items;
+    uint32_t count;
+} listing_t;
+
 [[nodiscard]] bool config_world(host_t *h);
 
 [[nodiscard]] bool config_again(host_t *h);
@@ -214,6 +224,10 @@ void state_free(made_t *m);
     void *ud);
 
 [[nodiscard]] bool walk_name(const char *path, see_fn *see, void *ud);
+
+[[nodiscard]] bool list_folder(os_folder_t *in, listing_t *l);
+
+void free_listing(listing_t *l);
 
 [[nodiscard]] int show_config(host_t *h, bool taken);
 

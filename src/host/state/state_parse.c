@@ -8,7 +8,7 @@
 bool state_parse([[maybe_unused]] void *ud, const char *raw, value_t *v)
 {
     size_t size = strlen(raw) + sizeof("v = \n");
-    char *text = calloc(size, 1);
+    char *text = host_calloc(size, 1);
     toml_t t = {};
 
     if (!text)

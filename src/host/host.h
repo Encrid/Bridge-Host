@@ -14,6 +14,7 @@
     #include "bridge_abi.h"
     #include "config.h"
     #include "file_bytes.h"
+    #include "host_alloc.h"
     #include "bridge_host_manifest.h"
     #include "os.h"
     #include "say.h"
@@ -108,8 +109,6 @@ typedef struct {
 } host_t;
 
 typedef struct {
-    void **blocks;
-    uint32_t block_count;
     manifest_made_t lib;
 } made_t;
 
@@ -143,6 +142,16 @@ typedef struct {
     see_fn *see;
     void *ud;
 } walk_t;
+
+typedef struct {
+    char *name;
+    bool is_folder;
+} listed_t;
+
+typedef struct {
+    listed_t *items;
+    uint32_t count;
+} listing_t;
 
 [[nodiscard]] bool config_world(host_t *h);
 
@@ -181,7 +190,7 @@ extern const keyed_t ORDER_KEYS[];
 [[nodiscard]] int state_find(void *ud, const char *const *names,
     uint32_t depth, manifest_found_t *found);
 
-[[nodiscard]] bool state_find_grant(const stating_t *s, const char *name,
+[[nodiscard]] int state_find_grant(const stating_t *s, const char *name,
     manifest_found_t *found);
 
 [[nodiscard]] uint32_t state_phases(void *ud, const char ***names);
@@ -215,12 +224,18 @@ void state_free(made_t *m);
 
 [[nodiscard]] bool walk_name(const char *path, see_fn *see, void *ud);
 
+[[nodiscard]] bool list_folder(os_folder_t *in, listing_t *l);
+
+void free_listing(listing_t *l);
+
 [[nodiscard]] int show_config(host_t *h, bool taken);
 
 void show_module(void *ud, const char *path, os_folder_t *in,
     const char *name);
 
-[[nodiscard]] bool take_lock(const char *name);
+[[nodiscard]] bool take_lock(const char *name, os_lock_t **lock);
+
+[[nodiscard]] int host_go(host_t *h, char *named, bool show);
 
 void host_free(host_t *h);
 

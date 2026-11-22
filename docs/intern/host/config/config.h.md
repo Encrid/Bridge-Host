@@ -12,7 +12,7 @@ A `said_t` points at one value together with its file and line.
 A `found_t` holds the chosen value beside a peer that clashes with it.
 
 A `keyed_t` and a `module_key_t` name a key to search for.
-A `names_t` gathers names without a repeat.
+A list of names is a `manifest_names_t` of the library.
 `enum check` names the kind of a key. Its first names are those of `manifest_check` of the library of the part `manifest`.
 The host adds the checks that only a deployment needs, from `CHECK_ARRIVE`. `key_rule_t` drives the checks and the copy into Bridge.
 
@@ -36,5 +36,5 @@ It also holds the levels `written` and `failing` of the records, and the `files`
 | `config_check`, `config_check_*`, `config_check_value` | Check a statement against the rule of its key. |
 | `config_get_rule`, `config_get_names`, `config_put` | Find a rule by its table and its name, give the names of its key, and write a value by its rule. |
 | `config_find`, `config_find_key`, `config_states_key`, `config_states_module` | Resolve a key over the files. |
-| `config_names`, `names_add` | List the names under a key. |
+| `config_names` | List the names under a key. With `lost`, it prints `no memory left for a list of names`. |
 | `config_say_*`, `config_path`, `config_get_folder`, `config_folder_size`, `config_go_beside` | Print a key or a problem, and build paths. |

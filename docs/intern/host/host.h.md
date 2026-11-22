@@ -21,7 +21,8 @@ A `handed_t` keeps the bytes of a file together with the manifest that the host 
 A `held_t` names a backend, its library path, its start rule and its arrive rule, and the array of its settings.
 
 `stating_t`, `look_t`, `seeing_t` and `walk_t` carry state while the host states a module or walks the content.
-A `made_t` lists what the host allocates for the config of one module, with the `manifest_made_t` of the library. A `stating_t` points at it.
+`listing_t` holds the entries of 1 folder, each a `listed_t` with a copy of its name and whether it is a folder.
+A `made_t` holds the `manifest_made_t` of the library, which keeps what the host and the library allocate for the config of one module. A `stating_t` points at it.
 
 ## What a deployment does not choose
 
@@ -46,11 +47,13 @@ The host fixes these parts. A deployment cannot state them, for the reason that 
 | `run`, `run_phase`, `say_end`, `look` | Run the world, run one phase as often as it asks and its cap allows, write the lines of its end, and do one look. |
 | `host_unload_all` | Unload the modules that stay at the end, by the pairs. |
 | `walk_path`, `walk_name`, `is_ignored`, `join_path` | Walk one content path, read one file, test an ignored path, and join a path. |
+| `list_folder`, `free_listing` | List the entries of a folder in the order of their names, and free the list. |
 | `see_file`, `read_path`, `look_path`, `retry_unread`, `stop_watches` | Read one file, read a path whole, look at one path, read again the files that failed, and stop the watches. |
 | `find_file`, `keep_path`, `drop_gone` | Find the slot of a path, keep a path in its slot, and free the slots of the files that are gone. |
 | `meet`, `may_arrive`, `load_found`, `make_artifact` | Read a met file, ask whether it may load, load it, and build its artifact. |
 | `show_config`, `show_module`, `take_lock` | Show a configuration, show one module, and take the run lock. |
 | `state_found`, `state_find_key`, `state_parse`, `state_find`, `state_find_grant`, `state_phases`, `state_undeclared`, `state_tell` | State a module with the library, and give the library the keys of the deployment. |
 | `state_is_setting`, `state_states_setting`, `state_is_path` | Find a setting in a file. |
-| `state_keep_prefix`, `state_keep`, `state_free` | Make the prefix of a statement, add a block to the `made_t` of a module, and free it. |
+| `state_keep_prefix`, `state_keep`, `state_free` | Make the prefix of a statement, keep a block in the `made_t` of a module, and free it. |
+| `host_go` | Run or show the configuration of a path. |
 | `host_free` | Free the host. |

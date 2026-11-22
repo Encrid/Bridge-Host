@@ -30,11 +30,6 @@ typedef struct {
     uint32_t depth;
 } key_path_t;
 
-typedef struct {
-    const char **names;
-    uint32_t count;
-} name_list_t;
-
 [[nodiscard]] uint64_t manifest_number(const unsigned char *bytes, size_t len,
     size_t at, int width);
 
@@ -63,8 +58,6 @@ typedef struct {
 void manifest_put(bridge_module_config_t *cfg, const key_rule_t *rule,
     const manifest_value_t *v);
 
-[[nodiscard]] void *manifest_keep(const manifest_module_t *m, void *block);
-
 [[nodiscard]] manifest_value_t *manifest_keep_value(
     const manifest_module_t *m, manifest_value_t *v);
 
@@ -80,8 +73,6 @@ void manifest_tell(const manifest_module_t *m, enum manifest_told_kind kind,
 [[nodiscard]] const manifest_value_t *manifest_find_value(
     const manifest_module_t *m, const key_path_t *path,
     enum manifest_check check, manifest_found_t *found);
-
-void manifest_add_name(name_list_t *into, const char *name);
 
 [[nodiscard]] bool manifest_take_list(const manifest_module_t *m,
     const key_rule_t *rule, bridge_module_config_t *cfg);

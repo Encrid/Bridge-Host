@@ -1,7 +1,8 @@
-code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/state/state.c", "src/host/state/state_find.c", "src/host/state/state_list.c", "src/host/state/state_made.c", "src/host/state/state_phase.c", "src/host/state/state_setting_find.c", "src/host/state/state_tell.c", "src/host/state/state_undeclared.c", "src/host/toml/toml.c", "src/host/toml/toml.h", "src/host/toml/toml_add.c", "src/host/toml/toml_free.c", "src/host/toml/toml_key.c", "src/host/toml/toml_number.c", "src/host/toml/toml_pair.c", "src/host/toml/toml_text.c", "src/host/toml/toml_value.c", "src/manifest/manifest.c", "src/manifest/manifest_check.c", "src/manifest/manifest_find.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_keys.c", "src/manifest/manifest_list.c", "src/manifest/manifest_made.c", "src/manifest/manifest_own.c", "src/manifest/manifest_phase.c", "src/manifest/manifest_rules.c", "src/manifest/manifest_setting.c", "src/manifest/manifest_state.c", "src/manifest/manifest_take.c", "src/manifest/manifest_wasm.c", "src/manifest/manifest_word.c", "src/manifest/manifest_words.c", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/test.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_go.c", "src/host/host_list.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/test.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
 name = "found, and told who"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/folder-found.toml"]
 script = [{ wait = "? go on", type = "go" }]
 
@@ -35,6 +36,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "not loaded, and why"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/folder-why.toml"]
 script = [{ wait = "? go on", type = "go" }]
 
@@ -67,6 +69,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "taken in while it runs"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/folder-in.toml"]
 script = [{ wait = "? go on", put = { "{case}/folder-in/quiet.wasm" = "quiet" }, type = "go" }]
 
@@ -100,6 +103,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "taken out while it runs"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/folder-out.toml"]
 script = [{ wait = "? go on", remove = ["{case}/folder-out/quiet.wasm"], type = "go" }]
 
@@ -133,6 +137,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "replaced, and what it kept"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/folder-replaced.toml"]
 script = [{ wait = "? go on", put = { "{case}/folder-replaced/swap.wasm" = "swap2" }, type = "go" }]
 
@@ -169,6 +174,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "not replaced"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/folder-left.toml"]
 script = [{ wait = "? go on", put = { "{case}/folder-left/quiet.wasm" = "quiet2" }, type = "go" }]
 
@@ -198,6 +204,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a native one arrives, asked: yes"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/folder-yes.toml"]
 script = [
     { wait = "? go on", put = { "{case}/folder-yes/knock{library}" = "knock" }, type = "go" },
@@ -237,6 +244,7 @@ script = [
 
 [[case]]
 name = "a native one arrives, asked: no"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/folder-no.toml"]
 script = [
     { wait = "? go on", put = { "{case}/folder-no/knock{library}" = "knock" }, type = "go" },
@@ -273,6 +281,7 @@ script = [
 
 [[case]]
 name = "a native one arrives, loaded"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/folder-load.toml"]
 script = [{ wait = "? go on", put = { "{case}/folder-load/knock{library}" = "knock" }, type = "go" }]
 
@@ -316,6 +325,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a native one arrives, left"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/folder-leave.toml"]
 script = [{ wait = "? go on", put = { "{case}/folder-leave/knock{library}" = "knock" }, type = "go" }]
 
@@ -361,6 +371,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the answer to a question to load is its whole line"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/folder-long.toml"]
 script = [
     { wait = "? go on", put = { "{case}/folder-long/knock{library}" = "knock", "{case}/folder-long/nender{library}" = "nender" }, type = "go" },
@@ -401,6 +412,7 @@ script = [
 
 [[case]]
 name = "a module of the first look is asked about when the start rule of its backend is ask"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/s.toml"]
 script = [{ wait = "? load bridge-host:knock@1.0.0, native, mods/knock{library}", type = "yes" }]
 
@@ -430,6 +442,7 @@ script = [{ wait = "? load bridge-host:knock@1.0.0, native, mods/knock{library}"
 
 [[case]]
 name = "a module of the first look is left when the start rule of its backend is leave"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/s.toml"]
 
 [case.claims]

@@ -25,15 +25,15 @@ static const char *get_named(const entry_t *e)
 }
 
 static bool say_unfound(const host_t *h, const cfile_t *f,
-    const entry_t *e, names_t *said)
+    const entry_t *e, manifest_names_t *said)
 {
     const char *named = get_named(e);
     uint32_t count = said->count;
 
     if (!named || is_found(h, named))
         return (false);
-    names_add(said, named);
-    if (said->count == count)
+    manifest_add_name(said, named);
+    if (said->count == count && !said->lost)
         return (false);
     say("refused: %s:%u: %s: no module found is it\n", f->path, e->line,
         named);
@@ -51,7 +51,7 @@ static void say_found_ones(const host_t *h)
 
 uint32_t config_unfound(const host_t *h)
 {
-    names_t said = {};
+    manifest_names_t said = {};
     uint32_t refused = 0;
     const cfile_t *f = nullptr;
 

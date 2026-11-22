@@ -21,7 +21,7 @@ file_t *find_file(host_t *h, const char *path)
 bool keep_path(file_t *f, const char *path)
 {
     if (!f->path)
-        f->path = malloc(strlen(path) + 1);
+        f->path = host_malloc(strlen(path) + 1);
     if (f->path)
         strcpy(f->path, path);
     return (f->path != nullptr);

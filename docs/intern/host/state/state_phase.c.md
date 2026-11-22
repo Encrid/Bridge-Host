@@ -10,4 +10,4 @@ The library finds the value of each name with `find`, and frees the block of the
 
 | Function | Result |
 | --- | --- |
-| `state_phases` | The count of the names, and their block. |
+| `state_phases` | The count of the names, and their block. With no memory for the names, it gives `MANIFEST_NO_MEMORY`, after the line `<prefix>no memory is left for its phases`. |

@@ -5,6 +5,8 @@
 */
 #include "config.h"
 
+static_assert(BRIDGE_LEVEL_MOST == 7);
+
 static const manifest_rule_t RULES[] = {
     [CHECK_ARRIVE - CHECK_ARRIVE] = { MANIFEST_ALLOW_WORD, 0, 0,
         "ask load leave ", "\"ask\", \"load\" or \"leave\"" },
@@ -18,8 +20,8 @@ static const manifest_rule_t RULES[] = {
         | MANIFEST_ALLOW_WHOLE | MANIFEST_ALLOW_REAL | MANIFEST_ALLOW_TEXT
         | MANIFEST_ALLOW_EMPTY, INT64_MIN, INT64_MAX, "",
         "text, a number, true or false" },
-    [CHECK_RECORD - CHECK_ARRIVE] = { MANIFEST_ALLOW_WHOLE, 0, 7, "",
-        "a level, from 0 to 7" },
+    [CHECK_RECORD - CHECK_ARRIVE] = { MANIFEST_ALLOW_WHOLE, 0,
+        BRIDGE_LEVEL_MOST, "", "a level, from 0 to 7" },
     [CHECK_MODULE_PAIRS - CHECK_ARRIVE] = { MANIFEST_ALLOW_PAIRS, 0, 0, "",
         "a list of pairs of modules" }
 };

@@ -20,7 +20,7 @@ char *config_path(const config_t *c, uint32_t file, const char *path)
 {
     const char *folder = is_whole(path) ? "" : c->files[file].folder;
     size_t len = strlen(folder) + strlen(path) + 1;
-    char *joined = malloc(len);
+    char *joined = host_malloc(len);
 
     if (joined)
         snprintf(joined, len, "%s%s", folder, path);
@@ -52,7 +52,7 @@ const char *config_go_beside(char *name)
 char *config_get_folder(const char *path)
 {
     size_t len = config_folder_size(path);
-    char *folder = malloc(len + 1);
+    char *folder = host_malloc(len + 1);
 
     if (folder)
         memcpy(folder, path, len);

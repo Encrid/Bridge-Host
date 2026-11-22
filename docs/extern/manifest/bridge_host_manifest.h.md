@@ -90,13 +90,23 @@ The host gives as `text` the text of the value, or the whole path of a setting o
 | --- | --- |
 | `parse` | Reads the text of a default of the manifest as a value of the host's own reader. A text that is no value is a text value. It gives `false` only with no memory. |
 | `find` | Gives the value of a key of the module, from the keys of the host. `names` is the path of the key: `{ "scratch" }`, `{ "phases", "<phase>" }` or `{ "config", "<setting>" }`. |
-| `phases` | Gives the names of the phases that the host maps for the module, in a block that `malloc` gave. The library frees the block. |
-| `undeclared` | Gets the names of the settings of the manifest, and tells each setting that the host states and that is not one of them. It gives their count. |
+| `phases` | Gives the names of the phases that the host maps for the module, in a block that `malloc` gave. The library frees the block. It gives `MANIFEST_NO_MEMORY` when no memory is left for the names. |
+| `undeclared` | Gets the names of the settings of the manifest, and tells each setting that the host states and that is not one of them. It gives their count, or `MANIFEST_NO_MEMORY` when no memory is left. |
 | `tell` | Gets each value that the manifest gives, and each fault, as a `manifest_told_t`. |
 
 `find` gives 1 with the value, or 0 when the host states no value. It gives -1 after a fault that the host told itself, for example a clash.
 For a setting stated as a path, `text` of `manifest_found_t` gives the path that the host made whole. Else `text` is no text.
 For `read` and `write`, the host gives the whole list, also when it adds up the lists of some files.
+
+## MANIFEST_NO_MEMORY
+
+`MANIFEST_NO_MEMORY` is `UINT32_MAX`: the count that `phases` or `undeclared` gives when no memory is left, as `find` gives -1 for a fault.
+No real count reaches it. The host tells the fault itself, and then `manifest_state` gives `false`.
+With `MANIFEST_NO_MEMORY` from `phases`, the library frees `*names`, and a null `*names` is allowed.
+
+A block that the library itself cannot take ends the same way: `manifest_state` gives `false`, and the config holds no partial list.
+The library tells `MANIFEST_TOLD_NO_MEMORY` 1 time for each such block, with the key that needed it, so the host can name the fault.
+Thus a refused allocation never gives a module with fewer names, fewer phases or no settings.
 
 `names` and `depth` give the path of the key. `value` and `why` hold a value and a reason, when the kind has them.
 
@@ -108,6 +118,7 @@ For `read` and `write`, the host gives the whole list, also when it adds up the 
 | `MANIFEST_TOLD_WRONG` | The default of `names` has a form that its rule does not allow. `why` gives the reason. |
 | `MANIFEST_TOLD_NO_WORD` | The manifest does not state the word `names`: `config`, `pinned` or `reloadable`. |
 | `MANIFEST_TOLD_NO_COMPONENT` | The manifest names settings, and `config=none`. |
+| `MANIFEST_TOLD_NO_MEMORY` | The library cannot take a block for the key `names`: `phases`, `settings`, a list such as `read`, or the word of a key. |
 
 The texts of a `manifest_told_t` live only during the call of `tell`.
 
@@ -128,6 +139,18 @@ The config points into the memory of `manifest_made_t`, and Bridge reads it duri
 After that call, `manifest_free` frees that memory: the `block_count` blocks of `blocks`, and the `value_count` values of `values`.
 A `manifest_made_t` starts with each field at 0.
 
+A host can keep its own blocks in the same `manifest_made_t`, with `manifest_keep`, so 1 call of `manifest_free` frees them all.
+`manifest_keep` adds a block to `blocks` and gives the block. When no memory is left for the list, it frees the block and gives null.
+A null block gives null, and changes nothing.
+
+## The lists of names
+
+`manifest_names_t` is a list of names with no repeat: `names`, `count`, and `lost`.
+It starts with each field at 0, and its owner frees `names`, not the names themselves.
+`manifest_add_name` adds a name that the list does not hold yet.
+When no memory is left for the list, the name is not added, and `lost` becomes true. `lost` stays true after that.
+Thus a host that reads `lost` gives a stated failure, and never takes a list that lacks a name.
+
 ## Functions
 
 | Function | Result |
@@ -140,5 +163,7 @@ A `manifest_made_t` starts with each field at 0.
 | `manifest_get_setting` | The setting of a value. |
 | `manifest_state` | `true` when the config holds each key of the module. |
 | `manifest_state_key` | The value of one key of a module, or no value. |
+| `manifest_keep` | The block, kept in a `manifest_made_t`, or null with the block freed. |
 | `manifest_free` | Frees the memory of the states of a module. |
+| `manifest_add_name` | Adds a name to a `manifest_names_t`, with no repeat, or sets `lost`. |
 | `manifest_free_value` | Frees what a value holds. |

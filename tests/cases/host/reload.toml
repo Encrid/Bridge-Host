@@ -1,7 +1,8 @@
-code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/state/state.c", "src/host/state/state_find.c", "src/host/state/state_list.c", "src/host/state/state_made.c", "src/host/state/state_phase.c", "src/host/state/state_setting_find.c", "src/host/state/state_tell.c", "src/host/state/state_undeclared.c", "src/host/toml/toml.c", "src/host/toml/toml.h", "src/host/toml/toml_add.c", "src/host/toml/toml_free.c", "src/host/toml/toml_key.c", "src/host/toml/toml_number.c", "src/host/toml/toml_pair.c", "src/host/toml/toml_text.c", "src/host/toml/toml_value.c", "src/manifest/manifest.c", "src/manifest/manifest_check.c", "src/manifest/manifest_find.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_keys.c", "src/manifest/manifest_list.c", "src/manifest/manifest_made.c", "src/manifest/manifest_own.c", "src/manifest/manifest_phase.c", "src/manifest/manifest_rules.c", "src/manifest/manifest_setting.c", "src/manifest/manifest_state.c", "src/manifest/manifest_take.c", "src/manifest/manifest_wasm.c", "src/manifest/manifest_word.c", "src/manifest/manifest_words.c", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tests/presets/test.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_go.c", "src/host/host_list.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tests/presets/test.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
 name = "a reload to a file with a bad manifest"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "nocolon" }, type = "go" }]
 
@@ -33,6 +34,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a reload of a module that does not say it can be"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/quiet.wasm" = "quiet2" }, type = "go" }]
 
@@ -62,12 +64,13 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a reload to a file built against another ABI"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "abifour" }, type = "go" }]
 
 [case.claims]
 status = 1
-has = ["not replaced: d/swap.wasm: bridge-host:abifour@1.0.0 was refused"]
+has = ["it wants ABI 4 and this is ABI 1", "not replaced: d/swap.wasm: bridge-host:abifour@1.0.0 was refused"]
 
 [case.folders]
 "{case}/d" = ["wait", "swap"]
@@ -79,6 +82,8 @@ phases = ["update"]
 again = {}
 rounds = 16
 [module."bridge-host:swap@1.0.0"]
+hot_reload = true
+[module."bridge-host:abifour@1.0.0"]
 hot_reload = true
 [content]
 paths = ["d"]
@@ -93,6 +98,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a file seen but not loaded, then changed"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/mute.wasm" = "quiet2" }, type = "go" }]
 
@@ -124,6 +130,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a loaded module and a failed one both gone"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", remove = ["{case}/d/quiet.wasm", "{case}/d/mute.wasm"], type = "go" }]
 
@@ -152,6 +159,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a module that arrives on a later round and is asked about"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/knock.dll" = "knock" }, type = "go" }]
 
@@ -181,6 +189,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a reload to a file whose manifest names it but has a bad word"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "bareword" }, type = "go" }]
 
@@ -212,6 +221,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a reload the engine refuses"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "word" }, type = "go" }]
 
@@ -247,6 +257,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a module replaced five times, each time by its other build"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [
     { wait = "? go on", put = { "{case}/d/swap.wasm" = "swap2" }, type = "go" },
@@ -291,6 +302,7 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a module whose hot_reload is false keeps its old build, with no failure"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
 script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "swap2" }, type = "go" }]
 
@@ -330,4 +342,43 @@ paths = ["d"]
 library = "{bb_wasm}/bridge_wasm"
 [backend.native]
 library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a reload whose hot_reload two presets state two ways is refused, with the clash"
+process = "script"
+run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
+script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "abifour" }, type = "go" }]
+
+[case.claims]
+status = 1
+has = ["refused: hot_reload: false in {root}/tests/presets/world.toml:38, true in ha.toml:2", "not replaced: d/swap.wasm: bridge-host:abifour@1.0.0 was refused"]
+
+[case.folders]
+"{case}/d" = ["wait", "swap"]
+
+[case.files]
+"{case}/ha.toml" = '''
+[module."bridge-host:abifour@1.0.0"]
+hot_reload = true
+'''
+"{case}/r.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "ha.toml"]
+phases = ["update"]
+again = {}
+rounds = 16
+[module."bridge-host:swap@1.0.0"]
+hot_reload = true
+[content]
+paths = ["d"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/ha.toml" = '''
+[module."bridge-host:abifour@1.0.0"]
+hot_reload = false
 '''

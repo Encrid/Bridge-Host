@@ -1,7 +1,8 @@
-code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/show/**", "src/host/state/**", "src/host/toml/**", "src/manifest/manifest.c", "src/manifest/manifest_check.c", "src/manifest/manifest_find.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_keys.c", "src/manifest/manifest_list.c", "src/manifest/manifest_made.c", "src/manifest/manifest_own.c", "src/manifest/manifest_phase.c", "src/manifest/manifest_rules.c", "src/manifest/manifest_setting.c", "src/manifest/manifest_state.c", "src/manifest/manifest_take.c", "src/manifest/manifest_wasm.c", "src/manifest/manifest_word.c", "src/manifest/manifest_words.c", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_go.c", "src/host/host_list.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/state/**", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
 name = "a module that states keys and settings in its own file"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/owns.toml"]
 
 [case.claims]
@@ -66,6 +67,7 @@ library = "{bb_wasm}/bridge_wasm"
 
 [[case]]
 name = "settings of every kind, grants, losses, and an own setting"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/st.toml"]
 
 [case.claims]
@@ -138,6 +140,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "on_error fail and a module key stated two ways"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/sk.toml"]
 
 [case.claims]
@@ -291,6 +294,7 @@ library = "{bb_wasm}/bridge_wasm"
 
 [[case]]
 name = "a phase stated two ways"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/sp.toml"]
 
 [case.claims]
@@ -350,6 +354,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a grant stated in the local file"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/lg.toml"]
 
 [case.claims]
@@ -387,6 +392,7 @@ word = "local"
 
 [[case]]
 name = "a config word of 200 bytes is read whole"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/lc.toml"]
 
 [case.claims]
@@ -414,6 +420,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a setting name of 200 bytes takes its default from the manifest"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/ln.toml"]
 
 [case.claims]
@@ -441,6 +448,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a setting name of 200 bytes is named whole in the lines of the host"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/ln.toml"]
 
 [case.claims]
@@ -483,6 +491,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a manifest value keeps each = after the first"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/eq.toml"]
 
 [case.claims]
@@ -510,6 +519,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a word that the manifest does not state is an empty text"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/no.toml"]
 
 [case.claims]
@@ -537,6 +547,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "--show-config prints a value of 600 bytes whole"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/lv.toml"]
 
 [case.claims]
@@ -579,6 +590,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a statement whose prefix finds no memory writes its lines with no prefix"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/p.toml"]
 fail = { calloc = 11 }
 
@@ -599,6 +611,141 @@ rounds = 8
 paths = ["mods"]
 [backend.native]
 library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a setting that two presets state two ways is refused"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/wt.toml"]
+
+[case.claims]
+status = 1
+has = ["refused: config.word: \"a\" in wa.toml:2, \"b\" in wb.toml:2"]
+
+[case.folders]
+"{case}/words" = ["word"]
+
+[case.files]
+"{case}/wa.toml" = '''
+[module."bridge-host:word@1.0.0".config]
+word = "a"
+'''
+"{case}/wb.toml" = '''
+[module."bridge-host:word@1.0.0".config]
+word = "b"
+'''
+"{case}/wt.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "wa.toml", "wb.toml"]
+phases = ["late"]
+again = {}
+rounds = 8
+[content]
+paths = ["words"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/wb.toml" = '''
+[module."bridge-host:word@1.0.0".config]
+word = "a"
+'''
+
+[[case]]
+name = "a default that the manifest states twice is refused when the host reads it"
+process = "command"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/td.toml"]
+
+[case.claims]
+status = 1
+line = ["  refused: its file states config.word twice"]
+
+[case.folders]
+"{case}/mods" = ["twiceset"]
+
+[case.files]
+"{case}/td.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update", "late"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/mods" = ["owned"]
+
+[[case]]
+name = "a module whose phases find no memory is not loaded, with its line"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { realloc = 256 }
+fail_parts = ["host", "manifest"]
+
+[case.claims]
+status = 1
+line = ["not loaded: mods/knock{library}: bridge-host:knock@1.0.0: no memory is left for its phases"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[module."bridge-host:knock@1.0.0"]
+read = ["bridge-host:Knock"]
+[module."bridge-host:knock@1.0.0".phases]
+update = "update"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a module whose read grant finds no memory is not loaded, with its line"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { realloc = 249 }
+fail_parts = ["host", "manifest"]
+
+[case.claims]
+status = 1
+line = ["not loaded: mods/knock{library}: bridge-host:knock@1.0.0: no memory is left for its read"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[module."bridge-host:knock@1.0.0"]
+read = ["bridge-host:Knock"]
+[module."bridge-host:knock@1.0.0".phases]
+update = "update"
 '''
 
 [case.false]

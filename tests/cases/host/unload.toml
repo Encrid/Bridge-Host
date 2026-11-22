@@ -1,7 +1,8 @@
-code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/show/**", "src/host/state/state.c", "src/host/state/state_find.c", "src/host/state/state_list.c", "src/host/state/state_made.c", "src/host/state/state_phase.c", "src/host/state/state_setting_find.c", "src/host/state/state_tell.c", "src/host/state/state_undeclared.c", "src/host/toml/**", "src/manifest/manifest.c", "src/manifest/manifest_check.c", "src/manifest/manifest_find.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_keys.c", "src/manifest/manifest_list.c", "src/manifest/manifest_made.c", "src/manifest/manifest_own.c", "src/manifest/manifest_phase.c", "src/manifest/manifest_rules.c", "src/manifest/manifest_setting.c", "src/manifest/manifest_state.c", "src/manifest/manifest_take.c", "src/manifest/manifest_word.c", "src/manifest/manifest_words.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_go.c", "src/host/host_list.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
 name = "with no pair, the modules shut down by identity"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -39,6 +40,7 @@ unload_before = [["bridge-host:stopb", "bridge-host:stopa"]]
 
 [[case]]
 name = "a pair makes a module shut down before a module that comes first by identity"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -76,6 +78,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a pair that a preset states counts"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -109,6 +112,7 @@ unload_before = [["bridge-host:stopa", "bridge-host:stopb"]]
 
 [[case]]
 name = "a pair with a module that is not loaded does nothing, also a name that starts the name of a loaded module"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -148,6 +152,7 @@ unload_before = [["bridge-host:stopb", "bridge-host:stopa"]]
 
 [[case]]
 name = "a cycle of the pairs of 2 files is refused, and a pair into it or out of it is not named"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -184,6 +189,7 @@ unload_before = [["n:y", "n:z"], ["n:z", "n:v"]]
 
 [[case]]
 name = "a pair and its reverse in 2 presets of one file are refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -222,6 +228,7 @@ unload_before = [["n:x", "n:y"]]
 
 [[case]]
 name = "a pair that names one module twice is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -258,6 +265,7 @@ unload_before = [["n:x", "n:y"]]
 
 [[case]]
 name = "a module of a pair with no namespace is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -294,6 +302,7 @@ unload_before = [["n:x", "n:y"]]
 
 [[case]]
 name = "a module of a pair with a version is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]
@@ -329,44 +338,8 @@ unload_before = [["n:x", "n:y"]]
 '''
 
 [[case]]
-name = "--show-config writes each pair of unload_before"
-run = ["{out}/bridge-host{exe}", "--show-config", "{case}/u.toml"]
-
-[case.claims]
-status = 0
-line = ["unload: bridge-host:stopb before bridge-host:stopa"]
-
-[case.folders]
-"{case}/mods" = ["stopa", "stopb"]
-
-[case.files]
-"{case}/u.toml" = '''
-presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
-phases = ["update"]
-again = {}
-rounds = 1
-[content]
-paths = ["mods"]
-[backend.native]
-library = "{bb_native}/bridge_native"
-[order]
-unload_before = [["bridge-host:stopb", "bridge-host:stopa"]]
-'''
-
-[case.false.files]
-"{case}/u.toml" = '''
-presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
-phases = ["update"]
-again = {}
-rounds = 1
-[content]
-paths = ["mods"]
-[backend.native]
-library = "{bb_native}/bridge_native"
-'''
-
-[[case]]
 name = "after a signal, the pairs still order the shutdowns"
+process = "signal"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 stdin = "go\n"
 script = [{ wait = "? go on", signal = "interrupt" }, { wait = "a signal stops the host: a second one ends it at once" }]
@@ -408,6 +381,7 @@ unload_before = [["bridge-host:stopa", "bridge-host:stopb"]]
 
 [[case]]
 name = "unload_before that is no list of pairs is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 
 [case.claims]

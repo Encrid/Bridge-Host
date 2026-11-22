@@ -20,6 +20,8 @@ Thus a check and a statement find a key in one place.
 `config_get_names` writes the names of the key of a rule, one or two, and gives their count.
 
 `config_put` writes a value at the offset of its rule, in the width of its field.
+It copies the first `width` bytes of an `int64_t` with 1 `memcpy`.
+On a little-endian system these bytes are the value cut to the width. A `static_assert` checks the order of the bytes by `__BYTE_ORDER__` of the compiler, and each target is little-endian.
 It writes `BRIDGE_TRUE` or `BRIDGE_FALSE` for a flag, and the `none` of the rule for the word `none`.
 
 ## Functions

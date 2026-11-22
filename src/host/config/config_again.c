@@ -36,13 +36,13 @@ bool config_again(host_t *h)
 {
     static const char *const AGAIN[] = { "again" };
     const keyed_t k = { AGAIN, 1 };
-    names_t names = config_names(&h->config, &k);
+    manifest_names_t names = config_names(&h->config, &k);
     found_t none = config_find(&h->config, config_states_key, &k);
     bool taken = true;
 
-    if (!names.count && !none.at.value)
+    if (!names.lost && !names.count && !none.at.value)
         say("not stated: again\n");
-    taken = names.count || none.at.value;
+    taken = !names.lost && (names.count || none.at.value);
     for (uint32_t i = 0; i < names.count; i++)
         taken = take_cap(h, names.names[i]) && taken;
     free(names.names);

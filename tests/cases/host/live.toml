@@ -1,7 +1,8 @@
-code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/state/state.c", "src/host/state/state_find.c", "src/host/state/state_list.c", "src/host/state/state_made.c", "src/host/state/state_phase.c", "src/host/state/state_setting_find.c", "src/host/state/state_tell.c", "src/host/state/state_undeclared.c", "src/host/toml/toml.c", "src/host/toml/toml.h", "src/host/toml/toml_add.c", "src/host/toml/toml_free.c", "src/host/toml/toml_key.c", "src/host/toml/toml_number.c", "src/host/toml/toml_pair.c", "src/host/toml/toml_text.c", "src/host/toml/toml_value.c", "src/manifest/manifest.c", "src/manifest/manifest_check.c", "src/manifest/manifest_find.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_keys.c", "src/manifest/manifest_list.c", "src/manifest/manifest_made.c", "src/manifest/manifest_own.c", "src/manifest/manifest_phase.c", "src/manifest/manifest_rules.c", "src/manifest/manifest_setting.c", "src/manifest/manifest_state.c", "src/manifest/manifest_take.c", "src/manifest/manifest_wasm.c", "src/manifest/manifest_word.c", "src/manifest/manifest_words.c", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/test.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_go.c", "src/host/host_list.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/test.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
 name = "a native module ends a live run at the round that it chose"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/live.toml"]
 
 [case.claims]
@@ -49,6 +50,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a wasm module ends a run that is not live at the round that it chose"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/end.toml"]
 
 [case.claims]
@@ -78,6 +80,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a live run goes on through quiet rounds to its limit"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/quiet.toml"]
 
 [case.claims]
@@ -119,6 +122,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "live takes only true or false"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/three.toml"]
 
 [case.claims]
@@ -160,6 +164,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a world that states threads and rounds, and no live"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/nolive.toml"]
 
 [case.claims]
@@ -185,6 +190,7 @@ live = false
 
 [[case]]
 name = "the profile of each system comes at the end of the run, before the world is destroyed"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/e.toml"]
 
 [case.claims]
@@ -224,6 +230,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a world with no system writes no line of profile"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/e.toml"]
 
 [case.claims]
@@ -253,6 +260,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the usage of the budget and of each module comes at the end of the run"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/e.toml"]
 
 [case.claims]
@@ -300,6 +308,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a world with no module writes no line of the usage of a module"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/e.toml"]
 
 [case.claims]
@@ -326,3 +335,35 @@ library = "{bb_native}/bridge_native"
 
 [case.false.folders]
 "{case}/mods" = ["knock"]
+
+[[case]]
+name = "the list of the modules that stay finds no memory, and its line says so"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { malloc = 215 }
+
+[case.claims]
+status = 0
+line = ["still loaded: unknown, no memory"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[module."bridge-host:knock@1.0.0"]
+read = ["bridge-host:Knock"]
+[module."bridge-host:knock@1.0.0".phases]
+update = "update"
+'''
+
+[case.false]
+fail = {}

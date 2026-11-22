@@ -1,7 +1,8 @@
-code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/show/**", "src/host/state/state.c", "src/host/state/state_find.c", "src/host/state/state_list.c", "src/host/state/state_made.c", "src/host/state/state_phase.c", "src/host/state/state_setting_find.c", "src/host/state/state_tell.c", "src/host/state/state_undeclared.c", "src/host/toml/**", "src/manifest/manifest.c", "src/manifest/manifest_check.c", "src/manifest/manifest_find.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_keys.c", "src/manifest/manifest_list.c", "src/manifest/manifest_made.c", "src/manifest/manifest_own.c", "src/manifest/manifest_phase.c", "src/manifest/manifest_rules.c", "src/manifest/manifest_setting.c", "src/manifest/manifest_state.c", "src/manifest/manifest_take.c", "src/manifest/manifest_word.c", "src/manifest/manifest_words.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/test.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_go.c", "src/host/host_list.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/test.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
 name = "a module that asks again 2 times runs its phase 3 times in one round"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
 
 [case.claims]
@@ -46,6 +47,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the cap of a phase stops its runs, with a warning"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
 
 [case.claims]
@@ -90,6 +92,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a phase that again does not name runs one time, with a warning"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
 
 [case.claims]
@@ -133,6 +136,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "again with no phase runs each phase one time"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
 
 [case.claims]
@@ -163,6 +167,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "an end in the same run as an again ends the run after its round"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
 
 [case.claims]
@@ -194,6 +199,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a key of again that is no phase is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -218,6 +224,7 @@ rounds = 1
 
 [[case]]
 name = "a cap of 0 is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -242,6 +249,7 @@ rounds = 1
 
 [[case]]
 name = "a cap that is a text is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -266,6 +274,7 @@ rounds = 1
 
 [[case]]
 name = "again that is not a table is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -290,6 +299,7 @@ rounds = 1
 
 [[case]]
 name = "a world that states no again"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -313,6 +323,7 @@ rounds = 1
 
 [[case]]
 name = "an empty table is refused at each key but again"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -337,6 +348,7 @@ rounds = 1
 
 [[case]]
 name = "the local file cannot state again"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/rl.toml"]
 
 [case.claims]
@@ -378,42 +390,8 @@ written = 7
 '''
 
 [[case]]
-name = "the config said holds the caps of again"
-run = ["{out}/bridge-host{exe}", "--show-config", "{case}/s.toml"]
-
-[case.claims]
-status = 0
-line = ["again.update = 8  s.toml:3"]
-
-[case.folders]
-"{case}/mods" = ["knock"]
-
-[case.files]
-"{case}/s.toml" = '''
-presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
-phases = ["update"]
-again = { update = 8 }
-rounds = 8
-[content]
-paths = ["mods"]
-[backend.native]
-library = "{bb_native}/bridge_native"
-'''
-
-[case.false.files]
-"{case}/s.toml" = '''
-presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
-phases = ["update"]
-again = { update = 9 }
-rounds = 8
-[content]
-paths = ["mods"]
-[backend.native]
-library = "{bb_native}/bridge_native"
-'''
-
-[[case]]
 name = "two files that state a cap with 2 values are refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -440,6 +418,7 @@ again = { update = 2 }
 
 [[case]]
 name = "a key below a cap of again is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -464,6 +443,7 @@ rounds = 1
 
 [[case]]
 name = "the warnings of again are records of the level 4, not written below it"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/a.toml"]
 
 [case.claims]

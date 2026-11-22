@@ -22,7 +22,7 @@ static void read_file(seeing_t *s, file_t *f, const char *path,
 
     f->unread = false;
     if (!f->path || f->mark != mark)
-        kept = malloc(sizeof(*kept) + now->len + 1);
+        kept = host_malloc(sizeof(*kept) + now->len + 1);
     if (!kept)
         return;
     *kept = (handed_t){ .bytes = memcpy(kept + 1, now->bytes, now->len + 1),

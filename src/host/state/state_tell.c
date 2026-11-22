@@ -26,9 +26,12 @@ static void say_value(const stating_t *s, const manifest_told_t *told)
         config_say_value(&s->h->config, &key, &f, &how);
 }
 
-static void say_not_stated(const char *prefix, const manifest_told_t *told)
+static void say_key(const char *prefix, const manifest_told_t *told)
 {
-    say_part("%snot stated: ", prefix);
+    const bool lost = told->kind == MANIFEST_TOLD_NO_MEMORY;
+
+    say_part("%s%s", prefix, lost ? "no memory is left for its "
+        : "not stated: ");
     config_say_key(told->names, told->depth);
     say("\n");
 }
@@ -42,7 +45,8 @@ void state_tell(void *ud, const manifest_told_t *told)
             say_value(s, told);
             break;
         case MANIFEST_TOLD_NOT_STATED:
-            say_not_stated(s->prefix, told);
+        case MANIFEST_TOLD_NO_MEMORY:
+            say_key(s->prefix, told);
             break;
         case MANIFEST_TOLD_TWICE:
         case MANIFEST_TOLD_WRONG:
@@ -51,7 +55,7 @@ void state_tell(void *ud, const manifest_told_t *told)
         case MANIFEST_TOLD_NO_WORD:
             say("%sits file states no %s\n", s->prefix, told->names[0]);
             break;
-        default:
+        case MANIFEST_TOLD_NO_COMPONENT:
             say("%sit names no component, and settings\n", s->prefix);
     }
 }

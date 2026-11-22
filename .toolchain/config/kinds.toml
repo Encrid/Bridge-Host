@@ -1,12 +1,3 @@
-[kinds.host_wasm]
-output = "{name}.wasm"
-steps = [
-    { run = ["{zig}", "cc", "-target", "wasm32-freestanding", "{language}", "-O2", "{simd}", "{flags}", "-nostdlib", "{defines}", "{include}", "-Wl,--no-entry", "-o", "{work}.raw.wasm", "{sources}"] },
-    { run = ["{wasm_merge}", "{work}.raw.wasm", "main", "{bb_wasm}/acc.wasm", "acc", "{features}", "-o", "{work}.merged.wasm"] },
-    { run = ["{wasm_opt}", "{work}.merged.wasm", "{features}", "-O3", "--remove-exports=acc_*", "--remove-unused-module-elements", "-o", "{output}"] },
-    { section = "bridge:manifest", text = "{manifest:\u0000}\u0000" },
-]
-
 [kinds.host_native]
 output = "{name}{library}"
 steps = [

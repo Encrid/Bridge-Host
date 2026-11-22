@@ -6,10 +6,10 @@
 #include "host.h"
 #include "os.h"
 
-bool take_lock(const char *name)
+bool take_lock(const char *name, os_lock_t **lock)
 {
     size_t len = strlen(name) + sizeof(".d/lock");
-    char *path = malloc(len);
+    char *path = host_malloc(len);
     int got = -1;
 
     if (path)
@@ -20,7 +20,7 @@ bool take_lock(const char *name)
         return (false);
     }
     snprintf(path, len, "%s.d/lock", name);
-    got = os_lock(path);
+    got = os_lock(path, lock);
     if (got > 0)
         say("refused: %s is being run\n", name);
     if (got < 0)

@@ -7,22 +7,10 @@
 #include <string.h>
 
 #include "config.h"
+#include "say.h"
 
-void names_add(names_t *into, const char *name)
-{
-    const char **more = nullptr;
-
-    for (uint32_t i = 0; i < into->count; i++)
-        if (!strcmp(into->names[i], name))
-            return;
-    more = realloc(into->names, sizeof(*more) * (into->count + 1));
-    if (!more)
-        return;
-    into->names = more;
-    into->names[into->count++] = name;
-}
-
-static void add_names(const cfile_t *f, const keyed_t *under, names_t *into)
+static void add_names(const cfile_t *f, const keyed_t *under,
+    manifest_names_t *into)
 {
     const entry_t *e = nullptr;
 
@@ -30,15 +18,17 @@ static void add_names(const cfile_t *f, const keyed_t *under, names_t *into)
         e = &f->toml.entries[i];
         if (e->value.kind && e->depth > under->depth
             && toml_has_prefix(e, under->names, under->depth))
-            names_add(into, e->key[under->depth]);
+            manifest_add_name(into, e->key[under->depth]);
     }
 }
 
-names_t config_names(const config_t *c, const keyed_t *under)
+manifest_names_t config_names(const config_t *c, const keyed_t *under)
 {
-    names_t names = {};
+    manifest_names_t names = {};
 
     for (uint32_t f = 0; f < c->count; f++)
         add_names(&c->files[f], under, &names);
+    if (names.lost)
+        say("no memory left for a list of names\n");
     return (names);
 }

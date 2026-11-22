@@ -1,0 +1,494 @@
+code = ["include/**", "src/host/config/config.c", "src/host/config/config.h", "src/host/config/config_again.c", "src/host/config/config_backend.c", "src/host/config/config_backend_settings.c", "src/host/config/config_check.c", "src/host/config/config_check_module.c", "src/host/config/config_check_world.c", "src/host/config/config_content.c", "src/host/config/config_file.c", "src/host/config/config_find.c", "src/host/config/config_free.c", "src/host/config/config_keys.c", "src/host/config/config_name.c", "src/host/config/config_names.c", "src/host/config/config_order.c", "src/host/config/config_path.c", "src/host/config/config_say.c", "src/host/config/config_states.c", "src/host/config/config_unloads.c", "src/host/config/config_value.c", "src/host/config/config_world.c", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_free.c", "src/host/host_go.c", "src/host/host_list.c", "src/host/host_path.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/show/**", "src/host/state/**", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/test.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+
+[[case]]
+name = "the config shown when it is refused"
+process = "command"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/bad.toml"]
+
+[case.claims]
+status = 1
+has = ["bogus: no key of Bridge-Host's or Bridge's"]
+
+[case.files]
+"{case}/bad.toml" = '''
+bogus = 1
+'''
+
+[case.false.files]
+"{case}/bad.toml" = '''
+rounds = 1
+'''
+
+[[case]]
+name = "the config shown with a content path that is not there"
+process = "command"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/gone.toml"]
+
+[case.claims]
+status = 1
+has = ["cannot look in 'notthere'"]
+
+[case.files]
+"{case}/gone.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["notthere"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.folders]
+"{case}/notthere" = ["quiet"]
+
+[[case]]
+name = "the config shown with an empty file, a non-module, and a module with no load"
+process = "command"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/sm.toml"]
+
+[case.claims]
+status = 1
+has = [
+    "module bridge-host:quiet@1.0.0, wasm, sm/quiet.wasm",
+    "not stated: content.load.all",
+    "not a module: sm/junk.txt",
+]
+
+[case.folders]
+"{case}/sm" = ["quiet"]
+
+[case.files]
+"{case}/sm/empty.wasm" = ""
+"{case}/sm/junk.txt" = "junk"
+"{case}/sm.toml" = '''
+threads = 1
+live = false
+stack = 1048576
+observer_passes = 1
+table_growth = 150
+table_hash_fill = 50
+table_retry = 50
+phases = ["update"]
+again = {}
+rounds = 8
+[budget]
+entities = 8192
+tables = 8
+types = 16
+systems = 16
+terms = 8
+modules = 8
+persistent = 262144
+columns = 1048576
+sparse_sets = "none"
+direct_indexed = "none"
+[checks]
+profile = false
+validate = false
+usage = false
+[records]
+written = 6
+failing = 3
+[content]
+paths = ["sm"]
+files = 32
+depth = 1
+[content.start]
+wasm = "load"
+native = "load"
+[content.arrive]
+wasm = "load"
+native = "ask"
+[module.all]
+hot_reload = false
+on_error = "skip"
+max_system_failures = 3
+log_level = 7
+scratch = 65536
+log_ring = 6144
+spans = 16384
+spawns = "none"
+persistent = "none"
+changes = 1048576
+losses = "none"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/sm.toml" = '''
+threads = 1
+live = false
+stack = 1048576
+observer_passes = 1
+table_growth = 150
+table_hash_fill = 50
+table_retry = 50
+phases = ["update"]
+again = {}
+rounds = 8
+[budget]
+entities = 8192
+tables = 8
+types = 16
+systems = 16
+terms = 8
+modules = 8
+persistent = 262144
+columns = 1048576
+sparse_sets = "none"
+direct_indexed = "none"
+[checks]
+profile = false
+validate = false
+usage = false
+[records]
+written = 6
+failing = 3
+[content]
+paths = ["sm"]
+files = 32
+depth = 1
+[content.load]
+all = true
+[content.start]
+wasm = "load"
+native = "load"
+[content.arrive]
+wasm = "load"
+native = "ask"
+[module.all]
+hot_reload = false
+on_error = "skip"
+max_system_failures = 3
+log_level = 7
+scratch = 65536
+log_ring = 6144
+spans = 16384
+spawns = "none"
+persistent = "none"
+changes = 1048576
+losses = "none"
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "--show-config writes each pair of unload_before"
+process = "command"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/u.toml"]
+
+[case.claims]
+status = 0
+line = ["unload: bridge-host:stopb before bridge-host:stopa"]
+
+[case.folders]
+"{case}/mods" = ["stopa", "stopb"]
+
+[case.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[order]
+unload_before = [["bridge-host:stopb", "bridge-host:stopa"]]
+'''
+
+[case.false.files]
+"{case}/u.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "the config said"
+process = "command"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/shown.toml"]
+
+[case.claims]
+status = 0
+line = [
+    "again = {}  shown.toml:3",
+    "threads = 1  {root}/tests/presets/world.toml:1",
+    "live = false  {root}/tests/presets/world.toml:2",
+    "stack = 1048576  {root}/tests/presets/world.toml:3",
+    "observer_passes = 1  {root}/tests/presets/world.toml:4",
+    "table_growth = 150  {root}/tests/presets/world.toml:5",
+    "table_hash_fill = 50  {root}/tests/presets/world.toml:6",
+    "table_retry = 50  {root}/tests/presets/world.toml:7",
+    "checks.profile = false  {root}/tests/presets/world.toml:22",
+    "checks.validate = false  {root}/tests/presets/world.toml:23",
+    "checks.usage = false  {root}/tests/presets/world.toml:24",
+    "module bridge-host:quiet@1.0.0, wasm, config-quiet/quiet.wasm",
+    "  pinned = false  its file",
+]
+
+[case.folders]
+"{case}/config-quiet" = ["quiet"]
+
+[case.files]
+"{case}/shown.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["config-quiet"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/shown.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+threads = 2
+[content]
+paths = ["config-quiet"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "the config said holds the caps of again"
+process = "command"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/s.toml"]
+
+[case.claims]
+status = 0
+line = ["again.update = 8  s.toml:3"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/s.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = { update = 8 }
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/s.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = { update = 9 }
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "the settings of a backend are shown with their places"
+process = "command"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/bw.toml"]
+
+[case.claims]
+status = 0
+line = ['backend.native.colour = "blue"  bw.toml:9', 'backend.native.library = "{bb_native}/bridge_native"  bw.toml:8']
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/bw.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+colour = "blue"
+'''
+
+[case.false.files]
+"{case}/bw.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a module that declares a setting the config does not give"
+process = "command"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/us.toml"]
+
+[case.claims]
+status = 1
+has = ["not stated: config.z"]
+
+[case.folders]
+"{case}/mods" = ["multi"]
+
+[case.files]
+"{case}/us.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update", "late"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[module."bridge-host:multi@1.0.0".config]
+w = "a"
+x = 5
+y = 1.5
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/us.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update", "late"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[module."bridge-host:multi@1.0.0".config]
+w = "a"
+x = 5
+y = 1.5
+z = true
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "the config said, in full"
+process = "command"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/show.toml"]
+
+[case.claims]
+status = 1
+has = [
+    ", over peer.toml:1",
+    "content.ignore: skip-me",
+    "order: bridge-host:word:say before bridge-host:other:say",
+    "phases.late",
+    "it takes no config.bogus, stated in",
+    ".d/local.toml",
+]
+
+[case.folders]
+"{case}/cw" = ["word"]
+
+[case.files]
+"{case}/peer.toml" = '''
+rounds = 8
+'''
+"{case}/show.toml.d/local.toml" = '''
+[module."bridge-host:word@1.0.0".config]
+word = "local"
+'''
+"{case}/show.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "peer.toml"]
+phases = ["late"]
+again = {}
+rounds = 8
+[module."bridge-host:word@1.0.0".phases]
+late = "update"
+[module."bridge-host:word@1.0.0".config]
+word = "hi"
+bogus = 1
+[content]
+paths = ["cw"]
+ignore = ["skip-me"]
+[order]
+before = [["bridge-host:word:say", "bridge-host:other:say"]]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/show.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "peer.toml"]
+phases = ["late"]
+again = {}
+[module."bridge-host:word@1.0.0".phases]
+late = "update"
+[module."bridge-host:word@1.0.0".config]
+word = "hi"
+bogus = 1
+[content]
+paths = ["cw"]
+ignore = ["skip-me"]
+[order]
+before = [["bridge-host:word:say", "bridge-host:other:say"]]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a file that the system does not open is named when the host shows the deployment"
+process = "command"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/r.toml"]
+fail = { os_folder_read_file = 1 }
+
+[case.claims]
+status = 0
+line = ["cannot read 'mods/knock{library}'"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/r.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}

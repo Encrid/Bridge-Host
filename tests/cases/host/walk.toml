@@ -1,7 +1,8 @@
-code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/show/**", "src/host/state/state.c", "src/host/state/state_find.c", "src/host/state/state_list.c", "src/host/state/state_made.c", "src/host/state/state_phase.c", "src/host/state/state_setting_find.c", "src/host/state/state_tell.c", "src/host/state/state_undeclared.c", "src/host/toml/**", "src/manifest/manifest.c", "src/manifest/manifest_check.c", "src/manifest/manifest_find.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_keys.c", "src/manifest/manifest_list.c", "src/manifest/manifest_made.c", "src/manifest/manifest_own.c", "src/manifest/manifest_phase.c", "src/manifest/manifest_rules.c", "src/manifest/manifest_setting.c", "src/manifest/manifest_state.c", "src/manifest/manifest_take.c", "src/manifest/manifest_wasm.c", "src/manifest/manifest_word.c", "src/manifest/manifest_words.c", "tests/content_helper.py", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/test.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_go.c", "src/host/host_list.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "tests/content_helper.py", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/test.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
 name = "ignores that match a file exactly, by prefix, and not at a boundary"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/ig.toml"]
 
 [case.claims]
@@ -51,6 +52,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a content path that names a single file"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/sf.toml"]
 
 [case.claims]
@@ -90,6 +92,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "more files than the host can hold, by two"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/mny.toml"]
 
 [case.claims]
@@ -160,6 +163,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the line of a full room comes each time that the room becomes full"
+process = "script"
 run = ["{out}/bridge-host{exe}", "{case}/full.toml"]
 script = [
     { wait = "? go on", put = { "{case}/heap/x.wasm" = "quiet" }, type = "go" },
@@ -228,6 +232,7 @@ script = [
 
 [[case]]
 name = "a file for which the host has no room is not read, and fills the room"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/room.toml"]
 
 [case.claims]
@@ -297,13 +302,14 @@ library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
-name = "a path that finds no memory is not looked at, and the walk goes on"
+name = "a path that finds no memory stops the look with its line, so no file is left out with no word"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/j.toml"]
 fail = { calloc = 11 }
 
 [case.claims]
-status = 0
-line = ["still loaded: nothing"]
+status = 1
+line = ["cannot look in 'mods': no memory is left", "still loaded: nothing"]
 lacks = ["loaded: bridge-host:knock@1.0.0"]
 
 [case.folders]
@@ -326,6 +332,7 @@ fail = {}
 
 [[case]]
 name = "a module in a folder below a content folder loads at a depth of 2"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
 
 [case.claims]
@@ -363,6 +370,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the host looks at as many files as content.files states"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
 
 [case.claims]
@@ -403,6 +411,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the slots of the files that find no memory refuse the run"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
 fail = { calloc = 8 }
 
@@ -430,6 +439,7 @@ fail = {}
 
 [[case]]
 name = "the list of the found files that finds no memory refuses the run"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
 fail = { calloc = 9 }
 
@@ -457,6 +467,7 @@ fail = {}
 
 [[case]]
 name = "a module under a path past the limit of each system loads"
+process = "helper"
 run = ["{out}/bridge-host{exe}", "{case}/deep.toml"]
 helper = { run = ["{python}", "tests/content_helper.py", "deep", "{case}/deep", "21", "{case}/src/quiet.wasm"], wait = "ready", stdin = "done" }
 
@@ -487,6 +498,7 @@ helper = { run = ["{python}", "tests/content_helper.py", "deep", "{case}/deep", 
 
 [[case]]
 name = "a file that the system does not open gives its line one time, and keeps its slot"
+process = "helper"
 run = ["{out}/bridge-host{exe}", "{case}/u.toml"]
 helper = { run = ["{python}", "tests/content_helper.py", "unreadable", "{case}/a/x.txt"], wait = "ready", stdin = "done" }
 
@@ -517,6 +529,7 @@ helper = {}
 
 [[case]]
 name = "an empty file is read as a file"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/e.toml"]
 
 [case.claims]
@@ -541,6 +554,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a folder of the content that does not open is left out of the walk"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/s.toml"]
 fail = { os_folder_open = 2 }
 
@@ -568,34 +582,8 @@ library = "{bb_native}/bridge_native"
 fail = {}
 
 [[case]]
-name = "a file that the system does not open is named when the host shows the deployment"
-run = ["{out}/bridge-host{exe}", "--show-config", "{case}/r.toml"]
-fail = { os_folder_read_file = 1 }
-
-[case.claims]
-status = 0
-line = ["cannot read 'mods/knock{library}'"]
-
-[case.folders]
-"{case}/mods" = ["knock"]
-
-[case.files]
-"{case}/r.toml" = '''
-presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
-phases = ["update"]
-again = {}
-rounds = 8
-[content]
-paths = ["mods"]
-[backend.native]
-library = "{bb_native}/bridge_native"
-'''
-
-[case.false]
-fail = {}
-
-[[case]]
 name = "a content path that names a file beside the deployment"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/n.toml"]
 
 [case.claims]
@@ -631,6 +619,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a content path that ends with a separator is read as its folder"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/t.toml"]
 
 [case.claims]
@@ -657,6 +646,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a content path of a file that finds no memory cannot be looked in"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/m.toml"]
 fail = { calloc = 11 }
 
@@ -675,6 +665,111 @@ again = {}
 rounds = 8
 [content]
 paths = ["mods/knock{library}"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "the host looks at the files of a folder in the order of their names, so the room keeps the first ones"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+
+[case.claims]
+status = 0
+order = [
+    "not a module: mods/a.txt: neither a wasm module nor a library",
+    "not a module: mods/b.txt: neither a wasm module nor a library",
+    "too many files: 2 are looked at",
+]
+lacks = ["mods/c.txt"]
+
+[case.files]
+"{case}/mods/c.txt" = "c"
+"{case}/mods/a.txt" = "a"
+"{case}/mods/b.txt" = "b"
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+files = 2
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+files = 3
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[[case]]
+name = "a folder whose list finds no memory for a name stops the look with its line"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { malloc = 199 }
+
+[case.claims]
+status = 1
+line = ["cannot look in 'mods': no memory is left"]
+
+[case.folders]
+
+[case.files]
+"{case}/mods/a.txt" = "a"
+"{case}/mods/b.txt" = "b"
+"{case}/mods/c.txt" = "c"
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+files = 2
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a folder whose list finds no memory for its room stops the look with its line"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { realloc = 231 }
+
+[case.claims]
+status = 1
+line = ["cannot look in 'mods': no memory is left"]
+
+[case.folders]
+
+[case.files]
+"{case}/mods/a.txt" = "a"
+"{case}/mods/b.txt" = "b"
+"{case}/mods/c.txt" = "c"
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+files = 2
 [backend.native]
 library = "{bb_native}/bridge_native"
 '''

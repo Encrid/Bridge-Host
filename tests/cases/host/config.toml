@@ -1,7 +1,8 @@
-code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/show/**", "src/host/state/state.c", "src/host/state/state_find.c", "src/host/state/state_list.c", "src/host/state/state_made.c", "src/host/state/state_phase.c", "src/host/state/state_setting_find.c", "src/host/state/state_tell.c", "src/host/state/state_undeclared.c", "src/host/toml/**", "src/manifest/**", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_go.c", "src/host/host_list.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
 name = "a key stated twice in a file"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/twice.toml"]
 
 [case.claims]
@@ -43,6 +44,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a key nobody states"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/unstated.toml"]
 
 [case.claims]
@@ -80,6 +82,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "two peers that differ"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/peers.toml"]
 
 [case.claims]
@@ -126,6 +129,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a file that names itself"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/cycle.toml"]
 
 [case.claims]
@@ -168,25 +172,8 @@ library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
-name = "a number that finds no memory is not taken"
-run = ["{out}/bridge-host{exe}", "--show-config", "{case}/n.toml"]
-fail = { malloc = 7 }
-
-[case.claims]
-status = 1
-line = ["refused: n.toml:2: a number that is not taken"]
-
-[case.files]
-"{case}/n.toml" = '''
-presets = ["{root}/tests/presets/world.toml"]
-rounds = 8
-'''
-
-[case.false]
-fail = {}
-
-[[case]]
 name = "a key of 300 bytes is named whole in the line that refuses it"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/long.toml"]
 
 [case.claims]
@@ -205,6 +192,7 @@ short = 1
 
 [[case]]
 name = "a key of a table that a file states outside its table is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/k.toml"]
 
 [case.claims]
@@ -224,6 +212,7 @@ written = 6
 
 [[case]]
 name = "the local file can state the levels of the records"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/rl.toml"]
 
 [case.claims]
@@ -257,6 +246,7 @@ written = 5
 
 [[case]]
 name = "a key that is nobody's"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/nobody.toml"]
 
 [case.claims]
@@ -298,6 +288,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a key only a module's author states"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/author.toml"]
 
 [case.claims]
@@ -339,6 +330,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a path from the folder of the file that states it"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/beside.toml"]
 
 [case.claims]
@@ -382,6 +374,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a backend not given"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/wasm-only.toml"]
 
 [case.claims]
@@ -418,6 +411,7 @@ paths = ["config-knock"]
 
 [[case]]
 name = "a library of each format, read"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/formats.toml"]
 
 [case.claims]
@@ -455,6 +449,7 @@ paths = ["config-formats"]
 
 [[case]]
 name = "the local file over every other"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/local.toml"]
 
 [case.claims]
@@ -492,6 +487,7 @@ word = "hi"
 
 [[case]]
 name = "a table for a module not found"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/unfound.toml"]
 
 [case.claims]
@@ -536,6 +532,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a module its own file says too little of"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/mute.toml"]
 
 [case.claims]
@@ -576,6 +573,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a key of a module nobody states"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/terse.toml"]
 
 [case.claims]
@@ -661,6 +659,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a module the config does not load"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/unloaded.toml"]
 
 [case.claims]
@@ -703,6 +702,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the order of two systems, stated two ways"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/order.toml"]
 
 [case.claims]
@@ -753,61 +753,8 @@ library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
-name = "the config said"
-run = ["{out}/bridge-host{exe}", "--show-config", "{case}/shown.toml"]
-
-[case.claims]
-status = 0
-line = [
-    "again = {}  shown.toml:3",
-    "threads = 1  {root}/tests/presets/world.toml:1",
-    "live = false  {root}/tests/presets/world.toml:2",
-    "stack = 1048576  {root}/tests/presets/world.toml:3",
-    "observer_passes = 1  {root}/tests/presets/world.toml:4",
-    "table_growth = 150  {root}/tests/presets/world.toml:5",
-    "table_hash_fill = 50  {root}/tests/presets/world.toml:6",
-    "table_retry = 50  {root}/tests/presets/world.toml:7",
-    "checks.profile = false  {root}/tests/presets/world.toml:22",
-    "checks.validate = false  {root}/tests/presets/world.toml:23",
-    "checks.usage = false  {root}/tests/presets/world.toml:24",
-    "module bridge-host:quiet@1.0.0, wasm, config-quiet/quiet.wasm",
-    "  pinned = false  its file",
-]
-
-[case.folders]
-"{case}/config-quiet" = ["quiet"]
-
-[case.files]
-"{case}/shown.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
-phases = ["update"]
-again = {}
-rounds = 8
-[content]
-paths = ["config-quiet"]
-[backend.wasm]
-library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
-'''
-
-[case.false.files]
-"{case}/shown.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
-phases = ["update"]
-again = {}
-rounds = 8
-threads = 2
-[content]
-paths = ["config-quiet"]
-[backend.wasm]
-library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
-'''
-
-[[case]]
 name = "the checks table turns the profile on"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/checks.toml"]
 
 [case.claims]
@@ -852,6 +799,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "two files that differ on a check are refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/both.toml"]
 
 [case.claims]
@@ -891,6 +839,7 @@ profile = false
 
 [[case]]
 name = "a key of the world goes to Bridge, which refuses it outside its range"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/range.toml"]
 
 [case.claims]
@@ -925,3 +874,122 @@ paths = ["mods"]
 [backend.native]
 library = "{bb_native}/bridge_native"
 '''
+
+[[case]]
+name = "a module that no look finds is refused at each entry when its list finds no memory"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { realloc = 248 }
+fail_parts = ["host", "manifest"]
+
+[case.claims]
+status = 1
+order = [
+    "refused: c.toml:9: bridge-host:nobody@1.0.0: no module found is it",
+    "refused: c.toml:10: bridge-host:nobody@1.0.0: no module found is it",
+    "refused: c.toml:11: bridge-host:nobody@1.0.0: no module found is it",
+]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[module."bridge-host:nobody@1.0.0"]
+hot_reload = false
+on_error = "skip"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a config file whose folder finds no memory is refused, and the host does not crash"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { malloc = 2 }
+
+[case.claims]
+status = 1
+line = ["cannot read 'c.toml'"]
+
+[case.files]
+"{case}/mods/a.txt" = "a"
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+files = 2
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a content path that finds no memory fails the content, and is not taken as not stated"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { malloc = 197 }
+
+[case.claims]
+status = 1
+line = ["no memory left for 5 bytes"]
+lacks = ["not stated: content.paths"]
+
+[case.files]
+"{case}/mods/a.txt" = "a"
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+files = 2
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a config file that finds no memory for its bytes is not read, with the size of the refused block"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { calloc = 1 }
+
+[case.claims]
+status = 1
+line = ["cannot read 'c.toml'"]
+matches = ["no memory left for [0-9]+ bytes"]
+
+[case.files]
+"{case}/mods/a.txt" = "a"
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+files = 2
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}

@@ -1,7 +1,28 @@
-code = ["include/**", "src/host/config/config.h", "src/host/config/config_value.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/say.c", "src/host/say.h", "src/host/toml/**", "src/manifest/manifest_check.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_made.c", "src/manifest/manifest_rules.c", "tests/modules/hello.h", "tests/modules/word.h", "tests/unit/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/config.c", "src/host/config/config.h", "src/host/config/config_file.c", "src/host/config/config_free.c", "src/host/config/config_name.c", "src/host/config/config_path.c", "src/host/config/config_value.c", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_free.c", "src/host/host_go.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/toml/**", "tests/modules/hello.h", "tests/modules/word.h", "tests/presets/world.toml", "tests/unit/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
-name = "the toml parser and the value rules, every branch"
+name = "a number that finds no memory is not taken"
+process = "command"
+run = ["{out}/bridge-host{exe}", "--show-config", "{case}/n.toml"]
+fail = { malloc = 7 }
+
+[case.claims]
+status = 1
+line = ["refused: n.toml:2: a number that is not taken"]
+
+[case.files]
+"{case}/n.toml" = '''
+presets = ["{root}/tests/presets/world.toml"]
+rounds = 8
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "host-unit"
 run = ["{out}/host-unit{exe}"]
-claims = { has = ["unit ok"], line = ['["hi", 42, 3.5, true, [100, 200, 300]]'], status = 0 }
-false = { run = ["{out}/host-unit{exe}", "ho"] }
+claims = { status = 0 }
+rows = [
+    { name = "the toml parser and the value rules, every branch", in = "hi", claims = { has = ["unit ok"], line = ["[\"hi\", 42, 3.5, true, [100, 200, 300]]", "false", "{}", "status 0"] }, false = "ho" },
+]

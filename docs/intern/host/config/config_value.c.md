@@ -8,6 +8,8 @@ A check of `manifest_check` takes its rule from `manifest_get_rule` of the libra
 `RULES` holds one `manifest_rule_t` for each check that only the host has, from `CHECK_ARRIVE`: the allowed kinds, the bounds, the words, and the reason.
 `config_check_value` gives the value and the rule to `manifest_check_value`, which gives the reason of the rule when the value is not allowed.
 
+The top of the level of a record is `BRIDGE_LEVEL_MOST` of `bridge.h`, as for the level of a module: `docs/intern/manifest/manifest_rules.c.md`.
+
 ## Functions
 
 | Function | Result |

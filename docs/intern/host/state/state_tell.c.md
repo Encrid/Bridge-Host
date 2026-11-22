@@ -10,7 +10,9 @@ This file gives the function `tell` of the host to the library: the lines of a v
 | `MANIFEST_TOLD_WRONG` | `its file states <key>: <reason>`, after the prefix. |
 | `MANIFEST_TOLD_NO_WORD` | `its file states no <word>`, after the prefix. |
 | `MANIFEST_TOLD_NO_COMPONENT` | `it names no component, and settings`, after the prefix. |
+| `MANIFEST_TOLD_NO_MEMORY` | `no memory is left for its <key>`, after the prefix. |
 
+The switch names each kind and has no `default`, so `-Wswitch` stops the build at a kind that it lacks.
 The prefix is the prefix of the `stating_t`. `docs/usage/host.md`, *Messages*, quotes each line.
 
 ## Functions
@@ -19,5 +21,5 @@ The prefix is the prefix of the `stating_t`. `docs/usage/host.md`, *Messages*, q
 | --- | --- |
 | `say_joined` | Writes the line of a default that the manifest states twice or in a wrong form. |
 | `say_value` | Writes a value of the manifest when the host shows a module. |
-| `say_not_stated` | Writes the line of a key that nothing states. |
+| `say_key` | Writes the line of a key that nothing states, or whose block the library cannot take. |
 | `state_tell` | Writes the line of what the library tells. |

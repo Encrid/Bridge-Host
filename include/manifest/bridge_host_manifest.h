@@ -89,7 +89,8 @@ enum manifest_told_kind : uint8_t {
     MANIFEST_TOLD_TWICE,
     MANIFEST_TOLD_WRONG,
     MANIFEST_TOLD_NO_WORD,
-    MANIFEST_TOLD_NO_COMPONENT
+    MANIFEST_TOLD_NO_COMPONENT,
+    MANIFEST_TOLD_NO_MEMORY
 };
 
 typedef struct {
@@ -104,6 +105,8 @@ typedef struct {
     const manifest_value_t *value;
     const char *text;
 } manifest_found_t;
+
+constexpr uint32_t MANIFEST_NO_MEMORY = UINT32_MAX;
 
 typedef struct {
     void *ud;
@@ -122,6 +125,12 @@ typedef struct {
     manifest_value_t **values;
     uint32_t value_count;
 } manifest_made_t;
+
+typedef struct {
+    const char **names;
+    uint32_t count;
+    bool lost;
+} manifest_names_t;
 
 typedef struct {
     const manifest_host_t *host;
@@ -155,7 +164,11 @@ typedef struct {
 [[nodiscard]] const manifest_value_t *manifest_state_key(
     const manifest_module_t *m, const char *name);
 
+[[nodiscard]] void *manifest_keep(manifest_made_t *made, void *block);
+
 void manifest_free(manifest_made_t *made);
+
+void manifest_add_name(manifest_names_t *into, const char *name);
 
 void manifest_free_value(manifest_value_t *v);
 

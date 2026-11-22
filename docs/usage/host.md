@@ -133,6 +133,9 @@ mosl gives that limit in the document of its header `os.h`.
 For a file that the system does not open, the host writes `cannot read '<file>'` one time. The file keeps its place in the room.
 An empty file is a file too: `not a module: <file>: neither a wasm module nor a library`.
 
+In each folder, the host looks at the entries in the order of the bytes of their names, on each system.
+Thus the lines of a look, the files that get room, the reloads and the unloads come in the same order on each system.
+
 It looks at `[content] files` files at most, and it does not read a file for which it has no room.
 Each time its room becomes full, it writes `too many files: <count> are looked at`.
 At each round, it loads a new module and unloads the module of a removed file.
@@ -167,16 +170,14 @@ If the manifest gives none, the host writes `not stated: <key>`, and does not lo
 | `hot_reload` | `true` or `false`. A reload also needs `reloadable=true` in the manifest. |
 | `on_error` | `"fail"` or `"skip"`. |
 | `max_system_failures` | A whole number from 1, or `"none"`, which is no limit. |
-| `work_limit`, `memory_limit`, `element_limit`, `init_timeout`, `reload_timeout`, `shutdown_timeout` | A whole number from 1, or `"none"`, which is no limit. A limit asks a capability of the backend. The backend of BB-Native has none of them, so it needs `"none"`. |
+| `work_limit`, `memory_limit`, `element_limit`, `init_timeout`, `reload_timeout`, `shutdown_timeout` | A whole number from 1, or `"none"`, which is no limit. A limit asks a capability of the backend, and a backend that lacks it needs `"none"`. The readme of a backend gives its capabilities. |
 | `log_level` | A level, from 1 to 7. |
 | `scratch`, `log_ring`, `spans` | A whole number from 1. |
 | `spawns`, `persistent`, `changes` | A whole number from 1, or `"none"`, which is none at all. |
 | `losses` | A list of names, or `"none"`. |
 | `read`, `write` | The lists of the component names that the module may read and write. |
 
-For a module of BB-Wasm, a work limit and each timeout slow every call, and not only the call that they bound.
-A deployment that states `"none"` for `work_limit` and the 3 timeouts runs such a module at full speed.
-BB-Wasm gives the measured price: https://github.com/Encrid/BB-Wasm/blob/v0.5.0/readme.md#limits
+A limit can cost time in each call of a module, and not only in the call that it bounds. The readme of a backend gives the cost of its limits.
 
 Each key fills the field of the same name of `bridge_module_config_t` of Bridge.
 Only the manifest states `abi`, `config`, `settings`, `pinned` and `reloadable`. The host refuses them in a deployment.
@@ -208,7 +209,7 @@ A record whose level is `[records] failing` or lower is a failure, and the host 
 
 After the last round, the host writes these lines:
 
-1. `still loaded:`, and each module that Bridge still holds.
+1. `still loaded:`, and each module that Bridge still holds, or `still loaded: nothing` when Bridge holds none. With no memory for the list, `still loaded: unknown, no memory`.
 2. With `profile = true`, one line for each system and observer: `profile <name>: <calls> calls, <nanos> ns`.
 3. With `usage = true`, one line for each key of `[budget]`: `usage <key>: <used> now, <most> at most`.
 4. With `usage = true`, one line for each loaded module: `usage <identity>: <bytes> persistent, <count> systems, <count> observers, <count> entities`.
@@ -242,7 +243,7 @@ A module states its manifest in its file, as words that each end with a zero byt
 | Word | Value |
 | --- | --- |
 | The first word | The identity `<namespace>:<name>@<version>`, of at most 127 bytes, as Bridge takes it. |
-| `abi=<number>` | Needed. The ABI of Bridge that the module was built against. |
+| `abi=<number>` | Needed. The ABI of Bridge that the module was built against: a whole number from 1 to 4294967295. The host gives it to Bridge, which refuses a module of another ABI. |
 | `config=<component>` or `config=none` | Needed. The component that holds the settings. |
 | `pinned=true` or `pinned=false` | Needed. `true`: the systems of the module run on the thread that runs the phases. |
 | `reloadable=true` or `reloadable=false` | Needed. `true`: the host can replace the module while the run goes on. |
@@ -265,6 +266,10 @@ With no file, or a bad one, the host prints its usage:
 usage: bridge-host <config.toml>
        bridge-host --show-config <config.toml>
 ```
+
+At each step, when the system refuses a block of memory, the host writes this line, then the failure of that step:
+
+- `no memory left for <bytes> bytes`
 
 Reading the deployment:
 
@@ -296,6 +301,7 @@ Holding one instance:
 Finding the modules:
 
 - `cannot look in '<path>'`
+- `cannot look in '<path>': no memory is left`
 - `cannot watch '<path>': read at each round`
 - `cannot read '<file>'`
 - `too many files: <count> are looked at`
@@ -320,7 +326,6 @@ Loading a module:
 - `not loaded: <file>: <identity>, <backend>, the answer was not yes`
 - `not loaded: <file>: <identity>, <backend>, as content.start says`
 - `not loaded: <file>: <identity>, <backend>, as content.arrive says`
-- `not loaded: <file>: <identity> was built against another ABI`
 - `not loaded: <file>: <identity> asks for <backend>, which the host was not given`
 - `not loaded: <file>: <identity>, as content.load says`
 - `not loaded: <file>: <identity> was refused`
@@ -345,6 +350,8 @@ Running the rounds:
 - `ended at round <round>: a module asked for the end`
 - `ended at round <round>: a signal stopped the run`
 - `still loaded:`
+- `still loaded: nothing`
+- `still loaded: unknown, no memory`
 - `profile <name>: <calls> calls, <nanos> ns`
 - `usage <key>: <used> now, <most> at most`
 - `usage <identity>: <bytes> persistent, <count> systems, <count> observers, <count> entities`
@@ -377,4 +384,7 @@ Showing the deployment:
 - `its file states no reloadable`
 - `it takes no config.<name>, stated in <file>:<line>`
 - `it names no component, and settings`
+- `no memory is left for its phases`
+- `no memory is left for its <grant>`
+- `no memory is left for its <key>`
 - `phases.<name>`

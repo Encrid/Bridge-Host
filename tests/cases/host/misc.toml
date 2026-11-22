@@ -1,7 +1,8 @@
-code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/show/**", "src/host/state/state.c", "src/host/state/state_find.c", "src/host/state/state_list.c", "src/host/state/state_made.c", "src/host/state/state_phase.c", "src/host/state/state_setting_find.c", "src/host/state/state_tell.c", "src/host/state/state_undeclared.c", "src/host/toml/**", "src/manifest/manifest.c", "src/manifest/manifest_check.c", "src/manifest/manifest_find.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_keys.c", "src/manifest/manifest_list.c", "src/manifest/manifest_made.c", "src/manifest/manifest_own.c", "src/manifest/manifest_phase.c", "src/manifest/manifest_rules.c", "src/manifest/manifest_setting.c", "src/manifest/manifest_state.c", "src/manifest/manifest_take.c", "src/manifest/manifest_wasm.c", "src/manifest/manifest_word.c", "src/manifest/manifest_words.c", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/test.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_go.c", "src/host/host_list.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tests/presets/grants.toml", "tests/presets/native.toml", "tests/presets/test.toml", "tests/presets/world.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
 name = "two arguments where the first is not the show flag"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/none.toml", "extra"]
 
 [case.claims]
@@ -13,6 +14,7 @@ run = ["{out}/bridge-host{exe}", "--show-config", "{case}/none.toml"]
 
 [[case]]
 name = "an argument that begins with a dash"
+process = "command"
 run = ["{out}/bridge-host{exe}", "-x"]
 
 [case.claims]
@@ -23,142 +25,8 @@ has = ["usage: bridge-host"]
 run = ["{out}/bridge-host{exe}", "{case}/none.toml"]
 
 [[case]]
-name = "the config shown with an empty file, a non-module, and a module with no load"
-run = ["{out}/bridge-host{exe}", "--show-config", "{case}/sm.toml"]
-
-[case.claims]
-status = 1
-has = [
-    "module bridge-host:quiet@1.0.0, wasm, sm/quiet.wasm",
-    "not stated: content.load.all",
-    "not a module: sm/junk.txt",
-]
-
-[case.folders]
-"{case}/sm" = ["quiet"]
-
-[case.files]
-"{case}/sm/empty.wasm" = ""
-"{case}/sm/junk.txt" = "junk"
-"{case}/sm.toml" = '''
-threads = 1
-live = false
-stack = 1048576
-observer_passes = 1
-table_growth = 150
-table_hash_fill = 50
-table_retry = 50
-phases = ["update"]
-again = {}
-rounds = 8
-[budget]
-entities = 8192
-tables = 8
-types = 16
-systems = 16
-terms = 8
-modules = 8
-persistent = 262144
-columns = 1048576
-sparse_sets = "none"
-direct_indexed = "none"
-[checks]
-profile = false
-validate = false
-usage = false
-[records]
-written = 6
-failing = 3
-[content]
-paths = ["sm"]
-files = 32
-depth = 1
-[content.start]
-wasm = "load"
-native = "load"
-[content.arrive]
-wasm = "load"
-native = "ask"
-[module.all]
-hot_reload = false
-on_error = "skip"
-max_system_failures = 3
-log_level = 7
-scratch = 65536
-log_ring = 6144
-spans = 16384
-spawns = "none"
-persistent = "none"
-changes = 1048576
-losses = "none"
-[backend.wasm]
-library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
-'''
-
-[case.false.files]
-"{case}/sm.toml" = '''
-threads = 1
-live = false
-stack = 1048576
-observer_passes = 1
-table_growth = 150
-table_hash_fill = 50
-table_retry = 50
-phases = ["update"]
-again = {}
-rounds = 8
-[budget]
-entities = 8192
-tables = 8
-types = 16
-systems = 16
-terms = 8
-modules = 8
-persistent = 262144
-columns = 1048576
-sparse_sets = "none"
-direct_indexed = "none"
-[checks]
-profile = false
-validate = false
-usage = false
-[records]
-written = 6
-failing = 3
-[content]
-paths = ["sm"]
-files = 32
-depth = 1
-[content.load]
-all = true
-[content.start]
-wasm = "load"
-native = "load"
-[content.arrive]
-wasm = "load"
-native = "ask"
-[module.all]
-hot_reload = false
-on_error = "skip"
-max_system_failures = 3
-log_level = 7
-scratch = 65536
-log_ring = 6144
-spans = 16384
-spawns = "none"
-persistent = "none"
-changes = 1048576
-losses = "none"
-[backend.wasm]
-library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
-'''
-
-[[case]]
 name = "a module that logs below the shown level"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/dbg.toml"]
 
 [case.claims]
@@ -201,6 +69,7 @@ written = 7
 
 [[case]]
 name = "a record of a level above the written level is not written"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/rec.toml"]
 
 [case.claims]
@@ -241,6 +110,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a record of the failing level or lower makes the run fail"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/rec.toml"]
 
 [case.claims]

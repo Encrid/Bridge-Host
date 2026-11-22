@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "config.h"
+#include "rows.h"
 #include "say.h"
 #include "toml.h"
 
@@ -117,6 +118,9 @@ static void do_structure(void)
     try_ok("a = [1,\r\n2]\n");
     try_ok("a = { x = 1, y = 2 }\n");
     try_ok("a = { x = { y = 1 } }\n");
+    try_ok("a = {}\n");
+    try_ok("[a.b]\nx = 1\n[a]\ny = 2\n");
+    try_ok("a_b = 1\n");
     try_no("a = [1 2]\n", "list");
     try_no("a = [@]\n", "none");
     try_no("a = [ {x=1} ]\n", "list");
@@ -191,6 +195,10 @@ static void do_say(const char *word)
         { .kind = MANIFEST_LIST, .items = items, .count = 3 } };
 
     toml_say(&(value_t){ .kind = MANIFEST_LIST, .items = all, .count = 5 });
+    say("\n");
+    toml_say(&(value_t){ .kind = MANIFEST_FLAG, .flag = false });
+    say("\n");
+    toml_say(&(value_t){ .kind = MANIFEST_TABLE });
     say("\n");
 }
 
@@ -284,9 +292,9 @@ static void value_list(void)
     ck(!config_check_value(&good, CHECK_NAMES_NONE), "names none list");
 }
 
-int main(int argc, char **argv)
+static int run(int argc, char **argv)
 {
-    setvbuf(stdout, nullptr, _IONBF, 0);
+    fails = 0;
     do_scalars();
     do_numbers();
     do_text();
@@ -300,4 +308,10 @@ int main(int argc, char **argv)
     value_list();
     printf("%s\n", fails ? "unit broken" : "unit ok");
     return (fails ? 1 : 0);
+}
+
+int main(int argc, char **argv)
+{
+    setvbuf(stdout, nullptr, _IONBF, 0);
+    return (argc > 1 ? run(argc, argv) : rows_run(run));
 }

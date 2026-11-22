@@ -20,7 +20,7 @@ static bool add_path(char ***paths, uint32_t *count, char *path)
     }
     free(whole);
     if (!same && path)
-        more = realloc(*paths, sizeof(*more) * (*count + 1));
+        more = host_realloc(*paths, sizeof(*more) * (*count + 1));
     if (more)
         *paths = more;
     if (more)
@@ -30,34 +30,38 @@ static bool add_path(char ***paths, uint32_t *count, char *path)
     return (same || more);
 }
 
-static uint32_t collect(const host_t *h, const char *field, char ***paths)
+static bool collect(const host_t *h, const char *field, char ***paths,
+    uint32_t *count)
 {
     const char *const names[] = { "content", field };
     const keyed_t k = { names, 2 };
     said_t said = {};
-    uint32_t count = 0;
+    bool kept = true;
 
     *paths = nullptr;
+    *count = 0;
     for (uint32_t f = 0; f < h->config.count; f++) {
         if (!config_states_key(&h->config.files[f], &k, &said))
             continue;
         for (uint32_t i = 0; i < said.value->count; i++)
-            (void)add_path(paths, &count, config_path(&h->config, f,
+            kept &= add_path(paths, count, config_path(&h->config, f,
                 said.value->items[i].text));
     }
-    return (count);
+    return (kept);
 }
 
 bool config_content(host_t *h)
 {
-    h->path_count = collect(h, "paths", &h->paths);
-    h->ignore_count = collect(h, "ignore", &h->ignore);
-    if (!h->path_count)
+    bool kept = collect(h, "paths", &h->paths, &h->path_count);
+
+    kept &= collect(h, "ignore", &h->ignore, &h->ignore_count);
+    if (kept && !h->path_count)
         say("not stated: content.paths\n");
-    h->files = calloc(h->d.files, sizeof(*h->files));
-    h->found = calloc(h->d.files, sizeof(*h->found));
-    h->watches = calloc(h->path_count, sizeof(*h->watches));
-    return (h->path_count > 0 && h->files && h->found && h->watches);
+    h->files = host_calloc(h->d.files, sizeof(*h->files));
+    h->found = host_calloc(h->d.files, sizeof(*h->found));
+    h->watches = host_calloc(h->path_count, sizeof(*h->watches));
+    return (kept && h->path_count > 0 && h->files && h->found
+        && h->watches);
 }
 
 int config_load(const host_t *h, const char *identity, const char *prefix)

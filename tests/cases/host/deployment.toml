@@ -1,7 +1,8 @@
-code = ["include/**", "src/host/**", "src/manifest/manifest.c", "src/manifest/manifest_check.c", "src/manifest/manifest_find.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_keys.c", "src/manifest/manifest_list.c", "src/manifest/manifest_made.c", "src/manifest/manifest_own.c", "src/manifest/manifest_phase.c", "src/manifest/manifest_rules.c", "src/manifest/manifest_setting.c", "src/manifest/manifest_state.c", "src/manifest/manifest_take.c", "src/manifest/manifest_wasm.c", "src/manifest/manifest_word.c", "src/manifest/manifest_words.c", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_go.c", "src/host/host_list.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/state/**", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
 name = "in one file the table of the identity is over the table of the backend, and that one is over all"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/tables.toml"]
 
 [case.claims]
@@ -52,6 +53,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a key that a file states is over the default of the manifest"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/over.toml"]
 
 [case.claims]
@@ -153,6 +155,7 @@ library = "{bb_wasm}/bridge_wasm"
 
 [[case]]
 name = "a setting that a file states is over the default of the manifest"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/owned.toml"]
 
 [case.claims]
@@ -194,6 +197,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a path of a setting counts from the folder of the preset that states it"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/path.toml"]
 
 [case.claims]
@@ -229,6 +233,7 @@ word = "x"
 
 [[case]]
 name = "a backend library counts from the folder of the preset that states it"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/back.toml"]
 
 [case.claims]
@@ -263,6 +268,7 @@ library = "nothere"
 
 [[case]]
 name = "a value of a wrong form is refused, for each kind of key"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/forms.toml"]
 
 [case.claims]
@@ -334,6 +340,7 @@ word = [1, 2]
 
 [[case]]
 name = "the most rounds that a deployment can state is 4294967295"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/r.toml"]
 
 [case.claims]
@@ -369,6 +376,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the content paths of a file and of its preset add up"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/both.toml"]
 
 [case.claims]
@@ -408,6 +416,7 @@ paths = ["one"]
 
 [[case]]
 name = "the read lists of two presets add up"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/grants.toml"]
 
 [case.claims]
@@ -449,6 +458,7 @@ read = ["c:C"]
 
 [[case]]
 name = "the read list of a file is over the read lists of its presets"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/grants.toml"]
 
 [case.claims]
@@ -502,6 +512,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a module in a folder below a content folder is not loaded"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/deep.toml"]
 
 [case.claims]
@@ -544,6 +555,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a word of the manifest with a key that the host does not know is not read"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/words.toml"]
 
 [case.claims]
@@ -572,6 +584,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a limit that the backend of a native module cannot keep refuses the module"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/limit.toml"]
 
 [case.claims]
@@ -616,6 +629,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "a module with a grant that no file states, and that its manifest does not give, is not loaded"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/ng.toml"]
 
 [case.claims]
@@ -659,6 +673,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the default of a grant in the manifest counts when no file states the grant"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/dg.toml"]
 
 [case.claims]
@@ -687,6 +702,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "an element limit that the backend of a native module cannot keep refuses the module"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/el.toml"]
 
 [case.claims]

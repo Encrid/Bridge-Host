@@ -28,7 +28,7 @@ char *join_path(const char *path, const char *name)
     size_t len = strlen(path);
     const char *between = config_folder_size(path) == len ? "" : "/";
     size_t size = len + strlen(name) + 2;
-    char *full = calloc(size, 1);
+    char *full = host_calloc(size, 1);
 
     if (full)
         snprintf(full, size, "%s%s%s", path, between, name);

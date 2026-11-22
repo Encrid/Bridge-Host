@@ -13,7 +13,7 @@ static char *with_suffix(char *named)
 
     if (!named || (len >= end && !strcmp(named + len - end, LIBRARY_SUFFIX)))
         return (named);
-    whole = malloc(len + end + 1);
+    whole = host_malloc(len + end + 1);
     if (whole)
         snprintf(whole, len + end + 1, "%s%s", named, LIBRARY_SUFFIX);
     free(named);
@@ -53,13 +53,13 @@ bool config_backends(host_t *h)
 {
     static const char *const BACKEND[] = { "backend" };
     const keyed_t under = { BACKEND, 1 };
-    names_t names = config_names(&h->config, &under);
-    bool taken = names.count > 0;
+    manifest_names_t names = config_names(&h->config, &under);
+    bool taken = !names.lost && names.count > 0;
 
-    if (!names.count)
+    if (!names.lost && !names.count)
         say("not stated: backend\n");
-    h->held = calloc(names.count + 1, sizeof(*h->held));
-    h->backends = calloc(names.count + 1, sizeof(*h->backends));
+    h->held = host_calloc(names.count + 1, sizeof(*h->held));
+    h->backends = host_calloc(names.count + 1, sizeof(*h->backends));
     for (uint32_t i = 0; h->held && h->backends && i < names.count; i++)
         taken = take_backend(h, names.names[i], i) && taken;
     h->backend_count = names.count;

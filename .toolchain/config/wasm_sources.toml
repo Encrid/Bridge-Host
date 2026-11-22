@@ -1,0 +1,12 @@
+[[source]]
+name = "binaryen"
+url = "https://github.com/WebAssembly/binaryen/releases/download/version_133/{binaryen_archive}"
+sha256 = "{binaryen_sha256}"
+into = "build/third_party/binaryen/{target}"
+top = "binaryen-version_133"
+
+[[source]]
+name = "bb_wasm"
+url = "https://github.com/Encrid/BB-Wasm/releases/download/v0.7.0/BB-Wasm-{target}.zip"
+sha256 = "{bb_wasm_sha256}"
+into = "build/third_party/bb_wasm/{target}"

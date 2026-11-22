@@ -1,7 +1,8 @@
-code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "src/host/show/**", "src/host/state/state.c", "src/host/state/state_find.c", "src/host/state/state_list.c", "src/host/state/state_made.c", "src/host/state/state_phase.c", "src/host/state/state_setting_find.c", "src/host/state/state_tell.c", "src/host/state/state_undeclared.c", "src/host/toml/**", "src/manifest/manifest.c", "src/manifest/manifest_check.c", "src/manifest/manifest_find.c", "src/manifest/manifest_inside.h", "src/manifest/manifest_keys.c", "src/manifest/manifest_list.c", "src/manifest/manifest_made.c", "src/manifest/manifest_own.c", "src/manifest/manifest_phase.c", "src/manifest/manifest_rules.c", "src/manifest/manifest_setting.c", "src/manifest/manifest_state.c", "src/manifest/manifest_take.c", "src/manifest/manifest_wasm.c", "src/manifest/manifest_word.c", "src/manifest/manifest_words.c", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/test.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_go.c", "src/host/host_list.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/test.toml", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
 name = "manifests that the reader refuses, word by word"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/mf.toml"]
 
 [case.claims]
@@ -38,6 +39,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "an identity of 127 bytes is read"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/id.toml"]
 
 [case.claims]
@@ -66,6 +68,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the first word is checked for its colon before its length"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/id.toml"]
 
 [case.claims]
@@ -94,6 +97,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the message of a refused word shows at most its first 60 bytes"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/lw.toml"]
 
 [case.claims]
@@ -122,6 +126,7 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "an author word that the manifest states twice is refused"
+process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/tw.toml"]
 
 [case.claims]
@@ -150,35 +155,8 @@ library = "{bb_native}/bridge_native"
 "{case}/mods" = ["knock"]
 
 [[case]]
-name = "a default that the manifest states twice is refused when the host reads it"
-run = ["{out}/bridge-host{exe}", "--show-config", "{case}/td.toml"]
-
-[case.claims]
-status = 1
-line = ["  refused: its file states config.word twice"]
-
-[case.folders]
-"{case}/mods" = ["twiceset"]
-
-[case.files]
-"{case}/td.toml" = '''
-presets = ["{root}/tests/presets/test.toml"]
-phases = ["update", "late"]
-again = {}
-rounds = 8
-[content]
-paths = ["mods"]
-[backend.wasm]
-library = "{bb_wasm}/bridge_wasm"
-[backend.native]
-library = "{bb_native}/bridge_native"
-'''
-
-[case.false.folders]
-"{case}/mods" = ["owned"]
-
-[[case]]
 name = "a default that the manifest states twice is not refused when a file states its key"
+process = "command"
 run = ["{out}/bridge-host{exe}", "--show-config", "{case}/td.toml"]
 
 [case.claims]

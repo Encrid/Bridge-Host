@@ -1,0 +1,37 @@
+code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_go.c", "src/host/host_list.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/say.h", "src/host/state/**", "src/manifest/**", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/**", "tests/sweep/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+
+[[case]]
+name = "each refused realloc of a whole deployment is told by a line, and the host ends"
+process = "command"
+run = ["{out}/host-sweep{exe}", "{case}/c.toml"]
+sweep = ["realloc"]
+fail_parts = ["host", "manifest"]
+
+[case.claims]
+status = 0
+matches = ["[1-9][0-9]* refused calls, 0 untold, then status 0"]
+has = ["record[6] bridge-host:knock@1.0.0/say: knock 0 0"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = { update = 2 }
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[module.native]
+log_ring = 222
+[module."bridge-host:knock@1.0.0"]
+read = ["bridge-host:Knock"]
+[module."bridge-host:knock@1.0.0".phases]
+update = "update"
+'''
+
+[case.false]
+run = ["{out}/host-sweep{exe}", "{case}/none.toml"]

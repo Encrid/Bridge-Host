@@ -4,7 +4,8 @@ This file reads one word of a manifest.
 
 ## The identity
 
-The first word is the identity. It carries a `:` and an `@` and no `=`, and has at most 127 bytes, the limit of Bridge.
+The first word is the identity. It carries a `:` and an `@` and no `=`, and has at most `BRIDGE_IDENTITY_MOST` bytes, the limit of `bridge.h`: 127.
+Its message names 127. A `static_assert` ties that number to `BRIDGE_IDENTITY_MOST`, as for the level: `docs/intern/manifest/manifest_rules.c.md`.
 `read_identity` checks the `:`, the `@` and the `=` of the first word before its length.
 Then it points `identity` at the word.
 

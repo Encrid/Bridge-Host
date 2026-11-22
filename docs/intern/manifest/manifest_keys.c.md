@@ -12,5 +12,6 @@ A flag gives `BRIDGE_TRUE` or `BRIDGE_FALSE`, and `on_error` gives `BRIDGE_FAIL`
 | Function | Result |
 | --- | --- |
 | `manifest_get_key` | The rule of a key, by its place, or null after the last. |
+| `manifest_find_key` | The rule of a key, by its name, or null for a name that is no key. |
 | `manifest_check_key` | The check of a value of a key, as the header gives it. |
 | `manifest_put` | Writes a value into the config. |

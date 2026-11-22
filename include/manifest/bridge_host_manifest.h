@@ -105,6 +105,8 @@ typedef struct {
     const char *text;
 } manifest_found_t;
 
+constexpr uint32_t MANIFEST_NO_MEMORY = UINT32_MAX;
+
 typedef struct {
     void *ud;
     bool (*parse)(void *ud, const char *text, manifest_value_t *v);

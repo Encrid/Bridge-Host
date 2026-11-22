@@ -14,6 +14,7 @@ static void add_phase_names(const host_t *h, const char *table,
 
     for (uint32_t i = 0; i < found.count; i++)
         names_add(into, found.names[i]);
+    into->lost = into->lost || found.lost;
     free(found.names);
 }
 
@@ -25,6 +26,10 @@ uint32_t state_phases(void *ud, const char ***names)
     add_phase_names(s->h, s->of->who.identity, &got);
     add_phase_names(s->h, s->of->who.backend, &got);
     add_phase_names(s->h, "all", &got);
-    *names = got.names;
-    return (got.count);
+    *names = got.lost ? nullptr : got.names;
+    if (!got.lost)
+        return (got.count);
+    free(got.names);
+    say("%sno memory is left for its phases\n", s->prefix);
+    return (MANIFEST_NO_MEMORY);
 }

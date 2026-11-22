@@ -47,7 +47,7 @@ static name_list_t split_names(const manifest_module_t *m)
     const char *settings = m->who->settings;
     char *copy = manifest_keep(m, malloc(strlen(settings) + 1));
     char *name = nullptr;
-    name_list_t got = {};
+    name_list_t got = { .lost = !copy };
 
     if (copy)
         strcpy(copy, settings);
@@ -63,10 +63,10 @@ bool manifest_take_settings(const manifest_module_t *m,
     bridge_module_config_t *cfg)
 {
     name_list_t declared = split_names(m);
-    bridge_setting_t *set = manifest_keep(m, calloc(declared.count + 1,
-        sizeof(*set)));
-    bool taken = !m->host->undeclared(m->host->ud, declared.names,
-        declared.count) && set;
+    bridge_setting_t *set = declared.lost ? nullptr
+        : manifest_keep(m, calloc(declared.count + 1, sizeof(*set)));
+    bool taken = !declared.lost && !m->host->undeclared(m->host->ud,
+        declared.names, declared.count) && set;
 
     if (declared.count && !strcmp(m->who->config, BRIDGE_NO_CONFIG)) {
         manifest_tell(m, MANIFEST_TOLD_NO_COMPONENT, &(key_path_t){}, nullptr);
@@ -75,7 +75,7 @@ bool manifest_take_settings(const manifest_module_t *m,
     for (uint32_t i = 0; set && i < declared.count; i++)
         taken = take_setting(m, declared.names[i], &set[i]) && taken;
     cfg->settings = declared.count ? set : nullptr;
-    cfg->setting_count = declared.count;
+    cfg->setting_count = set ? declared.count : 0;
     free(declared.names);
     return (taken);
 }

@@ -90,13 +90,22 @@ The host gives as `text` the text of the value, or the whole path of a setting o
 | --- | --- |
 | `parse` | Reads the text of a default of the manifest as a value of the host's own reader. A text that is no value is a text value. It gives `false` only with no memory. |
 | `find` | Gives the value of a key of the module, from the keys of the host. `names` is the path of the key: `{ "scratch" }`, `{ "phases", "<phase>" }` or `{ "config", "<setting>" }`. |
-| `phases` | Gives the names of the phases that the host maps for the module, in a block that `malloc` gave. The library frees the block. |
-| `undeclared` | Gets the names of the settings of the manifest, and tells each setting that the host states and that is not one of them. It gives their count. |
+| `phases` | Gives the names of the phases that the host maps for the module, in a block that `malloc` gave. The library frees the block. It gives `MANIFEST_NO_MEMORY` when no memory is left for the names. |
+| `undeclared` | Gets the names of the settings of the manifest, and tells each setting that the host states and that is not one of them. It gives their count, or `MANIFEST_NO_MEMORY` when no memory is left. |
 | `tell` | Gets each value that the manifest gives, and each fault, as a `manifest_told_t`. |
 
 `find` gives 1 with the value, or 0 when the host states no value. It gives -1 after a fault that the host told itself, for example a clash.
 For a setting stated as a path, `text` of `manifest_found_t` gives the path that the host made whole. Else `text` is no text.
 For `read` and `write`, the host gives the whole list, also when it adds up the lists of some files.
+
+## MANIFEST_NO_MEMORY
+
+`MANIFEST_NO_MEMORY` is `UINT32_MAX`: the count that `phases` or `undeclared` gives when no memory is left, as `find` gives -1 for a fault.
+No real count reaches it. The host tells the fault itself, and then `manifest_state` gives `false`.
+With `MANIFEST_NO_MEMORY` from `phases`, the library frees `*names`, and a null `*names` is allowed.
+
+A block that the library itself cannot take ends the same way: `manifest_state` gives `false`, and the config holds no partial list.
+Thus a refused allocation never gives a module with fewer names, fewer phases or no settings.
 
 `names` and `depth` give the path of the key. `value` and `why` hold a value and a reason, when the kind has them.
 

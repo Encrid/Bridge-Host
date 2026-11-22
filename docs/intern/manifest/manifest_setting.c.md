@@ -16,5 +16,5 @@ A setting of the form `{ path = "..." }` takes the text that the host gives in `
 | --- | --- |
 | `manifest_get_setting` | The setting of a value. |
 | `take_setting` | Takes one setting. Gives true on success. |
-| `split_names` | The names of the settings. |
-| `manifest_take_settings` | Fills the settings. Gives true when every setting is taken. |
+| `split_names` | The names of the settings, with `lost` set when a block is refused. |
+| `manifest_take_settings` | Fills the settings. Gives true when every setting is taken. Gives false when a block is refused, and then it does not call `undeclared`. |

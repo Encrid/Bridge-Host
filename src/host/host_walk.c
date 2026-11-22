@@ -23,7 +23,8 @@ static bool walk_folder(const walk_t *w, os_folder_t *in, const char *path,
 
     for (uint32_t i = 0; walked && i < l.count; i++) {
         full = join_path(path, l.items[i].name);
-        kept = full && !is_ignored(w->h, full);
+        walked = full != nullptr;
+        kept = walked && !is_ignored(w->h, full);
         sub = open_sub(&l.items[i], full, kept, levels);
         if (sub)
             walked = walk_folder(w, sub, full, levels - 1);
@@ -76,7 +77,6 @@ int walk_path(const host_t *h, uint32_t at, see_fn *see, void *ud)
     os_folder_close(in);
     if (walked)
         return (1);
-    say("cannot look in '%s': no memory is left for its list\n",
-        h->paths[at]);
+    say("cannot look in '%s': no memory is left\n", h->paths[at]);
     return (-1);
 }

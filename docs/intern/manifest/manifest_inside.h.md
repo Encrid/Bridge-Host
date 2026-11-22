@@ -5,7 +5,7 @@ This private header is shared by the sources of the library.
 - `format_t` pairs a magic head with the function that locates the section of the manifest.
 - `key_rule_t` gives a key of a module: its name and its check. Its width, its offset and `none` place its value in `bridge_module_config_t`.
 - `key_path_t` gives the path of a key: its names and their count.
-- `name_list_t` gives a list of names, each name one time.
+- `name_list_t` gives a list of names, each name one time. `lost` is true when a block for a name was refused.
 
 ## Functions
 

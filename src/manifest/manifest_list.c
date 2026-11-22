@@ -16,6 +16,7 @@ void manifest_add_name(name_list_t *into, const char *name)
         if (!strcmp(into->names[i], name))
             return;
     more = realloc(into->names, sizeof(*more) * (into->count + 1));
+    into->lost = into->lost || !more;
     if (!more)
         return;
     into->names = more;
@@ -50,8 +51,11 @@ bool manifest_take_list(const manifest_module_t *m, const key_rule_t *rule,
         return (false);
     for (uint32_t i = 0; v->kind == MANIFEST_LIST && i < v->count; i++)
         manifest_add_name(&got, v->items[i].text);
-    got.names = manifest_keep(m, got.names);
-    got.count = got.names ? got.count : 0;
+    if (got.lost)
+        free(got.names);
+    got.names = got.lost ? nullptr : manifest_keep(m, got.names);
+    if (got.lost || (got.count && !got.names))
+        return (false);
     put_names(cfg, rule->name, &got, v->kind != MANIFEST_LIST);
     return (true);
 }

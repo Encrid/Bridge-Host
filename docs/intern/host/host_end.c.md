@@ -6,7 +6,7 @@ This file writes the lines of the end of a run, before Bridge destroys the world
 
 `say_loaded`, `say_profile` and `say_usage` each ask Bridge for the count of the rows of a list first.
 Then each one allocates the rows, and asks Bridge to fill them. Thus a list has no fixed size.
-If no memory is left for the rows, the list writes no row.
+If no memory is left for the rows of `say_loaded`, it writes `still loaded: unknown, no memory`. For the other lists, no memory gives no row.
 
 | Function | Bridge gives | The host writes |
 | --- | --- | --- |

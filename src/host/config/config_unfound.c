@@ -33,7 +33,7 @@ static bool say_unfound(const host_t *h, const cfile_t *f,
     if (!named || is_found(h, named))
         return (false);
     names_add(said, named);
-    if (said->count == count)
+    if (said->count == count && !said->lost)
         return (false);
     say("refused: %s:%u: %s: no module found is it\n", f->path, e->line,
         named);

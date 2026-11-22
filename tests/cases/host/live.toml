@@ -335,3 +335,35 @@ library = "{bb_native}/bridge_native"
 
 [case.false.folders]
 "{case}/mods" = ["knock"]
+
+[[case]]
+name = "the list of the modules that stay finds no memory, and its line says so"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { malloc = 215 }
+
+[case.claims]
+status = 0
+line = ["still loaded: unknown, no memory"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[module."bridge-host:knock@1.0.0"]
+read = ["bridge-host:Knock"]
+[module."bridge-host:knock@1.0.0".phases]
+update = "update"
+'''
+
+[case.false]
+fail = {}

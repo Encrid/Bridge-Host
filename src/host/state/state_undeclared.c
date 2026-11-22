@@ -34,7 +34,7 @@ static uint32_t say_undeclared_in(const stating_t *s, const cfile_t *f,
 uint32_t state_undeclared(void *ud, const char *const *names, uint32_t count)
 {
     const stating_t *s = ud;
-    const names_t declared = { (const char **)names, count };
+    const names_t declared = { (const char **)names, count, false };
     uint32_t found = 0;
 
     for (uint32_t i = 0; i < s->h->config.count; i++)

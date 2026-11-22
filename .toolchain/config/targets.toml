@@ -2,7 +2,7 @@
 section = ".bridge"
 system_defines = []
 system_libraries = []
-bridge_sha256 = "f4949cfd2d7139a73ecf2bd2a4f0be1bf8382c5357f66347cf6b5998dd78290e"
+bridge_sha256 = "cc2d76e9414344695e225d231c16f0cbc0d65db74325b69d7e64424cb87aca2e"
 bridge_os_sha256 = "788692fb7c073d669a4f5ae81f8546b01053ee2f56e1d393409ce63827b79d18"
 bb_native_sha256 = "7841a5f1b10b3edd4ce935c0ba0db58a15390cc3c08a8fa3e27c5054d51cffc6"
 
@@ -10,7 +10,7 @@ bb_native_sha256 = "7841a5f1b10b3edd4ce935c0ba0db58a15390cc3c08a8fa3e27c5054d51c
 section = ".bridge"
 system_defines = []
 system_libraries = ["-lm", "-lpthread", "-ldl"]
-bridge_sha256 = "815560089b215ad1afe7f59eced8d07aa88cde7951016913c00b9646a7ad6e38"
+bridge_sha256 = "bf4bd8a0bfa0a239c60239ef2de0665c1f61e9b07ebec760b1f9a3b63f2992a8"
 bridge_os_sha256 = "8120daaf44ca8ee6a53e713541011398a5f18cc9e8d3d5f172a2d815b4ddcf9a"
 bb_native_sha256 = "89dd6313bdb202aa1af262fd54dbfa27bad5a91d4c2350989cb401a6aab5dc85"
 
@@ -18,7 +18,7 @@ bb_native_sha256 = "89dd6313bdb202aa1af262fd54dbfa27bad5a91d4c2350989cb401a6aab5
 section = "__TEXT,.bridge"
 system_defines = ["-D_DARWIN_C_SOURCE"]
 system_libraries = []
-bridge_sha256 = "4e2f65637b576be8175edd8ec3324dc57c51a31a172a03b1e033c182e81055aa"
+bridge_sha256 = "9e2f418a2086d4d8809f4df44309ef4b7773b9c1f3c7f00c5b55f6a87942bf8d"
 bridge_os_sha256 = "d3d72e3b680b8a8777cb0b49b09ba7372be2431215fba643276f17604afef9fe"
 bb_native_sha256 = "68170b84409bd86f08aadfcc74bf5ffcdd0e34cb0cb6c4c367dcfb3880dc818b"
 
@@ -26,7 +26,7 @@ bb_native_sha256 = "68170b84409bd86f08aadfcc74bf5ffcdd0e34cb0cb6c4c367dcfb3880dc
 section = ".bridge"
 system_defines = []
 system_libraries = ["-lm", "-lpthread", "-ldl"]
-bridge_sha256 = "f589073e18bca5558a8727a69e908e8bccba5f13193923a7aff09553ba1528eb"
+bridge_sha256 = "48da18d988fbb1e209c35adeef2e9536b9332b19048720797be13f77c673ec08"
 bridge_os_sha256 = "93f1ad3ac4d63cb3b8374928184fd88b7e1a17a6fd8a5418231ce9f6fb03c93a"
 bb_native_sha256 = "42d3c3087262b3cf37486446ce9e58ac7422479ef9e1aed62fddcb74533c0c21"
 
@@ -34,7 +34,7 @@ bb_native_sha256 = "42d3c3087262b3cf37486446ce9e58ac7422479ef9e1aed62fddcb74533c
 section = "__TEXT,.bridge"
 system_defines = ["-D_DARWIN_C_SOURCE"]
 system_libraries = []
-bridge_sha256 = "9715e806228d20709084e0d2178ce5dca7dd7fdb06057c7032de5a65e16cda08"
+bridge_sha256 = "93fdee7775368f2cae01978def830e8153156ecc9150452cc04add3518c34ac1"
 bridge_os_sha256 = "3d0be7054e36f2e54e801af26a8eb2ab2937a042f7034d601b1bdb2c9646156c"
 bb_native_sha256 = "c164791c29bdb2310d9081a0f7dde7f11f693ea41d3e5f74177018ec8a76007b"
 
@@ -42,6 +42,6 @@ bb_native_sha256 = "c164791c29bdb2310d9081a0f7dde7f11f693ea41d3e5f74177018ec8a76
 section = ".bridge"
 system_defines = []
 system_libraries = []
-bridge_sha256 = "c68f6121cd8febcaf94c8c9e13c6fd813bdf978b251bbc7ab8681921c84dc14c"
+bridge_sha256 = "225c8d069ccee599aa05c46d9c2be05cbded0b947774ef0b9f3a39f9285d371e"
 bridge_os_sha256 = "a10fd971bb768fd1f5a1bc8b6da3b9a2bd362e622092463307b413a6ab424a35"
 bb_native_sha256 = "38b3ff8cae7f8055990afa786a4cefa76372535f67ffa8235c1906dbae3c01c2"

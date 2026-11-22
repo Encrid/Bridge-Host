@@ -15,9 +15,7 @@ If the host cannot catch the signals, `main` writes `cannot catch the signals`, 
 
 ## The work
 
-`go` enters the folder of the main file with `config_go_beside`, and `take_config` reads, checks and takes the keys.
-A run then takes the lock and calls `run`; a show calls `show_config` instead.
-After `run`, `go` ends the lock with `os_unlock`: `docs/intern/host/host_lock.c.md`.
+`main` gives the path to `host_go`: `docs/intern/host/host_go.c.md`.
 At the end, `main` calls `host_free`, and gives the result of the run or of the show.
 
 ## Functions

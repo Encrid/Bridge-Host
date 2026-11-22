@@ -55,4 +55,5 @@ The host fixes these parts. A deployment cannot state them, for the reason that 
 | `state_found`, `state_find_key`, `state_parse`, `state_find`, `state_find_grant`, `state_phases`, `state_undeclared`, `state_tell` | State a module with the library, and give the library the keys of the deployment. |
 | `state_is_setting`, `state_states_setting`, `state_is_path` | Find a setting in a file. |
 | `state_keep_prefix`, `state_keep`, `state_free` | Make the prefix of a statement, keep a block in the `made_t` of a module, and free it. |
+| `host_go` | Run or show the configuration of a path. |
 | `host_free` | Free the host. |

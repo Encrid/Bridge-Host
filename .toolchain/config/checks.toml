@@ -199,13 +199,6 @@ side = "false"
 why = "the path is null only when an earlier malloc ran out of memory, which the tests do not force."
 
 [[branches.exception]]
-path = "src/host/config/config_names.c"
-line = 19
-col = 9
-side = "true"
-why = "names_add's realloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
 path = "src/host/config/config_order.c"
 line = 50
 col = 9

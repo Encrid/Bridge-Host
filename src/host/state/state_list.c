@@ -62,16 +62,21 @@ static value_t *make_list(const stating_t *s, const names_t *got)
     return (v);
 }
 
-bool state_find_grant(const stating_t *s, const char *name,
+int state_find_grant(const stating_t *s, const char *name,
     manifest_found_t *found)
 {
     names_t got = {};
     bool stated = find_names(s, name, &got);
+    const value_t *list = nullptr;
 
-    if (stated) {
+    if (stated && !got.lost) {
         say_names(s, name, &got);
-        *found = (manifest_found_t){ make_list(s, &got), nullptr };
+        list = make_list(s, &got);
+        *found = (manifest_found_t){ list, nullptr };
     }
     free(got.names);
-    return (stated);
+    if (!stated || list)
+        return (stated);
+    say("%sno memory is left for its %s\n", s->prefix, name);
+    return (-1);
 }

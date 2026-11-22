@@ -51,10 +51,11 @@ int state_find(void *ud, const char *const *names, uint32_t depth,
     const stating_t *s = ud;
     bool grant = depth == 1 && (!strcmp(names[0], "read")
         || !strcmp(names[0], "write"));
+    int granted = grant ? state_find_grant(s, names[0], found) : 0;
 
     if (depth == 2 && !strcmp(names[0], "config"))
         return (find_setting(s, names[1], found));
-    if (grant && state_find_grant(s, names[0], found))
-        return (1);
+    if (granted)
+        return (granted);
     return (find_key(s, names, depth, found));
 }

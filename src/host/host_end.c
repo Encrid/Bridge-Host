@@ -13,8 +13,12 @@ static void say_loaded(bridge_world_t *w)
 
     if (loaded)
         bridge_list_modules(w, loaded, count);
+    if (count > 0 && !loaded) {
+        say("still loaded: unknown, no memory\n");
+        return;
+    }
     say_part("still loaded:");
-    for (int i = 0; loaded && i < count; i++)
+    for (int i = 0; i < count; i++)
         say_part("%s %s", i ? "," : "", loaded[i].identity);
     say("%s\n", count > 0 ? "" : " nothing");
     free(loaded);

@@ -302,14 +302,14 @@ library = "{bb_native}/bridge_native"
 '''
 
 [[case]]
-name = "a path that finds no memory is not looked at, and the walk goes on"
+name = "a path that finds no memory stops the look with its line, so no file is left out with no word"
 process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/j.toml"]
 fail = { calloc = 11 }
 
 [case.claims]
-status = 0
-line = ["still loaded: nothing"]
+status = 1
+line = ["cannot look in 'mods': no memory is left", "still loaded: nothing"]
 lacks = ["loaded: bridge-host:knock@1.0.0"]
 
 [case.folders]
@@ -714,3 +714,65 @@ files = 3
 [backend.native]
 library = "{bb_native}/bridge_native"
 '''
+
+[[case]]
+name = "a folder whose list finds no memory for a name stops the look with its line"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { malloc = 199 }
+
+[case.claims]
+status = 1
+line = ["cannot look in 'mods': no memory is left"]
+
+[case.folders]
+
+[case.files]
+"{case}/mods/a.txt" = "a"
+"{case}/mods/b.txt" = "b"
+"{case}/mods/c.txt" = "c"
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+files = 2
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a folder whose list finds no memory for its room stops the look with its line"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { realloc = 231 }
+
+[case.claims]
+status = 1
+line = ["cannot look in 'mods': no memory is left"]
+
+[case.folders]
+
+[case.files]
+"{case}/mods/a.txt" = "a"
+"{case}/mods/b.txt" = "b"
+"{case}/mods/c.txt" = "c"
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+files = 2
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}

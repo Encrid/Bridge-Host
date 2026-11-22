@@ -191,7 +191,7 @@ extern const keyed_t ORDER_KEYS[];
 [[nodiscard]] int state_find(void *ud, const char *const *names,
     uint32_t depth, manifest_found_t *found);
 
-[[nodiscard]] bool state_find_grant(const stating_t *s, const char *name,
+[[nodiscard]] int state_find_grant(const stating_t *s, const char *name,
     manifest_found_t *found);
 
 [[nodiscard]] uint32_t state_phases(void *ud, const char ***names);

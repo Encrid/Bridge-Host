@@ -10,6 +10,6 @@ For `losses`, the word `none` gives the count `BRIDGE_NONE`.
 
 | Function | Result |
 | --- | --- |
-| `manifest_add_name` | Adds a name to a list, if the list does not hold it. |
+| `manifest_add_name` | Adds a name to a list, if the list does not hold it. Sets `lost` when its block is refused. |
 | `put_names` | Writes a list into the config. |
-| `manifest_take_list` | Gives true when the host or the manifest states the key. |
+| `manifest_take_list` | Gives true when the host or the manifest states the key. Gives false when a block of the list is refused, and the config gets no list. |

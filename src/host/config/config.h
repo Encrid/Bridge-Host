@@ -55,6 +55,7 @@ typedef struct {
 typedef struct {
     const char **names;
     uint32_t count;
+    bool lost;
 } names_t;
 
 typedef bool states_fn(const cfile_t *f, const void *asked, said_t *said);

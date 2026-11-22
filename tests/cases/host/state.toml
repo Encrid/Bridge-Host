@@ -684,3 +684,67 @@ library = "{bb_native}/bridge_native"
 
 [case.false.folders]
 "{case}/mods" = ["owned"]
+
+[[case]]
+name = "a module whose phases find no memory is not loaded, with its line"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { realloc = 256 }
+
+[case.claims]
+status = 1
+line = ["not loaded: mods/knock.dll: bridge-host:knock@1.0.0: no memory is left for its phases"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[module."bridge-host:knock@1.0.0"]
+read = ["bridge-host:Knock"]
+[module."bridge-host:knock@1.0.0".phases]
+update = "update"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a module whose read grant finds no memory is not loaded, with its line"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { realloc = 249 }
+
+[case.claims]
+status = 1
+line = ["not loaded: mods/knock.dll: bridge-host:knock@1.0.0: no memory is left for its read"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[module."bridge-host:knock@1.0.0"]
+read = ["bridge-host:Knock"]
+[module."bridge-host:knock@1.0.0".phases]
+update = "update"
+'''
+
+[case.false]
+fail = {}

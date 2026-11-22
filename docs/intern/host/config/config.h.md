@@ -13,6 +13,8 @@ A `found_t` holds the chosen value beside a peer that clashes with it.
 
 A `keyed_t` and a `module_key_t` name a key to search for.
 A `names_t` gathers names without a repeat.
+
+Its `lost` tells that `names_add` could not take a name, for want of memory.
 `enum check` names the kind of a key. Its first names are those of `manifest_check` of the library of the part `manifest`.
 The host adds the checks that only a deployment needs, from `CHECK_ARRIVE`. `key_rule_t` drives the checks and the copy into Bridge.
 

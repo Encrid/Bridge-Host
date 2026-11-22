@@ -29,10 +29,11 @@ bool manifest_take_phases(const manifest_module_t *m,
     const char **names = nullptr;
     uint32_t count = m->host->phases(m->host->ud, &names);
     bridge_phase_name_t *map = nullptr;
-    bool taken = true;
+    bool taken = count != MANIFEST_NO_MEMORY;
 
-    if (count)
+    if (taken && count)
         map = manifest_keep(m, malloc(sizeof(*map) * count));
+    taken = taken && (map || !count);
     for (uint32_t i = 0; map && i < count; i++)
         taken = take_phase(m, names[i], &map[i]) && taken;
     free(names);

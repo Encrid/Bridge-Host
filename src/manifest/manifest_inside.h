@@ -33,6 +33,7 @@ typedef struct {
 typedef struct {
     const char **names;
     uint32_t count;
+    bool lost;
 } name_list_t;
 
 [[nodiscard]] uint64_t manifest_number(const unsigned char *bytes, size_t len,

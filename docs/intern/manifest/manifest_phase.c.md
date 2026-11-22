@@ -11,4 +11,4 @@ The phase map goes into the `manifest_made_t`. `manifest_take_phases` frees the 
 | Function | Result |
 | --- | --- |
 | `take_phase` | Pairs a phase with its value. Gives true on success. |
-| `manifest_take_phases` | Fills the phase map. Gives true when every phase resolves. |
+| `manifest_take_phases` | Fills the phase map. Gives true when every phase resolves. Gives false when `phases` gives `MANIFEST_NO_MEMORY`, or when the block of the map is refused. |

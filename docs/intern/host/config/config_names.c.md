@@ -10,5 +10,5 @@ This file lists the distinct names stated under a key.
 
 | Function | Result |
 | --- | --- |
-| `names_add` | Adds a name to a `names_t`, without a repeat. |
+| `names_add` | Adds a name to a `names_t`, without a repeat. Sets `lost` when its block is refused. |
 | `config_names` | Gives the names under a key, gathered from all files. |

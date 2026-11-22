@@ -874,3 +874,38 @@ paths = ["mods"]
 [backend.native]
 library = "{bb_native}/bridge_native"
 '''
+
+[[case]]
+name = "a module that no look finds is refused at each entry when its list finds no memory"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { realloc = 248 }
+
+[case.claims]
+status = 1
+order = [
+    "refused: c.toml:9: bridge-host:nobody@1.0.0: no module found is it",
+    "refused: c.toml:10: bridge-host:nobody@1.0.0: no module found is it",
+    "refused: c.toml:11: bridge-host:nobody@1.0.0: no module found is it",
+]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 8
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[module."bridge-host:nobody@1.0.0"]
+hot_reload = false
+on_error = "skip"
+'''
+
+[case.false]
+fail = {}

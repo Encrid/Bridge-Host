@@ -5,6 +5,8 @@
 */
 #include "manifest_inside.h"
 
+static_assert(BRIDGE_LEVEL_MOST == 7);
+
 static const manifest_rule_t RULES[] = {
     [MANIFEST_CHECK_FLAG] = { MANIFEST_ALLOW_FLAG, 0, 0, "",
         "true or false" },
@@ -12,7 +14,7 @@ static const manifest_rule_t RULES[] = {
         "a whole number, from 1" },
     [MANIFEST_CHECK_LIMIT] = { MANIFEST_ALLOW_WHOLE | MANIFEST_ALLOW_WORD, 1,
         INT64_MAX, "none ", "a whole number, from 1, or \"none\"" },
-    [MANIFEST_CHECK_LEVEL] = { MANIFEST_ALLOW_WHOLE, 1, 7, "",
+    [MANIFEST_CHECK_LEVEL] = { MANIFEST_ALLOW_WHOLE, 1, BRIDGE_LEVEL_MOST, "",
         "a level, from 1 to 7" },
     [MANIFEST_CHECK_NAMES] = { MANIFEST_ALLOW_NAMES, 0, 0, "",
         "a list of names" },

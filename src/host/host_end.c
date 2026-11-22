@@ -9,7 +9,7 @@ static void say_loaded(bridge_world_t *w)
 {
     int count = bridge_list_modules(w, nullptr, 0);
     bridge_module_info_t *loaded = count > 0
-        ? malloc(sizeof(*loaded) * (size_t)count) : nullptr;
+        ? host_malloc(sizeof(*loaded) * (size_t)count) : nullptr;
 
     if (loaded)
         bridge_list_modules(w, loaded, count);
@@ -28,7 +28,7 @@ static void say_profile(bridge_world_t *w)
 {
     int count = bridge_profile(w, nullptr, 0);
     bridge_profile_row_t *rows = count > 0
-        ? malloc(sizeof(*rows) * (size_t)count) : nullptr;
+        ? host_malloc(sizeof(*rows) * (size_t)count) : nullptr;
 
     if (rows)
         bridge_profile(w, rows, count);
@@ -57,7 +57,7 @@ static void say_usage(bridge_world_t *w)
     bridge_budget_t most = {};
     int count = bridge_module_usage(w, nullptr, 0);
     bridge_module_usage_row_t *rows = count > 0
-        ? malloc(sizeof(*rows) * (size_t)count) : nullptr;
+        ? host_malloc(sizeof(*rows) * (size_t)count) : nullptr;
 
     bridge_usage(w, &used, &most);
     for (uint32_t i = 0; i < BUDGET_KEY_COUNT; i++)

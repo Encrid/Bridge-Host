@@ -12,8 +12,8 @@ static int order_listed(const void *a, const void *b)
 
 static bool add_listed(listing_t *l, const char *name, bool is_folder)
 {
-    listed_t *more = realloc(l->items, sizeof(*more) * (l->count + 1));
-    char *copy = more ? malloc(strlen(name) + 1) : nullptr;
+    listed_t *more = host_realloc(l->items, sizeof(*more) * (l->count + 1));
+    char *copy = more ? host_malloc(strlen(name) + 1) : nullptr;
 
     if (more)
         l->items = more;

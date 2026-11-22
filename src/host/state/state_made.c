@@ -7,7 +7,7 @@
 
 static bool add_one(void ***list, uint32_t *count, void *one)
 {
-    void **more = realloc(*list, sizeof(*more) * (*count + 1));
+    void **more = host_realloc(*list, sizeof(*more) * (*count + 1));
 
     if (!more)
         return (false);
@@ -21,7 +21,7 @@ const char *state_keep_prefix(made_t *m, const char *what, const char *path,
 {
     const stating_t keep = { .made = m };
     size_t size = strlen(what) + strlen(path) + strlen(who) + sizeof(": : : ");
-    char *prefix = state_keep(&keep, calloc(size, 1));
+    char *prefix = state_keep(&keep, host_calloc(size, 1));
 
     if (!prefix)
         return ("");

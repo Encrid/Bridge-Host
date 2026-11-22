@@ -12,7 +12,7 @@
 static bool take_local(config_t *c, const char *name)
 {
     size_t len = strlen(name) + sizeof(".d/local.toml");
-    char *path = malloc(len);
+    char *path = host_malloc(len);
     FILE *there = nullptr;
 
     c->local = -1;
@@ -31,7 +31,7 @@ static bool take_local(config_t *c, const char *name)
 
 bool config_read(config_t *c, const char *name)
 {
-    char *own = malloc(strlen(name) + 1);
+    char *own = host_malloc(strlen(name) + 1);
 
     *c = (config_t){ .local = -1 };
     if (own)

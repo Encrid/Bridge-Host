@@ -1,4 +1,4 @@
-code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_list.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_again.c", "src/host/host_alloc.c", "src/host/host_alloc.h", "src/host/host_arrive.c", "src/host/host_end.c", "src/host/host_free.c", "src/host/host_list.c", "src/host/host_load.c", "src/host/host_lock.c", "src/host/host_look.c", "src/host/host_meet.c", "src/host/host_path.c", "src/host/host_run.c", "src/host/host_slot.c", "src/host/host_stop.c", "src/host/host_walk.c", "src/host/host_watch.c", "src/host/main.c", "src/host/say.c", "src/host/say.h", "tests/modules/hello.c", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.c", "tests/modules/word.h", "tests/presets/**", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
 name = "a key stated twice in a file"
@@ -919,6 +919,62 @@ fail = { malloc = 2 }
 [case.claims]
 status = 1
 line = ["cannot read 'c.toml'"]
+
+[case.files]
+"{case}/mods/a.txt" = "a"
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+files = 2
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a content path that finds no memory fails the content, and is not taken as not stated"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { malloc = 197 }
+
+[case.claims]
+status = 1
+line = ["no memory left for 5 bytes"]
+lacks = ["not stated: content.paths"]
+
+[case.files]
+"{case}/mods/a.txt" = "a"
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = {}
+rounds = 1
+[content]
+paths = ["mods"]
+files = 2
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "a config file that finds no memory for its bytes is not read, with the size of the refused block"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { calloc = 1 }
+
+[case.claims]
+status = 1
+line = ["cannot read 'c.toml'"]
+matches = ["no memory left for [0-9]+ bytes"]
 
 [case.files]
 "{case}/mods/a.txt" = "a"

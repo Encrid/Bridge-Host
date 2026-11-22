@@ -1,4 +1,4 @@
-code = ["include/**", "src/host/config/config.h", "src/host/file_bytes.h", "src/host/host.h", "src/host/say.h", "src/manifest/**", "tests/manifest/**", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
+code = ["include/**", "src/host/config/config.h", "src/host/file_bytes.h", "src/host/host.h", "src/host/host_alloc.h", "src/host/say.h", "src/manifest/**", "tests/manifest/**", "tests/modules/hello.h", "tests/modules/knock.c", "tests/modules/word.h", "tools/**", ".toolchain/config/**", ".toolchain/project.toml"]
 
 [[case]]
 name = "manifest"

@@ -15,14 +15,8 @@
 static char *read_text(const char *path)
 {
     size_t len = 0;
-    char *text = read_whole(path, &len);
-    FILE *there = text ? nullptr : fopen(path, "rb");
 
-    if (there) {
-        fclose(there);
-        text = calloc(1, 1);
-    }
-    return (text);
+    return (read_whole(path, &len));
 }
 
 static bool take_text(cfile_t *f, char *text)
@@ -40,8 +34,8 @@ static bool take_text(cfile_t *f, char *text)
 int32_t config_add_file(config_t *c, char *path, int32_t by, uint32_t line)
 {
     char *text = read_text(path);
-    cfile_t *more = text ? realloc(c->files, sizeof(*more) * (c->count + 1))
-        : nullptr;
+    cfile_t *more = text
+        ? host_realloc(c->files, sizeof(*more) * (c->count + 1)) : nullptr;
     cfile_t *f = nullptr;
 
     if (!more) {

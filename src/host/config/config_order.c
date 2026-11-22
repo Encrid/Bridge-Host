@@ -46,7 +46,7 @@ static bool add_order(host_t *h, enum order_kind kind, const value_t *pair)
         if (is_pair(p->pairs[i].before, p->pairs[i].after, two))
             return (true);
     f = config_find(&h->config, config_states_pair, &asked);
-    more = realloc(p->pairs, sizeof(*more) * (p->count + 1));
+    more = host_realloc(p->pairs, sizeof(*more) * (p->count + 1));
     if (!more)
         return (false);
     p->pairs = more;

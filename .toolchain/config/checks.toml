@@ -150,50 +150,29 @@ side = "false"
 why = "h->backends is null only when its calloc ran out of memory, which the tests do not force."
 
 [[branches.exception]]
-path = "src/host/config/config_content.c"
-line = 11
-col = 19
-side = "false"
-why = "add_path gets its path from config_path, whose malloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/config/config_content.c"
-line = 22
-col = 18
-side = "false"
-why = "the path is null only when config_path's malloc ran out of memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/config/config_content.c"
-line = 30
-col = 21
-side = "false"
-why = "add_path's realloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
 path = "src/host/config/config_name.c"
-line = 31
+line = 32
 col = 9
 side = "true"
 why = "add_named's realloc returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/host/config/config_name.c"
-line = 55
+line = 56
 col = 25
 side = "true"
 why = "add_named fails only when its realloc runs out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/host/config/config_name.c"
-line = 71
+line = 72
 col = 19
 side = "false"
 why = "config_take_file's path is null only when an earlier malloc ran out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/host/config/config_name.c"
-line = 81
+line = 82
 col = 10
 side = "false"
 why = "the path is null only when an earlier malloc ran out of memory, which the tests do not force."
@@ -211,27 +190,6 @@ line = 67
 col = 9
 side = "true"
 why = "config_cycle's malloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/config/config_path.c"
-line = 25
-col = 9
-side = "false"
-why = "config_path's malloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/config/config_path.c"
-line = 57
-col = 9
-side = "false"
-why = "config_get_folder's malloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/config/config_path.c"
-line = 59
-col = 9
-side = "false"
-why = "config_get_folder's folder is null only when its malloc ran out of memory, which the tests do not force."
 
 [[branches.exception]]
 path = "src/host/config/config_world.c"
@@ -256,14 +214,6 @@ why = "the path is null only when take_lock's malloc ran out of memory, which th
 
 [[branches.exception]]
 path = "src/host/config/config_content.c"
-line = 16
-col = 26
-side = "false"
-system = "windows"
-why = "os_path_whole on this host uses _fullpath, which resolves a path lexically and returns null only for an unparseable path, which the tests do not provide."
-
-[[branches.exception]]
-path = "src/host/config/config_content.c"
 line = 18
 col = 16
 side = "false"
@@ -271,7 +221,7 @@ why = "os_path_whole of a stored path returns null only for an unparseable path,
 
 [[branches.exception]]
 path = "src/host/config/config_file.c"
-line = 64
+line = 60
 col = 22
 side = "false"
 why = "a stored file's whole path is null only when os_path_whole could not resolve it, which the tests do not force."
@@ -310,14 +260,14 @@ why = "On this host os_path_whole yields backslash separators, so the character 
 
 [[branches.exception]]
 path = "src/host/file_bytes.c"
-line = 15
+line = 16
 col = 9
 side = "false"
 why = "read_whole opens a regular file, whose seek to the end always succeeds; this fires only on an I/O error the tests do not force."
 
 [[branches.exception]]
 path = "src/host/file_bytes.c"
-line = 17
+line = 18
 col = 22
 side = "true"
 why = "the seek to the start of a regular file always succeeds; this fires only on an I/O error the tests do not force."
@@ -345,7 +295,7 @@ why = "config_states_module always gets three non-null table names: a module's i
 
 [[branches.exception]]
 path = "src/host/config/config_file.c"
-line = 71
+line = 67
 col = 23
 side = "false"
 why = "config_say_chain stops at the re-included file, which is an ancestor of the including file, so it never reaches the root's -1."
@@ -481,3 +431,16 @@ col = 9
 side = "true"
 why = "state_parse gets its text from calloc, which returns null only when memory runs out, which the tests do not force."
 
+[[branches.exception]]
+path = "src/host/host_alloc.c"
+line = 15
+col = 19
+side = "false"
+why = "A refused block of 0 bytes writes no line, and no caller asks the fail layer to refuse a block of 0 bytes."
+
+[[branches.exception]]
+path = "src/host/host_alloc.c"
+line = 29
+col = 9
+side = "true"
+why = "No caller of host_calloc asks for a product past SIZE_MAX, so ckd_mul never tells an overflow in a case."

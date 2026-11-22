@@ -269,6 +269,10 @@ usage: bridge-host <config.toml>
        bridge-host --show-config <config.toml>
 ```
 
+At each step, when the system refuses a block of memory, the host writes this line, then the failure of that step:
+
+- `no memory left for <bytes> bytes`
+
 Reading the deployment:
 
 - `cannot go into '<file>'`

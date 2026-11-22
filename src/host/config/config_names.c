@@ -15,7 +15,7 @@ void names_add(names_t *into, const char *name)
     for (uint32_t i = 0; i < into->count; i++)
         if (!strcmp(into->names[i], name))
             return;
-    more = realloc(into->names, sizeof(*more) * (into->count + 1));
+    more = host_realloc(into->names, sizeof(*more) * (into->count + 1));
     into->lost = into->lost || !more;
     if (!more)
         return;

@@ -3,7 +3,7 @@
 This file loads a whole file into memory and hashes a block of bytes.
 
 `measure_file` seeks to the end to find the size, then seeks back to the start.
-`read_whole` opens the file, allocates the size plus one byte, and reads it in a single call.
+`read_whole` opens the file, allocates the size plus one byte, and reads it in a single call. An empty file gives a block of 1 byte, so null tells only a file that does not open or read, or a refused block.
 `hash_bytes` runs the 64-bit FNV-1a hash over the bytes.
 
 ## Functions

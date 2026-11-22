@@ -437,7 +437,7 @@ why = "keep_path allocates the path with malloc, which returns null only when me
 
 [[branches.exception]]
 path = "src/host/host_meet.c"
-line = 79
+line = 77
 col = 21
 side = "false"
 why = "kept is false only when the malloc of keep_path ran out of memory, which the tests do not force."

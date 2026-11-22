@@ -343,3 +343,42 @@ library = "{bb_wasm}/bridge_wasm"
 [backend.native]
 library = "{bb_native}/bridge_native"
 '''
+
+[[case]]
+name = "a reload whose hot_reload two presets state two ways is refused, with the clash"
+process = "script"
+run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
+script = [{ wait = "? go on", put = { "{case}/d/swap.wasm" = "abifour" }, type = "go" }]
+
+[case.claims]
+status = 1
+has = ["refused: hot_reload: false in {root}/tests/presets/world.toml:38, true in ha.toml:2", "not replaced: d/swap.wasm: bridge-host:abifour@1.0.0 was refused"]
+
+[case.folders]
+"{case}/d" = ["wait", "swap"]
+
+[case.files]
+"{case}/ha.toml" = '''
+[module."bridge-host:abifour@1.0.0"]
+hot_reload = true
+'''
+"{case}/r.toml" = '''
+presets = ["{root}/tests/presets/test.toml", "ha.toml"]
+phases = ["update"]
+again = {}
+rounds = 16
+[module."bridge-host:swap@1.0.0"]
+hot_reload = true
+[content]
+paths = ["d"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false.files]
+"{case}/ha.toml" = '''
+[module."bridge-host:abifour@1.0.0"]
+hot_reload = false
+'''

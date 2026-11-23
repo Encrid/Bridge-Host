@@ -7,6 +7,7 @@ This file reads a statement and an inline table.
 
 An inline table is a brace that carries members which commas separate.
 `read_member` handles one member: it copies the outer key, adds the member name, and stores the value.
+If the copy of the key finds no memory, `read_member` refuses as `no memory left`.
 A member can itself be an inline table, so `toml_read_inline` nests.
 
 An inline table with no member, `{}`, gives one value of the kind `MANIFEST_TABLE` at its key. Each check but `again` refuses it.

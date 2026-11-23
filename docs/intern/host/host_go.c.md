@@ -9,6 +9,8 @@ After `run`, `host_go` ends the lock with `os_unlock`: `docs/intern/host/host_lo
 `config_go_beside` writes into the path, so each call needs its own copy of it.
 `main` calls it 1 time, and the test program `host-sweep` 1 time in each turn of its sweep: `tests/cases/host/sweep.toml`.
 
+`host-sweep` refuses `realloc` in turn, or the call that its 2nd argument names, such as `malloc`.
+
 ## Functions
 
 | Function | Result |

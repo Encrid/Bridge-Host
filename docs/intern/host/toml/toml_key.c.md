@@ -8,6 +8,8 @@ A name is bare or quoted.
 `keep_name` adds each name to `names` of the `toml_t`, which frees it.
 If no memory is left, `keep_name` frees the name and refuses.
 
+`read_name` refuses a bare name of 0 characters with `a key with no name`, and a bare name with no room for its bytes with `no memory left`.
+
 ## Functions
 
 | Function | Result |

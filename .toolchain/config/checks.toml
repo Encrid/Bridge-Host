@@ -150,20 +150,6 @@ side = "true"
 why = "take_phases allocates with malloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
-path = "src/host/host_lock.c"
-line = 15
-col = 9
-side = "false"
-why = "take_lock allocates the path with malloc, which returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/host_lock.c"
-line = 17
-col = 9
-side = "true"
-why = "the path is null only when take_lock's malloc ran out of memory, which the tests do not force."
-
-[[branches.exception]]
 path = "src/host/config/config_content.c"
 line = 18
 col = 16

@@ -35,3 +35,75 @@ update = "update"
 
 [case.false]
 run = ["{out}/host-sweep{exe}", "{case}/none.toml"]
+
+[[case]]
+name = "the path of the folder of the copies finds no memory, and the host stops before it runs"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { malloc = 214 }
+fail_parts = ["host", "manifest"]
+
+[case.claims]
+status = 1
+line = ["no memory left for 16 bytes"]
+lacks = ["loaded:"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = { update = 2 }
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[module.native]
+log_ring = 222
+[module."bridge-host:knock@1.0.0"]
+read = ["bridge-host:Knock"]
+[module."bridge-host:knock@1.0.0".phases]
+update = "update"
+'''
+
+[case.false]
+fail = {}
+
+[[case]]
+name = "the path of the lock finds no memory, and the host stops before it runs"
+process = "command"
+run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
+fail = { malloc = 218 }
+fail_parts = ["host", "manifest"]
+
+[case.claims]
+status = 1
+order = ["no memory left for 14 bytes", "refused: c.toml.d is no folder"]
+lacks = ["loaded:"]
+
+[case.folders]
+"{case}/mods" = ["knock"]
+
+[case.files]
+"{case}/c.toml" = '''
+presets = ["{root}/tests/presets/world.toml", "{root}/tests/presets/native.toml", "{root}/tests/presets/grants.toml"]
+phases = ["update"]
+again = { update = 2 }
+rounds = 1
+[content]
+paths = ["mods"]
+[backend.native]
+library = "{bb_native}/bridge_native"
+[module.native]
+log_ring = 222
+[module."bridge-host:knock@1.0.0"]
+read = ["bridge-host:Knock"]
+[module."bridge-host:knock@1.0.0".phases]
+update = "update"
+'''
+
+[case.false]
+fail = {}

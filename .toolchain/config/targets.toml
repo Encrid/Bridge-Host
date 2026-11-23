@@ -4,7 +4,7 @@ system_defines = []
 system_libraries = []
 bridge_sha256 = "cc2d76e9414344695e225d231c16f0cbc0d65db74325b69d7e64424cb87aca2e"
 bridge_os_sha256 = "3f32ce6246cfa32385a6bddae5b12f52732a978f02f44b190560677d3d480149"
-bb_native_sha256 = "7841a5f1b10b3edd4ce935c0ba0db58a15390cc3c08a8fa3e27c5054d51cffc6"
+bb_native_sha256 = "fe6ecf1e28d9b3f54c2d84b0d54ef572d3b0a1afba066526466d2b165233a3a0"
 
 [targets.x86_64-linux-gnu]
 section = ".bridge"
@@ -12,7 +12,7 @@ system_defines = []
 system_libraries = ["-lm", "-lpthread", "-ldl"]
 bridge_sha256 = "bf4bd8a0bfa0a239c60239ef2de0665c1f61e9b07ebec760b1f9a3b63f2992a8"
 bridge_os_sha256 = "554a7e34df7f8d7c4fd3850a535a63eda8ae89522f191df8f5239a1f53f6e9aa"
-bb_native_sha256 = "89dd6313bdb202aa1af262fd54dbfa27bad5a91d4c2350989cb401a6aab5dc85"
+bb_native_sha256 = "a2c76975df042ca83c1f2fd9bfff91c72d6af5b8445e07c527fb362d9db165bb"
 
 [targets.aarch64-macos]
 section = "__TEXT,.bridge"
@@ -20,7 +20,7 @@ system_defines = ["-D_DARWIN_C_SOURCE"]
 system_libraries = []
 bridge_sha256 = "9e2f418a2086d4d8809f4df44309ef4b7773b9c1f3c7f00c5b55f6a87942bf8d"
 bridge_os_sha256 = "b79fad98572bb661c4368ae8fe004e8f7f25a1b54d9bbcee865a831a5096b974"
-bb_native_sha256 = "68170b84409bd86f08aadfcc74bf5ffcdd0e34cb0cb6c4c367dcfb3880dc818b"
+bb_native_sha256 = "b4cf59e045e4c09f9c9da8e6edd8ce9e72889870f02635b572eaf0d25e067538"
 
 [targets.aarch64-linux-gnu]
 section = ".bridge"
@@ -28,7 +28,7 @@ system_defines = []
 system_libraries = ["-lm", "-lpthread", "-ldl"]
 bridge_sha256 = "48da18d988fbb1e209c35adeef2e9536b9332b19048720797be13f77c673ec08"
 bridge_os_sha256 = "84689c241634d4098b4bacf578b8190d081c841338eb3eac213da6159a78ff09"
-bb_native_sha256 = "42d3c3087262b3cf37486446ce9e58ac7422479ef9e1aed62fddcb74533c0c21"
+bb_native_sha256 = "64c242c482bb47d21055bc3d96fa0397d780a6323db05aec3e6de6b663c32fd4"
 
 [targets.x86_64-macos]
 section = "__TEXT,.bridge"
@@ -36,7 +36,7 @@ system_defines = ["-D_DARWIN_C_SOURCE"]
 system_libraries = []
 bridge_sha256 = "93fdee7775368f2cae01978def830e8153156ecc9150452cc04add3518c34ac1"
 bridge_os_sha256 = "e13f074a4cbe6e30817ff0bc6583fab6daf0126d1a8d088374fa17258db36b86"
-bb_native_sha256 = "c164791c29bdb2310d9081a0f7dde7f11f693ea41d3e5f74177018ec8a76007b"
+bb_native_sha256 = "fbcaecc259fadd923c6c3dbc7539c14b8639e81b39892fcb3a96146876d468d2"
 
 [targets.aarch64-windows-gnu]
 section = ".bridge"
@@ -44,4 +44,4 @@ system_defines = []
 system_libraries = []
 bridge_sha256 = "225c8d069ccee599aa05c46d9c2be05cbded0b947774ef0b9f3a39f9285d371e"
 bridge_os_sha256 = "3cf790d8109715ce7634aa6c539a9e0e6e6a3c7ada958646d385ab852853019b"
-bb_native_sha256 = "38b3ff8cae7f8055990afa786a4cefa76372535f67ffa8235c1906dbae3c01c2"
+bb_native_sha256 = "d7b4c1a8e2ab3a8ba291cf1ceb6e323c8c8a789d0a00c68a7770179b30b75e6d"

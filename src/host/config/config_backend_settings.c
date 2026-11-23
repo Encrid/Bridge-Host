@@ -21,7 +21,7 @@ bool config_backend_settings(host_t *h, uint32_t at)
     const char *key[3] = { "backend", h->held[at].name, nullptr };
     const keyed_t under = { key, 2 };
     manifest_names_t names = config_names(&h->config, &under);
-    bridge_setting_t *set = host_calloc(names.count + 1, sizeof(*set));
+    bridge_setting_t *set = host_calloc(names.count + 2, sizeof(*set));
     uint32_t count = 0;
     bool taken = set && !names.lost;
 
@@ -30,6 +30,9 @@ bool config_backend_settings(host_t *h, uint32_t at)
         if (strcmp(key[2], "library"))
             taken = take_setting(h, key, &set[count++]) && taken;
     }
+    if (set && !strcmp(h->held[at].name, "native"))
+        set[count++] = (bridge_setting_t){ "copies", BRIDGE_STRING, {},
+            { .s = h->copies } };
     h->held[at].settings = set;
     h->backends[at].settings = set;
     h->backends[at].setting_count = count;

@@ -942,7 +942,7 @@ fail = {}
 name = "a content path that finds no memory fails the content, and is not taken as not stated"
 process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
-fail = { malloc = 197 }
+fail = { malloc = 198 }
 
 [case.claims]
 status = 1

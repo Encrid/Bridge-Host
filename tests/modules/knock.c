@@ -12,6 +12,10 @@ static const char WHO[] = MANIFEST;
 
 static bool said;
 
+#ifndef SAID
+    #define SAID "knock"
+#endif
+
 #ifdef END_AT
 static uint32_t rounds;
 #endif
@@ -36,7 +40,7 @@ static void go_on(void)
 
 BRIDGE_NATIVE(say)
 {
-    bridge_line_t line = { "knock", 5, 0, 0 };
+    bridge_line_t line = { SAID, sizeof(SAID) - 1, 0, 0 };
 
 #ifdef AGAIN_TIMES
     runs++;
@@ -82,5 +86,9 @@ BRIDGE_NATIVE(shutdown)
 
 BRIDGE_NATIVE(reload)
 {
+#ifdef SAID_AGAIN
+    return (bridge_init(api));
+#else
     return (0);
+#endif
 }

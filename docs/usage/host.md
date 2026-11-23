@@ -33,6 +33,7 @@ A deployment is a TOML file. The document of the header `bridge.h` of Bridge tel
 | A file of `presets` | A file that gives keys to the file that names it. A preset can name presets too. |
 | `<file>.d/local.toml` | The local file. It is over each other file. |
 | `<file>.d/lock` | The host holds it during a run, so only one run of a deployment goes on at a time. |
+| `<file>.d/copies` | The folder of the copies of the native modules: *The content and the backends*. |
 
 - A path counts from the folder of the file that states it: a preset, a path of `[content]`, the `library` of a backend, and `{ path = "..." }`.
 - The host uses as it is a path that starts with `/` or `\`, or whose second character is `:`.
@@ -120,6 +121,14 @@ The host gives the settings of a backend to Bridge, which starts the backend wit
 The backend refuses a setting that is missing or that it does not know, so the deployment states each one.
 The readme of a backend gives its settings.
 
+To the backend `native`, the host also gives the setting `copies`: the folder `<file>.d/copies` of the deployment.
+BB-Native loads each native module from a copy in that folder.
+So a program can write the file of a loaded module, and a reload gives the new build.
+
+Only 1 host runs on 1 deployment at a time, by the lock `<file>.d/lock`. Thus the folder belongs to 1 backend at a time, as BB-Native needs.
+The host gives the backend `native` the bytes of the file that it read, and its path. So the copy holds the bytes whose manifest the host read.
+A deployment that states `copies` under `[backend.native]` gives the setting 2 times, and BB-Native refuses to start.
+
 A module asks for the backend `native` or `wasm` by the format of its file.
 Each backend needs its keys of `[content.start]` and `[content.arrive]`.
 With `"ask"`, the host writes `? load <identity>, <backend>, <file>`, and reads one whole line.
@@ -127,7 +136,7 @@ It loads the module only if the line is `yes`.
 
 At a depth of 1, the host reads only the files of a folder of `paths`. At 2, it also reads the files of each folder in it.
 It opens each folder by its path, and reads each file by its name in that folder. Thus a file of the content can be at each depth.
-A native module loads by its path, so the loader of the system keeps its limit of length.
+A native module loads from its copy in `<file>.d/copies`, and the loader of the system keeps its limit of length on that path.
 mosl gives that limit in the document of its header `os.h`.
 
 For a file that the system does not open, the host writes `cannot read '<file>'` one time. The file keeps its place in the room.

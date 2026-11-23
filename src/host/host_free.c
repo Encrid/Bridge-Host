@@ -28,6 +28,7 @@ void host_free(host_t *h)
     free_files(h);
     stop_watches(h);
     free(h->held);
+    free(h->copies);
     free(h->backends);
     free(h->phases);
     free(h->orders[ORDER_SYSTEMS].pairs);

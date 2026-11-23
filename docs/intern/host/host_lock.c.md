@@ -1,8 +1,10 @@
 # src/host/host_lock.c
 
-This file takes the run lock of a configuration.
+This file takes the run lock of a configuration, and gives the paths of its state folder.
 
-`take_lock` makes the `<name>.d` folder, then locks `<name>.d/lock` through `os_lock`.
+`state_path` gives the path `<name>.d/<leaf>` in fresh memory, which the caller frees, or null with no memory.
+
+`take_lock` takes `<name>.d/lock` from `state_path`, and cuts it at the folder for 1 moment to make the `<name>.d` folder. Then it locks `<name>.d/lock` through `os_lock`.
 It prints `refused: <name>.d is no folder` when the folder cannot be made.
 It prints `refused: <name> is being run` only when another process holds the lock: `os_lock` of mosl gives 1 for a held lock only.
 It prints `cannot lock '<path>'` when the open fails, or when the system refuses the lock for another reason, for which `os_lock` gives -1.
@@ -15,4 +17,5 @@ It prints `cannot lock '<path>'` when the open fails, or when the system refuses
 
 | Function | Result |
 | --- | --- |
+| `state_path` | Gives the path of a leaf of the state folder, as above. |
 | `take_lock` | Takes the run lock. Gives true when the host holds it, with its handle in `*lock`. Else `*lock` is null. |

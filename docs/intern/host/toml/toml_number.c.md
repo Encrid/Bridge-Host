@@ -9,7 +9,7 @@ It rejects an underscore that is not between digits.
 `toml_read_number` turns down a leading zero, a following colon, and a following lowercase letter.
 A number with a dot or an `e` goes to `strtod` as a real; any other goes to `strtoll` as a whole number.
 The reader refuses a value that overflows or that leaves a character behind.
-If no memory is left for the copy, the reader refuses the number.
+If no memory is left for the copy, the reason of the refusal is `no memory left`.
 
 ## Functions
 

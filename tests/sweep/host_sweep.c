@@ -36,10 +36,13 @@ int main(int argc, char **argv)
     int status = 0;
     bool refused = false;
 
-    if (argc != 2 || strlen(argv[1]) >= NAME_MOST || os_signal_catch(STOP))
+    const char *call = argc == 3 ? argv[2] : "realloc";
+
+    if (argc < 2 || argc > 3 || strlen(argv[1]) >= NAME_MOST
+        || os_signal_catch(STOP))
         return (2);
     do {
-        sweep_refuse("realloc", ++at);
+        sweep_refuse(call, ++at);
         status = turn(argv[1]);
         refused = sweep_is_refused();
         if (refused && !say_told)

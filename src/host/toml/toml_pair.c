@@ -45,7 +45,8 @@ static bool read_member(reading_t *r, char **key, uint32_t depth)
     if (whole && toml_read_key(r, &whole, &at))
         taken = read_assigned(r, whole, at, "a name with no = after it");
     else
-        toml_refuse(r, "an inline table with no name in it");
+        toml_refuse(r, whole ? "an inline table with no name in it"
+            : "no memory left");
     free(whole);
     return (taken);
 }

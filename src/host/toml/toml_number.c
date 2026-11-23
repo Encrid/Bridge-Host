@@ -54,7 +54,8 @@ bool toml_read_number(reading_t *r, value_t *v)
 {
     size_t len = strspn(r->at, "+-0123456789_.eE");
     char *digits = malloc(len + 1);
-    bool taken = digits && copy_digits(r->at, len, digits);
+    bool room = digits != nullptr;
+    bool taken = room && copy_digits(r->at, len, digits);
 
     if (taken && (r->at[len] == ':' || islower((unsigned char)r->at[len])))
         taken = false;
@@ -66,7 +67,8 @@ bool toml_read_number(reading_t *r, value_t *v)
         taken = read_whole(digits, v);
     free(digits);
     if (!taken)
-        return (toml_refuse(r, "a number that is not taken"));
+        return (toml_refuse(r, room ? "a number that is not taken"
+            : "no memory left"));
     r->at += len;
     return (true);
 }

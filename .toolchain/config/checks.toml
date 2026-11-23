@@ -10,81 +10,11 @@ plugin = "module"
 plugins = "modules"
 
 [[branches.exception]]
-path = "src/host/toml/toml_text.c"
-line = 80
-col = 9
-side = "false"
-why = "The text buffer comes from malloc, which returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/toml/toml_text.c"
-line = 83
-col = 12
-side = "false"
-why = "The loop reads into the malloc'd text buffer, which is null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/toml/toml_text.c"
-line = 87
-col = 9
-side = "true"
-why = "The text buffer is null only when malloc runs out of memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/toml/toml_pair.c"
-line = 15
-col = 9
-side = "false"
-why = "copy_key returns null only when its malloc runs out of memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/toml/toml_pair.c"
-line = 45
-col = 9
-side = "false"
-why = "whole is null only when copy_key's malloc runs out of memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/toml/toml_add.c"
-line = 40
-col = 9
-side = "true"
-why = "whole_key's malloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/toml/toml_add.c"
-line = 52
-col = 23
-side = "false"
-why = "whole is null only when whole_key's malloc runs out of memory, which the tests do not force."
-
-[[branches.exception]]
 path = "src/host/toml/toml_number.c"
 line = 18
 col = 30
 side = "true"
 why = "toml_read_number runs only on a value that starts with a sign or a digit, so the first copied character is never an underscore."
-
-[[branches.exception]]
-path = "src/host/config/config.c"
-line = 19
-col = 9
-side = "true"
-why = "take_local's path comes from malloc, which returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/config/config.c"
-line = 37
-col = 9
-side = "false"
-why = "config_read copies the name with malloc, which returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/config/config_backend.c"
-line = 17
-col = 9
-side = "false"
-why = "with_suffix allocates with malloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/host/config/config_backend.c"
@@ -115,39 +45,11 @@ side = "false"
 why = "h->backends is null only when its calloc ran out of memory, which the tests do not force."
 
 [[branches.exception]]
-path = "src/host/config/config_name.c"
-line = 72
-col = 19
-side = "false"
-why = "config_take_file's path is null only when an earlier malloc ran out of memory, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/config/config_name.c"
-line = 82
-col = 10
-side = "false"
-why = "the path is null only when an earlier malloc ran out of memory, which the tests do not force."
-
-[[branches.exception]]
 path = "src/host/config/config_order.c"
 line = 50
 col = 9
 side = "true"
 why = "add_order's realloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/config/config_unloads.c"
-line = 67
-col = 9
-side = "true"
-why = "config_cycle's malloc returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/config/config_world.c"
-line = 17
-col = 9
-side = "true"
-why = "take_phases allocates with malloc, which returns null only when memory runs out, which the tests do not force."
 
 [[branches.exception]]
 path = "src/host/config/config_content.c"
@@ -286,20 +188,6 @@ line = 31
 col = 25
 side = "false"
 why = "config_find sets f.at whenever it sets f.other, so f.other is never set on its own."
-
-[[branches.exception]]
-path = "src/host/host_slot.c"
-line = 25
-col = 9
-side = "false"
-why = "keep_path allocates the path with malloc, which returns null only when memory runs out, which the tests do not force."
-
-[[branches.exception]]
-path = "src/host/host_meet.c"
-line = 77
-col = 21
-side = "false"
-why = "kept is false only when the malloc of keep_path ran out of memory, which the tests do not force."
 
 [[dup.exception]]
 paths = ["docs/contributing/coding_style.md", "docs/contributing/coding_style_cxx.md"]

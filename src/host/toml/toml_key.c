@@ -44,7 +44,7 @@ static char *read_name(reading_t *r)
     if (len)
         name = malloc(len + 1);
     if (!name) {
-        toml_refuse(r, "a key with no name");
+        toml_refuse(r, len ? "no memory left" : "a key with no name");
         return (nullptr);
     }
     memcpy(name, r->at, len);

@@ -8,7 +8,7 @@ This file walks a content path, and offers each file to a callback.
 A path that is no folder goes to `walk_file`.
 
 `walk_folder` takes the entries of a folder from `list_folder`, sorted by name: `docs/intern/host/host_list.c.md`.
-It skips the ignored ones, with `is_ignored` of `src/host/host_path.c`.
+It skips the ignored ones, with `is_ignored` of `src/host/host_path.c`, which writes the line of each one.
 It offers each file to the callback, with the open folder and the name of the file.
 
 It opens a folder in it only if more than one level is left, so `content.depth` bounds the walk.

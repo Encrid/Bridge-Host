@@ -138,7 +138,7 @@ typedef void see_fn(void *ud, const char *path, os_folder_t *in,
     const char *name);
 
 typedef struct {
-    const host_t *h;
+    host_t *h;
     see_fn *see;
     void *ud;
 } walk_t;
@@ -215,11 +215,11 @@ void state_tell(void *ud, const manifest_told_t *told);
 
 void state_free(made_t *m);
 
-[[nodiscard]] bool is_ignored(const host_t *h, const char *path);
+[[nodiscard]] bool is_ignored(host_t *h, const char *path);
 
 [[nodiscard]] char *join_path(const char *path, const char *name);
 
-[[nodiscard]] int walk_path(const host_t *h, uint32_t at, see_fn *see,
+[[nodiscard]] int walk_path(host_t *h, uint32_t at, see_fn *see,
     void *ud);
 
 [[nodiscard]] bool walk_name(const char *path, see_fn *see, void *ud);

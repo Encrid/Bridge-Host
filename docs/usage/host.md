@@ -149,6 +149,9 @@ A change shows in the round after the system tells it. On macOS, the system tell
 If the system loses changes, or names an entry that does not read as a file, the host reads that whole folder again.
 Thus a removed file, a folder that comes in, and a file that another program holds are all found.
 
+The host reads no path that `[content] ignore` holds. Each time a look or `--show-config` skips such a path, the host writes `ignored: <path>`.
+This line is a debug record, of the level 7. The host writes it and counts it as a record of that level: `[records]`.
+
 For a folder that the system does not watch, the host writes `cannot watch '<path>': read at each round` one time.
 Then it reads that folder at each round, as it reads a path of `paths` that is a file.
 A file that did not read is read again at each round, until it reads.
@@ -305,6 +308,7 @@ Finding the modules:
 - `cannot look in '<path>': no memory is left`
 - `cannot watch '<path>': read at each round`
 - `cannot read '<file>'`
+- `ignored: <path>`
 - `too many files: <count> are looked at`
 - `room again: each file is looked at`
 - `not a module: <file>: <why>`

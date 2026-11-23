@@ -116,13 +116,16 @@ fail = { os_watch_take = 1 }
 
 [[case]]
 name = "a name that the system tells and that content.ignore holds is not read"
-process = "script"
+process = "signal"
 run = ["{out}/bridge-host{exe}", "{case}/ignoring.toml"]
-script = [{ wait = "? go on", put = { "{case}/ignoring/quiet.wasm" = "quiet" }, type = "go" }]
+script = [
+    { wait = "? go on", put = { "{case}/ignoring/quiet.wasm" = "quiet" }, type = "go" },
+    { wait = "ignored: ignoring/quiet.wasm", signal = "termination" },
+]
 
 [case.claims]
 status = 0
-has = ["? go on"]
+order = ["? go on", "ignored: ignoring/quiet.wasm"]
 lacks = ["loaded: bridge-host:quiet@1.0.0"]
 
 [case.folders]
@@ -133,7 +136,10 @@ lacks = ["loaded: bridge-host:quiet@1.0.0"]
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
 again = {}
-rounds = 16
+rounds = 0
+live = true
+[records]
+written = 7
 [content]
 paths = ["ignoring"]
 ignore = ["ignoring/quiet.wasm"]
@@ -143,12 +149,21 @@ library = "{bb_wasm}/bridge_wasm"
 library = "{bb_native}/bridge_native"
 '''
 
+[case.false]
+script = [
+    { wait = "? go on", put = { "{case}/ignoring/quiet.wasm" = "quiet" }, type = "go" },
+    { wait = "loaded: bridge-host:quiet@1.0.0, wasm, ignoring/quiet.wasm", signal = "termination" },
+]
+
 [case.false.files]
 "{case}/ignoring.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
 again = {}
-rounds = 16
+rounds = 0
+live = true
+[records]
+written = 7
 [content]
 paths = ["ignoring"]
 [backend.wasm]

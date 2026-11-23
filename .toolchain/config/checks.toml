@@ -179,7 +179,7 @@ why = "a stored file's whole path is null only when os_path_whole could not reso
 
 [[branches.exception]]
 path = "src/host/host_path.c"
-line = 15
+line = 22
 col = 26
 side = "false"
 system = "windows"
@@ -187,7 +187,7 @@ why = "On Windows, os_path_whole gives a whole path for each path that the walk 
 
 [[branches.exception]]
 path = "src/host/host_path.c"
-line = 17
+line = 24
 col = 15
 side = "false"
 system = "windows"
@@ -195,7 +195,7 @@ why = "an ignore entry's whole path from os_path_whole is null only for an unpar
 
 [[branches.exception]]
 path = "src/host/host_path.c"
-line = 18
+line = 25
 col = 14
 side = "false"
 system = "windows"
@@ -203,7 +203,7 @@ why = "the ignore path is null only when os_path_whole could not resolve it, whi
 
 [[branches.exception]]
 path = "src/host/host_path.c"
-line = 19
+line = 26
 col = 32
 side = "true"
 system = "windows"
@@ -274,7 +274,7 @@ why = "config_check refuses a depth-five setting whose fifth key is not path, so
 
 [[branches.exception]]
 path = "src/host/host_path.c"
-line = 19
+line = 26
 col = 53
 side = "true"
 system = "posix"

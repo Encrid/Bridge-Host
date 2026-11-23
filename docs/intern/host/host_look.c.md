@@ -39,8 +39,9 @@ The room is `content.files` slots. `look_t` notes whether a path of this look fo
 
 `look` writes `too many files: <files> are looked at` when the room is full now and was not full before.
 Thus the line comes each time the room becomes full, and not at each round of a full room.
+When the note of `host_t` goes from full to not full, `look` tells that the room ends: `docs/usage/host.md`, *The content and the backends*.
 A look that reads each path whole replaces the note of `host_t`. A look that reads only named files can only set it, because it does not see each file.
-The line counts as work of the look, so the run does not end on that round.
+Each of the 2 lines counts as work of the look, so the run does not end on that round.
 
 ## Functions
 

@@ -231,6 +231,75 @@ script = [
 ]
 
 [[case]]
+name = "a full room that has room again says so"
+process = "signal"
+run = ["{out}/bridge-host{exe}", "{case}/full.toml"]
+script = [
+    { wait = "? go on", put = { "{case}/heap/x.wasm" = "quiet" }, type = "go" },
+    { wait = "too many files: 32 are looked at", remove = ["{case}/heap/x.wasm"] },
+    { wait = "room again: each file is looked at", signal = "termination" },
+]
+
+[case.claims]
+status = 0
+order = ["too many files: 32 are looked at", "room again: each file is looked at"]
+
+[case.folders]
+"{case}/heap" = ["wait"]
+
+[case.files]
+"{case}/full.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+again = {}
+rounds = 0
+live = true
+[content]
+paths = ["heap"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+"{case}/heap/f01.txt" = "x"
+"{case}/heap/f02.txt" = "x"
+"{case}/heap/f03.txt" = "x"
+"{case}/heap/f04.txt" = "x"
+"{case}/heap/f05.txt" = "x"
+"{case}/heap/f06.txt" = "x"
+"{case}/heap/f07.txt" = "x"
+"{case}/heap/f08.txt" = "x"
+"{case}/heap/f09.txt" = "x"
+"{case}/heap/f10.txt" = "x"
+"{case}/heap/f11.txt" = "x"
+"{case}/heap/f12.txt" = "x"
+"{case}/heap/f13.txt" = "x"
+"{case}/heap/f14.txt" = "x"
+"{case}/heap/f15.txt" = "x"
+"{case}/heap/f16.txt" = "x"
+"{case}/heap/f17.txt" = "x"
+"{case}/heap/f18.txt" = "x"
+"{case}/heap/f19.txt" = "x"
+"{case}/heap/f20.txt" = "x"
+"{case}/heap/f21.txt" = "x"
+"{case}/heap/f22.txt" = "x"
+"{case}/heap/f23.txt" = "x"
+"{case}/heap/f24.txt" = "x"
+"{case}/heap/f25.txt" = "x"
+"{case}/heap/f26.txt" = "x"
+"{case}/heap/f27.txt" = "x"
+"{case}/heap/f28.txt" = "x"
+"{case}/heap/f29.txt" = "x"
+"{case}/heap/f30.txt" = "x"
+"{case}/heap/f31.txt" = "x"
+
+[case.false]
+script = [
+    { wait = "? go on", put = { "{case}/heap/x.wasm" = "quiet" }, type = "go" },
+    { wait = "too many files: 32 are looked at", signal = "termination" },
+]
+
+[[case]]
 name = "a file for which the host has no room is not read, and fills the room"
 process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/room.toml"]

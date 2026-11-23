@@ -138,6 +138,7 @@ Thus the lines of a look, the files that get room, the reloads and the unloads c
 
 It looks at `[content] files` files at most, and it does not read a file for which it has no room.
 Each time its room becomes full, it writes `too many files: <count> are looked at`.
+Each time a full room has room again, it writes `room again: each file is looked at`.
 At each round, it loads a new module and unloads the module of a removed file.
 It replaces the module of a changed file only if the manifest states `reloadable=true` and the deployment states `hot_reload = true`.
 Else it keeps the old module, and writes why.
@@ -305,6 +306,7 @@ Finding the modules:
 - `cannot watch '<path>': read at each round`
 - `cannot read '<file>'`
 - `too many files: <count> are looked at`
+- `room again: each file is looked at`
 - `not a module: <file>: <why>`
 - `neither a wasm module nor a library`
 - `no manifest`

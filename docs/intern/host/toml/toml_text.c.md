@@ -12,6 +12,7 @@ A double-quoted text takes an escape that opens with a backslash.
 `read_code` refuses too few digits, a code above the highest point, and a surrogate code.
 `put_utf8` encodes a code point as one to four bytes.
 The reader also turns down a text over lines and a text with no end.
+With no memory for the bytes of a text, the reader gives the reason `no memory left`.
 
 ## Functions
 

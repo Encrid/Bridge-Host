@@ -14,7 +14,8 @@ static bool take_config(host_t *h, const char *name)
     if (!taken)
         return (false);
     taken = config_world(h);
-    taken = config_backends(h) && taken;
+    h->copies = state_path(name, "copies");
+    taken = config_backends(h) && h->copies && taken;
     return (config_content(h) && taken);
 }
 

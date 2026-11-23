@@ -85,7 +85,7 @@ char *toml_read_text(reading_t *r)
         len += step;
     }
     if (!text || !step || *r->at != quote) {
-        toml_refuse(r, "text with no end");
+        toml_refuse(r, text ? "text with no end" : "no memory left");
         free(text);
         return (nullptr);
     }

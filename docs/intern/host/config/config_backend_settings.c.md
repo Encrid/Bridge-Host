@@ -3,6 +3,8 @@
 This file takes the settings of one backend into the host.
 
 `config_backend_settings` lists the names under `backend.<name>`, and takes each one but `library`.
+For the backend `native`, it adds the setting `copies`, with the folder `copies` of `host_t`: `docs/usage/host.md`, *The content and the backends*.
+
 `take_setting` finds the value of a setting over the files, and makes it a `bridge_setting_t` with `manifest_get_setting` of the library.
 The host checks only the form of a setting. A setting that is missing, or that is not known, is refused by the backend.
 The array of the settings goes into the `held_t` and into the `bridge_backend_t` of the backend, and `host_free` frees it.

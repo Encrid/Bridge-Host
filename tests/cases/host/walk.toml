@@ -163,12 +163,13 @@ library = "{bb_native}/bridge_native"
 
 [[case]]
 name = "the line of a full room comes each time that the room becomes full"
-process = "script"
+process = "signal"
 run = ["{out}/bridge-host{exe}", "{case}/full.toml"]
 script = [
     { wait = "? go on", put = { "{case}/heap/x.wasm" = "quiet" }, type = "go" },
-    { wait = "? go on", remove = ["{case}/heap/x.wasm"], type = "go" },
-    { wait = "? go on", put = { "{case}/heap/x.wasm" = "quiet" }, type = "go" },
+    { wait = "too many files: 32 are looked at", remove = ["{case}/heap/x.wasm"] },
+    { wait = "room again: each file is looked at", put = { "{case}/heap/x.wasm" = "quiet" } },
+    { wait = "too many files: 32 are looked at", signal = "termination" },
 ]
 
 [case.claims]
@@ -176,14 +177,14 @@ status = 0
 order = ["too many files: 32 are looked at", "too many files: 32 are looked at"]
 
 [case.folders]
-"{case}/heap" = ["asker"]
+"{case}/heap" = ["wait"]
 
 [case.files]
 "{case}/full.toml" = '''
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
 again = {}
-rounds = 8
+rounds = 0
 live = true
 [content]
 paths = ["heap"]
@@ -227,7 +228,8 @@ library = "{bb_native}/bridge_native"
 [case.false]
 script = [
     { wait = "? go on", put = { "{case}/heap/x.wasm" = "quiet" }, type = "go" },
-    { wait = "? go on", remove = ["{case}/heap/x.wasm"], type = "go" },
+    { wait = "too many files: 32 are looked at", remove = ["{case}/heap/x.wasm"] },
+    { wait = "room again: each file is looked at", signal = "termination" },
 ]
 
 [[case]]

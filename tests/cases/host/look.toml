@@ -2,10 +2,13 @@ code = ["include/**", "src/host/config/**", "src/host/file_bytes.c", "src/host/f
 
 [[case]]
 name = "a folder that the system does not watch is read at each round, after one line"
-process = "script"
+process = "signal"
 run = ["{out}/bridge-host{exe}", "{case}/unwatched.toml"]
 fail = { os_watch_start = 1 }
-script = [{ wait = "? go on", put = { "{case}/unwatched/quiet.wasm" = "quiet" }, type = "go" }]
+script = [
+    { wait = "? go on", put = { "{case}/unwatched/quiet.wasm" = "quiet" }, type = "go" },
+    { wait = "loaded: bridge-host:quiet@1.0.0, wasm, unwatched/quiet.wasm", signal = "termination" },
+]
 
 [case.claims]
 status = 0
@@ -23,7 +26,8 @@ order = [
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
 again = {}
-rounds = 16
+rounds = 0
+live = true
 [content]
 paths = ["unwatched"]
 [backend.wasm]
@@ -37,10 +41,13 @@ fail = {}
 
 [[case]]
 name = "a watch that stops starts again, after a read of its whole folder"
-process = "script"
+process = "signal"
 run = ["{out}/bridge-host{exe}", "{case}/stopped.toml"]
 fail = { os_watch_take = 1 }
-script = [{ wait = "? go on", put = { "{case}/stopped/quiet.wasm" = "quiet" }, type = "go" }]
+script = [
+    { wait = "? go on", put = { "{case}/stopped/quiet.wasm" = "quiet" }, type = "go" },
+    { wait = "loaded: bridge-host:quiet@1.0.0, wasm, stopped/quiet.wasm", signal = "termination" },
+]
 
 [case.claims]
 status = 0
@@ -55,7 +62,8 @@ lacks = ["cannot watch"]
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
 again = {}
-rounds = 16
+rounds = 0
+live = true
 [content]
 paths = ["stopped"]
 [backend.wasm]
@@ -65,14 +73,17 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false]
-script = [{ wait = "? go on", type = "go" }]
+script = [{ wait = "? go on", type = "go", signal = "termination" }]
 
 [[case]]
 name = "a watch that cannot start again leaves its folder read at each round, after one line"
-process = "script"
+process = "signal"
 run = ["{out}/bridge-host{exe}", "{case}/again.toml"]
 fail = { os_watch_take = 1, os_watch_start = 2 }
-script = [{ wait = "? go on", put = { "{case}/again/quiet.wasm" = "quiet" }, type = "go" }]
+script = [
+    { wait = "? go on", put = { "{case}/again/quiet.wasm" = "quiet" }, type = "go" },
+    { wait = "loaded: bridge-host:quiet@1.0.0, wasm, again/quiet.wasm", signal = "termination" },
+]
 
 [case.claims]
 status = 0
@@ -90,7 +101,8 @@ order = [
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
 again = {}
-rounds = 16
+rounds = 0
+live = true
 [content]
 paths = ["again"]
 [backend.wasm]
@@ -184,10 +196,13 @@ script = [{ wait = "? go on", type = "go" }]
 
 [[case]]
 name = "a name that finds no memory makes the look read its whole folder"
-process = "script"
+process = "signal"
 run = ["{out}/bridge-host{exe}", "{case}/short.toml"]
 fail = { calloc = 21 }
-script = [{ wait = "? go on", put = { "{case}/short/quiet.wasm" = "quiet" }, type = "go" }]
+script = [
+    { wait = "? go on", put = { "{case}/short/quiet.wasm" = "quiet" }, type = "go" },
+    { wait = "loaded: bridge-host:quiet@1.0.0, wasm, short/quiet.wasm", signal = "termination" },
+]
 
 [case.claims]
 status = 0
@@ -201,7 +216,7 @@ order = ["? go on", "loaded: bridge-host:quiet@1.0.0, wasm, short/quiet.wasm"]
 presets = ["{root}/tests/presets/test.toml"]
 phases = ["update"]
 again = {}
-rounds = 8
+rounds = 0
 live = true
 [content]
 paths = ["short"]
@@ -212,7 +227,7 @@ library = "{bb_native}/bridge_native"
 '''
 
 [case.false]
-script = [{ wait = "? go on", type = "go" }]
+script = [{ wait = "? go on", type = "go", signal = "termination" }]
 
 [[case]]
 name = "the slots of the watches that find no memory refuse the run"

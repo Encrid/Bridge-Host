@@ -11,6 +11,8 @@ If no memory is left for a path, a walk stops: `docs/intern/host/host_walk.c.md`
 
 `is_ignored` tests a path against `content.ignore` by its whole form, from `os_path_whole` of mosl.
 A path is ignored if an ignored path is equal to it, or holds it.
+Both paths of a file test it: the walk of a folder (`src/host/host_walk.c`), and a name that a watch tells (`src/host/host_watch.c`).
+Thus the case of `tests/cases/host/look.toml` with the ignored name holds on each system. Its run has `live = false`, so the read of each file before its quiet end looks at that name too, whatever the order of the notices.
 
 ## Functions
 

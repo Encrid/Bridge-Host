@@ -65,7 +65,7 @@ static int walk_file(const walk_t *w, const char *path)
     return (-1);
 }
 
-int walk_path(const host_t *h, uint32_t at, see_fn *see, void *ud)
+int walk_path(host_t *h, uint32_t at, see_fn *see, void *ud)
 {
     const walk_t w = { h, see, ud };
     os_folder_t *in = os_folder_open(h->paths[at]);

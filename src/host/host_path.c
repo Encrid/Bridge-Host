@@ -5,7 +5,14 @@
 */
 #include "host.h"
 
-bool is_ignored(const host_t *h, const char *path)
+static void say_ignored(host_t *h, const char *path)
+{
+    if (BRIDGE_DEBUG <= h->d.written)
+        say("ignored: %s\n", path);
+    h->counts.failed += BRIDGE_DEBUG <= h->d.failing;
+}
+
+bool is_ignored(host_t *h, const char *path)
 {
     char *whole = os_path_whole(path);
     char *ignored = nullptr;
@@ -20,6 +27,8 @@ bool is_ignored(const host_t *h, const char *path)
         free(ignored);
     }
     free(whole);
+    if (is)
+        say_ignored(h, path);
     return (is);
 }
 

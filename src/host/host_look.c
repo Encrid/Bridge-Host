@@ -74,16 +74,19 @@ int look(host_t *h, enum look_kind kind)
 {
     look_t lk = { .found = h->found };
     seeing_t s = { h, &lk, 0 };
+    bool was_full = h->full;
 
     for (s.at = 0; s.at < h->path_count; s.at++)
         if (look_path(h, kind, &s) < 0)
             return (-1);
     retry_unread(h, &s);
-    if (lk.full && !h->full) {
+    if (lk.full && !h->full)
         say("too many files: %u are looked at\n", h->d.files);
-        lk.did++;
-    }
+    lk.did += lk.full && !h->full;
     h->full = lk.whole == h->path_count ? lk.full : h->full || lk.full;
+    if (was_full && !h->full)
+        say("room again: each file is looked at\n");
+    lk.did += was_full && !h->full;
     qsort(lk.found, (size_t)lk.count, sizeof(lk.found[0]), order_files);
     for (int i = 0; i < lk.count; i++)
         load_found(h, lk.found[i], kind == LOOK_FIRST);

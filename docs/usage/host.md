@@ -138,6 +138,7 @@ Thus the lines of a look, the files that get room, the reloads and the unloads c
 
 It looks at `[content] files` files at most, and it does not read a file for which it has no room.
 Each time its room becomes full, it writes `too many files: <count> are looked at`.
+Each time a full room has room again, it writes `room again: each file is looked at`.
 At each round, it loads a new module and unloads the module of a removed file.
 It replaces the module of a changed file only if the manifest states `reloadable=true` and the deployment states `hot_reload = true`.
 Else it keeps the old module, and writes why.
@@ -147,6 +148,9 @@ After it, the system tells the host which entries of each folder of `paths` chan
 A change shows in the round after the system tells it. On macOS, the system tells it a few milliseconds after the change.
 If the system loses changes, or names an entry that does not read as a file, the host reads that whole folder again.
 Thus a removed file, a folder that comes in, and a file that another program holds are all found.
+
+The host reads no path that `[content] ignore` holds. Each time a look or `--show-config` skips such a path, the host writes `ignored: <path>`.
+This line is a debug record, of the level 7. The host writes it and counts it as a record of that level: `[records]`.
 
 For a folder that the system does not watch, the host writes `cannot watch '<path>': read at each round` one time.
 Then it reads that folder at each round, as it reads a path of `paths` that is a file.
@@ -304,7 +308,9 @@ Finding the modules:
 - `cannot look in '<path>': no memory is left`
 - `cannot watch '<path>': read at each round`
 - `cannot read '<file>'`
+- `ignored: <path>`
 - `too many files: <count> are looked at`
+- `room again: each file is looked at`
 - `not a module: <file>: <why>`
 - `neither a wasm module nor a library`
 - `no manifest`

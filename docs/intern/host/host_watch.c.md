@@ -10,7 +10,7 @@ Then it reads the path whole. The watch starts first, so a change during that re
 A path that is a file gets no watch.
 
 At a later look, `take_names` takes the names of the watch with `os_watch_take` until none is left.
-It joins each name to the path, skips an ignored one, and reads the file with `walk_name`.
+It joins each name to the path, skips an ignored one with `is_ignored`, which writes its line, and reads the file with `walk_name`.
 If a named entry does not read as a file, or its path finds no memory, the look reads the whole path.
 Thus the look finds files that were removed or moved in, and files that another program holds.
 If the watch lost changes or stopped, `look_path` stops it, starts a new watch, and reads the whole path.

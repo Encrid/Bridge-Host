@@ -21,8 +21,7 @@ bool make_artifact(const stating_t *s, const file_t *f, bridge_artifact_t *a)
     *a = (bridge_artifact_t){ .backend = s->of->who.backend,
         .bytes = s->of->bytes, .len = s->of->len };
     if (!strcmp(s->of->who.backend, "native"))
-        *a = (bridge_artifact_t){ .backend = s->of->who.backend,
-            .path = f->path };
+        a->path = f->path;
     return (state_found(s, &a->cfg));
 }
 

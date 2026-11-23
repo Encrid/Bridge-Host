@@ -147,6 +147,8 @@ include = ["{bridge}/include", "{bb_native}/include", "tests/modules"]
 manifest = ["bridge-host:knock@1.0.0", "{own}"]
 variants = [
     { name = "wait", defines = ["WAIT"], manifest = ["bridge-host:wait@1.0.0", "{own}"] },
+    { name = "nswap", defines = ['SAID="nswaps"', "SAID_AGAIN"], manifest = ["bridge-host:nswap@1.0.0", "abi=1", "pinned=false", "reloadable=true", "config=none"] },
+    { name = "nswap2", defines = ['SAID="nswapped"', "SAID_AGAIN"], manifest = ["bridge-host:nswap@1.0.0", "abi=1", "pinned=false", "reloadable=true", "config=none"] },
     { name = "asker", defines = ["WAIT_EACH"], manifest = ["bridge-host:asker@1.0.0", "{own}"] },
     { name = "nender", defines = ["END_AT=3"], manifest = ["bridge-host:nender@1.0.0", "{own}"] },
     { name = "nender1", defines = ["END_AT=1"], manifest = ["bridge-host:nender1@1.0.0", "{own}"] },

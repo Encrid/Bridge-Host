@@ -790,7 +790,7 @@ library = "{bb_native}/bridge_native"
 name = "a folder whose list finds no memory for a name stops the look with its line"
 process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
-fail = { malloc = 199 }
+fail = { malloc = 200 }
 
 [case.claims]
 status = 1

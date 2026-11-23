@@ -340,7 +340,7 @@ library = "{bb_native}/bridge_native"
 name = "the list of the modules that stay finds no memory, and its line says so"
 process = "command"
 run = ["{out}/bridge-host{exe}", "{case}/c.toml"]
-fail = { malloc = 215 }
+fail = { malloc = 216 }
 
 [case.claims]
 status = 0

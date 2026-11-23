@@ -92,6 +92,7 @@ typedef struct {
     bool ended;
     int round;
     held_t *held;
+    char *copies;
     bridge_backend_t *backends;
     uint32_t backend_count;
     pairs_t orders[2];
@@ -232,6 +233,8 @@ void free_listing(listing_t *l);
 
 void show_module(void *ud, const char *path, os_folder_t *in,
     const char *name);
+
+[[nodiscard]] char *state_path(const char *name, const char *leaf);
 
 [[nodiscard]] bool take_lock(const char *name, os_lock_t **lock);
 

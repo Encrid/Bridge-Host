@@ -384,3 +384,47 @@ library = "{bb_native}/bridge_native"
 [module."bridge-host:abifour@1.0.0"]
 hot_reload = false
 '''
+
+[[case]]
+name = "a native module that is loaded is replaced 2 times by a write onto its file, and runs each new build"
+process = "signal"
+run = ["{out}/bridge-host{exe}", "{case}/r.toml"]
+script = [
+    { wait = "loaded: bridge-host:nswap@1.0.0, native, d/nswap{library}", put = { "{case}/d/nswap{library}" = "nswap2" } },
+    { wait = "record[6] bridge-host:nswap@1.0.0/say: nswapped 0 0", put = { "{case}/d/nswap{library}" = "nswap" } },
+    { wait = "replaced: bridge-host:nswap@1.0.0 by bridge-host:nswap@1.0.0, d/nswap{library}" },
+    { wait = "record[6] bridge-host:nswap@1.0.0/say: nswaps 0 0", signal = "termination" },
+]
+
+[case.claims]
+status = 0
+order = [
+    "record[6] bridge-host:nswap@1.0.0/say: nswaps 0 0",
+    "replaced: bridge-host:nswap@1.0.0 by bridge-host:nswap@1.0.0, d/nswap{library}",
+    "record[6] bridge-host:nswap@1.0.0/say: nswapped 0 0",
+    "replaced: bridge-host:nswap@1.0.0 by bridge-host:nswap@1.0.0, d/nswap{library}",
+    "record[6] bridge-host:nswap@1.0.0/say: nswaps 0 0",
+]
+
+[case.folders]
+"{case}/d" = ["nswap"]
+
+[case.files]
+"{case}/r.toml" = '''
+presets = ["{root}/tests/presets/test.toml"]
+phases = ["update"]
+again = {}
+rounds = 0
+live = true
+[module."bridge-host:nswap@1.0.0"]
+hot_reload = true
+[content]
+paths = ["d"]
+[backend.wasm]
+library = "{bb_wasm}/bridge_wasm"
+[backend.native]
+library = "{bb_native}/bridge_native"
+'''
+
+[case.false]
+script = [{ wait = "loaded: bridge-host:nswap@1.0.0, native, d/nswap{library}", signal = "termination" }]
